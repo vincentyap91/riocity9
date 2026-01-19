@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { 
   ArrowLeft, History, Calendar, Wallet, Dices, 
-  Users, HandCoins, Megaphone, Download, RefreshCw,
+  Users, HandCoins, Megaphone,
   Search, Filter
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
@@ -92,15 +92,15 @@ export function HistoryRecord() {
           {/* Main Content Area */}
           <div className="flex-1 w-full bg-[#1a2230] rounded-[16px] border border-white/5 p-6 flex flex-col">
             {/* Title inside card (match Profile behavior) */}
-            <div className="flex items-center justify-center gap-3 pb-4">
+            <div className="flex items-center justify-start gap-3 pb-4">
               <div className="h-10 w-10 rounded-xl bg-black/25 border border-white/10 flex items-center justify-center">
                 <History className="w-5 h-5 text-white/90" />
               </div>
-              <span className="text-white font-bold text-base">History Record</span>
+              <span className="text-white font-bold text-base">Transaction History</span>
             </div>
             
-            {/* Top Controls: Tabs & Actions */}
-            <div className="flex flex-col md:flex-row items-center justify-between gap-6 mb-6">
+            {/* Top Controls: Tabs */}
+            <div className="flex flex-col md:flex-row items-center justify-start gap-6 mb-6">
               {/* Deposits/Withdrawals Tabs */}
               <div className="w-full max-w-[320px] flex bg-[#0f151f] p-1 rounded-xl border border-white/5">
                 <button
@@ -123,17 +123,6 @@ export function HistoryRecord() {
                 >
                   Withdrawals
                 </button>
-              </div>
-
-              {/* Utility Actions */}
-              <div className="flex items-center gap-3 self-end md:self-auto">
-                <Button variant="outline" size="sm" className="h-10 w-10 p-0 rounded-xl bg-[#0f151f] border-white/5 hover:bg-white/10">
-                  <RefreshCw className="w-4 h-4 text-emerald-500" />
-                </Button>
-                <Button variant="outline" size="sm" className="h-10 gap-2 rounded-xl bg-[#0f151f] border-white/5 hover:bg-white/10 px-4">
-                  <Download className="w-4 h-4 text-emerald-500" />
-                  <span className="text-xs font-bold">Export CSV</span>
-                </Button>
               </div>
             </div>
 
