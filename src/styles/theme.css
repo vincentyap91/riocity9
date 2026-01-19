@@ -1,0 +1,240 @@
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  /* Default to Dark Theme as requested */
+  --font-size: 16px;
+  
+  /* Deep Navy/Black Background */
+  --background: #02040a; 
+  --foreground: #ffffff;
+
+  /* Slightly lighter navy for cards */
+  --card: #0b1121;
+  --card-foreground: #ffffff;
+
+  --popover: #0b1121;
+  --popover-foreground: #ffffff;
+
+  /* Vibrant Brand Green from "RC" Logo */
+  --primary: #00e588;
+  --primary-foreground: #020412;
+
+  /* Secondary/Muted elements */
+  --secondary: #1e293b;
+  --secondary-foreground: #ffffff;
+
+  --muted: #1e293b;
+  --muted-foreground: #94a3b8;
+
+  --accent: #2d3748;
+  --accent-foreground: #ffffff;
+
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+
+  --border: #1f2937;
+  --input: #1f2937;
+  --input-background: #111827;
+  --switch-background: #374151;
+
+  --font-weight-medium: 500;
+  --font-weight-normal: 400;
+
+  --ring: #00e588;
+
+  /* Chart colors - Greens/Teals/Blues */
+  --chart-1: oklch(0.72 0.18 145); /* Bright Green */
+  --chart-2: oklch(0.65 0.15 180); /* Teal */
+  --chart-3: oklch(0.60 0.12 210); /* Blue */
+  --chart-4: oklch(0.55 0.10 240); /* Indigo */
+  --chart-5: oklch(0.85 0.15 100); /* Yellow-Green accent */
+
+  --radius: 0.625rem;
+
+  --sidebar: #050816;
+  --sidebar-foreground: #ffffff;
+  --sidebar-primary: #00e588;
+  --sidebar-primary-foreground: #020412;
+  --sidebar-accent: #1e293b;
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: #1f2937;
+  --sidebar-ring: #00e588;
+}
+
+/* Light Theme (Alternative if needed) */
+.light {
+  --background: #ffffff;
+  --foreground: #020412;
+  --card: #ffffff;
+  --card-foreground: #020412;
+  --popover: #ffffff;
+  --popover-foreground: #020412;
+  --primary: #00c472; /* Slightly darker green for light mode contrast */
+  --primary-foreground: #ffffff;
+  --secondary: #f1f5f9;
+  --secondary-foreground: #0f172a;
+  --muted: #f1f5f9;
+  --muted-foreground: #64748b;
+  --accent: #f1f5f9;
+  --accent-foreground: #0f172a;
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+  --border: #e2e8f0;
+  --input: #e2e8f0;
+  --ring: #00c472;
+  --chart-1: oklch(0.60 0.18 145);
+  --chart-2: oklch(0.55 0.15 180);
+  --chart-3: oklch(0.50 0.12 210);
+  --chart-4: oklch(0.45 0.10 240);
+  --chart-5: oklch(0.75 0.15 100);
+  --sidebar: #f8fafc;
+  --sidebar-foreground: #0f172a;
+  --sidebar-primary: #00c472;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #f1f5f9;
+  --sidebar-accent-foreground: #0f172a;
+  --sidebar-border: #e2e8f0;
+  --sidebar-ring: #00c472;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-input-background: var(--input-background);
+  --color-switch-background: var(--switch-background);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    /* Premium Radial Gradient: Visible Emerald Green Spotlight */
+    background: radial-gradient(circle at 50% 0%, #042f1f 0%, #02040a 85%);
+    background-attachment: scroll;
+  }
+
+  @media (min-width: 768px) {
+    body {
+      background-attachment: fixed;
+    }
+  }
+
+  /**
+  * Default typography styles for HTML elements (h1-h4, p, label, button, input).
+  * These are in @layer base, so Tailwind utility classes (like text-sm, text-lg) automatically override them.
+  */
+
+  html {
+    font-size: var(--font-size);
+  }
+
+  h1 {
+    font-size: var(--text-2xl);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.5;
+  }
+
+  h2 {
+    font-size: var(--text-xl);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.5;
+  }
+
+  h3 {
+    font-size: var(--text-lg);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.5;
+  }
+
+  h4 {
+    font-size: var(--text-base);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.5;
+  }
+
+  label {
+    font-size: var(--text-base);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.5;
+  }
+
+  button {
+    font-size: var(--text-base);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.5;
+  }
+
+  input {
+    font-size: var(--text-base);
+    font-weight: var(--font-weight-normal);
+    line-height: 1.5;
+  }
+}
+
+@utility no-scrollbar {
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  /* Hide scrollbar for IE, Edge and Firefox */
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+@utility custom-scrollbar {
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+  &::-webkit-scrollbar-track {
+    background: #02040a;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: #1e293b;
+    border-radius: 10px;
+    border: 1px solid #02040a;
+  }
+  &::-webkit-scrollbar-thumb:hover {
+    background: #00ff88;
+  }
+  
+  /* Firefox */
+  scrollbar-width: thin;
+  scrollbar-color: #1e293b #02040a;
+}
