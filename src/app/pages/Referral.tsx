@@ -4,8 +4,7 @@ import { Button } from '../components/ui/button';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../components/ui/accordion';
 
 // Assets
-import imgHeroBg from "@/assets/6a7a361241e7b1f30cd0c1a8abdeee75362715a0.png"; // Hero Image
-import imgBgTexture from "@/assets/bf1b0ea3eb47f7c38ede69db9b93450b735daebc.png"; // Background Texture
+import imgBgTexture from "@/assets/referral-bg.jpg"; // Background Texture
 
 // Icons (Simulated with Lucide where possible, or custom SVGs if needed)
 // Using standard icons for clarity and performance unless specific assets are critical for the look (like the tiers).
@@ -45,8 +44,8 @@ export function Referral() {
     <div className="flex flex-col min-h-screen bg-[#02040a] text-white relative overflow-hidden">
       
       {/* Global Background Texture */}
-      <div className="absolute inset-0 z-0 pointer-events-none opacity-40">
-          <img src={imgBgTexture} alt="texture" className="w-full h-full object-cover" />
+      <div className="absolute inset-0 z-0 pointer-events-none opacity-100">
+          <img src={imgBgTexture} alt="texture" className="w-full object-cover" />
       </div>
 
       {/* Hero Section */}
@@ -67,11 +66,7 @@ export function Referral() {
                     </p>
                 </div>
 
-                {/* Hero Image */}
-                <div className="flex-1 relative h-[400px] md:h-[500px] w-full">
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#02040a] via-transparent to-transparent z-10"></div>
-                    <img src={imgHeroBg} alt="Referral Hero" className="w-full h-full object-contain lg:object-right mask-image-b-gradient" />
-                </div>
+                
             </div>
         </div>
       </div>

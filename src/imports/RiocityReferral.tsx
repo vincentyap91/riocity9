@@ -2442,11 +2442,11 @@ function MaskGroup() {
 function Group2() {
   return (
     <div className="absolute contents leading-[normal] left-[182.53px] not-italic top-[298.54px]">
-      <div className="absolute bg-clip-text bg-gradient-to-r font-['Poppins:Bold',sans-serif] from-white left-[182.53px] text-[48px] to-[#efbb4b] top-[298.54px] whitespace-nowrap whitespace-pre" style={{ WebkitTextFillColor: "transparent" }}>
+      <div className="absolute bg-clip-text bg-gradient-to-r font-['Poppins',sans-serif] font-bold from-white left-[182.53px] text-[48px] to-[#efbb4b] top-[298.54px] whitespace-nowrap whitespace-pre" style={{ WebkitTextFillColor: "transparent" }}>
         <p className="mb-0">Invite Friends,</p>
         <p>Earn Passive Income!</p>
       </div>
-      <div className="absolute font-['Poppins:Regular',sans-serif] h-[52.35px] left-[182.53px] text-[20px] text-white top-[443.9px] w-[628.939px] whitespace-pre-wrap">
+      <div className="absolute font-['Poppins',sans-serif] font-normal h-[52.35px] left-[182.53px] text-[20px] text-white top-[443.9px] w-[628.939px] whitespace-pre-wrap">
         <p className="mb-0">Invite your friends using your unique link or referral code,</p>
         <p>{`and earn lifetime commissions from their deposits & bets.`}</p>
       </div>

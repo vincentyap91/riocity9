@@ -20,7 +20,7 @@ function CategoryNav() {
   return (
     <div className="flex-[1_0_0] h-[20px] min-h-px min-w-px relative" data-name="CategoryNav">
       <div className="bg-clip-padding border-0 border-[transparent] border-solid content-stretch flex items-start relative size-full">
-        <p className="font-['Poppins:Bold',sans-serif] leading-[20px] not-italic relative shrink-0 text-[14px] text-white tracking-[0.35px] whitespace-pre">Home</p>
+        <p className="font-['Poppins',sans-serif] font-bold leading-[20px] not-italic relative shrink-0 text-[14px] text-white tracking-[0.35px] whitespace-pre">Home</p>
       </div>
     </div>
   );
@@ -58,7 +58,7 @@ function CategoryNav1() {
   return (
     <div className="flex-[1_0_0] h-[20px] min-h-px min-w-px relative" data-name="CategoryNav">
       <div className="bg-clip-padding border-0 border-[transparent] border-solid content-stretch flex items-start relative size-full">
-        <p className="font-['Poppins:Bold',sans-serif] leading-[20px] not-italic relative shrink-0 text-[14px] text-white tracking-[0.35px] whitespace-pre">Slots</p>
+        <p className="font-['Poppins',sans-serif] font-bold leading-[20px] not-italic relative shrink-0 text-[14px] text-white tracking-[0.35px] whitespace-pre">Slots</p>
       </div>
     </div>
   );
@@ -102,7 +102,7 @@ function CategoryNav2() {
   return (
     <div className="flex-[1_0_0] h-[20px] min-h-px min-w-px relative" data-name="CategoryNav">
       <div className="bg-clip-padding border-0 border-[transparent] border-solid content-stretch flex items-start relative size-full">
-        <p className="font-['Poppins:Bold',sans-serif] leading-[20px] not-italic relative shrink-0 text-[14px] text-white tracking-[0.35px] whitespace-pre">Live Casino</p>
+        <p className="font-['Poppins',sans-serif] font-bold leading-[20px] not-italic relative shrink-0 text-[14px] text-white tracking-[0.35px] whitespace-pre">Live Casino</p>
       </div>
     </div>
   );
@@ -146,7 +146,7 @@ function CategoryNav3() {
   return (
     <div className="flex-[1_0_0] h-[20px] min-h-px min-w-px relative" data-name="CategoryNav">
       <div className="bg-clip-padding border-0 border-[transparent] border-solid content-stretch flex items-start relative size-full">
-        <p className="font-['Poppins:Bold',sans-serif] leading-[20px] not-italic relative shrink-0 text-[14px] text-white tracking-[0.35px] whitespace-pre">Sports</p>
+        <p className="font-['Poppins',sans-serif] font-bold leading-[20px] not-italic relative shrink-0 text-[14px] text-white tracking-[0.35px] whitespace-pre">Sports</p>
       </div>
     </div>
   );
@@ -185,7 +185,7 @@ function CategoryNav4() {
   return (
     <div className="flex-[1_0_0] h-[20px] min-h-px min-w-px relative" data-name="CategoryNav">
       <div className="bg-clip-padding border-0 border-[transparent] border-solid content-stretch flex items-start relative size-full">
-        <p className="font-['Poppins:Bold',sans-serif] leading-[20px] not-italic relative shrink-0 text-[14px] text-white tracking-[0.35px] whitespace-pre">Fishing</p>
+        <p className="font-['Poppins',sans-serif] font-bold leading-[20px] not-italic relative shrink-0 text-[14px] text-white tracking-[0.35px] whitespace-pre">Fishing</p>
       </div>
     </div>
   );
@@ -222,7 +222,7 @@ function CategoryNav5() {
   return (
     <div className="flex-[1_0_0] h-[20px] min-h-px min-w-px relative" data-name="CategoryNav">
       <div className="bg-clip-padding border-0 border-[transparent] border-solid content-stretch flex items-start relative size-full">
-        <p className="font-['Poppins:Bold',sans-serif] leading-[20px] not-italic relative shrink-0 text-[14px] text-white tracking-[0.35px] whitespace-pre">Lottery</p>
+        <p className="font-['Poppins',sans-serif] font-bold leading-[20px] not-italic relative shrink-0 text-[14px] text-white tracking-[0.35px] whitespace-pre">Lottery</p>
       </div>
     </div>
   );
@@ -271,7 +271,7 @@ function CategoryNav6() {
   return (
     <div className="h-[20px] relative shrink-0" data-name="CategoryNav">
       <div className="bg-clip-padding border-0 border-[transparent] border-solid content-stretch flex h-full items-start relative">
-        <p className="font-['Poppins:Bold',sans-serif] leading-[20px] not-italic relative shrink-0 text-[14px] text-white tracking-[0.35px] whitespace-pre">Poker</p>
+        <p className="font-['Poppins',sans-serif] font-bold leading-[20px] not-italic relative shrink-0 text-[14px] text-white tracking-[0.35px] whitespace-pre">Poker</p>
       </div>
     </div>
   );
@@ -326,7 +326,7 @@ function CategoryNav7() {
   return (
     <div className="h-[20px] relative shrink-0" data-name="CategoryNav">
       <div className="bg-clip-padding border-0 border-[transparent] border-solid content-stretch flex h-full items-start relative">
-        <p className="font-['Poppins:Bold',sans-serif] leading-[20px] not-italic relative shrink-0 text-[14px] text-white tracking-[0.35px] whitespace-pre">Reward Centre</p>
+        <p className="font-['Poppins',sans-serif] font-bold leading-[20px] not-italic relative shrink-0 text-[14px] text-white tracking-[0.35px] whitespace-pre">Reward Centre</p>
       </div>
     </div>
   );
@@ -373,7 +373,7 @@ function CategoryNav8() {
   return (
     <div className="h-[20px] relative shrink-0" data-name="CategoryNav">
       <div className="bg-clip-padding border-0 border-[transparent] border-solid content-stretch flex h-full items-start relative">
-        <p className="font-['Poppins:Bold',sans-serif] leading-[20px] not-italic relative shrink-0 text-[14px] text-white tracking-[0.35px] whitespace-pre">VIP Club</p>
+        <p className="font-['Poppins',sans-serif] font-bold leading-[20px] not-italic relative shrink-0 text-[14px] text-white tracking-[0.35px] whitespace-pre">VIP Club</p>
       </div>
     </div>
   );
@@ -410,7 +410,7 @@ function CategoryNav9() {
   return (
     <div className="flex-[1_0_0] h-[20px] min-h-px min-w-px relative" data-name="CategoryNav">
       <div className="bg-clip-padding border-0 border-[transparent] border-solid content-stretch flex items-start relative size-full">
-        <p className="font-['Poppins:Bold',sans-serif] leading-[20px] not-italic relative shrink-0 text-[14px] text-white tracking-[0.35px] whitespace-pre">Promotions</p>
+        <p className="font-['Poppins',sans-serif] font-bold leading-[20px] not-italic relative shrink-0 text-[14px] text-white tracking-[0.35px] whitespace-pre">Promotions</p>
       </div>
     </div>
   );
@@ -445,7 +445,7 @@ function CategoryNav10() {
   return (
     <div className="flex-[1_0_0] h-[20px] min-h-px min-w-px relative" data-name="CategoryNav">
       <div className="bg-clip-padding border-0 border-[transparent] border-solid content-stretch flex items-start relative size-full">
-        <p className="font-['Poppins:Bold',sans-serif] leading-[20px] not-italic relative shrink-0 text-[14px] text-white tracking-[0.35px] whitespace-pre">App</p>
+        <p className="font-['Poppins',sans-serif] font-bold leading-[20px] not-italic relative shrink-0 text-[14px] text-white tracking-[0.35px] whitespace-pre">App</p>
       </div>
     </div>
   );

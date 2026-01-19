@@ -1,6 +1,5 @@
 import React from 'react';
 import { Zap, TrendingUp, History } from 'lucide-react';
-import { Button } from '../ui/button';
 import { motion } from 'motion/react';
 import { SectionHeader } from './SectionHeader';
 
@@ -102,11 +101,8 @@ export function RecentPayout() {
                 </div>
             </div>
         }
-        action={
-            <Button variant="ghost" size="sm" className="h-8 text-[11px] uppercase font-bold text-[rgb(148,163,184)] hover:text-emerald-400 hover:bg-emerald-500/10 border border-[rgb(148,163,184,0.3)] rounded-full">
-                View All
-            </Button>
-        } className="text-[rgb(148,163,184)]"
+        action={null}
+        className="text-[rgb(148,163,184)]"
       />
 
       {/* Main Container */}

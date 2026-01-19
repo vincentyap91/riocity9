@@ -22,6 +22,8 @@ import { Settings } from './pages/Settings';
 import { Deposit } from './pages/Deposit';
 import { Withdraw } from './pages/Withdraw';
 import { Referral } from './pages/Referral';
+import { Profile } from './pages/Profile';
+import { HistoryRecord } from './pages/HistoryRecord';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 
 const categories = [
@@ -131,7 +133,7 @@ function AppContent() {
                           {/* Deposit Button - Yellow per screenshot */}
                           <Button 
                             className="bg-[#fab005] hover:bg-[#e2a004] text-black font-black px-4 sm:px-6 h-10 rounded-xl text-sm transition-all hover:scale-105 shadow-[0_0_15px_-5px_rgba(250,176,5,0.4)]"
-                            onClick={() => window.location.href='/deposit'}
+                            onClick={() => navigate('/deposit')}
                           >
                             Deposit
                           </Button>
@@ -224,6 +226,8 @@ function AppContent() {
             <Route path="/referral" element={<Referral />} />
             <Route path="/login" element={<Login />} />
             <Route path="/settings" element={<Settings />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/history" element={<HistoryRecord />} />
             <Route path="/deposit" element={<Deposit />} />
             <Route path="/withdraw" element={<Withdraw />} />
             {/* Fallback for other routes using Home temporarily or a placeholder */}

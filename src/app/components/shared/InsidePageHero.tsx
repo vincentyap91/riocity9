@@ -23,7 +23,7 @@ export function InsidePageHero({
   glowClassName
 }: InsidePageHeroProps) {
   return (
-    <div className={cn("relative w-full flex flex-col items-center justify-center min-h-[300px] md:min-h-[400px] overflow-hidden bg-[#06112a]", className)}>
+    <div className={cn("relative w-full flex flex-col items-center justify-center min-h-[300px] md:min-h-[400px] overflow-hidden ", className)}>
       
       {/* Background Glows - Adjusted to be subtle like the screenshot */}
       <div className={cn("absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[60%] h-[60%] bg-[#1a2c5a]/30 rounded-full blur-[120px] pointer-events-none", glowClassName)}></div>

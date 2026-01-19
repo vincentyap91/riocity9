@@ -1,6 +1,5 @@
 import React from 'react';
 import { Trophy, Clock, TrendingUp } from 'lucide-react';
-import { Button } from '../ui/button';
 import { motion } from 'motion/react';
 import { SectionHeader } from './SectionHeader';
 
@@ -94,11 +93,7 @@ export function RecentBigWins() {
                 </div>
             </div>
         }
-        action={
-            <Button variant="ghost" size="sm" className="h-8 text-[11px] uppercase font-bold text-[rgb(148,163,184)] hover:text-yellow-400 hover:bg-yellow-500/10 border border-[rgb(148,163,184,0.3)] rounded-full">
-                View All
-            </Button>
-        }
+        action={null}
       />
 
       {/* Main Container */}

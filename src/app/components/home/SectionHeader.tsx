@@ -36,9 +36,10 @@ export function SectionHeader({ title, icon, subtitle, action, className = "" }:
       {action !== undefined ? action : (
         <Button
           variant="ghost"
-          className="hidden sm:flex text-muted-foreground hover:text-white group h-8 text-xs font-bold uppercase tracking-wider"
+          size="sm"
+          className="hidden sm:flex h-8 text-[11px] uppercase font-bold text-[rgb(148,163,184)] hover:text-emerald-400 hover:bg-emerald-500/10 border border-[rgb(148,163,184,0.3)] rounded-full transition-all"
         >
-          View All <ChevronRight className="w-3 h-3 ml-1 group-hover:translate-x-0.5 transition-transform" />
+          View All
         </Button>
       )}
     </div>

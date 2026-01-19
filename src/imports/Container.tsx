@@ -183,7 +183,7 @@ function Text1() {
     <div className="relative shrink-0" data-name="Text">
       <div className="bg-clip-padding border-0 border-[transparent] border-solid content-stretch flex gap-[8px] items-center relative">
         <Text />
-        <p className="font-['Poppins:Regular',sans-serif] leading-[16px] not-italic relative shrink-0 text-[#d1d5dc] text-[14px] whitespace-pre">Maintenance Ongoing from 2AM–6AM</p>
+        <p className="font-['Poppins',sans-serif] font-normal leading-[16px] not-italic relative shrink-0 text-[#d1d5dc] text-[14px] whitespace-pre">Maintenance Ongoing from 2AM–6AM</p>
       </div>
     </div>
   );
@@ -198,7 +198,7 @@ function Text3() {
     <div className="relative shrink-0" data-name="Text">
       <div className="bg-clip-padding border-0 border-[transparent] border-solid content-stretch flex gap-[8px] items-center relative">
         <Text2 />
-        <p className="font-['Poppins:Regular',sans-serif] leading-[16px] not-italic relative shrink-0 text-[#d1d5dc] text-[14px] whitespace-pre">Welcome to RioCity9! Enjoy the premium gaming experience</p>
+        <p className="font-['Poppins',sans-serif] font-normal leading-[16px] not-italic relative shrink-0 text-[#d1d5dc] text-[14px] whitespace-pre">Welcome to RioCity9! Enjoy the premium gaming experience</p>
       </div>
     </div>
   );
@@ -213,7 +213,7 @@ function Text5() {
     <div className="relative shrink-0" data-name="Text">
       <div className="bg-clip-padding border-0 border-[transparent] border-solid content-stretch flex gap-[8px] items-center relative">
         <Text4 />
-        <p className="font-['Poppins:Regular',sans-serif] leading-[16px] not-italic relative shrink-0 text-[#d1d5dc] text-[14px] whitespace-pre">New members enjoy a 50% Welcome Bonus!</p>
+        <p className="font-['Poppins',sans-serif] font-normal leading-[16px] not-italic relative shrink-0 text-[#d1d5dc] text-[14px] whitespace-pre">New members enjoy a 50% Welcome Bonus!</p>
       </div>
     </div>
   );
@@ -228,7 +228,7 @@ function Text7() {
     <div className="relative shrink-0" data-name="Text">
       <div className="bg-clip-padding border-0 border-[transparent] border-solid content-stretch flex gap-[8px] items-center relative">
         <Text6 />
-        <p className="font-['Poppins:Regular',sans-serif] leading-[16px] not-italic relative shrink-0 text-[#d1d5dc] text-[14px] whitespace-pre">Live Casino Tournament - Prize Pool $100,000</p>
+        <p className="font-['Poppins',sans-serif] font-normal leading-[16px] not-italic relative shrink-0 text-[#d1d5dc] text-[14px] whitespace-pre">Live Casino Tournament - Prize Pool $100,000</p>
       </div>
     </div>
   );

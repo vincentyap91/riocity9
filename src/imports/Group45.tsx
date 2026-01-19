@@ -16,7 +16,7 @@ function MoreInfoButton() {
   return (
     <div className="absolute contents left-[270px] top-[342.35px]" data-name="More info Button">
       <div className="absolute bg-[#e6c252] h-[55px] left-[270px] rounded-[12px] top-[342.35px] w-[374.5px]" />
-      <div className="absolute flex flex-col font-['Poppins:Bold',sans-serif] justify-center leading-[0] left-[457.78px] not-italic text-[#3c1100] text-[18px] text-center top-[369.85px] translate-x-[-50%] translate-y-[-50%] w-[181.448px]">
+      <div className="absolute flex flex-col font-['Poppins',sans-serif] font-bold justify-center leading-[0] left-[457.78px] not-italic text-[#3c1100] text-[18px] text-center top-[369.85px] translate-x-[-50%] translate-y-[-50%] w-[181.448px]">
         <p className="leading-[normal] whitespace-pre-wrap">More Info</p>
       </div>
     </div>
@@ -27,7 +27,7 @@ function DownlineButton() {
   return (
     <div className="absolute contents left-[467px] top-[267px]" data-name="Downline Button">
       <div className="absolute bg-[#e6c252] h-[55px] left-[467px] rounded-[12px] top-[267px] w-[177.5px]" />
-      <div className="absolute flex flex-col font-['Poppins:Bold',sans-serif] justify-center leading-[0] left-[556.5px] not-italic text-[#3c1100] text-[18px] text-center top-[294.5px] translate-x-[-50%] translate-y-[-50%] whitespace-nowrap">
+      <div className="absolute flex flex-col font-['Poppins',sans-serif] font-bold justify-center leading-[0] left-[556.5px] not-italic text-[#3c1100] text-[18px] text-center top-[294.5px] translate-x-[-50%] translate-y-[-50%] whitespace-nowrap">
         <p className="leading-[normal] whitespace-pre">Downline</p>
       </div>
     </div>
@@ -38,7 +38,7 @@ function ShareButton() {
   return (
     <div className="absolute contents left-[270px] top-[267px]" data-name="Share Button">
       <div className="absolute bg-[#e6c252] h-[55px] left-[270px] rounded-[12px] top-[267px] w-[177.5px]" />
-      <div className="absolute flex flex-col font-['Poppins:Bold',sans-serif] justify-center leading-[0] left-[358.5px] not-italic text-[#3c1100] text-[18px] text-center top-[294.5px] translate-x-[-50%] translate-y-[-50%] whitespace-nowrap">
+      <div className="absolute flex flex-col font-['Poppins',sans-serif] font-bold justify-center leading-[0] left-[358.5px] not-italic text-[#3c1100] text-[18px] text-center top-[294.5px] translate-x-[-50%] translate-y-[-50%] whitespace-nowrap">
         <p className="leading-[normal] whitespace-pre">Share</p>
       </div>
     </div>
@@ -76,11 +76,11 @@ function TextFill() {
   return (
     <div className="absolute contents left-[270px] top-[155px]" data-name="text fill">
       <div className="absolute bg-[#134438] h-[71px] left-[270px] rounded-[12px] top-[176px] w-[375px]" />
-      <div className="absolute flex flex-col font-['Poppins:Regular',sans-serif] justify-center leading-[normal] left-[293px] not-italic text-[#f4ffe4] text-[14px] top-[211px] translate-y-[-50%] whitespace-nowrap whitespace-pre">
+      <div className="absolute flex flex-col font-['Poppins',sans-serif] font-normal justify-center leading-[normal] left-[293px] not-italic text-[#f4ffe4] text-[14px] top-[211px] translate-y-[-50%] whitespace-nowrap whitespace-pre">
         <p className="mb-0">https://abc.com/asnbskhkjss/hamaxph?</p>
         <p>code=HABBAJNBJ</p>
       </div>
-      <div className="absolute flex flex-col font-['Poppins:Regular',sans-serif] justify-center leading-[0] left-[295px] not-italic text-[#f0d10c] text-[14px] top-[165.5px] translate-y-[-50%] whitespace-nowrap">
+      <div className="absolute flex flex-col font-['Poppins',sans-serif] font-normal justify-center leading-[0] left-[295px] not-italic text-[#f0d10c] text-[14px] top-[165.5px] translate-y-[-50%] whitespace-nowrap">
         <p className="leading-[normal] whitespace-pre">MY REFERRAL LINK</p>
       </div>
       <Frame />
@@ -109,10 +109,10 @@ function TextFill1() {
   return (
     <div className="absolute contents left-[270px] top-[63px]" data-name="text fill">
       <div className="absolute bg-[#134438] h-[51px] left-[270px] rounded-[12px] top-[84px] w-[375px]" />
-      <div className="absolute flex flex-col font-['Poppins:Regular',sans-serif] justify-center leading-[0] left-[295px] not-italic text-[#f4ffe4] text-[14px] top-[109.5px] translate-y-[-50%] whitespace-nowrap">
+      <div className="absolute flex flex-col font-['Poppins',sans-serif] font-normal justify-center leading-[0] left-[295px] not-italic text-[#f4ffe4] text-[14px] top-[109.5px] translate-y-[-50%] whitespace-nowrap">
         <p className="leading-[normal] whitespace-pre">HABBAJNBJ</p>
       </div>
-      <div className="absolute flex flex-col font-['Poppins:Regular',sans-serif] justify-center leading-[0] left-[295px] not-italic text-[#f0d10c] text-[14px] top-[73.5px] translate-y-[-50%] whitespace-nowrap">
+      <div className="absolute flex flex-col font-['Poppins',sans-serif] font-normal justify-center leading-[0] left-[295px] not-italic text-[#f0d10c] text-[14px] top-[73.5px] translate-y-[-50%] whitespace-nowrap">
         <p className="leading-[normal] whitespace-pre">MY REFERRAL CODE</p>
       </div>
       <Frame1 />

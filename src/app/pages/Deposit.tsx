@@ -130,6 +130,13 @@ export function Deposit() {
   const [searchQuery, setSearchQuery] = useState('');
   const [activeTab, setActiveTab] = useState<'deposit' | 'withdrawal'>('deposit');
 
+  const handleTabChange = (tab: 'deposit' | 'withdrawal') => {
+    setActiveTab(tab);
+    if (tab === 'withdrawal') {
+      navigate('/withdraw');
+    }
+  };
+
   const handleMethodSelect = (id: string) => {
     setSelectedMethodId(id);
     // In the new design, selecting usually just highlights, then click 'Continue'
@@ -182,7 +189,7 @@ export function Deposit() {
              {step === 1 ? (
                  <div className="flex bg-[#0f151f] p-1 rounded-xl border border-white/5">
                     <button 
-                        onClick={() => setActiveTab('deposit')}
+                        onClick={() => handleTabChange('deposit')}
                         className={`px-8 py-2 rounded-lg text-sm font-bold transition-all ${activeTab === 'deposit' ? 'bg-emerald-500 text-black shadow-lg' : 'text-gray-400 hover:text-white'}`}
                     >
                         <span className="flex items-center gap-2">
@@ -191,7 +198,7 @@ export function Deposit() {
                         </span>
                     </button>
                     <button 
-                        onClick={() => setActiveTab('withdrawal')}
+                        onClick={() => handleTabChange('withdrawal')}
                         className={`px-8 py-2 rounded-lg text-sm font-bold transition-all ${activeTab === 'withdrawal' ? 'bg-emerald-500 text-black shadow-lg' : 'text-gray-400 hover:text-white'}`}
                     >
                         <span className="flex items-center gap-2">

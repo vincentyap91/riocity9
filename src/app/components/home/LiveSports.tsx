@@ -58,10 +58,11 @@ export function LiveSports() {
         }
         action={
             <Button
-              variant="link"
-              className="text-orange-500 hover:text-orange-400 group h-8 text-xs font-bold uppercase tracking-wider"
+              variant="ghost"
+              size="sm"
+              className="h-8 text-[11px] uppercase font-bold text-[rgb(148,163,184)] hover:text-emerald-400 hover:bg-emerald-500/10 border border-[rgb(148,163,184,0.3)] rounded-full transition-all"
             >
-              View All <ChevronRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
+              View All
             </Button>
         }
       />

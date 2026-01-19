@@ -15,8 +15,6 @@ import {
 import { Button } from '../components/ui/button';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import avatarImage from '@/assets/0f3f46f95c98dde76fdee83e12826e9f278a1efe.png';
-import imgBronze1 from "@/assets/711e7c00068ea0ecd513e2e0c1cc723c6de60e76.png";
 
 export function Settings() {
   const navigate = useNavigate();
@@ -25,7 +23,7 @@ export function Settings() {
   const menuItems = [
     { icon: User, label: 'My Profile', path: '/profile' },
     { icon: CreditCard, label: 'Deposit', path: '/deposit' },
-    { icon: ArrowRightLeft, label: 'Withdrawal', path: '/withdrawal' },
+    { icon: ArrowRightLeft, label: 'Withdrawal', path: '/withdraw' },
     { icon: History, label: 'History Record', path: '/history' },
     { icon: Users, label: 'Referral', path: '/referral' },
     { icon: UsersRound, label: 'Downlines', path: '/downlines' },
@@ -46,25 +44,76 @@ export function Settings() {
 
       <div className="relative z-10 container mx-auto px-4 py-8 max-w-[640px]">
         
-        {/* User Profile Header Card */}
-        <div className="bg-gradient-to-b from-[#1a2230] to-[#131b29] rounded-[16px] p-6 mb-4 shadow-xl border border-white/5 relative overflow-hidden">
+        {/* User Profile Header Card - Mobile Version (Follows Screenshot) */}
+        <div className="md:hidden bg-gradient-to-b from-[#1a2230] to-[#131b29] rounded-[24px] p-5 mb-4 shadow-xl border border-white/5 relative overflow-hidden">
+          <div className="flex flex-row gap-5 items-center">
+            {/* Left side: Avatar/Badge */}
+            <div className="relative shrink-0">
+               <div className="w-20 h-20 rounded-full border-2 border-[#D4AF37] p-1 shadow-[0_0_15px_-3px_rgba(212,175,55,0.3)] bg-black/40 relative z-10 flex items-center justify-center">
+                 <img 
+                   src="/src/assets/711e7c00068ea0ecd513e2e0c1cc723c6de60e76.png" 
+                   alt="Bronze Badge" 
+                   className="w-[85%] h-[85%] object-contain"
+                 />
+               </div>
+            </div>
+
+            {/* Right side: Info */}
+            <div className="flex-1 flex flex-col pt-1">
+              <h2 className="text-[20px] font-black text-white leading-none mb-2.5">{user?.username || 'testvin'}</h2>
+              
+              {/* ID Pill */}
+              <div className="flex items-center gap-2 bg-[#0f151f] px-4 py-2 rounded-full border border-white/10 self-start">
+                 <span className="text-[11px] text-gray-400 font-mono tracking-wide leading-none">880123456789</span>
+                 <button 
+                   onClick={async () => {
+                     try {
+                       await navigator.clipboard.writeText('880123456789');
+                     } catch (e) {
+                       console.error('copy failed', e);
+                     }
+                   }}
+                   className="text-[#4A5565] hover:text-white transition-colors active:scale-95"
+                 >
+                   <Copy className="w-3.5 h-3.5" />
+                 </button>
+              </div>
+
+            </div>
+          </div>
+
+          {/* Status Row */}
+          <div className="mt-3 flex items-center justify-between leading-none">
+            <span className="text-sm font-bold text-[#f28b0c]">Bronze</span>
+            <div className="text-[11px] text-gray-400 font-medium flex items-center gap-1">
+              Deposit <span className="text-[#efbb4b] font-black">3,682</span> to become <span className="text-white font-black">Silver!</span>
+            </div>
+          </div>
+          
+          {/* Progress Bar (at the bottom of the card) */}
+          <div className="mt-2 h-2 w-full bg-black/40 rounded-full overflow-hidden border border-white/5 shadow-inner">
+             <div className="h-full w-[8%] bg-gradient-to-r from-emerald-500 to-emerald-400 rounded-full shadow-[0_0_10px_rgba(16,185,129,0.55)]"></div>
+          </div>
+        </div>
+
+        {/* User Profile Header Card - Desktop Version */}
+        <div className="hidden md:block bg-gradient-to-b from-[#1a2230] to-[#131b29] rounded-[16px] p-6 mb-4 shadow-xl border border-white/5 relative overflow-hidden">
           <div className="flex flex-col sm:flex-row gap-6 items-start">
             {/* Avatar Section */}
             <div className="relative shrink-0">
                <div className="w-24 h-24 rounded-full border-2 border-[#D4AF37] p-1 shadow-[0_0_15px_-3px_rgba(212,175,55,0.3)] bg-black/40 relative z-10">
                  <img 
-                   src={imgBronze1} 
+                   src="/src/assets/711e7c00068ea0ecd513e2e0c1cc723c6de60e76.png" 
                    alt="Bronze Badge" 
                    className="w-full h-full object-cover rounded-full"
                  />
                </div>
-               {/* User Avatar Overlay or separate? The design shows 'bronze 1' image in a circle. I'll use that. */}
             </div>
 
             {/* User Info Section */}
             <div className="flex-1 flex flex-col justify-center space-y-3 w-full">
               <div className="flex flex-wrap items-center justify-between sm:justify-start gap-x-4 gap-y-1">
-                <h2 className="text-2xl font-black text-white tracking-tight">{user?.username || 'Guest'}</h2>
+                <h2 className="text-2xl font-black text-white tracking-wide">{user?.username || 'Guest'}</h2>
                 <div className="flex items-center gap-2 bg-black/30 px-3 py-1 rounded-full border border-white/5">
                    <span className="text-xs text-gray-400 font-mono tracking-wide">880123456789</span>
                    <button className="text-gray-500 hover:text-white transition-colors">
@@ -95,8 +144,8 @@ export function Settings() {
             <div className="flex flex-col justify-center h-full">
                 <div className="text-sm font-bold text-[#00bc7d] mb-1 uppercase tracking-wider">Total Balance</div>
                 <div className="flex items-start text-white">
-                    <span className="text-2xl font-black mr-1 mt-1">$</span>
-                    <span className="text-3xl font-black tracking-tight">980.69</span>
+                    <span className="text-2xl font-black mr-1">$</span>
+                    <span className="text-2xl font-black tracking-tight">980.69</span>
                 </div>
             </div>
             <Button 

@@ -1,10 +1,16 @@
-import React, { useState } from 'react';
-import { Eye, EyeOff, X, Gift } from 'lucide-react';
+import React, { useState, useRef, useEffect } from 'react';
+import { Eye, EyeOff, X, Gift, Check } from 'lucide-react';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from '../components/ui/dialog';
 
 // New Assets from design
 import imgPromo from '@/assets/e9d8d4a61ac559bba1f577d68aca956ecbcccdee.png';
@@ -23,8 +29,133 @@ export function Register() {
   const [agreeTerms, setAgreeTerms] = useState(true);
   const [agreeBonus, setAgreeBonus] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
+  const [showVerifyDialog, setShowVerifyDialog] = useState(false);
+  const [showSuccessDialog, setShowSuccessDialog] = useState(false);
+  const [verificationCode, setVerificationCode] = useState(['', '', '', '', '']);
+  const [countdown, setCountdown] = useState(60);
+  const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
   const { register } = useAuth();
   const navigate = useNavigate();
+
+  // Countdown timer for verification code
+  useEffect(() => {
+    if (showVerifyDialog && countdown > 0) {
+      const timer = setTimeout(() => setCountdown(countdown - 1), 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [showVerifyDialog, countdown]);
+
+  // Auto-focus first input when dialog opens
+  useEffect(() => {
+    if (showVerifyDialog) {
+      setTimeout(() => {
+        inputRefs.current[0]?.focus();
+      }, 100);
+    }
+  }, [showVerifyDialog]);
+
+  // Auto-focus next input when typing
+  const handleCodeChange = (index: number, value: string) => {
+    // Only allow numeric input
+    const numericValue = value.replace(/\D/g, '');
+    if (numericValue.length === 0) {
+      // Clear current input if empty
+      const newCode = [...verificationCode];
+      newCode[index] = '';
+      setVerificationCode(newCode);
+      return;
+    }
+    
+    // Only take the first digit
+    const digit = numericValue.slice(-1);
+    const newCode = [...verificationCode];
+    newCode[index] = digit;
+    setVerificationCode(newCode);
+
+    // Auto-focus next input immediately after typing
+    if (digit && index < 4) {
+      setTimeout(() => {
+        inputRefs.current[index + 1]?.focus();
+      }, 0);
+    }
+
+    // If all fields are filled, verify automatically
+    if (newCode.every(d => d !== '') && newCode.join('').length === 5) {
+      setTimeout(() => {
+        handleVerifyCode(newCode.join(''));
+      }, 100);
+    }
+  };
+
+  // Handle backspace and arrow keys
+  const handleKeyDown = (index: number, e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Backspace') {
+      if (!verificationCode[index] && index > 0) {
+        // If current is empty, go to previous and clear it
+        const newCode = [...verificationCode];
+        newCode[index - 1] = '';
+        setVerificationCode(newCode);
+        inputRefs.current[index - 1]?.focus();
+      } else if (verificationCode[index]) {
+        // If current has value, clear it
+        const newCode = [...verificationCode];
+        newCode[index] = '';
+        setVerificationCode(newCode);
+      }
+    } else if (e.key === 'ArrowLeft' && index > 0) {
+      inputRefs.current[index - 1]?.focus();
+    } else if (e.key === 'ArrowRight' && index < 4) {
+      inputRefs.current[index + 1]?.focus();
+    }
+  };
+
+  // Handle paste
+  const handlePaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    const pastedData = e.clipboardData.getData('text').slice(0, 5);
+    const newCode = [...verificationCode];
+    for (let i = 0; i < pastedData.length && i < 5; i++) {
+      newCode[i] = pastedData[i];
+    }
+    setVerificationCode(newCode);
+    if (pastedData.length === 5) {
+      handleVerifyCode(pastedData);
+    } else {
+      inputRefs.current[Math.min(pastedData.length, 4)]?.focus();
+    }
+  };
+
+  const handleVerifyCode = (code: string) => {
+    // Mock verification - in real app, this would call an API
+    if (code === '12345') {
+      setShowVerifyDialog(false);
+      setShowSuccessDialog(true);
+      // Complete registration
+      completeRegistration();
+    } else {
+      alert('验证码错误，请重新输入');
+      setVerificationCode(['', '', '', '', '']);
+      inputRefs.current[0]?.focus();
+    }
+  };
+
+  const completeRegistration = async () => {
+    try {
+      const success = await register(username, password, mobile, referralCode);
+      if (success) {
+        // Success dialog is already shown
+      }
+    } catch (error) {
+      console.error('Register error:', error);
+      setShowSuccessDialog(false);
+      alert('注册失败，请稍后重试');
+    }
+  };
+
+  const handleSuccessOk = () => {
+    setShowSuccessDialog(false);
+    navigate('/');
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4 font-sans text-white relative overflow-hidden bg-[#0a0f19]">
@@ -115,10 +246,12 @@ export function Register() {
 
               setIsLoading(true);
               try {
-                const success = await register(username, password, mobile, referralCode);
-                if (success) {
-                  navigate('/');
-                }
+                // Show verification dialog instead of registering directly
+                setShowVerifyDialog(true);
+                setCountdown(60);
+                setVerificationCode(['', '', '', '', '']);
+                // Focus first input after dialog opens
+                setTimeout(() => inputRefs.current[0]?.focus(), 100);
               } catch (error) {
                 console.error('Register error:', error);
                 alert('注册失败，请稍后重试');
@@ -277,6 +410,94 @@ export function Register() {
         </div>
 
       </div>
+
+      {/* Verify Your Number Dialog */}
+      <Dialog open={showVerifyDialog} onOpenChange={setShowVerifyDialog}>
+        <DialogContent className="bg-[#1a2230] border border-white/10 rounded-3xl p-10 max-w-md [&>button]:hidden">
+          <button
+            onClick={() => setShowVerifyDialog(false)}
+            className="absolute top-5 right-5 text-gray-400 hover:text-white transition-colors z-10 w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/10"
+          >
+            <X className="w-5 h-5" />
+          </button>
+          
+          <DialogHeader className="text-center mb-8">
+            <DialogTitle className="text-2xl md:text-3xl font-bold text-white mb-4">
+              Verify Your Number
+            </DialogTitle>
+            <p className="text-gray-300 text-sm md:text-base">
+              Enter the code we sent to *******{mobile.slice(-4) || '5147'}
+            </p>
+          </DialogHeader>
+
+          {/* Verification Code Inputs */}
+          <div className="flex justify-center gap-3 md:gap-4 mb-8">
+            {verificationCode.map((digit, index) => (
+              <Input
+                key={index}
+                ref={(el) => (inputRefs.current[index] = el)}
+                type="text"
+                inputMode="numeric"
+                pattern="[0-9]*"
+                maxLength={1}
+                value={digit}
+                onChange={(e) => handleCodeChange(index, e.target.value)}
+                onKeyDown={(e) => handleKeyDown(index, e)}
+                onPaste={index === 0 ? handlePaste : undefined}
+                onFocus={(e) => e.target.select()}
+                className="w-14 h-14 md:w-16 md:h-16 text-center text-2xl md:text-3xl font-bold bg-[#0f151f] border-2 border-white/10 text-white rounded-xl focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:border-emerald-500 transition-all hover:border-emerald-500/50"
+              />
+            ))}
+          </div>
+
+          {/* Countdown Timer */}
+          <div className="text-center mb-8">
+            <p className="text-emerald-400 text-sm md:text-base font-semibold">
+              TAC Code Sent. {countdown}s
+            </p>
+          </div>
+
+          {/* Verify Button */}
+          <Button
+            onClick={() => handleVerifyCode(verificationCode.join(''))}
+            disabled={verificationCode.some(digit => !digit)}
+            className="w-full h-12 md:h-14 bg-emerald-500 hover:bg-emerald-400 text-black font-bold text-base md:text-lg rounded-xl disabled:opacity-50 disabled:cursor-not-allowed shadow-lg transition-all"
+          >
+            Verify
+          </Button>
+        </DialogContent>
+      </Dialog>
+
+      {/* Registration Successful Dialog */}
+      <Dialog open={showSuccessDialog} onOpenChange={setShowSuccessDialog}>
+        <DialogContent className="bg-[#1a2230] border border-white/10 rounded-2xl p-10 max-w-md [&>button]:hidden">
+          <DialogHeader className="text-center mb-6">
+            <DialogTitle className="text-2xl font-bold text-white mb-6">
+              Registration Successful
+            </DialogTitle>
+          </DialogHeader>
+
+          {/* Success Icon */}
+          <div className="flex justify-center mb-6">
+            <div className="w-20 h-20 rounded-full bg-emerald-500 flex items-center justify-center shadow-lg">
+              <Check className="w-12 h-12 text-white" strokeWidth={3} />
+            </div>
+          </div>
+
+          {/* Success Message */}
+          <p className="text-center text-gray-300 text-sm mb-8">
+            Your account is ready. Please log in to get started.
+          </p>
+
+          {/* OK Button */}
+          <Button
+            onClick={handleSuccessOk}
+            className="w-full h-12 bg-[#6d28d9] hover:bg-[#5b21b6] text-white font-bold rounded-xl"
+          >
+            OK
+          </Button>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

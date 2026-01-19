@@ -74,7 +74,7 @@ export function GameCarousel({ title, icon, items, className, slidesToShow = 4, 
         icon={icon}
         action={
           <div className="flex items-center gap-2">
-            <Button variant="ghost" size="sm" className="hidden sm:flex text-muted-foreground hover:text-white mr-2 text-xs font-bold uppercase tracking-wider h-8">
+            <Button variant="ghost" size="sm" className="hidden sm:flex h-8 text-[11px] uppercase font-bold text-[rgb(148,163,184)] hover:text-emerald-400 hover:bg-emerald-500/10 border border-[rgb(148,163,184,0.3)] rounded-full transition-all mr-2">
               View All
             </Button>
             <div className="flex gap-1">
