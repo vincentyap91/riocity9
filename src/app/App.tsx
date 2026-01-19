@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { BrowserRouter, Routes, Route, Link, useLocation } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import { Button } from './components/ui/button';
 import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle, SheetDescription } from './components/ui/sheet';
 import { Search, Menu, MessageCircle, X, Languages, CircleHelp, ChevronDown, Globe, Home as HomeIcon, Gamepad2, Dices, Trophy, Fish, Ticket, Star, Smartphone, Gift, Map, LogOut, User, Eye, EyeOff, Plus, LayoutDashboard } from 'lucide-react';
-import logo from '@/assets/a03f3822b9d12864ad14bfc82b6125e4be8a8d49.png';
 import { FlagUK } from './components/figma/FlagUK';
 
 import { Footer } from './components/home/Footer';
@@ -24,6 +23,9 @@ import { Withdraw } from './pages/Withdraw';
 import { Referral } from './pages/Referral';
 import { Profile } from './pages/Profile';
 import { HistoryRecord } from './pages/HistoryRecord';
+import { ComingSoon } from './pages/ComingSoon';
+import { Bonus } from './pages/Bonus';
+import { NotFound } from './pages/NotFound';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 
 const categories = [
@@ -37,6 +39,8 @@ const categories = [
   { id: 'promotions', label: 'Promotions', icon: Gift, path: '/promotions', color: 'text-pink-400' },
   { id: 'app', label: 'App', icon: Smartphone, path: '/app', color: 'text-emerald-400' },
 ];
+
+const logoSrc = "/src/assets/a03f3822b9d12864ad14bfc82b6125e4be8a8d49.png";
 
 // Internal App Component that uses Auth
 function AppContent() {
@@ -94,15 +98,15 @@ function AppContent() {
               </button>
               
               {/* Logo */}
-              <a href="/" className="flex items-center gap-2 group shrink-0">
+              <Link to="/" className="flex items-center gap-2 group shrink-0">
                 <div className="relative">
-                  <img src={logo} alt="RioCity9 Logo" className="h-10 w-auto relative z-10" />
+                  <img src={logoSrc} alt="RioCity9 Logo" className="h-10 w-auto relative z-10" />
                   <div className="absolute inset-0 bg-emerald-500/50 blur-lg opacity-0 group-hover:opacity-100 transition-opacity"></div>
                 </div>
                 <span className="text-2xl font-black tracking-tight text-white hidden xl:block">
                   Rio<span className="text-emerald-500">City9</span>
                 </span>
-              </a>
+              </Link>
               
               {/* Spacer */}
               <div className="flex-1"></div>
@@ -131,11 +135,11 @@ function AppContent() {
                           </div>
 
                           {/* Deposit Button - Yellow per screenshot */}
-                          <Button 
+                          <Button
+                            asChild
                             className="bg-[#fab005] hover:bg-[#e2a004] text-black font-black px-4 sm:px-6 h-10 rounded-xl text-sm transition-all hover:scale-105 shadow-[0_0_15px_-5px_rgba(250,176,5,0.4)]"
-                            onClick={() => navigate('/deposit')}
                           >
-                            Deposit
+                            <Link to="/deposit">Deposit</Link>
                           </Button>
 
                           {/* Account Utilities */}
@@ -149,21 +153,28 @@ function AppContent() {
                              </button>
 
                              {/* Profile Icon */}
-                             <button 
+                             <Link
+                                to="/settings"
                                 className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:text-white hover:border-white/20 transition-all"
-                                onClick={() => window.location.href='/settings'}
                              >
                                 <User size={18} />
-                             </button>
+                             </Link>
                           </div>
                       </div>
                   ) : (
                       <>
-                          <Button variant="ghost" className="text-gray-300 hover:text-white font-bold text-xs sm:text-sm tracking-wide hover:bg-transparent px-2 sm:px-4" onClick={() => window.location.href='/login'}>
-                              Log In
+                          <Button
+                            asChild
+                            variant="ghost"
+                            className="text-gray-300 hover:text-white font-bold text-xs sm:text-sm tracking-wide hover:bg-transparent px-2 sm:px-4"
+                          >
+                            <Link to="/login">Log In</Link>
                           </Button>
-                          <Button className="bg-[#00ff88] hover:bg-[#00dd76] text-black font-extrabold rounded-full px-4 sm:px-6 py-2 h-8 sm:h-9 text-[10px] sm:text-sm tracking-wider shadow-[0_0_20px_-5px_rgba(0,255,136,0.3)] hover:shadow-[0_0_25px_-5px_rgba(0,255,136,0.5)] transition-all hover:scale-105" onClick={() => window.location.href='/register'}>
-                              JOIN NOW
+                          <Button
+                            asChild
+                            className="bg-[#00ff88] hover:bg-[#00dd76] text-black font-extrabold rounded-full px-4 sm:px-6 py-2 h-8 sm:h-9 text-[10px] sm:text-sm tracking-wider shadow-[0_0_20px_-5px_rgba(0,255,136,0.3)] hover:shadow-[0_0_25px_-5px_rgba(0,255,136,0.5)] transition-all hover:scale-105"
+                          >
+                            <Link to="/register">JOIN NOW</Link>
                           </Button>
                       </>
                   )}
@@ -189,7 +200,7 @@ function AppContent() {
                     <SheetHeader className="p-6 pb-4 border-none shrink-0 bg-transparent relative text-left items-start flex flex-col">
                          <div className="flex items-center gap-2">
                              <div className="relative">
-                                 <img src={logo} alt="RioCity9 Logo" className="h-10 w-auto relative z-10" />
+                                 <img src={logoSrc} alt="RioCity9 Logo" className="h-10 w-auto relative z-10" />
                              </div>
                              <SheetTitle className="text-xl font-black tracking-tight text-white flex items-center">
                                 Rio<span className="text-[#00ff88] ml-0.5">City9</span>
@@ -222,6 +233,19 @@ function AppContent() {
             <Route path="/sports" element={<Sports />} />
             <Route path="/fishing" element={<Fishing />} />
             <Route path="/lottery" element={<Lottery />} />
+            <Route path="/poker" element={<ComingSoon title="Poker" backTo="/" backLabel="Home" />} />
+            <Route path="/crash" element={<ComingSoon title="Crash" backTo="/" backLabel="Home" />} />
+            <Route path="/hot" element={<ComingSoon title="Hot Games" backTo="/" backLabel="Home" />} />
+            <Route path="/all" element={<ComingSoon title="All Games" backTo="/" backLabel="Home" />} />
+            <Route path="/exchange" element={<ComingSoon title="Exchange" backTo="/" backLabel="Home" />} />
+            <Route path="/rebate" element={<ComingSoon title="Rebate" backTo="/" backLabel="Home" />} />
+            <Route path="/vip" element={<ComingSoon title="VIP Club" backTo="/" backLabel="Home" />} />
+            <Route path="/promotions" element={<ComingSoon title="Promotions" backTo="/" backLabel="Home" />} />
+            <Route path="/app" element={<ComingSoon title="App" backTo="/" backLabel="Home" />} />
+            <Route path="/downlines" element={<ComingSoon title="Downlines" backTo="/settings" backLabel="Settings" />} />
+            <Route path="/language" element={<ComingSoon title="Change Language" backTo="/settings" backLabel="Settings" />} />
+            <Route path="/security" element={<ComingSoon title="Change Password" backTo="/settings" backLabel="Settings" />} />
+            <Route path="/bonus/:bonusType" element={<Bonus />} />
             <Route path="/register" element={<Register />} />
             <Route path="/referral" element={<Referral />} />
             <Route path="/login" element={<Login />} />
@@ -231,7 +255,7 @@ function AppContent() {
             <Route path="/deposit" element={<Deposit />} />
             <Route path="/withdraw" element={<Withdraw />} />
             {/* Fallback for other routes using Home temporarily or a placeholder */}
-            <Route path="*" element={<Home />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </main>
         

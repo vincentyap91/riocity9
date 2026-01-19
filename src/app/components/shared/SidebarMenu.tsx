@@ -145,11 +145,12 @@ export function SidebarMenu({ onItemClick }: SidebarMenuProps) {
                 </div>
 
                 {/* Login / Sign Up Button */}
-                <Button 
+                <Button
+                    asChild
                     className="w-full h-12 bg-[#00ff88] hover:bg-[#00dd76] text-black font-black text-lg rounded-xl shadow-[0_0_20px_-5px_rgba(0,255,136,0.3)] tracking-wide"
-                    onClick={onItemClick} // Or navigate to login
+                    onClick={onItemClick}
                 >
-                    LOGIN / SIGN UP
+                    <Link to="/login">LOGIN / SIGN UP</Link>
                 </Button>
             </div>
 

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { 
-  ChevronLeft, 
-  X, 
+  ArrowLeft, 
   ChevronRight, 
   Info, 
   Smartphone, 
@@ -173,54 +172,61 @@ export function Deposit() {
         <div className="absolute bottom-[-20%] right-[-10%] w-[60%] h-[60%] bg-[rgba(0,79,59,0.3)] rounded-full blur-[150px]"></div>
       </div>
 
-      {/* Main Container */}
-      <div className="relative z-10 w-full max-w-lg bg-[#1a2230] border border-white/5 rounded-3xl shadow-2xl flex flex-col overflow-hidden">
-        
-        {/* Header Area */}
-        <div className="p-6 pb-2 shrink-0 bg-[#1a2230]">
-          <div className="flex items-center justify-between mb-6">
-             {step > 1 && (
-                <button onClick={handleBack} className="p-2 hover:bg-white/10 rounded-full transition-colors">
-                   <ChevronLeft className="w-5 h-5" />
-                </button>
-             )}
-             {step === 1 && <div className="w-9" />} {/* Spacer */}
-             
-             {step === 1 ? (
-                 <div className="flex bg-[#0f151f] p-1 rounded-xl border border-white/5">
-                    <button 
-                        onClick={() => handleTabChange('deposit')}
-                        className={`px-8 py-2 rounded-lg text-sm font-bold transition-all ${activeTab === 'deposit' ? 'bg-emerald-500 text-black shadow-lg' : 'text-gray-400 hover:text-white'}`}
-                    >
-                        <span className="flex items-center gap-2">
-                            <Banknote className="w-4 h-4" />
-                            Deposit
-                        </span>
-                    </button>
-                    <button 
-                        onClick={() => handleTabChange('withdrawal')}
-                        className={`px-8 py-2 rounded-lg text-sm font-bold transition-all ${activeTab === 'withdrawal' ? 'bg-emerald-500 text-black shadow-lg' : 'text-gray-400 hover:text-white'}`}
-                    >
-                        <span className="flex items-center gap-2">
-                            <Wallet className="w-4 h-4" />
-                            Withdrawal
-                        </span>
-                    </button>
-                 </div>
-             ) : (
-                 <h1 className="text-xl font-bold">
-                    {step === 2 ? 'Deposit Amount' : 'Confirm Deposit'}
-                 </h1>
-             )}
-
-             <button onClick={() => navigate('/')} className="p-2 hover:bg-white/10 rounded-full transition-colors">
-                <X className="w-5 h-5" />
-             </button>
-          </div>
+      {/* Main Wrapper */}
+      <div className="relative z-10 w-full max-w-lg">
+        {/* Top Header (outside card) */}
+        <div className="flex items-center gap-3 mb-4 px-2">
+          <button
+            onClick={() => {
+              if (step > 1) handleBack();
+              else navigate('/settings');
+            }}
+            className="h-10 w-10 rounded-full bg-black/20 border border-white/10 flex items-center justify-center hover:bg-white/10 transition-colors"
+            aria-label="Back to Settings"
+          >
+            <ArrowLeft className="w-5 h-5 text-white" />
+          </button>
+          <span className="text-white font-bold text-base">Settings</span>
         </div>
 
-        {/* Content Area */}
-        <div className="p-6 pt-0">
+        {/* Main Card */}
+        <div className="bg-[#1a2230] border border-white/5 rounded-3xl shadow-2xl flex flex-col overflow-hidden">
+          {/* Card Header */}
+          <div className="p-6 pb-4 shrink-0 bg-[#1a2230]">
+            {step === 1 ? (
+              <div className="flex justify-center">
+                <div className="flex bg-[#0f151f] p-1 rounded-xl border border-white/5 w-full max-w-[313px]">
+                  <button 
+                      onClick={() => handleTabChange('deposit')}
+                      className={`flex-1 px-8 py-3 rounded-lg text-sm font-bold transition-all ${activeTab === 'deposit' ? 'bg-emerald-500 text-black shadow-lg' : 'text-gray-400 hover:text-white'}`}
+                  >
+                      <span className="flex items-center justify-center gap-2">
+                          <Banknote className="w-4 h-4" />
+                          Deposit
+                      </span>
+                  </button>
+                  <button 
+                      onClick={() => handleTabChange('withdrawal')}
+                      className={`flex-1 px-8 py-3 rounded-lg text-sm font-bold transition-all ${activeTab === 'withdrawal' ? 'bg-emerald-500 text-black shadow-lg' : 'text-gray-400 hover:text-white'}`}
+                  >
+                      <span className="flex items-center justify-center gap-2">
+                          <Wallet className="w-4 h-4" />
+                          Withdrawal
+                      </span>
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <div className="flex items-center justify-center">
+                <h1 className="text-xl font-bold text-white">
+                  {step === 2 ? 'Deposit Amount' : 'Confirm Deposit'}
+                </h1>
+              </div>
+            )}
+          </div>
+
+          {/* Content Area */}
+          <div className="p-6 pt-0">
           
           {/* STEP 1: SELECTION */}
           {step === 1 && (
@@ -510,6 +516,7 @@ export function Deposit() {
              </div>
           )}
 
+          </div>
         </div>
       </div>
     </div>

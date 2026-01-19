@@ -52,9 +52,9 @@ export function HistoryRecord() {
         <div className="absolute top-[10%] right-[10%] w-[60%] h-[60%] bg-[rgba(0,96,69,0.2)] rounded-full blur-[100px]"></div>
       </div>
 
-      <div className="relative z-10 container mx-auto px-4 py-8 max-w-[1024px]">
+      <div className="relative z-10 container mx-auto px-4 py-12 max-w-[1024px]">
         
-        {/* Navigation Header */}
+        {/* Navigation Header (Settings left) */}
         <div className="relative flex items-center justify-center mb-6">
           <div className="absolute left-0 flex items-center gap-3">
             <button
@@ -64,13 +64,6 @@ export function HistoryRecord() {
               <ArrowLeft className="w-5 h-5 text-white" />
             </button>
             <span className="text-white font-bold text-base">Settings</span>
-          </div>
-
-          <div className="flex items-center gap-3">
-            <div className="h-10 w-10 rounded-xl bg-black/25 border border-white/10 flex items-center justify-center">
-              <History className="w-5 h-5 text-white/90" />
-            </div>
-            <span className="text-white font-bold text-base">History Record</span>
           </div>
         </div>
 
@@ -98,6 +91,13 @@ export function HistoryRecord() {
 
           {/* Main Content Area */}
           <div className="flex-1 w-full bg-[#1a2230] rounded-[16px] border border-white/5 p-6 flex flex-col">
+            {/* Title inside card (match Profile behavior) */}
+            <div className="flex items-center justify-center gap-3 pb-4">
+              <div className="h-10 w-10 rounded-xl bg-black/25 border border-white/10 flex items-center justify-center">
+                <History className="w-5 h-5 text-white/90" />
+              </div>
+              <span className="text-white font-bold text-base">History Record</span>
+            </div>
             
             {/* Top Controls: Tabs & Actions */}
             <div className="flex flex-col md:flex-row items-center justify-between gap-6 mb-6">

@@ -49,8 +49,8 @@ export function Profile() {
         <div className="absolute top-[10%] right-[10%] w-[60%] h-[60%] bg-[rgba(0,96,69,0.2)] rounded-full blur-[100px]"></div>
       </div>
 
-      <div className="relative z-10 container mx-auto px-4 py-8 max-w-[1024px]">
-        {/* Navigation Header (match screenshot: Settings left, My Profile centered) */}
+      <div className="relative z-10 container mx-auto px-4 py-12 max-w-[1024px]">
+        {/* Navigation Header (Settings left) */}
         <div className="relative flex items-center justify-center mb-6">
           <div className="absolute left-0 flex items-center gap-3">
             <button
@@ -62,19 +62,20 @@ export function Profile() {
             </button>
             <span className="text-white font-bold text-base">Settings</span>
           </div>
+        </div>
 
-          <div className="flex items-center gap-3">
+        {/* Main Content Card (centered, large, rounded like screenshot) */}
+        <div className="bg-[#1a2230] rounded-[16px] shadow-xl border border-white/5 overflow-hidden">
+          {/* Title inside card (match screenshot) */}
+          <div className="flex items-center justify-center gap-3 p-6 pb-4">
             <div className="h-10 w-10 rounded-xl bg-black/25 border border-white/10 flex items-center justify-center">
               <User className="w-5 h-5 text-white/90" />
             </div>
             <span className="text-white font-bold text-base">My Profile</span>
           </div>
-        </div>
 
-        {/* Main Content Card (centered, large, rounded like screenshot) */}
-        <div className="bg-[#1a2230] rounded-[16px] shadow-xl border border-white/5 overflow-hidden">
           {/* Tabs (pill, centered) */}
-          <div className="flex justify-center p-6 pb-4">
+          <div className="flex justify-center px-6 pb-4">
             <div className="w-full max-w-[420px] flex bg-[#0f151f] p-1 rounded-xl border border-white/5">
               <button
                 onClick={() => setActiveTab('personal')}
