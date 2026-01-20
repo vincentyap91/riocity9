@@ -5,7 +5,7 @@ export function AnnouncementBar() {
   return (
     <div className="w-full bg-[#0a0f19]/60 backdrop-blur-md border-b border-white/5 h-10 flex items-center relative overflow-hidden">
       {/* Icon Area - Sticky Left */}
-      <div className="absolute left-0 top-0 bottom-0 z-20 flex items-center px-3 bg-emerald-600/80 backdrop-blur-md border-r border-white/5 shadow-[5px_0_20px_0px_rgba(0,0,0,0.5)]">
+      <div className="absolute left-0 top-0 bottom-0 z-20 flex items-center px-3 rounded-[5px] bg-emerald-600/80 backdrop-blur-md border-r border-white/5 shadow-[5px_0_20px_0px_rgba(0,0,0,0.5)]">
         <Volume2 className="text-white w-5 h-5 animate-pulse" />
       </div>
 

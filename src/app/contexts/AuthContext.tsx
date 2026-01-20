@@ -18,6 +18,7 @@ interface AuthContextType {
   isAuthenticated: boolean;
   login: (username: string, password: string) => Promise<boolean>;
   register: (username: string, password: string, mobile?: string, referralCode?: string) => Promise<boolean>;
+  checkAvailability: (username: string, mobile?: string) => Promise<{ usernameAvailable: boolean; mobileAvailable: boolean }>;
   logout: () => void;
 }
 
@@ -38,6 +39,38 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     // 加载保存的登录状态
     loadSavedUser();
   }, []);
+
+  // 检查用户名或手机号是否可用
+  const checkAvailability = async (username: string, mobile?: string) => {
+    try {
+      if (API_CONFIG.storageType === 'api') {
+        // 在实际 API 中，这可能是一个专门的 endpoint
+        // 这里简单模拟
+        return { usernameAvailable: true, mobileAvailable: true };
+      } else if (API_CONFIG.storageType === 'indexeddb') {
+        const usernameExists = await indexedDBStorage.userExists(username);
+        let mobileExists = false;
+        if (mobile) {
+          mobileExists = !!(await indexedDBStorage.getUserByMobile(mobile));
+        }
+        return { 
+          usernameAvailable: !usernameExists, 
+          mobileAvailable: !mobileExists 
+        };
+      } else {
+        const storedUsers = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
+        const usernameExists = storedUsers.some((u: any) => u.username === username);
+        const mobileExists = mobile ? storedUsers.some((u: any) => u.mobile === mobile) : false;
+        return { 
+          usernameAvailable: !usernameExists, 
+          mobileAvailable: !mobileExists 
+        };
+      }
+    } catch (error) {
+      console.error('Availability check error:', error);
+      return { usernameAvailable: true, mobileAvailable: true };
+    }
+  };
 
   // 加载保存的用户信息
   const loadSavedUser = async () => {
@@ -210,10 +243,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         // 使用 IndexedDB
         // 检查用户名是否已存在
         const userExists = await indexedDBStorage.userExists(username);
-        
         if (userExists) {
-          alert('用户名已存在，请选择其他用户名');
-          return false;
+          throw new Error('Username already exists. Please choose another.');
+        }
+
+        // 检查手机号是否已存在
+        if (mobile) {
+          const mobileExists = await indexedDBStorage.getUserByMobile(mobile);
+          if (mobileExists) {
+            throw new Error('Mobile number already registered. Please use another.');
+          }
         }
 
         // 创建新用户
@@ -239,13 +278,23 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       } else {
         // 使用 localStorage（后备方案）
         const storedUsers = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
+        
+        // 检查用户名是否已存在
         const userExists = storedUsers.some(
           (u: { username: string }) => u.username === username
         );
-
         if (userExists) {
-          alert('用户名已存在，请选择其他用户名');
-          return false;
+          throw new Error('Username already exists. Please choose another.');
+        }
+
+        // 检查手机号是否已存在
+        if (mobile) {
+          const mobileExists = storedUsers.some(
+            (u: { mobile?: string }) => u.mobile === mobile
+          );
+          if (mobileExists) {
+            throw new Error('Mobile number already registered. Please use another.');
+          }
         }
 
         const newUser = {
@@ -299,6 +348,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         isAuthenticated: !!user,
         login,
         register,
+        checkAvailability,
         logout,
       }}
     >

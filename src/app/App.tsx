@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Link, useLocation } from 'react-router-dom';
+import { AnimatePresence, motion } from 'motion/react';
 import { Button } from './components/ui/button';
 import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle, SheetDescription } from './components/ui/sheet';
-import { Search, Menu, MessageCircle, X, Languages, CircleHelp, ChevronDown, Globe, Home as HomeIcon, Gamepad2, Dices, Trophy, Fish, Ticket, Star, Smartphone, Gift, Map, LogOut, User, Eye, EyeOff, Plus, LayoutDashboard } from 'lucide-react';
+import { Search, Menu, MessageCircle, X, Languages, CircleHelp, ChevronDown, Globe, Home as HomeIcon, Gamepad2, Dices, Trophy, Fish, Ticket, Star, Smartphone, Gift, Map, LogOut, User, Eye, EyeOff, Plus, LayoutDashboard, Target } from 'lucide-react';
 import { FlagUK } from './components/figma/FlagUK';
 
 import { Footer } from './components/home/Footer';
@@ -23,6 +24,7 @@ import { Withdraw } from './pages/Withdraw';
 import { Referral } from './pages/Referral';
 import { Profile } from './pages/Profile';
 import { HistoryRecord } from './pages/HistoryRecord';
+import { ChangePassword } from './pages/ChangePassword';
 import { ComingSoon } from './pages/ComingSoon';
 import { Bonus } from './pages/Bonus';
 import { NotFound } from './pages/NotFound';
@@ -50,7 +52,50 @@ function AppContent() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [showBalance, setShowBalance] = useState(true);
+  const [isInitialLoading, setIsInitialLoading] = useState(true);
+  const [showSuggestedMessages, setShowSuggestedMessages] = useState(false);
+  const [chatMessage, setChatMessage] = useState('');
+  const [isRolloverOpen, setIsRolloverOpen] = useState(false);
   const { isAuthenticated, user, logout } = useAuth();
+  const location = useLocation();
+
+  // Suggested messages for live chat
+  const suggestedMessages = [
+    "I'm New Here",
+    "Forgot Username/Password",
+    "Account Verification Issue",
+    "怎样充值",
+    "Hi"
+  ];
+
+  // Initial loading simulation
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsInitialLoading(false);
+    }, 1500); // 1.5s loading time
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Listen for openLiveChat event from other components
+  useEffect(() => {
+    const handleOpenLiveChat = (event: CustomEvent) => {
+      setIsLiveChatOpen(true);
+      setShowSuggestedMessages(true);
+      // If opened from forgot password, we can optionally pre-fill or highlight specific message
+      if (event.detail?.reason === 'forgot-password') {
+        // Focus on forgot password option
+        setChatMessage('');
+      }
+    };
+
+    window.addEventListener('openLiveChat', handleOpenLiveChat as EventListener);
+    return () => window.removeEventListener('openLiveChat', handleOpenLiveChat as EventListener);
+  }, []);
+
+  // Scroll to top on route change (instant - standard web behavior)
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location.pathname]);
 
   // Scroll listener to toggle header background opacity
   useEffect(() => {
@@ -66,8 +111,50 @@ function AppContent() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Close rollover dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      if (isRolloverOpen && !target.closest('[data-rollover-dropdown]')) {
+        setIsRolloverOpen(false);
+      }
+    };
+
+    document.addEventListener('click', handleClickOutside);
+    return () => document.removeEventListener('click', handleClickOutside);
+  }, [isRolloverOpen]);
+
   return (
-    <BrowserRouter>
+    <>
+      {isInitialLoading && (
+        <div className="fixed inset-0 z-[9999] bg-[#02040a] flex flex-col items-center justify-center">
+            {/* Logo in Loader */}
+            <div className="relative mb-8 animate-pulse">
+                <img src={logoSrc} alt="RioCity9 Logo" className="h-16 w-auto relative z-10" />
+                <div className="absolute inset-0 bg-emerald-500/30 blur-2xl rounded-full"></div>
+            </div>
+            
+            {/* Spinning Loader */}
+            <div className="w-12 h-12 border-4 border-white/5 border-t-emerald-500 rounded-full animate-spin mb-4"></div>
+            
+            {/* Loading Text */}
+            <div className="text-emerald-500 font-black tracking-[0.2em] text-sm uppercase animate-pulse">
+                Loading...
+            </div>
+            
+            {/* Optional: Progress Bar Style */}
+            <div className="w-48 h-1 bg-white/5 rounded-full mt-8 overflow-hidden">
+                <div className="h-full bg-emerald-500 animate-[loading_2s_ease-in-out_infinite]"></div>
+            </div>
+            <style>{`
+                @keyframes loading {
+                    0% { width: 0%; transform: translateX(-100%); }
+                    50% { width: 100%; transform: translateX(0%); }
+                    100% { width: 0%; transform: translateX(100%); }
+                }
+            `}</style>
+        </div>
+      )}
       <div className="min-h-screen text-foreground font-sans selection:bg-emerald-500/30 selection:text-emerald-400 flex flex-col">
         {/* Background Ambience */}
         <div className="fixed inset-0 pointer-events-none z-0">
@@ -119,28 +206,97 @@ function AppContent() {
               <div className="flex items-center gap-2 sm:gap-3">
                   {isAuthenticated ? (
                       <div className="flex items-center gap-2 sm:gap-3">
-                          {/* Balance Display - Fixed width to prevent layout shift */}
-                          <div className="hidden sm:flex items-center gap-2 h-10 px-3 bg-[#131b29]/60 border border-white/10 rounded-xl">
-                              <button 
-                                onClick={() => setShowBalance(!showBalance)}
-                                className="text-gray-400 hover:text-white transition-colors"
-                              >
-                                {showBalance ? <Eye size={16} /> : <EyeOff size={16} />}
-                              </button>
-                              <div className="flex items-center gap-1 min-w-[80px]">
-                                <span className="text-[13px] font-black text-white">MYR</span>
-                                <span className="text-[13px] font-black text-white">{showBalance ? "0.00" : "****"}</span>
+                          {/* Combined Balance & Deposit Pill */}
+                          <div className="hidden sm:flex items-center bg-[#131b29]/60 border border-white/10 rounded-[10px] pl-4 pr-1 h-11 transition-all hover:border-emerald-500/30 shadow-lg">
+                              {/* Balance Section */}
+                              <div className="flex items-center gap-2.5 mr-4">
+                                  <button 
+                                    onClick={() => setShowBalance(!showBalance)}
+                                    className="text-gray-500 hover:text-white transition-colors"
+                                  >
+                                    {showBalance ? <Eye size={16} /> : <EyeOff size={16} />}
+                                  </button>
+                                  <div className="flex items-center gap-1.5 min-w-[80px]">
+                                    <span className="text-[13px] font-black text-white tracking-wide">MYR</span>
+                                    <span className="text-[14px] font-black text-white tracking-tight">{showBalance ? "0.00" : "****"}</span>
+                                  </div>
                               </div>
-                              <ChevronDown size={14} className="text-gray-500" />
+
+                              {/* Deposit Button - Pill Style inside */}
+                              <Button
+                                asChild
+                                className="bg-gradient-to-b from-[#f7e08b] via-[#eab84b] to-[#d4a520] hover:brightness-110 text-[#3d2b00] font-black px-6 h-[34px] rounded-[10px] text-[13px] transition-all shadow-[0_2px_10px_rgba(212,165,32,0.3)] border-none"
+                              >
+                                <Link to="/deposit">Deposit</Link>
+                              </Button>
                           </div>
 
-                          {/* Deposit Button - Yellow per screenshot */}
-                          <Button
-                            asChild
-                            className="bg-[#fab005] hover:bg-[#e2a004] text-black font-black px-4 sm:px-6 h-10 rounded-xl text-sm transition-all hover:scale-105 shadow-[0_0_15px_-5px_rgba(250,176,5,0.4)]"
-                          >
-                            <Link to="/deposit">Deposit</Link>
-                          </Button>
+                          {/* Rollover Target Button */}
+                          <div className="relative" data-rollover-dropdown>
+                            <button
+                              onClick={() => setIsRolloverOpen(!isRolloverOpen)}
+                              className="w-10 h-10 rounded-xl bg-[#e65c00] hover:bg-[#cc5200] flex items-center justify-center text-white transition-all hover:scale-105 shadow-[0_0_15px_-5px_rgba(230,92,0,0.4)]"
+                            >
+                              <Target size={20} />
+                            </button>
+
+                            {/* Rollover Dropdown */}
+                            {isRolloverOpen && (
+                              <div className="absolute top-14 right-0 w-[300px] bg-[#1a2230] rounded-[16px] shadow-2xl border border-white/5 overflow-hidden animate-in slide-in-from-top-2 fade-in duration-300 z-50">
+                                {/* Header Section - Match Profile Style */}
+                                <div className="flex items-center gap-3 p-5 pb-4 border-b border-white/5">
+                                  <div className="h-10 w-10 rounded-xl bg-black/25 border border-white/10 flex items-center justify-center shrink-0">
+                                    <Target className="w-5 h-5 text-emerald-500" strokeWidth={2.5} />
+                                  </div>
+                                  <div className="flex flex-col">
+                                    <span className="text-white font-bold text-base leading-tight">Rollover Status</span>
+                                    <span className="text-emerald-500 text-[10px] font-black uppercase tracking-wider">Completed</span>
+                                  </div>
+                                </div>
+                                
+                                {/* Content Section */}
+                                <div className="p-5">
+                                  <div className="bg-[#0f151f] rounded-xl p-4 border border-white/5 space-y-4">
+                                    <div className="space-y-2.5">
+                                      <div className="flex items-center justify-between">
+                                        <span className="text-gray-400 text-xs font-bold">Deposit Rollover</span>
+                                        <div className="flex items-center gap-1.5">
+                                          <span className="text-white font-black text-xs">436</span>
+                                          <span className="text-gray-600 text-[10px]">/</span>
+                                          <span className="text-emerald-400 font-black text-xs">436</span>
+                                        </div>
+                                      </div>
+                                      
+                                      {/* Glowing Progress Bar - Match Profile/Settings style */}
+                                      <div className="h-2 w-full bg-black/40 rounded-full overflow-hidden border border-white/5 p-[0.5px]">
+                                        <div className="h-full w-full bg-gradient-to-r from-emerald-600 to-emerald-400 rounded-full relative">
+                                          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-[shimmer_2s_infinite]"></div>
+                                        </div>
+                                      </div>
+
+                                      <div className="flex justify-between items-center pt-1">
+                                        <span className="text-emerald-500 text-[10px] font-black uppercase tracking-widest flex items-center gap-1.5">
+                                          <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)] animate-pulse"></div>
+                                          Verified
+                                        </span>
+                                        <span className="text-white font-black text-xs tracking-tighter bg-emerald-500/10 px-2 py-0.5 rounded text-[10px]">100% DONE</span>
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                  <p className="text-gray-500 text-[11px] leading-relaxed mt-4 px-1 text-center font-medium">
+                                    Your requirement is completed. <br/>You can now proceed with your withdrawal.
+                                  </p>
+                                </div>
+                                <style>{`
+                                  @keyframes shimmer {
+                                    0% { transform: translateX(-100%); }
+                                    100% { transform: translateX(100%); }
+                                  }
+                                `}</style>
+                              </div>
+                            )}
+                          </div>
 
                           {/* Account Utilities */}
                           <div className="flex items-center gap-2">
@@ -186,7 +342,7 @@ function AppContent() {
               )}
 
               {/* Language: Pill Glass Selector */}
-              <button className="h-10 w-10 sm:w-auto sm:pl-2 sm:pr-3 rounded-full bg-white/5 border border-white/10 flex items-center justify-center sm:justify-start gap-0 sm:gap-2 text-gray-300 hover:text-white hover:bg-white/10 hover:border-emerald-500/50 transition-all duration-300 group">
+              <button className="h-10 w-10 sm:w-auto sm:pl-2 sm:pr-3 rounded-[10px] bg-white/5 border border-white/10 flex items-center justify-center sm:justify-start gap-0 sm:gap-2 text-gray-300 hover:text-white hover:bg-white/10 hover:border-emerald-500/50 transition-all duration-300 group">
                   <FlagUK className="w-5 h-5 sm:w-6 sm:h-6 rounded-full border border-white/10 group-hover:border-white/30 transition-colors" />
                   <span className="hidden sm:block text-xs font-bold tracking-wide font-mono uppercase">EN</span>
                   <ChevronDown className="hidden sm:block w-3 h-3 text-gray-500 group-hover:text-white transition-colors" />
@@ -226,37 +382,48 @@ function AppContent() {
 
         {/* Main Content */}
         <main className="relative z-10 flex-1 flex flex-col">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/slots" element={<Slots />} />
-            <Route path="/live-casino" element={<LiveCasino />} />
-            <Route path="/sports" element={<Sports />} />
-            <Route path="/fishing" element={<Fishing />} />
-            <Route path="/lottery" element={<Lottery />} />
-            <Route path="/poker" element={<ComingSoon title="Poker" backTo="/" backLabel="Home" />} />
-            <Route path="/crash" element={<ComingSoon title="Crash" backTo="/" backLabel="Home" />} />
-            <Route path="/hot" element={<ComingSoon title="Hot Games" backTo="/" backLabel="Home" />} />
-            <Route path="/all" element={<ComingSoon title="All Games" backTo="/" backLabel="Home" />} />
-            <Route path="/exchange" element={<ComingSoon title="Exchange" backTo="/" backLabel="Home" />} />
-            <Route path="/rebate" element={<ComingSoon title="Rebate" backTo="/" backLabel="Home" />} />
-            <Route path="/vip" element={<ComingSoon title="VIP Club" backTo="/" backLabel="Home" />} />
-            <Route path="/promotions" element={<ComingSoon title="Promotions" backTo="/" backLabel="Home" />} />
-            <Route path="/app" element={<ComingSoon title="App" backTo="/" backLabel="Home" />} />
-            <Route path="/downlines" element={<ComingSoon title="Downlines" backTo="/settings" backLabel="Settings" />} />
-            <Route path="/language" element={<ComingSoon title="Change Language" backTo="/settings" backLabel="Settings" />} />
-            <Route path="/security" element={<ComingSoon title="Change Password" backTo="/settings" backLabel="Settings" />} />
-            <Route path="/bonus/:bonusType" element={<Bonus />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/referral" element={<Referral />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/settings" element={<Settings />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/history" element={<HistoryRecord />} />
-            <Route path="/deposit" element={<Deposit />} />
-            <Route path="/withdraw" element={<Withdraw />} />
-            {/* Fallback for other routes using Home temporarily or a placeholder */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={location.pathname}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.3, ease: "easeOut" }}
+              className="flex-1 flex flex-col"
+            >
+              <Routes location={location} key={location.pathname}>
+                <Route path="/" element={<Home />} />
+                <Route path="/slots" element={<Slots />} />
+                <Route path="/live-casino" element={<LiveCasino />} />
+                <Route path="/sports" element={<Sports />} />
+                <Route path="/fishing" element={<Fishing />} />
+                <Route path="/lottery" element={<Lottery />} />
+                <Route path="/poker" element={<ComingSoon title="Poker" backTo="/" backLabel="Home" />} />
+                <Route path="/crash" element={<ComingSoon title="Crash" backTo="/" backLabel="Home" />} />
+                <Route path="/hot" element={<ComingSoon title="Hot Games" backTo="/" backLabel="Home" />} />
+                <Route path="/all" element={<ComingSoon title="All Games" backTo="/" backLabel="Home" />} />
+                <Route path="/exchange" element={<ComingSoon title="Exchange" backTo="/" backLabel="Home" />} />
+                <Route path="/rebate" element={<ComingSoon title="Rebate" backTo="/" backLabel="Home" />} />
+                <Route path="/vip" element={<ComingSoon title="VIP Club" backTo="/" backLabel="Home" />} />
+                <Route path="/promotions" element={<ComingSoon title="Promotions" backTo="/" backLabel="Home" />} />
+                <Route path="/app" element={<ComingSoon title="App" backTo="/" backLabel="Home" />} />
+                <Route path="/downlines" element={<ComingSoon title="Downlines" backTo="/settings" backLabel="Settings" />} />
+                <Route path="/language" element={<ComingSoon title="Change Language" backTo="/settings" backLabel="Settings" />} />
+                <Route path="/security" element={<ChangePassword />} />
+                <Route path="/bonus/:bonusType" element={<Bonus />} />
+                <Route path="/register" element={<Register />} />
+                <Route path="/referral" element={<Referral />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/settings" element={<Settings />} />
+                <Route path="/profile" element={<Profile />} />
+                <Route path="/history" element={<HistoryRecord />} />
+                <Route path="/deposit" element={<Deposit />} />
+                <Route path="/withdraw" element={<Withdraw />} />
+                {/* Fallback for other routes using Home temporarily or a placeholder */}
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </motion.div>
+          </AnimatePresence>
         </main>
         
         <MobileBottomNav onMenuClick={() => setIsMenuOpen(true)} />
@@ -354,13 +521,51 @@ function AppContent() {
                             Hello! Welcome to RioCity9. How can we help you today?
                         </div>
                         <div className="text-center text-xs text-gray-600 my-2">Today 10:23 AM</div>
+                        
+                        {/* User message if sent */}
+                        {chatMessage && (
+                            <div className="bg-emerald-600 p-3 rounded-xl rounded-tr-none self-end max-w-[80%] text-sm text-white">
+                                {chatMessage}
+                            </div>
+                        )}
                     </div>
-                    <div className="p-3 border-t border-white/10 bg-[#0f1923]">
+                    
+                    {/* Suggested Messages Section */}
+                    {showSuggestedMessages && (
+                        <div className="px-3 py-2 border-t border-white/10 bg-[#0f1923]">
+                            <div className="text-xs font-bold text-[#d4a520] mb-2">Suggested Messages</div>
+                            <div className="flex flex-wrap gap-2">
+                                {suggestedMessages.map((msg, idx) => (
+                                    <button
+                                        key={idx}
+                                        onClick={() => {
+                                            setChatMessage(msg);
+                                            setShowSuggestedMessages(false);
+                                        }}
+                                        className="px-3 py-1.5 bg-white text-[#0f1923] text-xs font-medium rounded-full hover:bg-gray-100 transition-colors border border-gray-200"
+                                    >
+                                        {msg}
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+                    
+                    <div className="p-3 border-t border-white/10 bg-[#0f1923] flex items-center gap-2">
+                        <button className="text-gray-500 hover:text-white transition-colors">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
+                        </button>
                         <input 
                             type="text" 
                             placeholder="Type a message..." 
-                            className="w-full bg-[#1a2536] border border-white/10 rounded-full px-4 py-2 text-sm text-white focus:outline-none focus:border-emerald-500/50"
+                            value={chatMessage}
+                            onChange={(e) => setChatMessage(e.target.value)}
+                            onFocus={() => setShowSuggestedMessages(true)}
+                            className="flex-1 bg-[#1a2536] border border-white/10 rounded-full px-4 py-2 text-sm text-white focus:outline-none focus:border-emerald-500/50"
                         />
+                        <button className="text-gray-500 hover:text-white transition-colors">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/></svg>
+                        </button>
                     </div>
                 </div>
             )}
@@ -368,7 +573,7 @@ function AppContent() {
         </div>
 
       </div>
-    </BrowserRouter>
+      </>
   );
 }
 
@@ -376,7 +581,9 @@ function AppContent() {
 export default function App() {
   return (
     <AuthProvider>
-      <AppContent />
+      <BrowserRouter>
+        <AppContent />
+      </BrowserRouter>
     </AuthProvider>
   );
 }

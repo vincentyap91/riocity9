@@ -98,6 +98,31 @@ class IndexedDBStorage {
     });
   }
 
+  // 根据手机号查找用户
+  async getUserByMobile(mobile: string): Promise<UserData | null> {
+    await this.ensureInit();
+    
+    return new Promise((resolve, reject) => {
+      if (!this.db) {
+        reject(new Error('数据库未初始化'));
+        return;
+      }
+
+      const transaction = this.db.transaction([this.storeName], 'readonly');
+      const store = transaction.objectStore(this.storeName);
+      const index = store.index('mobile');
+      const request = index.get(mobile);
+
+      request.onsuccess = () => {
+        resolve(request.result || null);
+      };
+
+      request.onerror = () => {
+        reject(new Error('根据手机号查找用户失败'));
+      };
+    });
+  }
+
   // 检查用户名是否存在
   async userExists(username: string): Promise<boolean> {
     const user = await this.getUserByUsername(username);
