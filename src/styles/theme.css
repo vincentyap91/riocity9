@@ -209,6 +209,21 @@
     font-weight: var(--font-weight-normal);
     line-height: 1.5;
   }
+
+  a,
+  button,
+  [role="button"],
+  input[type="button"],
+  input[type="submit"],
+  input[type="reset"] {
+    cursor: pointer;
+  }
+
+  button:disabled,
+  [role="button"][aria-disabled="true"],
+  input:disabled {
+    cursor: not-allowed;
+  }
 }
 
 @utility no-scrollbar {

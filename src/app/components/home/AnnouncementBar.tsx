@@ -1,7 +1,9 @@
 import React from 'react';
 import { Volume2 } from 'lucide-react';
+import { useLanguage } from '../../contexts/LanguageContext';
 
 export function AnnouncementBar() {
+  const { t } = useLanguage();
   return (
     <div className="w-full bg-[#0a0f19]/60 backdrop-blur-md border-b border-white/5 h-10 flex items-center relative overflow-hidden">
       {/* Icon Area - Sticky Left */}
@@ -14,36 +16,36 @@ export function AnnouncementBar() {
          <div className="animate-marquee whitespace-nowrap flex items-center gap-8 md:gap-16 text-[14px] md:text-[14px] font-medium text-white">
             <span className="flex items-center gap-2">
                 <span className="w-1.5 h-1.5 rounded-full bg-yellow-500"></span>
-                Maintenance Ongoing from 2AM–6AM
+                {t("maintenanceOngoing")}
             </span>
             <span className="flex items-center gap-2">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-                Welcome to RioCity9! Enjoy the premium gaming experience
+                {t("welcomeToRioCity9")}
             </span>
             <span className="flex items-center gap-2">
                 <span className="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
-                New members enjoy a 50% Welcome Bonus!
+                {t("newMembersBonus")}
             </span>
             <span className="flex items-center gap-2">
                 <span className="w-1.5 h-1.5 rounded-full bg-purple-500"></span>
-                Live Casino Tournament - Prize Pool $100,000
+                {t("liveCasinoTournament")}
             </span>
             {/* Duplicate for seamless loop */}
             <span className="flex items-center gap-2">
                 <span className="w-1.5 h-1.5 rounded-full bg-yellow-500"></span>
-                Maintenance Ongoing from 2AM–6AM
+                {t("maintenanceOngoing")}
             </span>
             <span className="flex items-center gap-2">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-                Welcome to RioCity9! Enjoy the premium gaming experience
+                {t("welcomeToRioCity9")}
             </span>
             <span className="flex items-center gap-2">
                 <span className="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
-                New members enjoy a 50% Welcome Bonus!
+                {t("newMembersBonus")}
             </span>
             <span className="flex items-center gap-2">
                 <span className="w-1.5 h-1.5 rounded-full bg-purple-500"></span>
-                Live Casino Tournament - Prize Pool $100,000
+                {t("liveCasinoTournament")}
             </span>
          </div>
       </div>

@@ -3,8 +3,10 @@ import { Facebook, Twitter, Instagram, Youtube, MessageCircle, ShieldCheck, Glob
 import { Button } from '../ui/button';
 import { FooterLogos } from './FooterLogos';
 import footerImg from '@/assets/ab51aaf74198704deed553b4c904f3b833b221cb.png';
+import { useLanguage } from '../../contexts/LanguageContext';
 
 export function Footer() {
+  const { t } = useLanguage();
   return (
     <footer className="bg-[#02040a] border-t border-white/10 pt-8 pb-8 text-sm">
       <div className="container mx-auto max-w-[1200px] 2xl:max-w-[1536px] px-4">
@@ -12,36 +14,36 @@ export function Footer() {
           
           {/* Column 1: Terms */}
           <div className="flex flex-col gap-4">
-            <h3 className="text-white font-bold text-lg mb-2">Terms & Conditions</h3>
+            <h3 className="text-white font-bold text-lg mb-2">{t("footerTerms")}</h3>
             <ul className="space-y-3 text-gray-400">
-              <li><a href="#" className="hover:text-emerald-400 transition-colors">General Terms & Conditions</a></li>
-              <li><a href="#" className="hover:text-emerald-400 transition-colors">Bonus Terms & Conditions</a></li>
-              <li><a href="#" className="hover:text-emerald-400 transition-colors">Sports Betting Terms & Conditions</a></li>
-              <li><a href="#" className="hover:text-emerald-400 transition-colors">Payment Terms & Conditions</a></li>
+              <li><a href="#" className="hover:text-emerald-400 transition-colors">{t("footerGeneralTerms")}</a></li>
+              <li><a href="#" className="hover:text-emerald-400 transition-colors">{t("footerBonusTerms")}</a></li>
+              <li><a href="#" className="hover:text-emerald-400 transition-colors">{t("footerSportsBettingTerms")}</a></li>
+              <li><a href="#" className="hover:text-emerald-400 transition-colors">{t("footerPaymentTerms")}</a></li>
             </ul>
           </div>
 
           {/* Column 2: Policies */}
           <div className="flex flex-col gap-4">
-            <h3 className="text-white font-bold text-lg mb-2">Policies</h3>
+            <h3 className="text-white font-bold text-lg mb-2">{t("footerPolicies")}</h3>
             <ul className="space-y-3 text-gray-400">
-              <li><a href="#" className="hover:text-emerald-400 transition-colors">AML Policy</a></li>
-              <li><a href="#" className="hover:text-emerald-400 transition-colors">KYC Policy</a></li>
-              <li><a href="#" className="hover:text-emerald-400 transition-colors">Privacy Policy</a></li>
-              <li><a href="#" className="hover:text-emerald-400 transition-colors">Protection of Minors Policy</a></li>
+              <li><a href="#" className="hover:text-emerald-400 transition-colors">{t("footerAmlPolicy")}</a></li>
+              <li><a href="#" className="hover:text-emerald-400 transition-colors">{t("footerKycPolicy")}</a></li>
+              <li><a href="#" className="hover:text-emerald-400 transition-colors">{t("footerPrivacyPolicy")}</a></li>
+              <li><a href="#" className="hover:text-emerald-400 transition-colors">{t("footerMinorsProtection")}</a></li>
             </ul>
           </div>
 
           {/* Column 3: Info */}
           <div className="flex flex-col gap-4">
-            <h3 className="text-white font-bold text-lg mb-2">Info & Resources</h3>
+            <h3 className="text-white font-bold text-lg mb-2">{t("footerInfoResources")}</h3>
             <ul className="space-y-3 text-gray-400">
-              <li><a href="#" className="hover:text-emerald-400 transition-colors">About Us</a></li>
-              <li><a href="#" className="hover:text-emerald-400 transition-colors">Responsible Gaming Principles</a></li>
-              <li><a href="#" className="hover:text-emerald-400 transition-colors">RioCity9 Authenticator</a></li>
-              <li><a href="#" className="hover:text-emerald-400 transition-colors">Affiliate Program</a></li>
-              <li><a href="#" className="hover:text-emerald-400 transition-colors">Help Center</a></li>
-              <li><a href="#" className="hover:text-emerald-400 transition-colors">Contact Us</a></li>
+              <li><a href="#" className="hover:text-emerald-400 transition-colors">{t("footerAboutUs")}</a></li>
+              <li><a href="#" className="hover:text-emerald-400 transition-colors">{t("footerResponsibleGaming")}</a></li>
+              <li><a href="#" className="hover:text-emerald-400 transition-colors">{t("footerAuthenticator")}</a></li>
+              <li><a href="#" className="hover:text-emerald-400 transition-colors">{t("footerAffiliateProgram")}</a></li>
+              <li><a href="#" className="hover:text-emerald-400 transition-colors">{t("footerHelpCenter")}</a></li>
+              <li><a href="#" className="hover:text-emerald-400 transition-colors">{t("footerContactUs")}</a></li>
             </ul>
           </div>
 
@@ -50,7 +52,7 @@ export function Footer() {
             
             {/* Payment Methods */}
             <div>
-              <h3 className="text-white font-bold text-lg mb-4">Payment Methods</h3>
+              <h3 className="text-white font-bold text-lg mb-4">{t("footerPaymentMethods")}</h3>
               <div className="flex flex-wrap gap-3">
                  <div className="bg-white/5 border border-white/10 rounded px-2 py-1 flex items-center gap-1 text-white text-xs font-bold">
                     <CreditCard className="w-4 h-4" /> surePAY
@@ -66,7 +68,7 @@ export function Footer() {
 
             {/* Follow Us */}
             <div>
-              <h3 className="text-white font-bold text-lg mb-4">Follow Us</h3>
+              <h3 className="text-white font-bold text-lg mb-4">{t("footerFollowUs")}</h3>
               <div className="flex gap-4">
                 <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full bg-white/5 hover:bg-[#1DA1F2] hover:text-white transition-all">
                   <Globe className="w-4 h-4" />
@@ -88,7 +90,7 @@ export function Footer() {
 
             {/* Certifications */}
             <div>
-              <h3 className="text-white font-bold text-lg mb-4">Certifications & Awards</h3>
+              <h3 className="text-white font-bold text-lg mb-4">{t("footerCertifications")}</h3>
               <div className="flex flex-wrap items-center gap-4 text-gray-400">
                 <div className="border border-white/20 rounded-full w-8 h-8 flex items-center justify-center font-bold text-xs">18+</div>
                 <div className="flex items-center gap-1 font-bold text-white"><ShieldCheck className="w-4 h-4" /> OGS</div>
@@ -110,17 +112,8 @@ export function Footer() {
                         Rio<span className="text-emerald-500">City9</span>
                     </div>
                  </div>
-                 <p className="text-xs text-gray-500 leading-relaxed mb-4">
-                    RioCity9 is owned by Grand Complications N.V., a company registered and established under the laws of Curacao, with registration number 164198 and registered address at Zuikertuintjeweg Z/N, (Zuikertuin Tower) Willemstad, Curacao. Grand Complications N.V. is licensed and regulated by the Government of the Autonomous Island of Anjouan, Union of Comoros and operates under License No. ALSI-122405027-FI2. RioCity9 has passed all regulatory compliance and is legally authorized to conduct gaming operations for any and all games of chance and wagering.
-                 </p>
-                 <p className="text-xs text-gray-500 leading-relaxed mb-4">
-                    Payment services for RioCity9 are provided by Rockman Enterprises Limited, a subsidiary of Grand Complications N.V., by the laws of Cyprus, with registration number HE 381928 and registered address at 20 Stasikratous, Cramvis Building, Office 203, Nicosia 1065, Cyprus.
-                 </p>
-                 <p className="text-xs text-gray-500 font-bold">
-                    It is the player's sole responsibility to inquire about the existing laws and regulations of the given jurisdiction for online gambling.
-                 </p>
                  <div className="mt-6 text-xs text-gray-600">
-                    © 2016 - 2025 RioCity9® 5.19.1.2
+                    {t("footerCopyright")}
                  </div>
             </div>
             

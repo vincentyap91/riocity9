@@ -4,6 +4,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { ChevronLeft, ChevronRight, Flame } from 'lucide-react';
 import { SectionHeader } from './SectionHeader';
+import { useLanguage } from '../../contexts/LanguageContext';
 
 import img1 from "@/assets/885a36e12393d74bacab6db0538d96fd87ba9438.png";
 import img2 from "@/assets/e5f97a30e079a67954a7c40846213b9264282f81.png";
@@ -79,6 +80,7 @@ function CustomNextArrow(props: any) {
 }
 
 export function HotProviders() {
+  const { t } = useLanguage();
   const settings = {
     dots: false,
     infinite: true,
@@ -125,7 +127,13 @@ export function HotProviders() {
   return (
     <section className="w-full relative group/section">
       <SectionHeader
-        title={<span>HOT <span className="text-[#00bc7d]">PROVIDERS</span></span>}
+        title={
+          <span>
+            {t("hotProviders").split(" ").map((word, idx) => 
+              idx === 0 ? word + " " : <span key={idx} className="text-[#00bc7d]">{word}</span>
+            )}
+          </span>
+        }
         icon={
             <div className="p-1.5 bg-emerald-500/10 rounded-lg border border-emerald-500/20">
                 <Flame className="text-emerald-500 w-5 h-5" />

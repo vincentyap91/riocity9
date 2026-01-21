@@ -15,20 +15,22 @@ import {
 import { Button } from '../components/ui/button';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import { useLanguage } from '../contexts/LanguageContext';
 
 export function Settings() {
   const navigate = useNavigate();
   const { user, logout } = useAuth();
+  const { t } = useLanguage();
 
   const menuItems = [
-    { icon: User, label: 'My Profile', path: '/profile' },
-    { icon: CreditCard, label: 'Deposit', path: '/deposit' },
-    { icon: ArrowRightLeft, label: 'Withdrawal', path: '/withdraw' },
-    { icon: History, label: 'History Record', path: '/history' },
-    { icon: Users, label: 'Referral', path: '/referral' },
-    { icon: UsersRound, label: 'Downlines', path: '/downlines' },
-    { icon: Globe, label: 'Change Language', path: '/language' },
-    { icon: Lock, label: 'Change Password', path: '/security' },
+    { icon: User, labelKey: 'myProfile', path: '/profile' },
+    { icon: CreditCard, labelKey: 'deposit', path: '/deposit' },
+    { icon: ArrowRightLeft, labelKey: 'withdrawal', path: '/withdraw' },
+    { icon: History, labelKey: 'historyRecord', path: '/history' },
+    { icon: Users, labelKey: 'referral', path: '/referral' },
+    { icon: UsersRound, labelKey: 'downlines', path: '/downlines' },
+    { icon: Globe, labelKey: 'changeLanguage', path: '/language' },
+    { icon: Lock, labelKey: 'changePassword', path: '/security' },
   ];
 
   return (
@@ -42,10 +44,10 @@ export function Settings() {
          <div className="absolute top-[10%] right-[10%] w-[60%] h-[60%] bg-[rgba(0,96,69,0.2)] rounded-full blur-[100px]"></div>
       </div>
 
-      <div className="relative z-10 container mx-auto px-4 py-8 max-w-[640px]">
+      <div className="relative z-10 container mx-auto px-4 pt-4 pb-32 max-w-[640px]">
         
         {/* User Profile Header Card - Mobile Version (Follows Screenshot) */}
-        <div className="md:hidden bg-gradient-to-b from-[#1a2230] to-[#131b29] rounded-[24px] p-5 mb-4 shadow-xl border border-white/5 relative overflow-hidden">
+        <div className="md:hidden bg-gradient-to-b from-[#1a2230] to-[#131b29] rounded-[24px] p-5 mb-3 shadow-xl border border-white/5 relative overflow-hidden">
           <div className="flex flex-row gap-5 items-center">
             {/* Left side: Avatar/Badge */}
             <div className="relative shrink-0">
@@ -84,9 +86,9 @@ export function Settings() {
 
           {/* Status Row */}
           <div className="mt-3 flex items-center justify-between leading-none">
-            <span className="text-sm font-bold text-[#f28b0c]">Bronze</span>
+            <span className="text-sm font-bold text-[#f28b0c]">{t("bronze")}</span>
             <div className="text-[11px] text-gray-400 font-medium flex items-center gap-1">
-              Deposit <span className="text-[#efbb4b] font-black">3,682</span> to become <span className="text-white font-black">Silver!</span>
+              {t("depositToBecome")} <span className="text-[#efbb4b] font-black">3,682</span> {t("toBecome")} <span className="text-white font-black">{t("silver")}!</span>
             </div>
           </div>
           
@@ -97,7 +99,7 @@ export function Settings() {
         </div>
 
         {/* User Profile Header Card - Desktop Version */}
-        <div className="hidden md:block bg-gradient-to-b from-[#1a2230] to-[#131b29] rounded-[16px] p-6 mb-4 shadow-xl border border-white/5 relative overflow-hidden">
+        <div className="hidden md:block bg-gradient-to-b from-[#1a2230] to-[#131b29] rounded-[16px] p-6 mb-3 shadow-xl border border-white/5 relative overflow-hidden">
           <div className="flex flex-col sm:flex-row gap-6 items-start">
             {/* Avatar Section */}
             <div className="relative shrink-0">
@@ -125,9 +127,9 @@ export function Settings() {
               {/* VIP Status */}
               <div className="space-y-2">
                  <div className="flex items-center justify-between text-sm">
-                    <span className="font-bold text-[#CD7F32]">Bronze</span>
+                    <span className="font-bold text-[#CD7F32]">{t("bronze")}</span>
                     <span className="text-xs text-gray-400 flex items-center gap-1">
-                        Deposit <span className="text-[#FFD700] font-bold">3,682</span> to become <span className="text-gray-300 font-bold">Silver!</span>
+                        {t("depositToBecome")} <span className="text-[#FFD700] font-bold">3,682</span> {t("toBecome")} <span className="text-gray-300 font-bold">{t("silver")}!</span>
                     </span>
                  </div>
                  {/* Custom Progress Bar */}
@@ -140,9 +142,9 @@ export function Settings() {
         </div>
 
         {/* Balance Card */}
-        <div className="bg-[#1a2230] border border-white/5 rounded-[16px] p-6 mb-6 flex items-center justify-between gap-4 shadow-lg h-[110px]">
+        <div className="bg-[#1a2230] border border-white/5 rounded-[16px] p-6 mb-4 flex items-center justify-between gap-4 shadow-lg h-[110px]">
             <div className="flex flex-col justify-center h-full">
-                <div className="text-sm font-bold text-[#00bc7d] mb-1 uppercase tracking-wider">Total Balance</div>
+                <div className="text-sm font-bold text-[#00bc7d] mb-1 uppercase tracking-wider">{t("totalBalance")}</div>
                 <div className="flex items-start text-white">
                     <span className="text-2xl font-black mr-1">$</span>
                     <span className="text-2xl font-black tracking-tight">980.69</span>
@@ -150,9 +152,9 @@ export function Settings() {
             </div>
             <Button 
                 onClick={() => navigate('/deposit')} 
-                className="bg-[#00ff88] hover:bg-[#00dd76] text-black font-black text-base rounded-[14px] px-8 h-12 shadow-[0_0_20px_-5px_rgba(0,255,136,0.3)] transition-all hover:scale-105"
+                className="bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 hover:brightness-110 text-black font-black text-base rounded-[14px] px-8 h-12 shadow-[0_0_20px_rgba(16,185,129,0.3)] transition-all hover:scale-105 border-none"
             >
-                Deposit
+                {t("deposit")}
             </Button>
         </div>
 
@@ -169,7 +171,7 @@ export function Settings() {
                             <div className="w-10 h-10 rounded-[10px] bg-black/40 flex items-center justify-center text-[#99A1AF] group-hover:text-emerald-400 group-hover:bg-emerald-500/10 transition-all">
                                 <item.icon className="w-5 h-5" />
                             </div>
-                            <span className="font-bold text-[#e5e7eb] group-hover:text-white transition-colors text-base">{item.label}</span>
+                            <span className="font-bold text-[#e5e7eb] group-hover:text-white transition-colors text-base">{t(item.labelKey as any)}</span>
                         </div>
                         <ChevronRight className="w-5 h-5 text-[#4A5565] group-hover:text-emerald-500 transition-colors" />
                     </button>
@@ -178,7 +180,7 @@ export function Settings() {
         </div>
 
         {/* Logout Button (Floating or at bottom) */}
-        <div className="flex justify-center mt-8">
+        <div className="flex justify-center mt-6">
             <Button 
                 variant="outline" 
                 onClick={() => {
@@ -188,7 +190,7 @@ export function Settings() {
                 className="gap-2 border-red-500/20 bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white w-48 h-12 rounded-[14px] font-bold transition-all"
             >
                 <LogOut className="w-4 h-4" />
-                Logout
+                {t("logout")}
             </Button>
         </div>
 

@@ -2,19 +2,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import { Flame, Gamepad2, Trophy, Dices, Club, Fish, Plane, Crown, ArrowRightLeft, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from '../ui/button';
 import { SectionHeader } from './SectionHeader';
-
-const categories = [
-  { name: 'Hot Games', icon: Flame, active: false },
-  { name: 'All', icon: Gamepad2, active: false },
-  { name: 'Sports', icon: Trophy, active: false },
-  { name: 'Live Casino', icon: Dices, active: false },
-  { name: 'Slots', icon: Dices, active: true },
-  { name: 'Fish Hunt', icon: Fish, active: false },
-  { name: 'Lottery', icon: Dices, active: false },
-  { name: 'Exchange', icon: ArrowRightLeft, active: false },
-  { name: 'Poker', icon: Club, active: false },
-  { name: 'Crash', icon: Plane, active: false },
-];
+import { useLanguage } from '../../contexts/LanguageContext';
 
 const games = [
   {
@@ -68,8 +56,22 @@ const games = [
 ];
 
 export function GameCategoryWithRTP() {
+  const { t } = useLanguage();
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [scrollProgress, setScrollProgress] = useState(0);
+  
+  const categories = [
+    { nameKey: 'hotGames', icon: Flame, active: false },
+    { nameKey: 'allGames', icon: Gamepad2, active: false },
+    { nameKey: 'sports', icon: Trophy, active: false },
+    { nameKey: 'liveCasino', icon: Dices, active: false },
+    { nameKey: 'slots', icon: Dices, active: true },
+    { nameKey: 'fishHunt', icon: Fish, active: false },
+    { nameKey: 'lottery', icon: Dices, active: false },
+    { nameKey: 'exchange', icon: ArrowRightLeft, active: false },
+    { nameKey: 'poker', icon: Club, active: false },
+    { nameKey: 'crash', icon: Plane, active: false },
+  ];
 
   const handleScroll = () => {
     if (scrollContainerRef.current) {
@@ -122,7 +124,7 @@ export function GameCategoryWithRTP() {
                   }`}
               >
                 <cat.icon className={`w-4 h-4 ${cat.active ? 'text-white' : 'text-current'}`} />
-                {cat.name}
+                {t(cat.nameKey as any)}
               </Button>
             ))}
           </div>

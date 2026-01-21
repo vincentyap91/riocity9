@@ -1,6 +1,7 @@
 import React from 'react';
 import { Search } from 'lucide-react';
 import { Button } from '../ui/button';
+import { useLanguage } from '../../contexts/LanguageContext';
 
 export interface PageNavItem {
     id: string;
@@ -38,6 +39,7 @@ const titleShadowMap: Record<string, string> = {
 export function InsidePageHeader({ title, navItems, iconColor = "text-pink-500" }: InsidePageHeaderProps) {
   const activeClass = activeColorMap[iconColor] || activeColorMap["text-pink-500"];
   const titleShadow = titleShadowMap[iconColor] || titleShadowMap["text-pink-500"];
+  const { t } = useLanguage();
 
   return (
     <div className="w-full flex flex-col items-center gap-6 py-6 relative">
@@ -86,9 +88,9 @@ export function InsidePageHeader({ title, navItems, iconColor = "text-pink-500" 
             {/* Search Bar */}
             <div className="relative w-full">
                 <input 
-                    type="text" 
+                    type="text"
                     className="w-full h-14 bg-[#16202c] border border-transparent hover:border-white/10 focus:border-pink-500/50 rounded-full pl-6 pr-14 text-transparent focus:text-white transition-all outline-none cursor-pointer focus:cursor-text"
-                    placeholder="Search for games & providers"
+                    placeholder={t("searchPlaceholder")}
                   />
                 <div className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-blue-600/20 rounded-full text-blue-400">
                     <Search className="w-5 h-5" />

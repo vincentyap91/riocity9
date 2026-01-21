@@ -22,6 +22,7 @@ import {
 } from 'lucide-react';
 import { Button } from '../components/ui/button';
 import { useNavigate } from 'react-router-dom';
+import { useLanguage } from '../contexts/LanguageContext';
 
 // Mock Data for Payment Methods - Enhanced for Visual Variety
 const POPULAR_METHODS = [
@@ -122,6 +123,7 @@ const FILTERS = [
 
 export function Deposit() {
   const navigate = useNavigate();
+  const { t } = useLanguage();
   const [step, setStep] = useState<1 | 2 | 3>(1); // 1=Select, 2=Amount, 3=Transfer
   const [selectedMethodId, setSelectedMethodId] = useState<string | null>(null);
   const [amount, setAmount] = useState<string>('');
@@ -186,7 +188,7 @@ export function Deposit() {
           >
             <ArrowLeft className="w-5 h-5 text-white" />
           </button>
-          <span className="text-white font-bold text-base">Settings</span>
+          <span className="text-white font-bold text-base">{t("settings")}</span>
         </div>
 
         {/* Main Card */}
@@ -198,20 +200,20 @@ export function Deposit() {
                 <div className="flex bg-[#0f151f] p-1 rounded-xl border border-white/5 w-full max-w-[313px]">
                   <button 
                       onClick={() => handleTabChange('deposit')}
-                      className={`flex-1 px-8 py-3 rounded-lg text-sm font-bold transition-all ${activeTab === 'deposit' ? 'bg-emerald-500 text-black shadow-lg' : 'text-gray-400 hover:text-white'}`}
+                      className={`flex-1 px-8 py-3 rounded-lg text-sm font-bold transition-all ${activeTab === 'deposit' ? 'bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 text-black shadow-lg' : 'text-gray-400 hover:text-white'}`}
                   >
                       <span className="flex items-center justify-center gap-2">
                           <Banknote className="w-4 h-4" />
-                          Deposit
+                          {t("deposit")}
                       </span>
                   </button>
                   <button 
                       onClick={() => handleTabChange('withdrawal')}
-                      className={`flex-1 px-8 py-3 rounded-lg text-sm font-bold transition-all ${activeTab === 'withdrawal' ? 'bg-emerald-500 text-black shadow-lg' : 'text-gray-400 hover:text-white'}`}
+                      className={`flex-1 px-8 py-3 rounded-lg text-sm font-bold transition-all ${activeTab === 'withdrawal' ? 'bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 text-black shadow-lg' : 'text-gray-400 hover:text-white'}`}
                   >
                       <span className="flex items-center justify-center gap-2">
                           <Wallet className="w-4 h-4" />
-                          Withdrawal
+                          {t("withdrawal")}
                       </span>
                   </button>
                 </div>
@@ -219,7 +221,7 @@ export function Deposit() {
             ) : (
               <div className="flex items-center justify-center">
                 <h1 className="text-xl font-bold text-white">
-                  {step === 2 ? 'Deposit Amount' : 'Confirm Deposit'}
+                  {step === 2 ? t("depositAmount") : t("confirmDeposit")}
                 </h1>
               </div>
             )}
@@ -231,7 +233,7 @@ export function Deposit() {
           {/* STEP 1: SELECTION */}
           {step === 1 && (
             <div className="space-y-6">
-                <div className="text-gray-400 text-sm">Select a reload option from the available options.</div>
+                <div className="text-gray-400 text-sm">{t("selectReloadOption")}</div>
 
                 {/* Search & Filters */}
                 <div className="space-y-3">
@@ -239,7 +241,7 @@ export function Deposit() {
                         <Search className="absolute left-4 top-3.5 w-5 h-5 text-gray-500" />
                         <input 
                             type="text" 
-                            placeholder="Search" 
+                            placeholder={t("search")} 
                             className="w-full bg-[#0f151f] border border-white/10 rounded-xl py-3 pl-12 pr-4 text-white focus:outline-none focus:border-emerald-500 transition-colors placeholder:text-gray-600"
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
@@ -258,7 +260,7 @@ export function Deposit() {
 
                 {/* Popular Methods Grid */}
                 <div>
-                    <h3 className="text-sm font-bold text-gray-300 mb-3">Popular/Recent Methods</h3>
+                    <h3 className="text-sm font-bold text-gray-300 mb-3">{t("popularRecentMethods")}</h3>
                     <div className="grid grid-cols-2 gap-3">
                         {POPULAR_METHODS.map(method => (
                             <button 
@@ -282,7 +284,7 @@ export function Deposit() {
 
                 {/* Other Methods List */}
                 <div>
-                    <h3 className="text-sm font-bold text-gray-300 mb-3">Other Methods</h3>
+                    <h3 className="text-sm font-bold text-gray-300 mb-3">{t("otherMethods")}</h3>
                     <div className="space-y-2">
                         {OTHER_METHODS.map(method => (
                             <button 
@@ -302,7 +304,7 @@ export function Deposit() {
                                             </span>
                                         </div>
                                         <div className="text-[10px] text-gray-500 mt-0.5">
-                                            Process Time: <span className="text-gray-300">{method.processTime}</span>
+                                            {t("processTime")} <span className="text-gray-300">{method.processTime}</span>
                                         </div>
                                         <div className="text-[10px] text-gray-600 font-mono">
                                             {method.limit}
@@ -341,9 +343,9 @@ export function Deposit() {
                     <Button 
                         onClick={handleContinue}
                         disabled={!selectedMethodId}
-                        className="w-full h-12 bg-emerald-500 hover:bg-emerald-400 text-black font-bold text-base rounded-xl shadow-[0px_0px_20px_-5px_rgba(16,185,129,0.4)] transition-all hover:translate-y-[-1px] disabled:opacity-50 disabled:hover:translate-y-0"
+                        className="w-full h-12 bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 hover:brightness-110 text-black font-black text-base rounded-xl shadow-[0_5px_15px_rgba(16,185,129,0.35)] transition-all hover:translate-y-[-1px] disabled:opacity-50 disabled:hover:translate-y-0 border-none"
                     >
-                        Continue to Deposit 
+                        {t("continueToDeposit")} 
                         <ChevronRight className="w-4 h-4 ml-1" />
                     </Button>
                 </div>
@@ -360,19 +362,19 @@ export function Deposit() {
                             <selectedMethod.icon className={`w-6 h-6 ${'text' in selectedMethod ? selectedMethod.text : 'text-white'}`} />
                         </div>
                         <div>
-                            <div className="text-sm font-bold text-gray-400">Selected Method</div>
+                            <div className="text-sm font-bold text-gray-400">{t("selectedMethod")}</div>
                             <div className="text-lg font-bold text-white">{selectedMethod.name}</div>
                         </div>
                     </div>
-                    <Button variant="ghost" onClick={() => setStep(1)} className="text-emerald-500 hover:text-emerald-400 hover:bg-emerald-500/10 h-auto py-1 px-3 text-xs font-bold uppercase tracking-wider">
-                        Change
+                    <Button variant="ghost" onClick={() => setStep(1)} className="text-emerald-500 hover:text-emerald-400 hover:bg-emerald-500/10 h-auto py-1 px-3 text-base font-bold uppercase tracking-wider">
+                        {t("change")}
                     </Button>
                 </div>
 
                 {/* Existing Step 2 Logic */}
                <div className="bg-[#0f151f] border border-white/10 rounded-2xl p-6">
                   <div className="flex items-center justify-between mb-4">
-                     <span className="text-sm font-bold text-gray-300">Deposit amount</span>
+                     <span className="text-sm font-bold text-gray-300">{t("depositAmountLabel")}</span>
                   </div>
 
                   {/* Input */}
@@ -412,9 +414,9 @@ export function Deposit() {
                <Button 
                  onClick={handleAmountSubmit}
                  disabled={!amount}
-                 className="w-full h-12 bg-emerald-500 hover:bg-emerald-400 text-black font-bold text-base rounded-xl shadow-[0px_10px_15px_-3px_rgba(16,185,129,0.2)] transition-all hover:translate-y-[-1px] disabled:opacity-50 disabled:hover:translate-y-0"
+                 className="w-full h-12 bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 hover:brightness-110 text-black font-black text-base rounded-xl shadow-[0_5px_15px_rgba(16,185,129,0.35)] transition-all hover:translate-y-[-1px] disabled:opacity-50 disabled:hover:translate-y-0 border-none"
                >
-                 Confirm & Deposit
+                 {t("confirmAndDeposit")}
                </Button>
             </div>
           )}
@@ -430,13 +432,13 @@ export function Deposit() {
                                 <selectedMethod.icon className={`w-5 h-5 ${'text' in selectedMethod ? selectedMethod.text : 'text-white'}`} />
                             </div>
                             <div>
-                                <div className="text-xs text-gray-500 font-bold uppercase">Payment Method</div>
+                                <div className="text-xs text-gray-500 font-bold uppercase">{t("paymentMethod")}</div>
                                 <div className="text-sm font-bold text-white">{selectedMethod.name}</div>
                             </div>
                         </div>
                     </div>
                     <div className="flex items-center justify-between">
-                        <span className="text-gray-400 font-bold">Deposit Amount</span>
+                        <span className="text-gray-400 font-bold">{t("depositAmount")}</span>
                         <div className="flex items-center gap-1">
                             <span className="text-emerald-500 font-bold text-sm">MYR</span>
                             <span className="text-2xl font-black text-white">{parseFloat(amount).toFixed(2)}</span>
@@ -445,22 +447,22 @@ export function Deposit() {
                 </div>
 
                 <div className="bg-white p-6 rounded-2xl flex flex-col items-center shadow-xl">
-                    <div className="bg-blue-400 text-white font-bold px-4 py-1 rounded-full mb-3 text-sm">SCAN ME</div>
+                    <div className="bg-blue-400 text-white font-bold px-4 py-1 rounded-full mb-3 text-sm">{t("scanMe")}</div>
                     <div className="border-4 border-[#131b29] p-2 rounded-xl mb-2">
                         <QrCode className="w-40 h-40 text-black" />
                     </div>
-                    <button className="text-xs font-bold text-blue-600 hover:underline">Download QR Code</button>
+                    <button className="text-xs font-bold text-blue-600 hover:underline">{t("downloadQrCode")}</button>
                 </div>
 
                 <div className="space-y-3">
                     <div className="bg-[#131b29] p-4 rounded-xl border border-white/5">
-                        <div className="text-xs text-gray-500 font-bold uppercase mb-1">Bank Name</div>
+                        <div className="text-xs text-gray-500 font-bold uppercase mb-1">{t("bankName")}</div>
                         <div className="text-white font-bold">Public Bank Berhad</div>
                     </div>
 
                     <div className="bg-[#131b29] p-4 rounded-xl border border-white/5 flex items-center justify-between group">
                         <div>
-                            <div className="text-xs text-gray-500 font-bold uppercase mb-1">Account Number</div>
+                            <div className="text-xs text-gray-500 font-bold uppercase mb-1">{t("accountNumber")}</div>
                             <div className="text-white font-bold tracking-wider">88779897778899</div>
                         </div>
                         <button className="p-2 hover:bg-white/10 rounded-lg text-gray-500 group-hover:text-emerald-500 transition-colors">
@@ -470,7 +472,7 @@ export function Deposit() {
 
                     <div className="bg-[#131b29] p-4 rounded-xl border border-white/5 flex items-center justify-between group">
                         <div>
-                            <div className="text-xs text-gray-500 font-bold uppercase mb-1">Account Name</div>
+                            <div className="text-xs text-gray-500 font-bold uppercase mb-1">{t("accountName")}</div>
                             <div className="text-white font-bold">RIO PAYMENTS SDN BHD</div>
                         </div>
                         <button className="p-2 hover:bg-white/10 rounded-lg text-gray-500 group-hover:text-emerald-500 transition-colors">
@@ -480,22 +482,22 @@ export function Deposit() {
                 </div>
 
                 <div className="space-y-2">
-                    <label className="text-sm font-bold text-gray-400">Reference / Transaction ID (Optional)</label>
+                    <label className="text-sm font-bold text-gray-400">{t("referenceOptional")}</label>
                     <input 
                         type="text"
                         value={referenceId}
                         onChange={(e) => setReferenceId(e.target.value)}
                         className="w-full bg-[#0f151f] border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-emerald-500 transition-colors placeholder:text-gray-700"
-                        placeholder="Enter reference number"
+                        placeholder={t("enterReferenceNumber")}
                     />
                 </div>
 
                 <div className="space-y-2">
-                    <label className="text-sm font-bold text-gray-400">Upload Receipt *</label>
+                    <label className="text-sm font-bold text-gray-400">{t("uploadReceipt")}</label>
                     <div className="border-2 border-dashed border-white/10 hover:border-emerald-500/50 rounded-xl p-8 flex flex-col items-center justify-center cursor-pointer transition-colors bg-[#0f151f]/50 hover:bg-[#0f151f]">
                         <Upload className="w-8 h-8 text-gray-500 mb-2" />
-                        <span className="text-sm font-bold text-gray-300">Tap to upload file</span>
-                        <span className="text-xs text-gray-600 mt-1">Supported: JPG, PNG, PDF</span>
+                        <span className="text-sm font-bold text-gray-300">{t("tapToUpload")}</span>
+                        <span className="text-xs text-gray-600 mt-1">{t("supportedFiles")}</span>
                     </div>
                 </div>
 
@@ -503,14 +505,14 @@ export function Deposit() {
                     <Button 
                         variant="outline" 
                         onClick={() => setStep(2)}
-                        className="h-12 border-white/10 hover:bg-white/5 text-gray-300 hover:text-white rounded-xl"
+                        className="h-12 border-white/10 hover:bg-white/5 text-gray-300 hover:text-white rounded-xl text-base font-bold"
                     >
-                        Back
+                        {t("back")}
                     </Button>
                     <Button 
-                        className="h-12 bg-emerald-500 hover:bg-emerald-400 text-black font-bold rounded-xl shadow-[0px_10px_15px_-3px_rgba(16,185,129,0.2)]"
+                        className="h-12 bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 hover:brightness-110 text-black font-black rounded-xl shadow-[0_5px_15px_rgba(16,185,129,0.35)] text-base border-none"
                     >
-                        Submit
+                        {t("submit")}
                     </Button>
                 </div>
              </div>

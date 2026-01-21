@@ -4,6 +4,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { Button } from '../ui/button';
 import { ArrowRight, MessageCircle, Wallet, Sparkles, Zap } from 'lucide-react';
+import { useLanguage } from '../../contexts/LanguageContext';
 
 // Figma Imported Assets from Container.tsx
 import img30Bonus from "@/assets/6b79fcd825e505f8172a2d0ba7c9e3799a10c8b3.png";
@@ -13,6 +14,7 @@ import imgUnlimitedBonus from "@/assets/d101476c8661ced83614d896975cc0524f0ec119
 import imgLive from "@/assets/f470efce5aa86066c1a4369e61fdae1d4ff30b86.png"; // Updated Main Live Image
 
 export function HeroSection() {
+  const { t } = useLanguage();
   const settings = {
     dots: true,
     infinite: true,
@@ -40,21 +42,21 @@ export function HeroSection() {
         id: 1, 
         image: imgLive, 
         alt: "RioCity9 Is Now Live",
-        action: "Play Now",
+        action: t("playNow"),
         showButton: false // The image has "RioCity9" text, button might obscure it? Figma design shows clean image.
     },
     { 
         id: 2, 
         image: img50Bonus, 
         alt: "50% Welcome Bonus",
-        action: "Claim 50% Bonus",
+        action: t("claim50Bonus"),
         showButton: true
     },
     { 
         id: 3, 
         image: img30Bonus, 
         alt: "30% Welcome Bonus",
-        action: "Claim 30% Bonus",
+        action: t("claim30Bonus"),
         showButton: true
     }
   ];

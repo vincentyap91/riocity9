@@ -10,35 +10,37 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
-
-const categories = [
-  { id: 'lobby', label: 'Home', icon: Home, path: '/' },
-  { id: 'slots', label: 'Slots', icon: Gamepad2, path: '/slots' },
-  { id: 'live', label: 'Live Casino', icon: Dices, path: '/live-casino' },
-  { id: 'sports', label: 'Sports', icon: Trophy, path: '/sports' },
-  { id: 'fish', label: 'Fishing', icon: Fish, path: '/fishing' },
-  { id: 'lottery', label: 'Lottery', icon: Ticket, path: '/lottery' },
-  { id: 'poker', label: 'Poker', icon: Club, path: '/poker' },
-  { 
-      id: 'reward', 
-      label: 'Reward Centre', 
-      icon: Sparkles, 
-      path: '#',
-      color: 'text-yellow-400',
-      subItems: [
-          { label: "Spin Wheel Bonus", path: "/bonus/wheel", icon: Dices },
-          { label: "Voucher Scratch Bonus", path: "/bonus/scratch", icon: Ticket },
-          { label: "Prize Box Bonus", path: "/bonus/prize", icon: Box },
-      ]
-  },
-  { id: 'vip', label: 'VIP Club', icon: Star, path: '/vip', color: 'text-yellow-400' },
-  { id: 'promotions', label: 'Promotions', icon: Gift, path: '/promotions', color: 'text-pink-400' },
-  { id: 'app', label: 'App', icon: Smartphone, path: '/app', color: 'text-emerald-400' },
-];
+import { useLanguage } from '../../contexts/LanguageContext';
 
 export function CategoryNav() {
   const location = useLocation();
+  const { t } = useLanguage();
   const [isScrolled, setIsScrolled] = useState(false);
+  
+  const categories = [
+    { id: 'lobby', labelKey: 'lobby', icon: Home, path: '/' },
+    { id: 'slots', labelKey: 'slots', icon: Gamepad2, path: '/slots' },
+    { id: 'live', labelKey: 'liveCasino', icon: Dices, path: '/live-casino' },
+    { id: 'sports', labelKey: 'sports', icon: Trophy, path: '/sports' },
+    { id: 'fish', labelKey: 'fishing', icon: Fish, path: '/fishing' },
+    { id: 'lottery', labelKey: 'lottery', icon: Ticket, path: '/lottery' },
+    { id: 'poker', labelKey: 'poker', icon: Club, path: '/poker' },
+    { 
+        id: 'reward', 
+        labelKey: 'rewardCentre', 
+        icon: Sparkles, 
+        path: '#',
+        color: 'text-yellow-400',
+        subItems: [
+            { labelKey: "spinWheelBonus", path: "/bonus/wheel", icon: Dices },
+            { labelKey: "voucherScratchBonus", path: "/bonus/scratch", icon: Ticket },
+            { labelKey: "prizeBoxBonus", path: "/bonus/prize", icon: Box },
+        ]
+    },
+    { id: 'vip', labelKey: 'vipClub', icon: Star, path: '/vip', color: 'text-yellow-400' },
+    { id: 'promotions', labelKey: 'promotions', icon: Gift, path: '/promotions', color: 'text-pink-400' },
+    { id: 'app', labelKey: 'app', icon: Smartphone, path: '/app', color: 'text-emerald-400' },
+  ];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -81,7 +83,7 @@ export function CategoryNav() {
                                         }`}
                                     >
                                         <cat.icon className={`w-4 h-4 ${cat.color || ''}`} />
-                                        <span className="text-sm font-bold tracking-wide font-[Poppins]">{cat.label}</span>
+                                        <span className="text-sm font-bold tracking-wide font-[Poppins]">{t(cat.labelKey as any)}</span>
                                         <ChevronDown className="w-3 h-3 ml-1 opacity-70" />
                                     </div>
                                 </DropdownMenuTrigger>
@@ -90,7 +92,7 @@ export function CategoryNav() {
                                         <DropdownMenuItem key={idx} asChild className="focus:bg-white/10 focus:text-white cursor-pointer">
                                             <Link to={sub.path} className="flex items-center gap-2 py-2.5">
                                                 {sub.icon && <sub.icon className="w-4 h-4 text-emerald-400" />}
-                                                <span className="font-medium">{sub.label}</span>
+                                                <span className="font-medium">{t(sub.labelKey as any)}</span>
                                             </Link>
                                         </DropdownMenuItem>
                                     ))}
@@ -110,7 +112,7 @@ export function CategoryNav() {
                             }`}
                         >
                             <cat.icon className={`w-4 h-4 ${cat.color || ''} ${isActive ? 'fill-current' : ''}`} />
-                            <span className="text-sm font-bold tracking-wide font-[Poppins]">{cat.label}</span>
+                            <span className="text-sm font-bold tracking-wide font-[Poppins]">{t(cat.labelKey as any)}</span>
                         </Link>
                     )
                 })}

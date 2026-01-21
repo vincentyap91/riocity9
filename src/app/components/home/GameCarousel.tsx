@@ -6,6 +6,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
 import { SectionHeader } from './SectionHeader';
+import { useLanguage } from '../../contexts/LanguageContext';
 
 interface GameItem {
   id: string | number;
@@ -25,6 +26,7 @@ interface GameCarouselProps {
 }
 
 export function GameCarousel({ title, icon, items, className, slidesToShow = 4, aspectRatio = "aspect-[16/10]" }: GameCarouselProps) {
+  const { t } = useLanguage();
   const sliderRef = useRef<Slider>(null);
 
   const settings: Settings = {
@@ -75,7 +77,7 @@ export function GameCarousel({ title, icon, items, className, slidesToShow = 4, 
         action={
           <div className="flex items-center gap-2">
             <Button variant="ghost" size="sm" className="hidden sm:flex h-8 text-[11px] uppercase font-bold text-[rgb(148,163,184)] hover:text-emerald-400 hover:bg-emerald-500/10 border border-[rgb(148,163,184,0.3)] rounded-full transition-all mr-2">
-              View All
+              {t("viewAll")}
             </Button>
             <div className="flex gap-1">
               <Button 
@@ -106,7 +108,7 @@ export function GameCarousel({ title, icon, items, className, slidesToShow = 4, 
             <div key={item.id} className="px-2 pb-4">
               <div className="group relative flex flex-col gap-3 cursor-pointer">
                 {/* Image Container */}
-                <div className={`relative ${aspectRatio} overflow-hidden rounded-xl border border-white/5 bg-secondary/20 shadow-lg group-hover:shadow-[0_0_15px_-5px_var(--primary)] transition-all duration-300`}>
+                <div className={`relative ${aspectRatio} overflow-hidden rounded-2xl ring-1 ring-white/10 bg-[#1a2536] transition-all duration-300`}>
                   <img 
                     src={item.image} 
                     alt={item.title} 
@@ -114,9 +116,9 @@ export function GameCarousel({ title, icon, items, className, slidesToShow = 4, 
                   />
                   
                   {/* Overlay on Hover */}
-                  <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                    <div className="bg-primary text-primary-foreground h-12 w-12 rounded-full flex items-center justify-center shadow-lg transform scale-50 group-hover:scale-100 transition-transform duration-300">
-                      <ArrowRight className="h-6 w-6" />
+                  <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                    <div className="w-12 h-12 rounded-full bg-emerald-500 flex items-center justify-center shadow-[0_0_20px_rgba(16,185,129,0.4)] transform scale-50 group-hover:scale-100 transition-transform duration-300">
+                      <ArrowRight className="w-6 h-6 text-black stroke-[3]" />
                     </div>
                   </div>
                   
@@ -130,10 +132,10 @@ export function GameCarousel({ title, icon, items, className, slidesToShow = 4, 
 
                 {/* Text Content */}
                 <div className="flex flex-col gap-0.5">
-                  <h3 className="font-bold text-base text-white group-hover:text-primary transition-colors truncate">
+                  <h3 className="text-sm font-bold text-white group-hover:text-emerald-500 transition-colors truncate">
                     {item.title}
                   </h3>
-                  <span className="text-sm text-muted-foreground truncate">
+                  <span className="text-[11px] text-gray-500 font-bold uppercase tracking-wider truncate">
                     {item.provider}
                   </span>
                 </div>

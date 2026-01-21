@@ -1,26 +1,28 @@
 import React from 'react';
 import { Home, Search, Wallet, Gift, Menu, User } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useLanguage } from '../../contexts/LanguageContext';
 import svgPaths from "@/imports/svg-fhcj8q950g";
 
 // --- After Login Component (Existing) ---
 function MobileBottomNavAfterLogin({ onMenuClick }: { onMenuClick?: () => void }) {
+  const { t } = useLanguage();
   return (
     <div className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#0a0f19]/95 backdrop-blur-xl border-t border-white/10 pb-safe">
       <div className="flex items-center justify-around h-16 px-2">
         
-        <NavButton icon={Menu} label="Menu" onClick={onMenuClick} />
-        <NavButton icon={Search} label="Search" />
+        <NavButton icon={Menu} label={t("menu")} onClick={onMenuClick} />
+        <NavButton icon={Search} label={t("search")} />
         
         {/* Center CTA - Wallet/Deposit */}
         <div className="relative -top-5">
-            <Link to="/deposit" className="w-14 h-14 rounded-full bg-gradient-to-br from-emerald-500 to-emerald-700 flex items-center justify-center shadow-[0_0_20px_rgba(16,185,129,0.4)] border-4 border-[#0a0f19] active:scale-95 transition-transform">
-                <Wallet className="w-6 h-6 text-white fill-white/20" />
+            <Link to="/deposit" className="w-14 h-14 rounded-full bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 flex items-center justify-center shadow-[0_0_20px_rgba(16,185,129,0.4)] border-4 border-[#0a0f19] active:scale-95 transition-transform">
+                <Wallet className="w-6 h-6 text-black fill-black/20" />
             </Link>
         </div>
 
-        <NavButton icon={Gift} label="Promo" />
-        <NavButton icon={User} label="Profile" />
+        <NavButton icon={Gift} label={t("promo")} />
+        <NavButton icon={User} label={t("profile")} />
 
       </div>
     </div>
@@ -138,15 +140,16 @@ function NavButtonBefore({ icon: Icon, label, onClick, to }: { icon: any, label:
 }
 
 function MobileBottomNavBeforeLogin({ onMenuClick }: { onMenuClick?: () => void }) {
+  const { t } = useLanguage();
   return (
     <div className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#0a0f19]/95 backdrop-blur-xl border-t border-[rgba(255,255,255,0.1)] pb-safe h-[64px]">
       <div className="flex flex-row items-center size-full">
         <div className="flex items-center justify-between px-[21px] w-full h-full">
-          <NavButtonBefore icon={IconMenu} label="Menu" onClick={onMenuClick} />
-          <NavButtonBefore icon={IconSearch} label="Search" />
-          <NavButtonBefore icon={IconReferral} label="Referral" to="/referral" />
-          <NavButtonBefore icon={IconPromo} label="Promo" to="/promotions" />
-          <NavButtonBefore icon={IconProfile} label="Profile" to="/login" />
+          <NavButtonBefore icon={IconMenu} label={t("menu")} onClick={onMenuClick} />
+          <NavButtonBefore icon={IconSearch} label={t("search")} />
+          <NavButtonBefore icon={IconReferral} label={t("referral")} to="/referral" />
+          <NavButtonBefore icon={IconPromo} label={t("promo")} to="/promotions" />
+          <NavButtonBefore icon={IconProfile} label={t("profile")} to="/login" />
         </div>
       </div>
     </div>

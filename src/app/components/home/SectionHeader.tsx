@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button } from '../ui/button';
 import { ChevronRight } from 'lucide-react';
+import { useLanguage } from '../../contexts/LanguageContext';
 
 interface SectionHeaderProps {
   title: React.ReactNode;
@@ -11,6 +12,7 @@ interface SectionHeaderProps {
 }
 
 export function SectionHeader({ title, icon, subtitle, action, className = "" }: SectionHeaderProps) {
+  const { t } = useLanguage();
   return (
     <div className={`flex items-center justify-between mb-5 px-1 ${className}`}>
       <div className="flex items-center gap-3">
@@ -39,7 +41,7 @@ export function SectionHeader({ title, icon, subtitle, action, className = "" }:
           size="sm"
           className="hidden sm:flex h-8 text-[11px] uppercase font-bold text-[rgb(148,163,184)] hover:text-emerald-400 hover:bg-emerald-500/10 border border-[rgb(148,163,184,0.3)] rounded-full transition-all"
         >
-          View All
+          {t("viewAll")}
         </Button>
       )}
     </div>

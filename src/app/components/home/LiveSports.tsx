@@ -3,54 +3,62 @@ import { Button } from "../ui/button";
 import { Trophy, Calendar, Clock, ChevronRight } from "lucide-react";
 import { Badge } from "../ui/badge";
 import { SectionHeader } from "./SectionHeader";
-
-const matches = [
-  {
-    id: 1,
-    league: "Premier League",
-    homeTeam: "Chelsea",
-    awayTeam: "Bournemouth",
-    date: "31/12/25",
-    time: "03:30",
-    status: "Coming Soon",
-    homeColor: "bg-blue-700",
-    awayColor: "bg-red-700",
-    background:
-      "https://images.unsplash.com/photo-1697562160779-fed83c21a2cd?w=800&q=80",
-  },
-  {
-    id: 2,
-    league: "Premier League",
-    homeTeam: "Burnley",
-    awayTeam: "Newcastle",
-    date: "31/12/25",
-    time: "03:30",
-    status: "Coming Soon",
-    homeColor: "bg-emerald-800",
-    awayColor: "bg-sky-600",
-    background:
-      "https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=800&q=80",
-  },
-  {
-    id: 3,
-    league: "Premier League",
-    homeTeam: "Nottingham",
-    awayTeam: "Everton",
-    date: "31/12/25",
-    time: "03:30",
-    status: "Coming Soon",
-    homeColor: "bg-red-600",
-    awayColor: "bg-blue-800",
-    background:
-      "https://images.unsplash.com/photo-1766756499755-0ae763777974?w=800&q=80",
-  },
-];
+import { useLanguage } from '../../contexts/LanguageContext';
 
 export function LiveSports() {
+  const { t } = useLanguage();
+  
+  const matches = [
+    {
+      id: 1,
+      league: "Premier League",
+      homeTeam: "Chelsea",
+      awayTeam: "Bournemouth",
+      date: "31/12/25",
+      time: "03:30",
+      status: t("comingSoon"),
+      homeColor: "bg-blue-700",
+      awayColor: "bg-red-700",
+      background:
+        "https://images.unsplash.com/photo-1697562160779-fed83c21a2cd?w=800&q=80",
+    },
+    {
+      id: 2,
+      league: "Premier League",
+      homeTeam: "Burnley",
+      awayTeam: "Newcastle",
+      date: "31/12/25",
+      time: "03:30",
+      status: t("comingSoon"),
+      homeColor: "bg-emerald-800",
+      awayColor: "bg-sky-600",
+      background:
+        "https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=800&q=80",
+    },
+    {
+      id: 3,
+      league: "Premier League",
+      homeTeam: "Nottingham",
+      awayTeam: "Everton",
+      date: "31/12/25",
+      time: "03:30",
+      status: t("comingSoon"),
+      homeColor: "bg-red-600",
+      awayColor: "bg-blue-800",
+      background:
+        "https://images.unsplash.com/photo-1766756499755-0ae763777974?w=800&q=80",
+    },
+  ];
   return (
     <section className="w-full">
       <SectionHeader
-        title={<span>Live <span className="text-[#ff6900]">Sports</span></span>}
+        title={
+          <span>
+            {t("liveSports").split(" ").map((word, idx) => 
+              idx === 0 ? word + " " : <span key={idx} className="text-[#ff6900]">{word}</span>
+            )}
+          </span>
+        }
         icon={
             <div className="p-1.5 bg-orange-500/10 rounded-lg border border-orange-500/20">
                 <Trophy className="text-orange-500 w-5 h-5" />
@@ -62,7 +70,7 @@ export function LiveSports() {
               size="sm"
               className="h-8 text-[11px] uppercase font-bold text-[rgb(148,163,184)] hover:text-emerald-400 hover:bg-emerald-500/10 border border-[rgb(148,163,184,0.3)] rounded-full transition-all"
             >
-              View All
+              {t("viewAll")}
             </Button>
         }
       />
@@ -89,7 +97,7 @@ export function LiveSports() {
               <div className="flex justify-between items-start text-xs font-medium text-slate-300 mb-6">
                 <div className="flex items-center gap-1.5 bg-black/40 backdrop-blur-sm px-2 py-1 rounded border border-white/10">
                   <Trophy className="w-3 h-3 text-orange-500" />
-                  <span>RIOCITY9</span>
+                  <span>RioCity9</span>
                 </div>
                 <div className="flex flex-col items-end">
                   <div className="flex items-center gap-1 text-white">
@@ -124,7 +132,7 @@ export function LiveSports() {
                 {/* VS */}
                 <div className="flex flex-col items-center justify-center w-1/3">
                   <span className="text-xl md:text-3xl font-black italic text-white/10 select-none group-hover:text-orange-500/20 transition-colors">
-                    VS
+                    {t("vs")}
                   </span>
                   <Badge
                     variant="outline"
@@ -155,7 +163,7 @@ export function LiveSports() {
             {/* Bottom Button */}
             <div className="relative z-10">
               <Button className="w-full rounded-none h-12 text-base font-bold uppercase tracking-wider bg-orange-600 hover:bg-orange-500 text-white shadow-inner transition-colors">
-                Bet Now
+                {t("betNow")}
               </Button>
             </div>
           </div>

@@ -5,9 +5,11 @@ import { Eye, EyeOff, Lock, CheckCircle2, AlertCircle, ArrowLeft } from 'lucide-
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
+import { useLanguage } from '../contexts/LanguageContext';
 
 export function ChangePassword() {
   const navigate = useNavigate();
+  const { t } = useLanguage();
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -89,7 +91,7 @@ export function ChangePassword() {
             >
               <ArrowLeft className="w-5 h-5 text-white" />
             </button>
-            <span className="text-white font-bold text-base">Settings</span>
+            <span className="text-white font-bold text-base">{t("settings")}</span>
           </div>
         </div>
 
@@ -104,7 +106,7 @@ export function ChangePassword() {
                 <div className="h-10 w-10 rounded-xl bg-black/25 border border-white/10 flex items-center justify-center">
                     <Lock className="w-5 h-5 text-white/90" />
                 </div>
-                <span className="text-white font-bold text-base">Change Password</span>
+                <span className="text-white font-bold text-base">{t("changePassword")}</span>
             </div>
 
             <div className="p-6 pt-4">

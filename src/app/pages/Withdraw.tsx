@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import { Button } from '../components/ui/button';
 import { useNavigate } from 'react-router-dom';
+import { useLanguage } from '../contexts/LanguageContext';
 
 // Mock Data for Withdraw Methods (matching Figma design)
 const POPULAR_METHODS = [
@@ -106,6 +107,7 @@ const OTHER_METHODS = [
 
 export function Withdraw() {
   const navigate = useNavigate();
+  const { t } = useLanguage();
   const [step, setStep] = useState<1 | 2>(1);
   const [selectedMethodId, setSelectedMethodId] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
@@ -168,7 +170,7 @@ export function Withdraw() {
           >
             <ArrowLeft className="w-5 h-5 text-white" />
           </button>
-          <span className="text-white font-bold text-base">Settings</span>
+          <span className="text-white font-bold text-base">{t("settings")}</span>
         </div>
 
         {/* Main Card */}
@@ -180,27 +182,27 @@ export function Withdraw() {
                 <div className="flex bg-[#0f151f] p-1 rounded-xl border border-white/5 w-full max-w-[313px]">
                   <button 
                       onClick={() => handleTabChange('deposit')}
-                      className={`flex-1 px-8 py-3 rounded-lg text-sm font-bold transition-all ${activeTab === 'deposit' ? 'bg-emerald-500 text-black shadow-lg' : 'text-gray-400 hover:text-white'}`}
+                      className={`flex-1 px-8 py-3 rounded-lg text-sm font-bold transition-all ${activeTab === 'deposit' ? 'bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 text-black shadow-lg' : 'text-gray-400 hover:text-white'}`}
                   >
                       <span className="flex items-center justify-center gap-2">
                           <Banknote className="w-4 h-4" />
-                          Deposit
+                          {t("deposit")}
                       </span>
                   </button>
                   <button 
                       onClick={() => handleTabChange('withdrawal')}
-                      className={`flex-1 px-8 py-3 rounded-lg text-sm font-bold transition-all ${activeTab === 'withdrawal' ? 'bg-emerald-500 text-black shadow-lg' : 'text-gray-400 hover:text-white'}`}
+                      className={`flex-1 px-8 py-3 rounded-lg text-sm font-bold transition-all ${activeTab === 'withdrawal' ? 'bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 text-black shadow-lg' : 'text-gray-400 hover:text-white'}`}
                   >
                       <span className="flex items-center justify-center gap-2">
                           <Wallet className="w-4 h-4" />
-                          Withdrawal
+                          {t("withdrawal")}
                       </span>
                   </button>
                 </div>
               </div>
             ) : (
               <div className="flex items-center justify-center">
-                <h1 className="text-xl font-bold text-white">Confirm Withdraw</h1>
+                <h1 className="text-xl font-bold text-white">{t("confirmWithdraw")}</h1>
               </div>
             )}
           </div>
@@ -211,14 +213,14 @@ export function Withdraw() {
           {/* STEP 1: SELECTION */}
           {step === 1 && (
             <div className="space-y-6">
-                <div className="text-gray-400 text-sm">Select a reload option from the available options.</div>
+                <div className="text-gray-400 text-sm">{t("selectWithdrawOption")}</div>
 
                 {/* Search */}
                 <div className="relative">
                     <Search className="absolute left-4 top-3.5 w-5 h-5 text-gray-500" />
                     <input 
                         type="text" 
-                        placeholder="Search" 
+                        placeholder={t("search")} 
                         className="w-full bg-[#0f151f] border border-white/10 rounded-xl py-3 pl-12 pr-4 text-white focus:outline-none focus:border-emerald-500 transition-colors placeholder:text-gray-600"
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
@@ -227,7 +229,7 @@ export function Withdraw() {
 
                 {/* Popular Methods Grid */}
                 <div>
-                    <h3 className="text-sm font-bold text-gray-300 mb-3">Popular/Recent Methods</h3>
+                    <h3 className="text-sm font-bold text-gray-300 mb-3">{t("popularRecentMethods")}</h3>
                     <div className="grid grid-cols-2 gap-3">
                         {POPULAR_METHODS.map(method => (
                             <button 
@@ -251,7 +253,7 @@ export function Withdraw() {
 
                 {/* Other Methods List */}
                 <div>
-                    <h3 className="text-sm font-bold text-gray-300 mb-3">Other Methods</h3>
+                    <h3 className="text-sm font-bold text-gray-300 mb-3">{t("otherMethods")}</h3>
                     <div className="space-y-2">
                         {OTHER_METHODS.map(method => (
                             <button 
@@ -271,7 +273,7 @@ export function Withdraw() {
                                             </span>
                                         </div>
                                         <div className="text-[10px] text-gray-500 mt-0.5">
-                                            Process Time: <span className="text-gray-300">{method.processTime}</span>
+                                            {t("processTime")} <span className="text-gray-300">{method.processTime}</span>
                                         </div>
                                         <div className="text-[10px] text-gray-600 font-mono">
                                             {method.limit}
@@ -286,14 +288,13 @@ export function Withdraw() {
                     </div>
                 </div>
 
-                {/* Footer Action */}
                 <div className="pt-2">
                     <Button 
                         onClick={handleContinue}
                         disabled={!selectedMethodId}
-                        className="w-full h-12 bg-emerald-500 hover:bg-emerald-400 text-black font-bold text-base rounded-xl shadow-[0px_0px_20px_-5px_rgba(16,185,129,0.4)] transition-all hover:translate-y-[-1px] disabled:opacity-50 disabled:hover:translate-y-0"
+                        className="w-full h-12 bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 hover:brightness-110 text-black font-black text-base rounded-xl shadow-[0_5px_15px_rgba(16,185,129,0.35)] transition-all hover:translate-y-[-1px] disabled:opacity-50 disabled:hover:translate-y-0"
                     >
-                        Continue to Withdraw 
+                        {t("continueToWithdraw")} 
                         <ChevronRight className="w-4 h-4 ml-1" />
                     </Button>
                 </div>
@@ -310,7 +311,7 @@ export function Withdraw() {
                         <selectedMethod.icon className={`w-5 h-5 ${'text' in selectedMethod ? selectedMethod.text : 'text-white'}`} />
                     </div>
                     <div className="flex-1">
-                        <div className="text-[10px] text-gray-500 font-bold uppercase tracking-wider">Payment Method</div>
+                        <div className="text-[10px] text-gray-500 font-bold uppercase tracking-wider">{t("paymentMethod")}</div>
                         <div className="text-sm font-bold text-white">{selectedMethod.name}</div>
                     </div>
                 </div>
@@ -318,13 +319,13 @@ export function Withdraw() {
                 {/* Form Fields */}
                 <div className="space-y-4">
                     <div className="space-y-1.5">
-                        <label className="text-sm font-bold text-gray-400 pl-1">Bank Name</label>
+                        <label className="text-sm font-bold text-gray-400 pl-1">{t("bankName")}</label>
                         <select 
                             value={bankName}
                             onChange={(e) => setBankName(e.target.value)}
                             className="w-full bg-[#0f151f] border border-white/10 rounded-xl px-4 py-3.5 text-white focus:outline-none focus:border-emerald-500 transition-colors appearance-none cursor-pointer"
                         >
-                            <option value="" disabled>Please Select Bank</option>
+                            <option value="" disabled>{t("pleaseSelectBank")}</option>
                             <option value="maybank">Maybank</option>
                             <option value="cimb">CIMB Bank</option>
                             <option value="public">Public Bank</option>
@@ -333,7 +334,7 @@ export function Withdraw() {
                     </div>
 
                     <div className="space-y-1.5">
-                        <label className="text-sm font-bold text-gray-400 pl-1">Account Name</label>
+                        <label className="text-sm font-bold text-gray-400 pl-1">{t("accountName")}</label>
                         <input 
                             type="text"
                             value={accountName}
@@ -343,7 +344,7 @@ export function Withdraw() {
                     </div>
 
                     <div className="space-y-1.5">
-                        <label className="text-sm font-bold text-gray-400 pl-1">Account Number</label>
+                        <label className="text-sm font-bold text-gray-400 pl-1">{t("accountNumber")}</label>
                         <input 
                             type="text"
                             value={accountNumber}
@@ -353,12 +354,12 @@ export function Withdraw() {
                     </div>
 
                     <div className="space-y-1.5">
-                        <label className="text-sm font-bold text-gray-400 pl-1">Reference / Transaction ID (Optional)</label>
+                        <label className="text-sm font-bold text-gray-400 pl-1">{t("referenceOptional")}</label>
                         <input 
                             type="text"
                             value={referenceId}
                             onChange={(e) => setReferenceId(e.target.value)}
-                            placeholder="Enter reference number"
+                            placeholder={t("enterReferenceNumber")}
                             className="w-full bg-[#0f151f] border border-white/10 rounded-xl px-4 py-3.5 text-white focus:outline-none focus:border-emerald-500 transition-colors placeholder:text-gray-600"
                         />
                     </div>
@@ -367,7 +368,7 @@ export function Withdraw() {
                 {/* Amount Section */}
                 <div className="bg-[#0f151f] border border-white/10 rounded-2xl p-5 space-y-4">
                     <div className="flex items-center justify-between">
-                        <span className="text-sm font-bold text-gray-300">Withdraw amount</span>
+                        <span className="text-sm font-bold text-gray-300">{t("withdrawAmountLabel")}</span>
                     </div>
 
                     {/* Input */}
@@ -409,14 +410,14 @@ export function Withdraw() {
                     <Button 
                         variant="outline" 
                         onClick={handleBack}
-                        className="h-12 border-white/10 hover:bg-white/5 text-gray-300 hover:text-white rounded-xl bg-[#02040a]"
+                        className="h-12 border-white/10 hover:bg-white/5 text-gray-300 hover:text-white rounded-xl bg-[#02040a] text-base font-bold"
                     >
-                        Back
+                        {t("back")}
                     </Button>
                     <Button 
-                        className="h-12 bg-emerald-500 hover:bg-emerald-400 text-black font-bold rounded-xl shadow-[0px_10px_15px_-3px_rgba(16,185,129,0.2)]"
+                        className="h-12 bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 hover:brightness-110 text-black font-black rounded-xl shadow-[0_5px_15px_rgba(16,185,129,0.35)] text-base"
                     >
-                        Submit
+                        {t("submit")}
                     </Button>
                 </div>
             </div>

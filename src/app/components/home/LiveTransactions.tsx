@@ -2,6 +2,7 @@ import React from 'react';
 import { User, ArrowRightLeft } from 'lucide-react';
 import { cn } from '../../components/ui/utils';
 import { SectionHeader } from './SectionHeader';
+import { useLanguage } from '../../contexts/LanguageContext';
 
 const transactions = [
   { user: '***12', amount: '1000.00', type: 'deposit', rank: 1 },
@@ -17,13 +18,20 @@ const transactions = [
 ];
 
 export function LiveTransactions() {
+  const { t } = useLanguage();
   const deposits = transactions.filter(t => t.type === 'deposit').slice(0, 5);
   const withdrawals = transactions.filter(t => t.type === 'withdrawal').slice(0, 5);
 
   return (
     <section className="w-full">
       <SectionHeader
-        title={<span>Live <span className="text-[#2b7fff]">Transactions</span></span>}
+        title={
+          <span>
+            {t("liveTransactions").split(" ").map((word, idx) => 
+              idx === 0 ? word + " " : <span key={idx} className="text-[#2b7fff]">{word}</span>
+            )}
+          </span>
+        }
         icon={
             <div className="p-1.5 bg-blue-500/10 rounded-lg border border-blue-500/20">
                 <ArrowRightLeft className="text-blue-500 w-5 h-5" />
@@ -39,13 +47,13 @@ export function LiveTransactions() {
                 <div className="py-3 text-center flex items-center justify-center gap-2 border-r border-white/5">
                     <div className="w-2 h-2 rounded-full bg-blue-500 animate-pulse hidden md:block"></div>
                     <span className="text-[10px] md:text-xs font-bold text-blue-400 uppercase tracking-widest">
-                        Last Deposits
+                        {t("lastDeposits")}
                     </span>
                 </div>
                 <div className="py-3 text-center flex items-center justify-center gap-2">
                     <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse hidden md:block"></div>
                     <span className="text-[10px] md:text-xs font-bold text-emerald-400 uppercase tracking-widest">
-                        Last Withdrawals
+                        {t("lastWithdrawals")}
                     </span>
                 </div>
             </div>

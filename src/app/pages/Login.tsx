@@ -112,7 +112,7 @@ export function Login() {
                 className="absolute z-11 text-center top-12"
             >
                  <div className="mb-0">
-                    <h2 className="text-5xl font-black text-white drop-shadow-md">Join Us</h2>
+                    <h2 className="text-4xl font-bold text-white drop-shadow-md mb-2">Join Us</h2>
                  </div>
                  <p className="text-white font-bold text-lg leading-tight max-w-xs mx-auto drop-shadow-sm">
                      Play free Daily Spins for a chance to win one of the Jackpots!
@@ -279,7 +279,7 @@ export function Login() {
                 <Button 
                     type="submit"
                     disabled={isLoading}
-                    className="w-full h-14 bg-[#4f46e5] hover:bg-[#4338ca] text-white font-bold text-lg rounded-xl shadow-[0px_10px_15px_-3px_rgba(97,95,255,0.2)] transition-all hover:translate-y-[-1px] disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="w-full h-14 bg-[#4f46e5] hover:bg-[#4338ca] text-white font-bold text-base rounded-xl shadow-[0px_10px_15px_-3px_rgba(97,95,255,0.2)] transition-all hover:translate-y-[-1px] disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                     {isLoading ? '登录中...' : 'Log In'}
                 </Button>
@@ -288,7 +288,7 @@ export function Login() {
                     variant="outline"
                     disabled={isLoading}
                     onClick={() => setShowForgotModal(true)}
-                    className="w-full h-14 bg-transparent border-white/10 hover:bg-white/5 text-gray-300 hover:text-white font-bold text-lg rounded-xl shadow-sm transition-transform hover:scale-[1.02] disabled:opacity-50"
+                    className="w-full h-14 bg-transparent border-white/10 hover:bg-white/5 text-gray-300 hover:text-white font-bold text-base rounded-xl shadow-sm transition-transform hover:scale-[1.02] disabled:opacity-50"
                 >
                     Forgot Password
                 </Button>
@@ -301,8 +301,8 @@ export function Login() {
                 transition={{ duration: 0.3, delay: 0.7 }}
                 className="text-center pt-4"
             >
-                <span className="text-white font-bold text-sm md:text-base mr-2">Do not have an account yet?</span>
-                <Link to="/register" className="text-[#FDC700] hover:text-yellow-300 font-bold text-sm md:text-base underline decoration-solid decoration-2 underline-offset-4 transition-colors">
+                <span className="text-white text-sm md:text-sm mr-2">Do not have an account yet?</span>
+                <Link to="/register" className="text-[#FDC700] hover:text-yellow-300 font-bold text-sm md:text-sm underline decoration-solid decoration-2 underline-offset-4 transition-colors">
                     Register Now!
                 </Link>
             </motion.div>
@@ -346,7 +346,7 @@ export function Login() {
             <Button
               variant="ghost"
               onClick={() => setShowForgotModal(false)}
-              className="h-12 text-gray-400 hover:text-white hover:bg-white/5 font-bold text-sm rounded-xl transition-colors"
+              className="h-12 text-gray-400 hover:text-white hover:bg-white/5 font-bold text-base rounded-xl transition-colors"
             >
               Maybe Later
             </Button>

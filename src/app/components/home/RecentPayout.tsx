@@ -2,6 +2,7 @@ import React from 'react';
 import { Zap, TrendingUp, History } from 'lucide-react';
 import { motion } from 'motion/react';
 import { SectionHeader } from './SectionHeader';
+import { useLanguage } from '../../contexts/LanguageContext';
 
 const payouts = [
   {
@@ -87,11 +88,18 @@ const payouts = [
 ];
 
 export function RecentPayout() {
+  const { t } = useLanguage();
   return (
     <section className="w-full h-full flex flex-col">
       {/* Header */}
       <SectionHeader
-        title={<span>Live <span className="text-[#5ee9b5]">Payouts</span></span>}
+        title={
+          <span>
+            {t("livePayouts").split(" ").map((word, idx) => 
+              idx === 0 ? word + " " : <span key={idx} className="text-[#5ee9b5]">{word}</span>
+            )}
+          </span>
+        }
         subtitle={null}
         icon={
             <div className="relative">

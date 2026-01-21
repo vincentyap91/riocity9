@@ -1,5 +1,8 @@
 import React from 'react';
-import { Grid, Search } from 'lucide-react';
+import { InsidePageHero } from '../components/shared/InsidePageHero';
+import { InsidePageHeader, PageNavItem } from '../components/shared/InsidePageHeader';
+import { Grid, Gamepad2, Star, Zap, Trophy, History, ArrowRight } from 'lucide-react';
+import { useLanguage } from '../contexts/LanguageContext';
 
 // --- Assets from RiocitySlots.tsx & Mn.tsx ---
 // Hero
@@ -73,60 +76,46 @@ const games = [
 ];
 
 export function Slots() {
+  const { t } = useLanguage();
+  const slotNavItems: PageNavItem[] = [
+      { id: 'lobby', label: t('lobby'), icon: Grid, isActive: true },
+      { id: 'hot', label: t('hotGames'), icon: Zap },
+      { id: 'new', label: "New", icon: Star },
+      { id: 'jackpot', label: "Jackpot", icon: Trophy },
+      { id: 'recent', label: "Recent", icon: History },
+  ];
+
   return (
     <div className="flex flex-col flex-1 bg-[#02040a] min-h-screen overflow-x-hidden">
         
         {/* Hero Section */}
-        <div className="relative w-full h-[300px] md:h-[400px] lg:h-[450px] bg-black">
-            <img src={imgImagePromo} alt="Welcome to Slot Game" className="w-full h-full object-cover opacity-90" />
-            
-            {/* Gradient Overlay for blending */}
-            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#02040a]"></div>
+        <InsidePageHero image={imgImagePromo} />
+
+        {/* Header & Nav */}
+        <div className="mt-[-20px] relative z-20">
+            <InsidePageHeader title={t('slots')} navItems={slotNavItems} iconColor="text-pink-500" />
         </div>
 
         {/* Main Content Area */}
-        <div className="container mx-auto max-w-[1200px] 2xl:max-w-[1536px] px-4 relative z-10 pb-20 flex flex-col items-center">
+        <div className="container mx-auto max-w-[1200px] px-4 relative z-10 pb-20 flex flex-col items-center">
               
-            {/* Header Title - Mn.tsx Heading */}
-            <h2 className="text-4xl md:text-5xl font-black text-[#f6339a] italic uppercase tracking-tighter drop-shadow-[0_0_25px_rgba(246,51,154,0.6)] mb-8">
-                Slots
-            </h2>
-
-            {/* Provider Navigation - Mn.tsx Container */}
-            <div className="w-full max-w-[1000px] bg-[#0f1923]/80 backdrop-blur-md border border-white/5 rounded-xl p-2.5 mb-4">
+            {/* Provider Navigation */}
+            <div className="w-full bg-[#0f1923]/80 backdrop-blur-md border border-white/5 rounded-xl p-2.5 mb-12">
                 <div className="flex items-center gap-2 overflow-x-auto no-scrollbar">
                     {providers.map((p) => (
                         <div 
                             key={p.id} 
                             className={`
-                                relative shrink-0 h-[70px] w-[170px] rounded-lg flex items-center justify-center cursor-pointer transition-all duration-300
+                                relative shrink-0 h-[60px] w-[140px] rounded-lg flex items-center justify-center cursor-pointer transition-all duration-300
                                 ${p.active 
                                     ? 'bg-[#e60076]/5 border border-[#e60076]' 
                                     : 'bg-[#16202c] border border-transparent hover:bg-[#1e2a38]'
                                 }
                             `}
                         >
-                            <img src={p.image} alt={p.name} className="h-10 w-auto object-contain max-w-[80%]" />
+                            <img src={p.image} alt={p.name} className="h-8 w-auto object-contain max-w-[80%]" />
                         </div>
                     ))}
-                </div>
-            </div>
-
-            {/* Search Bar - Mn.tsx Container3 */}
-            <div className="w-full max-w-[1000px] relative mb-16">
-                <div className="absolute left-6 top-1/2 -translate-y-1/2 text-gray-400">
-                    Search for games & providers
-                </div>
-                <input 
-                    type="text" 
-                    className="w-full h-14 bg-[#16202c] border border-transparent hover:border-white/10 focus:border-[#51A2FF]/50 rounded-full pl-6 pr-14 text-transparent focus:text-white transition-all outline-none cursor-pointer focus:cursor-text z-10 relative bg-transparent"
-                />
-                {/* Visual Background (since input is transparent for the placeholder text trick to match design) */}
-                <div className="absolute inset-0 bg-[#16202c] rounded-full -z-0"></div>
-
-                {/* Search Icon Button */}
-                <div className="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 bg-[#155dfc]/20 rounded-full flex items-center justify-center z-20">
-                     <Search className="w-4 h-4 text-[#51A2FF] stroke-[3]" />
                 </div>
             </div>
 
@@ -134,7 +123,7 @@ export function Slots() {
             <div className="w-full flex flex-col gap-6">
                 
                 {/* Section Header */}
-                <div className="flex items-center gap-3 mb-2">
+                <div className="flex items-center justify-center gap-3 mb-4">
                     <div className="w-10 h-10 rounded-lg bg-[#f6339a]/10 border border-[#f6339a]/20 flex items-center justify-center">
                         <Grid className="w-5 h-5 text-[#f6339a]" />
                     </div>
@@ -144,33 +133,59 @@ export function Slots() {
                 </div>
 
                 {/* Game Grid */}
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6">
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6">
                     {games.map((game) => (
-                        <div key={game.id} className="group relative bg-[#1a2536] rounded-xl overflow-hidden border border-white/5 hover:border-[#f6339a]/50 hover:shadow-[0_0_20px_-5px_rgba(246,51,154,0.4)] transition-all duration-300 cursor-pointer">
-                            
-                            {/* Image Container */}
-                            <div className="aspect-[3/2] w-full relative overflow-hidden">
+                        <div key={game.id} className="flex flex-col items-start gap-3 group cursor-pointer">
+                            <div 
+                                className="relative w-full aspect-square rounded-2xl overflow-hidden ring-1 ring-white/10 transition-all duration-500 bg-[#1a2536] group-hover:ring-[#fdc700]/30 group-hover:shadow-[0_0_30px_-5px_rgba(253,199,0,0.2)]"
+                            >
                                 <img 
                                     src={game.image} 
                                     alt={game.title} 
-                                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" 
+                                    className="w-full h-full object-cover transform transition-transform duration-500 group-hover:scale-110" 
                                 />
-                                
-                                {/* Overlay on Hover */}
-                                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                                    <div className="w-12 h-12 rounded-full bg-[#00bc7d] flex items-center justify-center shadow-lg transform scale-50 group-hover:scale-100 transition-transform duration-300">
-                                        <div className="w-0 h-0 border-t-[6px] border-t-transparent border-l-[10px] border-l-black border-b-[6px] border-b-transparent ml-1"></div>
+
+                                {/* Hover Overlay from Screenshot */}
+                                <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                                    <div className="w-12 h-12 rounded-full bg-emerald-500 flex items-center justify-center shadow-[0_0_20px_rgba(16,185,129,0.4)] transform scale-50 group-hover:scale-100 transition-transform duration-300">
+                                        <ArrowRight className="w-6 h-6 text-black stroke-[3]" />
+                                    </div>
+                                </div>
+
+                                {/* Enhanced Floating RTP Badge */}
+                                <div className="absolute top-2 left-2 z-10 group/rtp">
+                                    <div className="flex flex-col items-center bg-[#0a0f1a]/90 backdrop-blur-md border border-[#fdc700]/40 rounded-xl px-2 py-1.5 shadow-[0_0_15px_rgba(253,199,0,0.2)] group-hover:shadow-[0_0_20px_rgba(253,199,0,0.4)] transition-all duration-500">
+                                        <div className="flex items-center gap-1.5">
+                                            <div className="relative">
+                                                <div className="w-1.5 h-1.5 rounded-full bg-[#fdc700] animate-ping absolute opacity-75"></div>
+                                                <div className="w-1.5 h-1.5 rounded-full bg-[#fdc700] relative"></div>
+                                            </div>
+                                            <span className="text-[11px] font-black text-[#fdc700] tracking-tight drop-shadow-[0_0_5px_rgba(253,199,0,0.6)]">
+                                                {game.rtp}
+                                            </span>
+                                        </div>
+                                        <div className="w-full h-[3px] bg-white/5 rounded-full mt-1.5 overflow-hidden">
+                                            <div 
+                                                className="h-full bg-gradient-to-r from-[#f59e0b] via-[#fdc700] to-[#fcd34d] shadow-[0_0_8px_rgba(253,199,0,0.5)]" 
+                                                style={{ width: `${parseFloat(game.rtp)}%` }}
+                                            />
+                                        </div>
+                                        <span className="text-[7px] text-[#fdc700]/60 font-black uppercase tracking-[0.2em] mt-1 leading-none">Live RTP</span>
                                     </div>
                                 </div>
                             </div>
 
                             {/* Content */}
-                            <div className="p-4 flex flex-col gap-1">
-                                <h3 className="text-white font-bold text-sm md:text-base truncate group-hover:text-[#f6339a] transition-colors">
+                            <div className="flex flex-col gap-1 mt-1">
+                                <h3 className="text-white group-hover:text-emerald-500 font-bold text-[13px] truncate transition-colors w-full px-0.5">
                                     {game.title}
                                 </h3>
-                                <div className="flex items-center gap-2">
-                                    <span className="text-[#fdc700] text-xs font-bold">RTP {game.rtp}</span>
+                                <div className="flex items-center justify-between">
+                                    <span className="text-gray-500 text-[9px] font-black uppercase tracking-widest">NAGA</span>
+                                    <div className="flex items-center gap-1 bg-[#fdc700]/5 px-1.5 py-0.5 rounded-full border border-[#fdc700]/10">
+                                        <Zap className="w-2.5 h-2.5 text-[#fdc700] fill-[#fdc700]/20" />
+                                        <span className="text-[#fdc700] text-[9px] font-black uppercase tracking-tighter">HOT</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>

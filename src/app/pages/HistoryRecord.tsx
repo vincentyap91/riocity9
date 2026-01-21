@@ -7,6 +7,7 @@ import {
 import { useNavigate } from 'react-router-dom';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
+import { useLanguage } from '../contexts/LanguageContext';
 
 const SIDEBAR_ITEMS = [
   { id: 'transaction', label: 'Transaction History', icon: Wallet },
@@ -25,6 +26,7 @@ const QUICK_FILTERS = [
 
 export function HistoryRecord() {
   const navigate = useNavigate();
+  const { t } = useLanguage();
   const [activeSidebarTab, setActiveSidebarTab] = useState('transaction');
   const [activeTypeTab, setActiveTypeTab] = useState<'deposits' | 'withdrawals'>('deposits');
   const [activeFilter, setActiveFilter] = useState('today');
@@ -63,7 +65,7 @@ export function HistoryRecord() {
             >
               <ArrowLeft className="w-5 h-5 text-white" />
             </button>
-            <span className="text-white font-bold text-base">Settings</span>
+            <span className="text-white font-bold text-base">{t("settings")}</span>
           </div>
         </div>
 
@@ -111,7 +113,7 @@ export function HistoryRecord() {
                       : 'text-gray-400 hover:text-white hover:bg-white/5'
                   }`}
                 >
-                  Deposits
+                  {t("deposit")}
                 </button>
                 <button
                   onClick={() => setActiveTypeTab('withdrawals')}
@@ -121,7 +123,7 @@ export function HistoryRecord() {
                       : 'text-gray-400 hover:text-white hover:bg-white/5'
                   }`}
                 >
-                  Withdrawals
+                  {t("withdrawals")}
                 </button>
               </div>
             </div>

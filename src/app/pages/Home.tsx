@@ -12,6 +12,7 @@ import { RecentPayout } from '../components/home/RecentPayout';
 import { LiveTransactions } from '../components/home/LiveTransactions';
 import { PromoBanners } from '../components/home/PromoBanners';
 import { ReferralBanner } from '../components/home/ReferralBanner';
+import { useLanguage } from '../contexts/LanguageContext';
 
 // Figma Assets
 import imgSuperSpeed from "@/assets/2947d765690866fed806f4ef749e66c8f9d99118.png";
@@ -65,6 +66,7 @@ const slotGames = [
 ];
 
 export function Home() {
+  const { t } = useLanguage();
   return (
     <div className="flex flex-col flex-1 overflow-x-hidden">
         
@@ -92,7 +94,22 @@ export function Home() {
             {/* Game Carousel: Live Casino */}
             <section className="container mx-auto max-w-[1200px] 2xl:max-w-[1536px] px-4">
               <GameCarousel 
-                title={<span>{`LIVE `}<span className="text-[#51a2ff]">CASINO</span></span>} 
+                title={
+                  <span>
+                    {(() => {
+                      const text = t("liveCasinoTitle");
+                      const parts = text.split(" ");
+                      if (parts.length > 1) {
+                        return (
+                          <>
+                            {parts[0]} <span className="text-[#51a2ff]">{parts.slice(1).join(" ")}</span>
+                          </>
+                        );
+                      }
+                      return <span className="text-[#51a2ff]">{text}</span>;
+                    })()}
+                  </span>
+                } 
                 icon={
                     <div className="p-1.5 bg-blue-500/10 rounded-lg border border-blue-500/20">
                         <Dices className="text-blue-400 w-5 h-5" />
@@ -115,7 +132,22 @@ export function Home() {
             {/* Game Carousel: Sports */}
             <section className="container mx-auto max-w-[1200px] 2xl:max-w-[1536px] px-4">
               <GameCarousel 
-                title={<span>{`LATEST `}<span className="text-[#ff8904]">SPORTS</span></span>} 
+                title={
+                  <span>
+                    {(() => {
+                      const text = t("latestSports");
+                      const parts = text.split(" ");
+                      if (parts.length > 1) {
+                        return (
+                          <>
+                            {parts[0]} <span className="text-[#ff8904]">{parts.slice(1).join(" ")}</span>
+                          </>
+                        );
+                      }
+                      return <span className="text-[#ff8904]">{text}</span>;
+                    })()}
+                  </span>
+                } 
                 slidesToShow={5}
                 aspectRatio="aspect-square"
                 icon={
@@ -143,7 +175,22 @@ export function Home() {
               {/* Game Carousel: Slots */}
               <section className="container mx-auto max-w-[1200px] 2xl:max-w-[1536px] px-4">
                <GameCarousel 
-                 title={<span>{`POPULAR `}<span className="text-[#c27aff]">SLOTS</span></span>} 
+                 title={
+                   <span>
+                     {(() => {
+                       const text = t("popularSlots");
+                       const parts = text.split(" ");
+                       if (parts.length > 1) {
+                         return (
+                           <>
+                             {parts[0]} <span className="text-[#c27aff]">{parts.slice(1).join(" ")}</span>
+                           </>
+                         );
+                       }
+                       return <span className="text-[#c27aff]">{text}</span>;
+                     })()}
+                   </span>
+                 } 
                  icon={
                      <div className="p-1.5 bg-purple-500/10 rounded-lg border border-purple-500/20">
                          <Gamepad2 className="text-purple-400 w-5 h-5" />

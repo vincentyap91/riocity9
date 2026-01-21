@@ -3,7 +3,7 @@ import { Copy, Users, ChevronRight, Info, Link2, DollarSign } from 'lucide-react
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../components/ui/accordion';
 
 // Assets
-const imgHeroBg = "/src/assets/referral-hero-bg.png";
+const imgHeroBg = "/src/assets/referral-bg.jpg";
 
 const commissionRates = [
     {
@@ -174,7 +174,7 @@ export function Referral() {
                 </div>
 
                 {/* Downlines Button */}
-                <button className="mt-4 w-full bg-gradient-to-r from-[#f1c24f] to-[#d59b25] text-[#5c3a00] px-6 py-2.5 rounded-lg font-bold text-sm flex items-center justify-center gap-2 hover:brightness-110 transition-all shadow-[0_4px_15px_rgba(212,165,33,0.35)]">
+                <button className="mt-4 w-full bg-gradient-to-r from-[#f1c24f] to-[#d59b25] text-[#5c3a00] px-6 py-2.5 rounded-lg font-bold text-base flex items-center justify-center gap-2 hover:brightness-110 transition-all shadow-[0_4px_15px_rgba(212,165,33,0.35)]">
                   Downlines <ChevronRight className="w-4 h-4" />
                 </button>
               </div>

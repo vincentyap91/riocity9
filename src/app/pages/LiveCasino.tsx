@@ -1,7 +1,8 @@
 import React from 'react';
 import { InsidePageHero } from '../components/shared/InsidePageHero';
 import { InsidePageHeader, PageNavItem } from '../components/shared/InsidePageHeader';
-import { Search, Filter, Grid, CircleDollarSign, Dices, Spade, Heart, Tv } from 'lucide-react';
+import { Search, Filter, Grid, CircleDollarSign, Dices, Spade, Heart, Tv, ArrowRight } from 'lucide-react';
+import { useLanguage } from '../contexts/LanguageContext';
 
 // Figma Asset Imports
 import imgKh168Marbula2Providericon200X200Px2025101310310355541 from "@/assets/f6a50bd7817f3011aaeb196648cadbe4a3ae53b3.png";
@@ -36,16 +37,16 @@ const providers = [
   { id: 'allbet', name: 'AllBet', img: img200X200ProviderbannerAllbet2024120609214312891 },
 ];
 
-const liveNavItems: PageNavItem[] = [
-    { id: 'lobby', label: 'Lobby', icon: Grid, isActive: true },
-    { id: 'baccarat', label: 'Baccarat', icon: CircleDollarSign },
-    { id: 'roulette', label: 'Roulette', icon: Dices },
-    { id: 'blackjack', label: 'Blackjack', icon: Spade },
-    { id: 'poker', label: 'Poker', icon: Heart },
-    { id: 'gameshow', label: 'Game Show', icon: Tv },
-];
-
 export function LiveCasino() {
+  const { t } = useLanguage();
+  const liveNavItems: PageNavItem[] = [
+      { id: 'lobby', label: t('lobby'), icon: Grid, isActive: true },
+      { id: 'baccarat', label: t('baccarat'), icon: CircleDollarSign },
+      { id: 'roulette', label: t('roulette'), icon: Dices },
+      { id: 'blackjack', label: t('blackjack'), icon: Spade },
+      { id: 'poker', label: t('poker'), icon: Heart },
+      { id: 'gameshow', label: t('gameShow'), icon: Tv },
+  ];
   return (
     <div className="flex flex-col gap-8 pb-24 md:pb-0 flex-1 overflow-x-hidden animate-in fade-in duration-500 bg-[#02040a]">
       
@@ -54,32 +55,37 @@ export function LiveCasino() {
 
       {/* Header & Nav */}
       <div className="mt-[-20px] relative z-20">
-            <InsidePageHeader title="Live Casino" navItems={liveNavItems} iconColor="text-blue-500" />
+            <InsidePageHeader title={t('liveCasino')} navItems={liveNavItems} iconColor="text-blue-500" />
       </div>
 
       {/* Providers Grid */}
-      <div className="container mx-auto max-w-[1200px] 2xl:max-w-[1536px] px-4 mb-20 mt-4">
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6 md:gap-8">
+      <div className="container mx-auto max-w-[1200px] px-4 mb-20 mt-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6">
             {providers.map((provider) => (
-                <div key={provider.id} className="flex flex-col items-center gap-3 group cursor-pointer">
+                <div key={provider.id} className="flex flex-col items-start gap-3 group cursor-pointer">
                     <div 
-                        className="relative w-full aspect-square rounded-2xl overflow-hidden ring-1 ring-white/10 group-hover:ring-emerald-500/50 shadow-lg group-hover:shadow-[0_0_20px_-5px_rgba(16,185,129,0.3)] transition-all duration-300"
+                        className="relative w-full aspect-square rounded-2xl overflow-hidden ring-1 ring-white/10 transition-all duration-300 bg-[#1a2536]"
                     >
-                        {/* Background Glow */}
-                        <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/0 via-emerald-500/0 to-emerald-500/0 group-hover:to-emerald-500/20 transition-all duration-500"></div>
-
-                        {/* Image */}
                         <img 
                             src={provider.img} 
                             alt={provider.name} 
-                            className="w-full h-full object-cover transform transition-transform duration-500 group-hover:scale-105"
+                            className="w-full h-full object-cover transform transition-transform duration-500 group-hover:scale-110"
                         />
+                        {/* Hover Overlay from Screenshot */}
+                        <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                            <div className="w-12 h-12 rounded-full bg-emerald-500 flex items-center justify-center shadow-[0_0_20px_rgba(16,185,129,0.4)] transform scale-50 group-hover:scale-100 transition-transform duration-300">
+                                <ArrowRight className="w-6 h-6 text-black stroke-[3]" />
+                            </div>
+                        </div>
                     </div>
                     
                     {/* Provider Name */}
-                    <span className="text-sm font-bold text-gray-400 group-hover:text-white transition-colors text-center">
-                        {provider.name}
-                    </span>
+                    <div className="flex flex-col gap-1">
+                        <span className="text-sm font-bold text-white group-hover:text-emerald-500 transition-colors">
+                            {provider.name}
+                        </span>
+                        <span className="text-[11px] text-gray-500 font-bold uppercase tracking-wider">Live Casino</span>
+                    </div>
                 </div>
             ))}
         </div>

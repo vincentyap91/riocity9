@@ -2,6 +2,7 @@ import React from 'react';
 import { Trophy, Clock, TrendingUp } from 'lucide-react';
 import { motion } from 'motion/react';
 import { SectionHeader } from './SectionHeader';
+import { useLanguage } from '../../contexts/LanguageContext';
 
 const wins = [
   {
@@ -79,11 +80,18 @@ const wins = [
 ];
 
 export function RecentBigWins() {
+  const { t } = useLanguage();
   return (
     <section className="w-full h-full flex flex-col">
       {/* Header */}
       <SectionHeader
-        title={<span>Big <span className="text-[#ffdf20]">Wins</span></span>}
+        title={
+          <span>
+            {t("bigWins").split(" ").map((word, idx) => 
+              idx === 0 ? word + " " : <span key={idx} className="text-[#ffdf20]">{word}</span>
+            )}
+          </span>
+        }
         subtitle={null}
         icon={
             <div className="relative">
