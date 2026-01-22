@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { 
     Home, Gamepad2, Dices, Trophy, Fish, Ticket, Star, Smartphone, 
-    Gift, Sparkles, Club, ChevronDown, Box 
+    Gift, Sparkles, Club, ChevronDown, Box
 } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import {
@@ -37,7 +37,6 @@ export function CategoryNav() {
             { labelKey: "prizeBoxBonus", path: "/bonus/prize", icon: Box },
         ]
     },
-    { id: 'vip', labelKey: 'vipClub', icon: Star, path: '/vip', color: 'text-yellow-400' },
     { id: 'promotions', labelKey: 'promotions', icon: Gift, path: '/promotions', color: 'text-pink-400' },
     { id: 'app', labelKey: 'app', icon: Smartphone, path: '/app', color: 'text-emerald-400' },
   ];

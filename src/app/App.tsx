@@ -22,12 +22,15 @@ import { Sports } from './pages/Sports';
 import { Fishing } from './pages/Fishing';
 import { Lottery } from './pages/Lottery';
 import { Poker } from './pages/Poker';
+import { RecentGame } from './pages/RecentGame';
 import { Register } from './pages/Register';
 import { Login } from './pages/Login';
 import { Settings } from './pages/Settings';
 import { Deposit } from './pages/Deposit';
 import { Withdraw } from './pages/Withdraw';
 import { Referral } from './pages/Referral';
+import { Rebate } from './pages/Rebate';
+import { Membership } from './pages/Membership';
 import { Profile } from './pages/Profile';
 import { HistoryRecord } from './pages/HistoryRecord';
 import { ChangePassword } from './pages/ChangePassword';
@@ -333,7 +336,7 @@ function AppContent() {
                                   </button>
                                   <div className="flex items-center gap-1.5 min-w-[80px]">
                                     <span className="text-[13px] font-black text-white tracking-wide">MYR</span>
-                                    <span className="text-[14px] font-black text-white tracking-tight">{showBalance ? "0.00" : "****"}</span>
+                                    <span className="text-[14px] font-black text-white tracking-tight">{showBalance ? "980.96" : "******"}</span>
                                   </div>
                               </div>
 
@@ -557,12 +560,13 @@ function AppContent() {
                 <Route path="/fishing" element={<Fishing />} />
                 <Route path="/lottery" element={<Lottery />} />
                 <Route path="/poker" element={<Poker />} />
+                <Route path="/recent-games" element={<RecentGame />} />
                 <Route path="/crash" element={<ComingSoon title="Crash" backTo="/" backLabel="Home" />} />
                 <Route path="/hot" element={<ComingSoon title="Hot Games" backTo="/" backLabel="Home" />} />
                 <Route path="/all" element={<ComingSoon title="All Games" backTo="/" backLabel="Home" />} />
                 <Route path="/exchange" element={<ComingSoon title="Exchange" backTo="/" backLabel="Home" />} />
-                <Route path="/rebate" element={<ComingSoon title="Rebate" backTo="/" backLabel="Home" />} />
-                <Route path="/vip" element={<ComingSoon title="VIP Club" backTo="/" backLabel="Home" />} />
+                <Route path="/rebate" element={<Rebate />} />
+                <Route path="/vip" element={<Membership />} />
                 <Route path="/promotions" element={<Promotions />} />
                 <Route path="/promotions/:id" element={<PromotionDetail />} />
                 <Route path="/app" element={<ComingSoon title="App" backTo="/" backLabel="Home" />} />

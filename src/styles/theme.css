@@ -147,14 +147,14 @@
     @apply bg-background text-foreground;
     /* Premium Radial Gradient: Visible Emerald Green Spotlight */
     /* Mobile view: gradient at 10% from left */
-    background: radial-gradient(circle at 10% 0%, #042f1f 0%, #02040a 10%);
+    background: radial-gradient(circle at 10% 0%, #013b4b 0%, #02040a 10%);
     background-attachment: scroll;
   }
 
   @media (min-width: 768px) {
     body {
       /* Desktop view: gradient at center */
-      background: radial-gradient(circle at 50% 0%, #042f1f 0%, #02040a 85%);
+      background: radial-gradient(circle at 20% -20%, #013b4b 0%, #02040a 35%);
       background-attachment: fixed;
     }
   }

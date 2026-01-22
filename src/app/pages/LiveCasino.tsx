@@ -1,7 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { InsidePageHero } from '../components/shared/InsidePageHero';
-import { InsidePageHeader, PageNavItem } from '../components/shared/InsidePageHeader';
-import { Search, Filter, Grid, CircleDollarSign, Dices, Spade, Heart, Tv, ArrowRight } from 'lucide-react';
+import { ArrowRight, Search } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 
 // Figma Asset Imports
@@ -39,32 +38,54 @@ const providers = [
 
 export function LiveCasino() {
   const { t } = useLanguage();
-  const liveNavItems: PageNavItem[] = [
-      { id: 'lobby', label: t('lobby'), icon: Grid, isActive: true },
-      { id: 'baccarat', label: t('baccarat'), icon: CircleDollarSign },
-      { id: 'roulette', label: t('roulette'), icon: Dices },
-      { id: 'blackjack', label: t('blackjack'), icon: Spade },
-      { id: 'poker', label: t('poker'), icon: Heart },
-      { id: 'gameshow', label: t('gameShow'), icon: Tv },
-  ];
+  const [searchQuery, setSearchQuery] = useState('');
+  
   return (
     <div className="flex flex-col gap-8 pb-24 md:pb-0 flex-1 overflow-x-hidden animate-in fade-in duration-500 bg-[#02040a]">
       
       {/* Hero Section */}
       <InsidePageHero image={imgLiveCasinoBanner} />
 
-      {/* Header & Nav */}
-      <div className="mt-[-20px] relative z-20">
-            <InsidePageHeader title={t('liveCasino')} navItems={liveNavItems} iconColor="text-blue-500" />
+      {/* Simple Title Section */}
+      <div className="mt-[-20px] relative z-20 w-full flex flex-col items-center gap-6 py-6 pb-0">
+          <div className="absolute left-4 top-1/2 -translate-y-1/2 hidden xl:block">
+              <div className="w-24 h-24 rounded-full bg-blue-500 opacity-20 blur-[50px]"></div>
+          </div>
+          <div className="absolute right-4 top-1/2 -translate-y-1/2 hidden xl:block">
+              <div className="w-24 h-24 rounded-full bg-blue-500 opacity-20 blur-[50px]"></div>
+          </div>
+
+          <h2 className="text-4xl md:text-5xl font-black text-blue-500 drop-shadow-[0_0_15px_rgba(59,130,246,0.5)]">
+              {t('liveCasino')}
+          </h2>
       </div>
 
-      {/* Providers Grid */}
-      <div className="container mx-auto max-w-[1200px] px-4 mb-20 mt-4">
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6">
+      {/* Main Content Area */}
+      <div className="container mx-auto max-w-[1200px] px-4 relative z-10 pb-20 flex flex-col items-center">
+        
+        {/* Search Bar */}
+        <div className="w-full max-w-5xl mb-12">
+            <div className="relative">
+                <input 
+                    type="text"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="w-full h-14 bg-[#16202c] border border-transparent hover:border-white/10 focus:border-blue-500/50 rounded-full pl-6 pr-14 text-white placeholder:text-gray-500 transition-all outline-none"
+                    placeholder={t("searchPlaceholder")}
+                />
+                <div className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-blue-600/20 rounded-full text-blue-400">
+                    <Search className="w-5 h-5" />
+                </div>
+            </div>
+        </div>
+
+        {/* Providers Grid */}
+        <div className="w-full">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6 justify-items-center">
             {providers.map((provider) => (
                 <div key={provider.id} className="flex flex-col items-start gap-3 group cursor-pointer">
                     <div 
-                        className="relative w-full aspect-square rounded-2xl overflow-hidden ring-1 ring-white/10 transition-all duration-300 bg-[#1a2536]"
+                        className="relative w-[214px] h-[214px] rounded-2xl overflow-hidden ring-1 ring-white/10 transition-all duration-300 bg-[#1a2536]"
                     >
                         <img 
                             src={provider.img} 
@@ -88,6 +109,7 @@ export function LiveCasino() {
                     </div>
                 </div>
             ))}
+        </div>
         </div>
       </div>
 

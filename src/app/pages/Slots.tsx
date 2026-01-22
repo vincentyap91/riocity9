@@ -1,7 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { InsidePageHero } from '../components/shared/InsidePageHero';
-import { InsidePageHeader, PageNavItem } from '../components/shared/InsidePageHeader';
-import { Grid, Gamepad2, Star, Zap, Trophy, History, ArrowRight } from 'lucide-react';
+import { Grid, ArrowRight, Search } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 
 // --- Assets from RiocitySlots.tsx & Mn.tsx ---
@@ -53,37 +52,31 @@ const providers = [
 ];
 
 const games = [
-    { id: 1, title: "Mahjong Ways 2", rtp: "96.95%", image: imgImageMahjongWays2 },
-    { id: 2, title: "Fortune Ox", rtp: "96.75%", image: imgImageFortuneOx },
-    { id: 3, title: "Wealth Coins", rtp: "95.00%", image: imgImageWealthCoins },
-    { id: 4, title: "Money Sage", rtp: "96.00%", image: imgImageMoneySage },
-    { id: 5, title: "Chicken Pirate", rtp: "94.89%", image: imgImageChickenPirate },
-    { id: 6, title: "Gods of Plinko", rtp: "94.20%", image: imgImageGodsOfPlinko },
-    { id: 7, title: "Tropicana", rtp: "94.00%", image: imgImageTropicana },
-    { id: 8, title: "Crime Empire", rtp: "94.89%", image: imgImageCrimeEmpire },
-    { id: 9, title: "Serengeti Sunrise", rtp: "94.89%", image: imgImageSerengetiSunrise },
-    { id: 10, title: "Coin Craze", rtp: "94.20%", image: imgImageCoinCraze },
-    { id: 11, title: "Caishen Gold", rtp: "94.00%", image: imgImageCaishenGold },
-    { id: 12, title: "Money Booster", rtp: "94.89%", image: imgImageMoneyBooster },
-    { id: 13, title: "Le Bandit", rtp: "94.89%", image: imgImageLeBandit },
-    { id: 14, title: "Transformers", rtp: "94.20%", image: imgImageTransformers },
-    { id: 15, title: "Mine Slot", rtp: "94.00%", image: imgImageMineSlot },
-    { id: 16, title: "The Luxe", rtp: "94.89%", image: imgImageTheLuxe },
-    { id: 17, title: "Gates of Olympus", rtp: "94.89%", image: imgImageGatesOfOlympus },
-    { id: 18, title: "Sugar Rush 1000", rtp: "94.20%", image: imgImageSugarRush1000 },
-    { id: 19, title: "Sweet Bonanza", rtp: "94.00%", image: imgImageSweetBonanza },
-    { id: 20, title: "Gates 1000", rtp: "94.89%", image: imgImageGates1000 },
+    { id: 1, title: "Mahjong Ways 2", rtp: "96.95%", image: imgImageMahjongWays2, trend: 'up' },
+    { id: 2, title: "Fortune Ox", rtp: "96.75%", image: imgImageFortuneOx, trend: 'down' },
+    { id: 3, title: "Wealth Coins", rtp: "95.00%", image: imgImageWealthCoins, trend: 'up' },
+    { id: 4, title: "Money Sage", rtp: "96.00%", image: imgImageMoneySage, trend: 'up' },
+    { id: 5, title: "Chicken Pirate", rtp: "94.89%", image: imgImageChickenPirate, trend: 'down' },
+    { id: 6, title: "Gods of Plinko", rtp: "94.20%", image: imgImageGodsOfPlinko, trend: 'up' },
+    { id: 7, title: "Tropicana", rtp: "94.00%", image: imgImageTropicana, trend: 'down' },
+    { id: 8, title: "Crime Empire", rtp: "94.89%", image: imgImageCrimeEmpire, trend: 'up' },
+    { id: 9, title: "Serengeti Sunrise", rtp: "94.89%", image: imgImageSerengetiSunrise, trend: 'up' },
+    { id: 10, title: "Coin Craze", rtp: "94.20%", image: imgImageCoinCraze, trend: 'down' },
+    { id: 11, title: "Caishen Gold", rtp: "94.00%", image: imgImageCaishenGold, trend: 'up' },
+    { id: 12, title: "Money Booster", rtp: "94.89%", image: imgImageMoneyBooster, trend: 'down' },
+    { id: 13, title: "Le Bandit", rtp: "94.89%", image: imgImageLeBandit, trend: 'up' },
+    { id: 14, title: "Transformers", rtp: "94.20%", image: imgImageTransformers, trend: 'up' },
+    { id: 15, title: "Mine Slot", rtp: "94.00%", image: imgImageMineSlot, trend: 'down' },
+    { id: 16, title: "The Luxe", rtp: "94.89%", image: imgImageTheLuxe, trend: 'up' },
+    { id: 17, title: "Gates of Olympus", rtp: "94.89%", image: imgImageGatesOfOlympus, trend: 'up' },
+    { id: 18, title: "Sugar Rush 1000", rtp: "94.20%", image: imgImageSugarRush1000, trend: 'down' },
+    { id: 19, title: "Sweet Bonanza", rtp: "94.00%", image: imgImageSweetBonanza, trend: 'up' },
+    { id: 20, title: "Gates 1000", rtp: "94.89%", image: imgImageGates1000, trend: 'up' },
 ];
 
 export function Slots() {
   const { t } = useLanguage();
-  const slotNavItems: PageNavItem[] = [
-      { id: 'lobby', label: t('lobby'), icon: Grid, isActive: true },
-      { id: 'hot', label: t('hotGames'), icon: Zap },
-      { id: 'new', label: "New", icon: Star },
-      { id: 'jackpot', label: "Jackpot", icon: Trophy },
-      { id: 'recent', label: "Recent", icon: History },
-  ];
+  const [searchQuery, setSearchQuery] = useState('');
 
   return (
     <div className="flex flex-col flex-1 bg-[#02040a] min-h-screen overflow-x-hidden">
@@ -91,31 +84,56 @@ export function Slots() {
         {/* Hero Section */}
         <InsidePageHero image={imgImagePromo} />
 
-        {/* Header & Nav */}
-        <div className="mt-[-20px] relative z-20">
-            <InsidePageHeader title={t('slots')} navItems={slotNavItems} iconColor="text-pink-500" />
+        {/* Simple Title Section */}
+        <div className="mt-[-20px] relative z-20 w-full flex flex-col items-center gap-6 py-6">
+            <div className="absolute left-4 top-1/2 -translate-y-1/2 hidden xl:block">
+                <div className="w-24 h-24 rounded-full bg-pink-500 opacity-20 blur-[50px]"></div>
+            </div>
+            <div className="absolute right-4 top-1/2 -translate-y-1/2 hidden xl:block">
+                <div className="w-24 h-24 rounded-full bg-pink-500 opacity-20 blur-[50px]"></div>
+            </div>
+
+            <h2 className="text-4xl md:text-5xl font-black text-pink-500 drop-shadow-[0_0_15px_rgba(236,72,153,0.5)]">
+                {t('slots')}
+            </h2>
         </div>
 
         {/* Main Content Area */}
         <div className="container mx-auto max-w-[1200px] px-4 relative z-10 pb-20 flex flex-col items-center">
-              
+
             {/* Provider Navigation */}
-            <div className="w-full bg-[#0f1923]/80 backdrop-blur-md border border-white/5 rounded-xl p-2.5 mb-12">
+              <div className="w-full max-w-5xl bg-[#0f1923]/80 backdrop-blur-md border border-white/5 rounded-xl p-2.5 mb-6">
                 <div className="flex items-center gap-2 overflow-x-auto no-scrollbar">
                     {providers.map((p) => (
-                        <div 
-                            key={p.id} 
+                        <div
+                            key={p.id}
                             className={`
-                                relative shrink-0 h-[60px] w-[140px] rounded-lg flex items-center justify-center cursor-pointer transition-all duration-300
-                                ${p.active 
-                                    ? 'bg-[#e60076]/5 border border-[#e60076]' 
+                            relative shrink-0 h-[60px] w-[140px] rounded-lg flex items-center justify-center cursor-pointer transition-all duration-300
+                            ${p.active
+                                    ? 'bg-[#e60076]/5 border border-[#e60076]'
                                     : 'bg-[#16202c] border border-transparent hover:bg-[#1e2a38]'
                                 }
-                            `}
+                        `}
                         >
                             <img src={p.image} alt={p.name} className="h-8 w-auto object-contain max-w-[80%]" />
                         </div>
                     ))}
+                </div>
+            </div>
+
+            {/* Search Bar */}
+            <div className="w-full max-w-5xl mb-12">
+                <div className="relative">
+                    <input 
+                        type="text"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        className="w-full h-14 bg-[#16202c] border border-transparent hover:border-white/10 focus:border-pink-500/50 rounded-full pl-6 pr-14 text-white placeholder:text-gray-500 transition-all outline-none"
+                        placeholder={t("searchPlaceholder")}
+                    />
+                    <div className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-pink-600/20 rounded-full text-pink-400">
+                        <Search className="w-5 h-5" />
+                    </div>
                 </div>
             </div>
 
@@ -133,11 +151,11 @@ export function Slots() {
                 </div>
 
                 {/* Game Grid */}
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6">
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6 justify-items-center">
                     {games.map((game) => (
                         <div key={game.id} className="flex flex-col items-start gap-3 group cursor-pointer">
                             <div 
-                                className="relative w-full aspect-square rounded-2xl overflow-hidden ring-1 ring-white/10 transition-all duration-500 bg-[#1a2536] group-hover:ring-[#fdc700]/30 group-hover:shadow-[0_0_30px_-5px_rgba(253,199,0,0.2)]"
+                                className="relative w-[214px] h-[214px] rounded-2xl overflow-hidden ring-1 ring-white/10 transition-all duration-500 bg-[#1a2536] group-hover:ring-[#fdc700]/30 group-hover:shadow-[0_0_30px_-5px_rgba(253,199,0,0.2)]"
                             >
                                 <img 
                                     src={game.image} 
@@ -151,41 +169,24 @@ export function Slots() {
                                         <ArrowRight className="w-6 h-6 text-black stroke-[3]" />
                                     </div>
                                 </div>
-
-                                {/* Enhanced Floating RTP Badge */}
-                                <div className="absolute top-2 left-2 z-10 group/rtp">
-                                    <div className="flex flex-col items-center bg-[#0a0f1a]/90 backdrop-blur-md border border-[#fdc700]/40 rounded-xl px-2 py-1.5 shadow-[0_0_15px_rgba(253,199,0,0.2)] group-hover:shadow-[0_0_20px_rgba(253,199,0,0.4)] transition-all duration-500">
-                                        <div className="flex items-center gap-1.5">
-                                            <div className="relative">
-                                                <div className="w-1.5 h-1.5 rounded-full bg-[#fdc700] animate-ping absolute opacity-75"></div>
-                                                <div className="w-1.5 h-1.5 rounded-full bg-[#fdc700] relative"></div>
-                                            </div>
-                                            <span className="text-[11px] font-black text-[#fdc700] tracking-tight drop-shadow-[0_0_5px_rgba(253,199,0,0.6)]">
-                                                {game.rtp}
-                                            </span>
-                                        </div>
-                                        <div className="w-full h-[3px] bg-white/5 rounded-full mt-1.5 overflow-hidden">
-                                            <div 
-                                                className="h-full bg-gradient-to-r from-[#f59e0b] via-[#fdc700] to-[#fcd34d] shadow-[0_0_8px_rgba(253,199,0,0.5)]" 
-                                                style={{ width: `${parseFloat(game.rtp)}%` }}
-                                            />
-                                        </div>
-                                        <span className="text-[7px] text-[#fdc700]/60 font-black uppercase tracking-[0.2em] mt-1 leading-none">Live RTP</span>
-                                    </div>
-                                </div>
                             </div>
 
                             {/* Content */}
-                            <div className="flex flex-col gap-1 mt-1">
-                                <h3 className="text-white group-hover:text-emerald-500 font-bold text-[13px] truncate transition-colors w-full px-0.5">
+                            <div className="flex flex-col gap-2 mt-2 w-full">
+                                <h3 className="text-white group-hover:text-emerald-500 font-bold text-[15px] transition-colors w-full px-0.5">
                                     {game.title}
                                 </h3>
-                                <div className="flex items-center justify-between">
-                                    <span className="text-gray-500 text-[9px] font-black uppercase tracking-widest">NAGA</span>
-                                    <div className="flex items-center gap-1 bg-[#fdc700]/5 px-1.5 py-0.5 rounded-full border border-[#fdc700]/10">
-                                        <Zap className="w-2.5 h-2.5 text-[#fdc700] fill-[#fdc700]/20" />
-                                        <span className="text-[#fdc700] text-[9px] font-black uppercase tracking-tighter">HOT</span>
-                                    </div>
+                                
+                                {/* Updated RTP Badge: Only Arrow changes color to be subtle */}
+                                <div className="flex items-center gap-2 bg-emerald-500/10 rounded-xl px-3 py-1.5 w-fit border border-emerald-500/20 shadow-[0_0_15px_-5px_rgba(16,185,129,0.1)]">
+                                    <span className="text-emerald-500 font-black text-[12px] tracking-tight">
+                                        RTP {game.rtp}
+                                    </span>
+                                    {game.trend === 'up' ? (
+                                        <div className="w-0 h-0 border-l-[4px] border-l-transparent border-r-[4px] border-r-transparent border-b-[6px] border-b-emerald-500 mb-0.5 animate-pulse"></div>
+                                    ) : (
+                                        <div className="w-0 h-0 border-l-[4px] border-l-transparent border-r-[4px] border-r-transparent border-t-[6px] border-t-red-500 mt-0.5 animate-pulse"></div>
+                                    )}
                                 </div>
                             </div>
                         </div>

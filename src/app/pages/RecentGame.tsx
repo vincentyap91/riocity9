@@ -1,43 +1,70 @@
 import React, { useState } from "react";
-import { InsidePageHero } from "../components/shared/InsidePageHero";
 import { useLanguage } from "../contexts/LanguageContext";
 import { ArrowRight, Search } from "lucide-react";
+import { useAuth } from "../contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 
-const pokerBanner = "https://pksoftcdn.azureedge.net/media/poker%27-202502241408444412.jpg";
-
-const pokerProviders = [
+// Placeholder data - you can replace this with actual recent games data
+const recentGames = [
   {
-    id: "v8poker",
-    name: "V8Poker",
+    id: "game1",
+    name: "Game 1",
     img: "https://pksoftcdn.azureedge.net/media/v8poker_poker-202601191517288267.png",
+    category: "Slots",
   },
   {
-    id: "kaiyuan",
-    name: "Kai Yuan",
+    id: "game2",
+    name: "Game 2",
     img: "https://pksoftcdn.azureedge.net/media/kaiyuan-202504210825061750.png",
+    category: "Live Casino",
   },
   {
-    id: "1gaming",
-    name: "1Gaming",
+    id: "game3",
+    name: "Game 3",
     img: "https://pksoftcdn.azureedge.net/media/1g%20poker-202502191628300100.png",
+    category: "Poker",
   },
   {
-    id: "mpoker",
-    name: "MPoker",
+    id: "game4",
+    name: "Game 4",
     img: "https://pksoftcdn.azureedge.net/media/mpoker-202503111448116128.png",
+    category: "Sports",
+  },
+  {
+    id: "game5",
+    name: "Game 5",
+    img: "https://pksoftcdn.azureedge.net/media/v8poker_poker-202601191517288267.png",
+    category: "Fishing",
   },
 ];
 
-export function Poker() {
+export function RecentGame() {
   const { t } = useLanguage();
+  const { isAuthenticated } = useAuth();
+  const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
+
+  // Redirect to login if not authenticated
+  React.useEffect(() => {
+    if (!isAuthenticated) {
+      navigate('/login');
+    }
+  }, [isAuthenticated, navigate]);
+
+  if (!isAuthenticated) {
+    return null;
+  }
+
+  // Filter games based on search query
+  const filteredGames = recentGames.filter(game =>
+    game.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    game.category.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
     <div className="flex flex-col gap-8 pb-24 md:pb-0 flex-1 overflow-x-hidden animate-in fade-in duration-500 bg-[#02040a]">
-      <InsidePageHero image={pokerBanner} />
-
       {/* Simple Title Section */}
-      <div className="mt-[-20px] relative z-20 w-full flex flex-col items-center gap-6 py-6 pb-0">
+      <div className="mt-8 relative z-20 w-full flex flex-col items-center gap-6 py-6 pb-0">
         <div className="absolute left-4 top-1/2 -translate-y-1/2 hidden xl:block">
           <div className="w-24 h-24 rounded-full bg-emerald-500 opacity-20 blur-[50px]"></div>
         </div>
@@ -46,7 +73,7 @@ export function Poker() {
         </div>
 
         <h2 className="text-4xl md:text-5xl font-black text-emerald-500 drop-shadow-[0_0_15px_rgba(16,185,129,0.5)]">
-          {t("poker")}
+          Recent Games
         </h2>
       </div>
 
@@ -69,18 +96,18 @@ export function Poker() {
             </div>
         </div>
 
-        {/* Providers Grid */}
+        {/* Games Grid */}
         <div className="w-full">
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6 justify-items-center">
-          {pokerProviders.map((provider) => (
-            <div key={provider.id} className="flex flex-col items-start gap-3 group cursor-pointer">
+          {filteredGames.map((game) => (
+            <div key={game.id} className="flex flex-col items-start gap-3 group cursor-pointer">
               <div className="relative w-[214px] h-[214px] rounded-2xl overflow-hidden ring-1 ring-white/10 transition-all duration-300 bg-[#1a2536]">
                 <img
-                  src={provider.img}
-                  alt={provider.name}
+                  src={game.img}
+                  alt={game.name}
                   className="w-full h-full object-cover transform transition-transform duration-500 group-hover:scale-110"
                 />
-                {/* Hover Overlay from Screenshot */}
+                {/* Hover Overlay */}
                 <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                   <div className="w-12 h-12 rounded-full bg-emerald-500 flex items-center justify-center shadow-[0_0_20px_rgba(16,185,129,0.4)] transform scale-50 group-hover:scale-100 transition-transform duration-300">
                     <ArrowRight className="w-6 h-6 text-black stroke-[3]" />
@@ -89,9 +116,9 @@ export function Poker() {
               </div>
               <div className="flex flex-col gap-1">
                 <span className="text-sm font-bold text-white group-hover:text-emerald-500 transition-colors">
-                  {provider.name}
+                  {game.name}
                 </span>
-                <span className="text-[11px] text-gray-500 font-bold uppercase tracking-wider">Poker</span>
+                <span className="text-[11px] text-gray-500 font-bold uppercase tracking-wider">{game.category}</span>
               </div>
             </div>
           ))}

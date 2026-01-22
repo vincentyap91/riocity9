@@ -2,21 +2,27 @@ import React from 'react';
 import { InsidePageHero } from '../components/shared/InsidePageHero';
 import { InsidePageHeader, PageNavItem } from '../components/shared/InsidePageHeader';
 import { Trophy, Activity, Target, Gamepad2, Grid, ArrowRight } from 'lucide-react';
-import { GameCarousel } from '../components/home/GameCarousel';
 import { useLanguage } from '../contexts/LanguageContext';
 
 // New Banner
 import imgSportsBanner from "@/assets/e807beb4ab61c26c4afaecc32f24c795ff679981.png";
 
-// Re-using some assets for mockup
-import imgFantasticLeague from "@/assets/08df4e8b4526646e986f9e4d2bac3c7252c04c81.png";
-import imgSteeplechase from "@/assets/3b695b068a5947c9b9e9e464172e6875dc7c75b4.png";
-import imgPenalty from "@/assets/c96fbcac154c4fae4616df00e996cfac084bab4f.png";
-
-const sportsHighlights = [
-  { id: 1, title: "Fantastic League", provider: "Virtual Soccer", image: imgFantasticLeague, tag: "Live" },
-  { id: 2, title: "Steeplechase", provider: "Virtual Sports", image: imgSteeplechase, tag: "Hot" },
-  { id: 3, title: "Penalty Shootout", provider: "Instant Games", image: imgPenalty },
+const sportsProviders = [
+  { id: 1, name: "FB Sport", img: "https://pksoftcdn.azureedge.net/media/fbsports_sports-202601130904031723.png" },
+  { id: 2, name: "AFB1188 Sport", img: "https://pksoftcdn.azureedge.net/media/200x200_providerbanner_afbsport-202408191304551165.png" },
+  { id: 3, name: "World Entertainment Sport", img: "https://pksoftcdn.azureedge.net/media/worldent_sports-202509081530460143.png" },
+  { id: 4, name: "SBO Sports", img: "https://riocity-cdn.azureedge.net/riocity/10-202401241600164363.png" },
+  { id: 5, name: "SV388 Cock Fight", img: "https://riocity-cdn.azureedge.net/riocity/200x200_providebanner_sv388-202404090912392908.png" },
+  { id: 6, name: "Lucky Sport", img: "https://pksoftcdn.azureedge.net/media/200x200_providerbanner_luckysport-202407260917076261-202408060821509512-202410241125136236.png" },
+  { id: 7, name: "SABA Sport", img: "https://pksoftcdn.azureedge.net/media/200x200_providerbanner_sabasports-202408050953363658-202408060824400114.png" },
+  { id: 8, name: "CMD Sport", img: "https://pksoftcdn.azureedge.net/media/200x200_providerbanner_cmd-202408081430158831.png" },
+  { id: 9, name: "9Wicket", img: "https://pksoftcdn.azureedge.net/media/9wicket-202412051339309915.png" },
+  { id: 10, name: "M8Bet", img: "https://pksoftcdn.azureedge.net/media/200x200_providerbanner_m8bet-202410231016035133.png" },
+  { id: 11, name: "United Gaming", img: "https://pksoftcdn.azureedge.net/media/200x200_providerbanner_ug-202411150810288002.png" },
+  { id: 12, name: "Ws Sports", img: "https://pksoftcdn.azureedge.net/media/200x200px_provider_icon_ws-sports-202412051335234986.png" },
+  { id: 13, name: "Dream Exchange", img: "https://pksoftcdn.azureedge.net/media/dreamexch-202505190755470879.png" },
+  { id: 14, name: "CR Sport", img: "https://pksoftcdn.azureedge.net/media/crown sports-202505190757384729.png" },
+  { id: 15, name: "RCB998", img: "https://pksoftcdn.azureedge.net/media/200x200px_provider_icon_horseracing (1)-202510131036418324.png" },
 ];
 
 export function Sports() {
@@ -41,16 +47,37 @@ export function Sports() {
 
         {/* Content */}
         <div className="container mx-auto max-w-[1200px] px-4 mt-4 mb-20">
-            <GameCarousel 
-                title={t('liveHighlights')} 
-                icon={<Trophy className="text-orange-400 w-5 h-5" />}
-                items={sportsHighlights}
-                aspectRatio="aspect-video"
-            />
-
-            <div className="mt-12 text-center text-gray-500 py-20 border border-white/5 rounded-2xl bg-white/5">
-                <h3 className="text-xl font-bold text-white mb-2">{t('sportsbookComingSoon')}</h3>
-                <p>{t('integratingBestOdds')}</p>
+            {/* Sports Providers Grid */}
+            <div>
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6 justify-items-center">
+                    {sportsProviders.map((provider) => (
+                        <div key={provider.id} className="flex flex-col items-start gap-3 group cursor-pointer">
+                            <div 
+                                className="relative w-[214px] h-[214px] rounded-2xl overflow-hidden ring-1 ring-white/10 transition-all duration-300 bg-[#1a2536]"
+                            >
+                                <img 
+                                    src={provider.img} 
+                                    alt={provider.name} 
+                                    className="w-full h-full object-cover transform transition-transform duration-500 group-hover:scale-110"
+                                />
+                                {/* Hover Overlay */}
+                                <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                                    <div className="w-12 h-12 rounded-full bg-emerald-500 flex items-center justify-center shadow-[0_0_20px_rgba(16,185,129,0.4)] transform scale-50 group-hover:scale-100 transition-transform duration-300">
+                                        <ArrowRight className="w-6 h-6 text-black stroke-[3]" />
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            {/* Provider Name */}
+                            <div className="flex flex-col gap-1">
+                                <span className="text-sm font-bold text-white group-hover:text-emerald-500 transition-colors">
+                                    {provider.name}
+                                </span>
+                                <span className="text-[11px] text-gray-500 font-bold uppercase tracking-wider">Sports</span>
+                            </div>
+                        </div>
+                    ))}
+                </div>
             </div>
         </div>
     </div>

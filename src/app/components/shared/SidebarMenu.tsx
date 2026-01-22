@@ -4,7 +4,7 @@ import {
     Gift, Ticket, Box, Home, Flame, Gamepad2, Trophy, Dices, 
     Fish, ArrowLeftRight, Club, Plane, Megaphone, Users, 
     HandCoins, Crown, Clock, MessageCircle, Facebook, Send, Phone,
-    Sparkles, ChevronUp
+    Sparkles, ChevronUp, History
 } from 'lucide-react';
 import {
   Accordion,
@@ -33,6 +33,7 @@ const menuItems = [
     { labelKey: "lottery", icon: Ticket, path: "/lottery" },
     { labelKey: "exchange", icon: ArrowLeftRight, path: "/exchange" },
     { labelKey: "poker", icon: Club, path: "/poker" },
+    { labelKey: "recentGames", icon: History, path: "/recent-games" },
     { labelKey: "crash", icon: Plane, path: "/crash" },
     { labelKey: "promotions", icon: Megaphone, path: "/promotions" },
     { labelKey: "referral", icon: Users, path: "/referral" },
@@ -118,41 +119,41 @@ export function SidebarMenu({ onItemClick }: SidebarMenuProps) {
             </div>
 
             {/* Bottom Section */}
-            <div className="p-4 mt-auto space-y-4">
+            <div className="p-3 mt-auto space-y-3">
                 
                 {/* Live Chat Card */}
-                <div className="bg-[#131b29] border border-white/10 rounded-2xl p-4 flex items-center justify-between group cursor-pointer hover:border-[#00ff88]/50 transition-all shadow-lg hover:shadow-[#00ff88]/10">
-                    <div className="flex items-center gap-4">
-                        <div className="w-14 h-14 rounded-full bg-[#00ff88] flex items-center justify-center shadow-[0_0_15px_-3px_rgba(0,255,136,0.5)] group-hover:scale-105 transition-transform">
-                            <MessageCircle className="w-7 h-7 text-[#131b29] fill-[#131b29]" />
+                <div className="bg-[#131b29] border border-white/10 rounded-xl p-3 flex items-center justify-between group cursor-pointer hover:border-[#00ff88]/50 transition-all shadow-lg hover:shadow-[#00ff88]/10">
+                    <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-full bg-[#00ff88] flex items-center justify-center shadow-[0_0_15px_-3px_rgba(0,255,136,0.5)] group-hover:scale-105 transition-transform">
+                            <MessageCircle className="w-5 h-5 text-[#131b29] fill-[#131b29]" />
                         </div>
                         <div className="flex flex-col">
-                            <span className="font-black text-[#00ff88] text-xl tracking-tight uppercase italic">{t("liveChat")}</span>
-                            <span className="text-[10px] text-gray-500 font-bold uppercase tracking-widest mt-0.5">{t("liveChatTagline")}</span>
+                            <span className="font-black text-[#00ff88] text-base tracking-tight uppercase italic">{t("liveChat")}</span>
+                            <span className="text-[9px] text-gray-500 font-bold uppercase tracking-widest mt-0.5">{t("liveChatTagline")}</span>
                         </div>
                     </div>
-                    <div className="bg-[#fa5252] text-white text-[11px] font-black px-2 py-0.5 min-w-[26px] h-6 flex items-center justify-center rounded-lg shadow-lg border border-white/10 animate-pulse">
+                    <div className="bg-[#fa5252] text-white text-[10px] font-black px-1.5 py-0.5 min-w-[22px] h-5 flex items-center justify-center rounded-lg shadow-lg border border-white/10 animate-pulse">
                         11
                     </div>
                 </div>
 
                 {/* Social Icons */}
-                <div className="flex items-center justify-center gap-4 py-2">
-                    <a href="#" className="w-12 h-12 rounded-full bg-[#1877F2] flex items-center justify-center hover:scale-110 transition-transform shadow-lg shadow-blue-900/20">
-                        <Facebook className="w-6 h-6 text-white fill-current" />
+                <div className="flex items-center justify-center gap-3 py-1.5">
+                    <a href="#" className="w-10 h-10 rounded-full bg-[#1877F2] flex items-center justify-center hover:scale-110 transition-transform shadow-lg shadow-blue-900/20">
+                        <Facebook className="w-5 h-5 text-white fill-current" />
                     </a>
-                    <a href="#" className="w-12 h-12 rounded-full bg-[#2AABEE] flex items-center justify-center hover:scale-110 transition-transform shadow-lg shadow-sky-900/20">
-                        <Send className="w-5 h-5 text-white fill-current" />
+                    <a href="#" className="w-10 h-10 rounded-full bg-[#2AABEE] flex items-center justify-center hover:scale-110 transition-transform shadow-lg shadow-sky-900/20">
+                        <Send className="w-4 h-4 text-white fill-current" />
                     </a>
-                    <a href="#" className="w-12 h-12 rounded-full bg-[#25D366] flex items-center justify-center hover:scale-110 transition-transform shadow-lg shadow-green-900/20">
-                        <Phone className="w-5 h-5 text-white fill-current" />
+                    <a href="#" className="w-10 h-10 rounded-full bg-[#25D366] flex items-center justify-center hover:scale-110 transition-transform shadow-lg shadow-green-900/20">
+                        <Phone className="w-4 h-4 text-white fill-current" />
                     </a>
                 </div>
 
                 {/* Login / Sign Up Button */}
                 <Button
                     asChild
-                    className="w-full h-14 bg-gradient-to-r from-[#00ff88] to-[#00cc76] hover:from-[#05ffa1] hover:to-[#00dd82] text-black font-black text-xl rounded-2xl shadow-[0_8px_25px_-5px_rgba(0,255,136,0.4)] hover:shadow-[0_12px_30px_-5px_rgba(0,255,136,0.6)] tracking-tighter uppercase italic transition-all hover:scale-[1.02] active:scale-[0.98] border-none"
+                    className="w-full h-11 bg-gradient-to-r from-[#00ff88] to-[#00cc76] hover:from-[#05ffa1] hover:to-[#00dd82] text-black font-black text-base rounded-xl shadow-[0_8px_25px_-5px_rgba(0,255,136,0.4)] hover:shadow-[0_12px_30px_-5px_rgba(0,255,136,0.6)] tracking-tighter uppercase italic transition-all hover:scale-[1.02] active:scale-[0.98] border-none"
                     onClick={onItemClick}
                 >
                     <Link to="/login">{t("loginSignUp")}</Link>

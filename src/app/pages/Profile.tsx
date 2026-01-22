@@ -123,12 +123,6 @@ export function Profile() {
     <div className="min-h-screen w-full relative overflow-hidden font-sans">
       {/* Background from Design */}
       <div className="absolute inset-0 z-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-[#042f1f] via-[#031a15] to-[#02040a]"></div>
-      
-      {/* Decorative Blobs */}
-      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-[-20%] left-[10%] w-[60%] h-[60%] bg-[rgba(0,79,59,0.2)] rounded-full blur-[100px]"></div>
-        <div className="absolute top-[10%] right-[10%] w-[60%] h-[60%] bg-[rgba(0,96,69,0.2)] rounded-full blur-[100px]"></div>
-      </div>
 
       <div className="relative z-10 container mx-auto px-4 py-12 max-w-[1024px]">
         {/* Navigation Header (Settings left) */}
