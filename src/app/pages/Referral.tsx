@@ -127,9 +127,7 @@ export function Referral() {
                   <div className="relative bg-[#1A2230] rounded-xl p-6 border border-white/5 flex flex-col items-center justify-center min-h-[160px] shadow-xl">
                     <div className="absolute left-3 top-3 w-6 h-6 rounded-full bg-[#5A6D8E] text-white text-[11px] font-bold flex items-center justify-center">1</div>
                     <div className="flex flex-col items-center text-center gap-4">
-                      <div className="w-11 h-11 rounded-full bg-[#d4a521] flex items-center justify-center shadow-[0_0_18px_rgba(212,165,33,0.35)]">
-                        <img src={shareYourLinkIcon} alt="Share your link" className="w-5 h-5" />
-                      </div>
+                      <img src={shareYourLinkIcon} alt="Share your link" className="w-12 h-12" />
                       <p className="text-[12px] font-semibold leading-tight text-white">Share your Link or<br/>Referral Code</p>
                     </div>
                   </div>
@@ -137,9 +135,7 @@ export function Referral() {
                   <div className="relative bg-[#1A2230] rounded-xl p-6 border border-white/5 flex flex-col items-center justify-center min-h-[160px] shadow-xl">
                     <div className="absolute left-3 top-3 w-6 h-6 rounded-full bg-[#5A6D8E] text-white text-[11px] font-bold flex items-center justify-center">2</div>
                     <div className="flex flex-col items-center text-center gap-4">
-                      <div className="w-11 h-11 rounded-full bg-[#d4a521] flex items-center justify-center shadow-[0_0_18px_rgba(212,165,33,0.35)]">
-                        <img src={friendRegisterIcon} alt="Friend register" className="w-5 h-5" />
-                      </div>
+                      <img src={friendRegisterIcon} alt="Friend register" className="w-12 h-12" />
                       <p className="text-[12px] font-semibold leading-tight text-white">Friends Registered<br/>Successfully</p>
                     </div>
                   </div>
@@ -147,9 +143,7 @@ export function Referral() {
                   <div className="relative bg-[#1A2230] rounded-xl p-6 border border-white/5 flex flex-col items-center justify-center min-h-[160px] shadow-xl">
                     <div className="absolute left-3 top-3 w-6 h-6 rounded-full bg-[#5A6D8E] text-white text-[11px] font-bold flex items-center justify-center">3</div>
                     <div className="flex flex-col items-center text-center gap-4">
-                      <div className="w-11 h-11 rounded-full bg-[#d4a521] flex items-center justify-center shadow-[0_0_18px_rgba(212,165,33,0.35)]">
-                        <img src={earnBonusIcon} alt="Earn bonus" className="w-5 h-5" />
-                      </div>
+                      <img src={earnBonusIcon} alt="Earn bonus" className="w-12 h-12" />
                       <p className="text-[12px] font-semibold leading-tight text-white">Earn Bonus from<br/>Your Downlines</p>
                     </div>
                   </div>

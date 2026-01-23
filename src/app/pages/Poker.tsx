@@ -34,7 +34,7 @@ export function Poker() {
 
   return (
     <div className="flex flex-col gap-8 pb-24 md:pb-0 flex-1 overflow-x-hidden animate-in fade-in duration-500 bg-[#02040a]">
-      <InsidePageHero image={pokerBanner} />
+        <InsidePageHero image={pokerBanner} />
 
       {/* Simple Title Section */}
       <div className="mt-[-20px] relative z-20 w-full flex flex-col items-center gap-6 py-6 pb-0">

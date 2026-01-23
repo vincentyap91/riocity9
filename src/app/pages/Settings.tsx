@@ -16,6 +16,7 @@ import { Button } from '../components/ui/button';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { useLanguage } from '../contexts/LanguageContext';
+import { InnerPageLayout } from "../components/shared/InnerPageLayout";
 
 export function Settings() {
   const navigate = useNavigate();
@@ -34,13 +35,8 @@ export function Settings() {
   ];
 
   return (
-    <div className="min-h-screen w-full relative overflow-hidden font-sans">
-      {/* Background from Design */}
-      <div className="absolute inset-0 z-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-[#042f1f] via-[#031a15] to-[#02040a]"></div>
-      
-
-
-      <div className="relative z-10 container mx-auto px-4 pt-4 pb-32 max-w-[640px]">
+    <InnerPageLayout className="overflow-hidden">
+      <div className="container mx-auto px-4 pt-4 pb-32 max-w-[640px]">
         
         {/* User Profile Header Card - Mobile Version (Follows Screenshot) */}
         <div className="md:hidden bg-gradient-to-b from-[#1a2230] to-[#131b29] rounded-[24px] p-5 mb-3 shadow-xl border border-white/5 relative overflow-hidden">
@@ -191,6 +187,6 @@ export function Settings() {
         </div>
 
       </div>
-    </div>
+    </InnerPageLayout>
   );
 }

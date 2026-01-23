@@ -22,6 +22,7 @@ import { Sports } from './pages/Sports';
 import { Fishing } from './pages/Fishing';
 import { Lottery } from './pages/Lottery';
 import { Poker } from './pages/Poker';
+import { Exchange } from './pages/Exchange';
 import { RecentGame } from './pages/RecentGame';
 import { Register } from './pages/Register';
 import { Login } from './pages/Login';
@@ -39,6 +40,7 @@ import { Bonus } from './pages/Bonus';
 import { NotFound } from './pages/NotFound';
 import { Promotions } from './pages/Promotions';
 import { PromotionDetail } from './pages/PromotionDetail';
+import { Downlines } from './pages/Downlines';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { LanguageProvider, useLanguage } from './contexts/LanguageContext';
 
@@ -564,13 +566,13 @@ function AppContent() {
                 <Route path="/crash" element={<ComingSoon title="Crash" backTo="/" backLabel="Home" />} />
                 <Route path="/hot" element={<ComingSoon title="Hot Games" backTo="/" backLabel="Home" />} />
                 <Route path="/all" element={<ComingSoon title="All Games" backTo="/" backLabel="Home" />} />
-                <Route path="/exchange" element={<ComingSoon title="Exchange" backTo="/" backLabel="Home" />} />
+                <Route path="/exchange" element={<Exchange />} />
                 <Route path="/rebate" element={<Rebate />} />
                 <Route path="/vip" element={<Membership />} />
                 <Route path="/promotions" element={<Promotions />} />
                 <Route path="/promotions/:id" element={<PromotionDetail />} />
                 <Route path="/app" element={<ComingSoon title="App" backTo="/" backLabel="Home" />} />
-                <Route path="/downlines" element={<ComingSoon title={t("downlines")} backTo="/settings" backLabel={t("settings")} />} />
+                <Route path="/downlines" element={<Downlines />} />
                 <Route path="/language" element={<ComingSoon title={t("changeLanguage")} backTo="/settings" backLabel={t("settings")} />} />
                 <Route path="/security" element={<ChangePassword />} />
                 <Route path="/bonus/:bonusType" element={<Bonus />} />

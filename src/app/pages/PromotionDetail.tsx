@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { ArrowLeft, Info, CheckCircle2, Calendar, ShieldCheck, Users, MessageCircle, Trophy, Gamepad2, ListChecks } from "lucide-react";
 import { Button } from "../components/ui/button";
 import { useLanguage } from "../contexts/LanguageContext";
+import { InnerPageLayout } from "../components/shared/InnerPageLayout";
 
 import girl1 from "@/assets/girl-1.png";
 import girl2 from "@/assets/girl-2.png";
@@ -145,18 +146,21 @@ export function PromotionDetail() {
 
   if (!promo) {
     return (
-      <div className="min-h-screen bg-[#02040a] flex items-center justify-center">
-        <div className="text-white text-xl">{t("loading")}</div>
-      </div>
+      <InnerPageLayout>
+        <div className="min-h-screen flex items-center justify-center">
+          <div className="text-white text-xl">{t("loading")}</div>
+        </div>
+      </InnerPageLayout>
     );
   }
 
   return (
-    <div className="relative min-h-screen bg-[#02040a] text-white pb-32 overflow-x-hidden">
-      {/* Background Glow */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[600px] bg-[radial-gradient(ellipse_at_top,_rgba(0,188,125,0.1)_0%,_rgba(0,188,125,0.05)_40%,_transparent_70%)] pointer-events-none" />
+    <InnerPageLayout className="overflow-hidden">
+      <div className="relative min-h-screen text-white pb-32 overflow-x-hidden">
+        {/* Background Glow */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[600px] bg-[radial-gradient(ellipse_at_top,_rgba(0,188,125,0.1)_0%,_rgba(0,188,125,0.05)_40%,_transparent_70%)] pointer-events-none" />
 
-      <div className="relative z-10 container mx-auto px-4 pt-8 md:pt-12 max-w-[900px]">
+        <div className="relative z-10 container mx-auto px-4 pt-8 md:pt-12 max-w-[900px]">
         {/* Back Button */}
         <button 
           onClick={() => navigate("/promotions")}
@@ -277,7 +281,8 @@ export function PromotionDetail() {
                </Button>
             </div>
         </div>
+        </div>
       </div>
-    </div>
+    </InnerPageLayout>
   );
 }

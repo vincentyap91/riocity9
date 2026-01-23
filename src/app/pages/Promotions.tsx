@@ -38,15 +38,11 @@ export function Promotions() {
 
   return (
     <div className="relative min-h-screen bg-[#02040a] text-white overflow-hidden pb-32">
-      {/* Background glow - centered more like the screenshot */}
-      <div className="absolute inset-0">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[500px] bg-[radial-gradient(ellipse_at_top,_rgba(0,188,125,0.15)_0%,_rgba(0,188,125,0.05)_40%,_transparent_70%)]" />
-      </div>
 
-      <div className="relative z-10 container mx-auto px-4 pt-16 pb-6 max-w-[1200px]">
-        <h1 className="text-center text-4xl font-bold tracking-tight text-white mb-20">
-          Promotions
-        </h1>
+        <div className="relative z-10 container mx-auto px-4 pt-16 pb-6 max-w-[1200px]">
+          <h1 className="text-center text-4xl font-bold tracking-tight text-white mb-20">
+            Promotions
+          </h1>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-12 gap-y-20">
           {promotions.map((item, index) => (
@@ -96,7 +92,7 @@ export function Promotions() {
             Load More
           </button>
         </div>
-      </div>
+        </div>
     </div>
   );
 }

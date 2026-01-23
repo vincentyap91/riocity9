@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { useLanguage } from '../contexts/LanguageContext';
+import { InnerPageLayout } from "../components/shared/InnerPageLayout";
 
 const SIDEBAR_ITEMS = [
   { id: 'transaction', label: 'Transaction History', icon: Wallet },
@@ -44,11 +45,8 @@ export function HistoryRecord() {
   const currentData = activeTypeTab === 'deposits' ? depositData : withdrawalData;
 
   return (
-    <div className="min-h-screen w-full relative overflow-hidden font-sans">
-      {/* Background from Design */}
-      <div className="absolute inset-0 z-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-[#042f1f] via-[#031a15] to-[#02040a]"></div>
-
-      <div className="relative z-10 container mx-auto px-4 py-12 max-w-[1024px]">
+    <InnerPageLayout className="overflow-hidden">
+      <div className="container mx-auto px-4 py-12 max-w-[1024px]">
         
         {/* Navigation Header (Settings left) */}
         <div className="relative flex items-center justify-center mb-6">
@@ -228,6 +226,6 @@ export function HistoryRecord() {
         </div>
 
       </div>
-    </div>
+    </InnerPageLayout>
   );
 }

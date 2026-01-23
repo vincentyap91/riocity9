@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { InnerPageLayout } from "../components/shared/InnerPageLayout";
 
 const membershipLevels = [
   {
@@ -81,12 +82,10 @@ const memberRebates = [
 
 export function Membership() {
   return (
-    <div className="flex flex-col min-h-screen text-white relative overflow-hidden pb-20 md:pb-0">
-      {/* Background from Settings */}
-      <div className="absolute inset-0 z-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-[#042f1f] via-[#031a15] to-[#02040a]"></div>
-      
-      {/* Main Content */}
-      <div className="relative z-10 container mx-auto max-w-[1200px] 2xl:max-w-[1536px] px-4 py-6 md:py-12">
+    <InnerPageLayout className="overflow-hidden">
+      <div className="flex flex-col min-h-screen text-white relative overflow-hidden pb-20 md:pb-0">
+        {/* Main Content */}
+        <div className="container mx-auto max-w-[1200px] 2xl:max-w-[1536px] px-4 py-6 md:py-12">
         
         {/* Title Section */}
         <div className="mb-8">
@@ -192,7 +191,8 @@ export function Membership() {
           </div>
         </div>
 
+        </div>
       </div>
-    </div>
+    </InnerPageLayout>
   );
 }
