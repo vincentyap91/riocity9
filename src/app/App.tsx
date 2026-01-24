@@ -84,6 +84,7 @@ function AppContent() {
   const [chatMessage, setChatMessage] = useState('');
   const [isRolloverOpen, setIsRolloverOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isLanguageOpen, setIsLanguageOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedSearchCategory, setSelectedSearchCategory] = useState('All');
   const [recentSearches, setRecentSearches] = useState<string[]>(['evolution', 'roulette']);
@@ -147,6 +148,25 @@ function AppContent() {
   const handleCloseSearch = () => {
     setIsSearchOpen(false);
   };
+
+  const handleOpenLanguage = () => {
+    setIsLanguageOpen(true);
+  };
+
+  const handleCloseLanguage = () => {
+    setIsLanguageOpen(false);
+  };
+
+  // Listen for language modal open event
+  useEffect(() => {
+    const handleOpenLanguageEvent = () => {
+      setIsLanguageOpen(true);
+    };
+    window.addEventListener('openLanguageModal', handleOpenLanguageEvent);
+    return () => {
+      window.removeEventListener('openLanguageModal', handleOpenLanguageEvent);
+    };
+  }, []);
 
   const handleItemClick = (item: any) => {
     // Navigate based on type and category
@@ -573,7 +593,6 @@ function AppContent() {
                 <Route path="/promotions/:id" element={<PromotionDetail />} />
                 <Route path="/app" element={<ComingSoon title="App" backTo="/" backLabel="Home" />} />
                 <Route path="/downlines" element={<Downlines />} />
-                <Route path="/language" element={<ComingSoon title={t("changeLanguage")} backTo="/settings" backLabel={t("settings")} />} />
                 <Route path="/security" element={<ChangePassword />} />
                 <Route path="/bonus/:bonusType" element={<Bonus />} />
                 <Route path="/register" element={<Register />} />
@@ -748,6 +767,74 @@ function AppContent() {
                       </div>
                     )}
                   </div>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        )}
+
+        {/* Language Modal */}
+        {isLanguageOpen && (
+          <div className="fixed inset-0 z-[100] flex items-start justify-center px-4 py-12 md:py-20">
+            <div
+              className="absolute inset-0 bg-black/10 backdrop-blur-xs transition-opacity duration-300"
+              onClick={handleCloseLanguage}
+            />
+            <motion.div 
+              initial={{ opacity: 0, y: -20, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -20, scale: 0.95 }}
+              className="relative w-full max-w-2xl bg-[#0f1923] rounded-[24px] border border-white/10 shadow-[0_32px_64px_-12px_rgba(0,0,0,0.6)] overflow-hidden z-[101]"
+            >
+              <div className="flex items-center justify-between px-6 py-4 border-b border-white/5">
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center">
+                    <Languages className="w-4 h-4 text-emerald-500" />
+                  </div>
+                  <h3 className="text-white font-black text-lg uppercase tracking-tighter">{t("changeLanguage")}</h3>
+                </div>
+                <button
+                  type="button"
+                  onClick={handleCloseLanguage}
+                  className="h-9 w-9 flex items-center justify-center rounded-full bg-white/5 text-gray-400 hover:text-white hover:bg-white/10 transition-all"
+                >
+                  <X size={18} />
+                </button>
+              </div>
+
+              <div className="px-6 pb-6 pt-6 space-y-6 max-h-[70vh] overflow-y-auto custom-scrollbar">
+                <div className="space-y-3">
+                  {languages.map((lang) => (
+                    <button
+                      key={lang.id}
+                      onClick={() => {
+                        setCurrentLang(lang);
+                        handleCloseLanguage();
+                      }}
+                      className={`w-full flex items-center gap-3.5 px-4 py-3.5 rounded-[14px] cursor-pointer transition-all duration-300 outline-none ${
+                        currentLang.id === lang.id 
+                          ? 'bg-gradient-to-r from-emerald-500/10 to-transparent text-[#00ff88] shadow-[inset_0_0_20px_rgba(0,255,136,0.02)] border border-emerald-500/30' 
+                          : 'text-white/60 hover:text-white hover:bg-white/5 border border-transparent'
+                      }`}
+                    >
+                      <div className={`w-8 h-8 flex items-center justify-center shrink-0 overflow-hidden rounded-full border transition-all duration-500 ${
+                        currentLang.id === lang.id ? 'border-[#00ff88]/40 scale-110 shadow-[0_0_15px_rgba(0,255,136,0.2)]' : 'border-white/10'
+                      }`}>
+                        <lang.icon className="w-full h-full object-cover object-center" />
+                      </div>
+                      
+                      <span className={`font-bold text-[15px] tracking-tight transition-colors duration-300 ${currentLang.id === lang.id ? 'text-[#00ff88]' : ''}`}>
+                        {lang.label}
+                      </span>
+
+                      {currentLang.id === lang.id && (
+                        <div className="ml-auto relative flex items-center justify-center w-1.5 h-6">
+                          <div className="absolute inset-0 bg-[#00ff88] rounded-full blur-[2px] opacity-60"></div>
+                          <div className="relative w-full h-full bg-[#00ff88] rounded-full"></div>
+                        </div>
+                      )}
+                    </button>
+                  ))}
                 </div>
               </div>
             </motion.div>

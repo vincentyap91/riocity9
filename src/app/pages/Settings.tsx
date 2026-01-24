@@ -157,7 +157,13 @@ export function Settings() {
                     <button 
                         key={index}
                         className="flex items-center justify-between px-6 py-5 hover:bg-white/5 transition-colors border-b border-white/5 last:border-0 group w-full text-left"
-                        onClick={() => navigate(item.path)}
+                        onClick={() => {
+                          if (item.path === '/language') {
+                            window.dispatchEvent(new CustomEvent('openLanguageModal'));
+                          } else {
+                            navigate(item.path);
+                          }
+                        }}
                     >
                         <div className="flex items-center gap-4">
                             <div className="w-10 h-10 rounded-[10px] bg-black/40 flex items-center justify-center text-[#99A1AF] group-hover:text-emerald-400 group-hover:bg-emerald-500/10 transition-all">

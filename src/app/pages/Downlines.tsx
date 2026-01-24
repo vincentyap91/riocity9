@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { 
   ArrowLeft, UsersRound, Calendar, Search, 
-  ChevronUp, ChevronDown, X, History
+  ChevronUp, ChevronDown, X
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '../components/ui/button';
@@ -93,20 +93,29 @@ export function Downlines() {
 
         <div className="flex flex-col lg:flex-row gap-6 items-start">
           
-          {/* Sidebar Menu - Same as HistoryRecord */}
+          {/* Sidebar Menu */}
           <div className="w-full lg:w-[280px] bg-[#1a2230] rounded-[16px] border border-white/5 p-4 flex flex-col gap-2 shrink-0">
             <button
-              onClick={() => navigate('/history')}
-              className="w-full px-5 py-4 rounded-xl text-sm font-bold text-left transition-all flex items-center gap-4 group text-gray-400 hover:text-white hover:bg-white/5"
+              onClick={() => setActiveTab('summary')}
+              className={`w-full px-5 py-4 rounded-xl text-sm font-bold text-left transition-all flex items-center gap-4 group ${
+                activeTab === 'summary'
+                  ? 'bg-emerald-500 text-black shadow-[0_0_20px_rgba(16,185,129,0.3)]'
+                  : 'text-gray-400 hover:text-white hover:bg-white/5'
+              }`}
             >
-              <History className="w-5 h-5 text-gray-500 group-hover:text-white transition-colors" />
-              {t("historyRecord")}
+              <UsersRound className={`w-5 h-5 ${activeTab === 'summary' ? 'text-black' : 'text-gray-500 group-hover:text-white'} transition-colors`} />
+              Downline Summary
             </button>
             <button
-              className="w-full px-5 py-4 rounded-xl text-sm font-bold text-left transition-all flex items-center gap-4 group bg-emerald-500 text-black shadow-[0_0_20px_rgba(16,185,129,0.3)]"
+              onClick={() => setActiveTab('kpis')}
+              className={`w-full px-5 py-4 rounded-xl text-sm font-bold text-left transition-all flex items-center gap-4 group ${
+                activeTab === 'kpis'
+                  ? 'bg-emerald-500 text-black shadow-[0_0_20px_rgba(16,185,129,0.3)]'
+                  : 'text-gray-400 hover:text-white hover:bg-white/5'
+              }`}
             >
-              <UsersRound className="w-5 h-5 text-black" />
-              {t("downlines")}
+              <UsersRound className={`w-5 h-5 ${activeTab === 'kpis' ? 'text-black' : 'text-gray-500 group-hover:text-white'} transition-colors`} />
+              Downlines KPIs
             </button>
           </div>
 
@@ -118,32 +127,10 @@ export function Downlines() {
                 <div className="h-10 w-10 rounded-xl bg-black/25 border border-white/10 flex items-center justify-center">
                   <UsersRound className="w-5 h-5 text-emerald-500" />
                 </div>
-                <span className="text-emerald-500 font-bold text-lg">Downlines</span>
+                <span className="text-emerald-500 font-bold text-lg">
+                  {activeTab === 'summary' ? 'Downline Summary' : 'Downlines KPIs'}
+                </span>
               </div>
-            </div>
-
-            {/* Main Tabs: Summary / KPIs */}
-            <div className="flex gap-2 mb-6">
-              <button
-                onClick={() => setActiveTab('summary')}
-                className={`px-6 py-3 rounded-xl text-sm font-bold transition-all ${
-                  activeTab === 'summary'
-                    ? 'bg-emerald-500/10 text-emerald-500 border border-emerald-500/30'
-                    : 'bg-[#0f151f] text-white border border-white/5 hover:bg-white/5'
-                }`}
-              >
-                Downline Summary
-              </button>
-              <button
-                onClick={() => setActiveTab('kpis')}
-                className={`px-6 py-3 rounded-xl text-sm font-bold transition-all ${
-                  activeTab === 'kpis'
-                    ? 'bg-emerald-500 text-black shadow-lg'
-                    : 'bg-[#0f151f] text-white border border-white/5 hover:bg-white/5'
-                }`}
-              >
-                Downlines KPIs
-              </button>
             </div>
 
             {/* Content based on active tab */}
