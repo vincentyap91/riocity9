@@ -1,10 +1,8 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
+  signInAnonymously,
   signOut,
   onAuthStateChanged,
-  updateProfile,
   setPersistence,
   browserLocalPersistence,
   type User as FirebaseUser,
@@ -22,8 +20,7 @@ interface AuthContextType {
   user: User | null;
   loading: boolean;
   isAuthenticated: boolean;
-  login: (email: string, password: string) => Promise<void>;
-  register: (email: string, password: string, displayName?: string) => Promise<void>;
+  login: () => Promise<void>;
   logout: () => Promise<void>;
   error: string | null;
 }
@@ -58,41 +55,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return () => unsubscribe();
   }, []);
 
-  const login = async (email: string, password: string): Promise<void> => {
+  const login = async (): Promise<void> => {
     setError(null);
     setLoading(true);
 
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      await signInAnonymously(auth);
       // User state will be updated by onAuthStateChanged listener
     } catch (err) {
       const firebaseError = err as AuthError;
-      const errorMessage = getErrorMessage(firebaseError.code);
-      setError(errorMessage);
-      throw new Error(errorMessage);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const register = async (
-    email: string,
-    password: string,
-    displayName?: string
-  ): Promise<void> => {
-    setError(null);
-    setLoading(true);
-
-    try {
-      const result = await createUserWithEmailAndPassword(auth, email, password);
-      
-      // Update profile with displayName if provided
-      if (displayName) {
-        await updateProfile(result.user, { displayName });
-      }
-      // User state will be updated by onAuthStateChanged listener
-    } catch (error) {
-      const firebaseError = error as AuthError;
       const errorMessage = getErrorMessage(firebaseError.code);
       setError(errorMessage);
       throw new Error(errorMessage);
@@ -121,7 +92,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         loading,
         isAuthenticated: !!user,
         login,
-        register,
         logout,
         error,
       }}
@@ -142,13 +112,7 @@ export function useAuth() {
 // Helper function to convert Firebase error codes to user-friendly messages
 function getErrorMessage(errorCode: string): string {
   const errorMessages: { [key: string]: string } = {
-    'auth/user-not-found': 'No account found with this email',
-    'auth/wrong-password': 'Incorrect password',
-    'auth/invalid-email': 'Invalid email address',
-    'auth/user-disabled': 'This account has been disabled',
-    'auth/email-already-in-use': 'Email already registered',
-    'auth/weak-password': 'Password is too weak. Use at least 6 characters',
-    'auth/operation-not-allowed': 'Email/password sign-up is not enabled',
+    'auth/operation-not-allowed': 'Anonymous sign-in is not enabled',
     'auth/too-many-requests': 'Too many login attempts. Try again later',
     'auth/network-request-failed': 'Network error. Check your connection',
   };
