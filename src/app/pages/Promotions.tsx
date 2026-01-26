@@ -37,7 +37,7 @@ export function Promotions() {
   const navigate = useNavigate();
 
   return (
-    <div className="relative min-h-screen bg-[#02040a] text-white overflow-hidden pb-32">
+    <div className="relative min-h-screen text-white overflow-hidden pb-32">
 
         <div className="relative z-10 container mx-auto px-4 pt-16 pb-6 max-w-[1200px]">
           <h1 className="text-center text-4xl font-bold tracking-tight text-white mb-20">

@@ -64,13 +64,6 @@ export function Lottery() {
 
         {/* Simple Title Section */}
         <div className="mt-[-20px] relative z-20 w-full flex flex-col items-center gap-6 py-6">
-            <div className="absolute left-4 top-1/2 -translate-y-1/2 hidden xl:block">
-                <div className="w-24 h-24 rounded-full bg-purple-500 opacity-20 blur-[50px]"></div>
-            </div>
-            <div className="absolute right-4 top-1/2 -translate-y-1/2 hidden xl:block">
-                <div className="w-24 h-24 rounded-full bg-purple-500 opacity-20 blur-[50px]"></div>
-            </div>
-
             <h2 className="text-4xl md:text-5xl font-black text-purple-500 drop-shadow-[0_0_15px_rgba(168,85,247,0.5)]">
                 {t('lotteryKenoTitle')}
             </h2>
