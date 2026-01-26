@@ -1,0 +1,856 @@
+================================================================================
+FIREBASE AUTHENTICATION IMPLEMENTATION - DIFF ONLY
+================================================================================
+
+## 1. package.json - Add Firebase Dependencies
+
+--- a/package.json
++++ b/package.json
+@@ -1,12 +1,12 @@
+ {
+   "name": "@figma/my-make-file",
+   "private": true,
+   "version": "0.0.1",
+   "type": "module",
+   "scripts": {
+     "build": "vite build",
+     "dev": "vite",
+-    "generate-static": "node scripts/generate-static-simple.js",
+-    "generate-static-html": "node scripts/generate-static-html.js",
+-    "generate-static-standalone": "node scripts/generate-static-standalone.js",
+-    "fix-static-paths": "node scripts/fix-static-paths.js"
++    "type-check": "tsc --noEmit"
+   },
+   "dependencies": {
++    "firebase": "^10.7.1",
+     "@emotion/react": "11.14.0",
+     ...rest of dependencies
+
+
+================================================================================
+## 2. .env.example - NEW FILE
+
+--- /dev/null
++++ b/.env.example
+@@ -0,0 +1,8 @@
++# Firebase Configuration
++VITE_FIREBASE_API_KEY=your_api_key_here
++VITE_FIREBASE_AUTH_DOMAIN=your_project.firebaseapp.com
++VITE_FIREBASE_PROJECT_ID=your_project_id
++VITE_FIREBASE_STORAGE_BUCKET=your_project.appspot.com
++VITE_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
++VITE_FIREBASE_APP_ID=your_app_id
++VITE_FIREBASE_MEASUREMENT_ID=your_measurement_id
+
+
+================================================================================
+## 3. .gitignore - Update
+
+--- a/.gitignore
++++ b/.gitignore
+@@ -1,3 +1,5 @@
++# Environment variables
++.env
++.env.local
+ # Logs
+ logs
+ *.log
+
+
+================================================================================
+## 4. src/app/config/firebase.ts - NEW FILE
+
+--- /dev/null
++++ b/src/app/config/firebase.ts
+@@ -0,0 +1,40 @@
++import { initializeApp } from 'firebase/app';
++import { 
++  getAuth, 
++  setPersistence, 
++  browserLocalPersistence,
++  type Auth 
++} from 'firebase/auth';
++
++// Firebase configuration from environment variables (not hardcoded)
++const firebaseConfig = {
++  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
++  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
++  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
++  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
++  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
++  appId: import.meta.env.VITE_FIREBASE_APP_ID,
++  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
++};
++
++// Validate Firebase configuration
++if (!firebaseConfig.apiKey || !firebaseConfig.authDomain || !firebaseConfig.projectId) {
++  console.error('Firebase configuration is incomplete. Please check your .env file.');
++}
++
++// Initialize Firebase
++const app = initializeApp(firebaseConfig);
++
++// Get Firebase Auth instance
++export const auth = getAuth(app);
++
++// Set persistence to LOCAL (survives browser restart)
++setPersistence(auth, browserLocalPersistence).catch((error) => {
++  console.error('Failed to set auth persistence:', error);
++});
++
++// Export app for optional other Firebase services
++export { app };
+
+
+================================================================================
+## 5. src/app/contexts/AuthContext.tsx - COMPLETE REWRITE
+
+--- a/src/app/contexts/AuthContext.tsx
++++ b/src/app/contexts/AuthContext.tsx
+@@ -1,367 +1,190 @@
+-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+-import { API_CONFIG } from '../config/api';
+-import { apiService } from '../services/api';
+-import { indexedDBStorage, type UserData } from '../services/storage';
+-// 在浏览器环境中加载调试工具
+-if (typeof window !== 'undefined') {
+-  import('../utils/storage-debug');
+-}
++import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
++import {
++  createUserWithEmailAndPassword,
++  signInWithEmailAndPassword,
++  signOut,
++  onAuthStateChanged,
++  updateProfile,
++  setPersistence,
++  browserLocalPersistence,
++  type User as FirebaseUser,
++  type AuthError,
++} from 'firebase/auth';
++import { auth } from '../config/firebase';
+
+-interface User {
+-  username: string;
++interface User {
++  uid: string;
+   email?: string;
+-  mobile?: string;
++  displayName?: string;
+ }
+
+ interface AuthContextType {
+   user: User | null;
++  loading: boolean;
+   isAuthenticated: boolean;
+-  login: (username: string, password: string) => Promise<boolean>;
+-  register: (username: string, password: string, mobile?: string, referralCode?: string) => Promise<boolean>;
+-  checkAvailability: (username: string, mobile?: string) => Promise<{ usernameAvailable: boolean; mobileAvailable: boolean }>;
++  login: (email: string, password: string) => Promise<void>;
++  register: (email: string, password: string, displayName?: string) => Promise<void>;
++  logout: () => Promise<void>;
++  error: string | null;
++}
+
+ const AuthContext = createContext<AuthContextType | undefined>(undefined);
+
+ export function AuthProvider({ children }: { children: ReactNode }) {
+   const [user, setUser] = useState<User | null>(null);
++  const [loading, setLoading] = useState(true);
++  const [error, setError] = useState<string | null>(null);
+
+-  // 初始化存储系统
+   useEffect(() => {
+-    // 如果是使用 IndexedDB，初始化数据库
+-    if (API_CONFIG.storageType === 'indexeddb') {
+-      indexedDBStorage.init().catch((error) => {
+-        console.error('IndexedDB 初始化失败，回退到 localStorage:', error);
+-      });
+-    }
+-
+-    // 加载保存的登录状态
+-    loadSavedUser();
++    // Ensure persistence is set
++    setPersistence(auth, browserLocalPersistence).catch((error) => {
++      console.error('Failed to set persistence:', error);
++    });
+
+-  }, []);
++    // Listen to auth state changes
++    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
++      if (firebaseUser) {
++        setUser({
++          uid: firebaseUser.uid,
++          email: firebaseUser.email || undefined,
++          displayName: firebaseUser.displayName || undefined,
++        });
++      } else {
++        setUser(null);
++      }
++      setLoading(false);
++    });
+
+-  // 检查用户名或手机号是否可用
+-  const checkAvailability = async (username: string, mobile?: string) => {
+-    try {
+-      if (API_CONFIG.storageType === 'api') {
+-        // 在实际 API 中，这可能是一个专门的 endpoint
+-        // 这里简单模拟
+-        return { usernameAvailable: true, mobileAvailable: true };
+-      } else if (API_CONFIG.storageType === 'indexeddb') {
+-        const usernameExists = await indexedDBStorage.userExists(username);
+-        let mobileExists = false;
+-        if (mobile) {
+-          mobileExists = !!(await indexedDBStorage.getUserByMobile(mobile));
+-        }
+-        return { 
+-          usernameAvailable: !usernameExists, 
+-          mobileAvailable: !mobileExists 
+-        };
+-      } else {
+-        const storedUsers = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
+-        const usernameExists = storedUsers.some((u: any) => u.username === username);
+-        const mobileExists = mobile ? storedUsers.some((u: any) => u.mobile === mobile) : false;
+-        return { 
+-          usernameAvailable: !usernameExists, 
+-          mobileAvailable: !mobileExists 
+-        };
+-      }
+-    } catch (error) {
+-      console.error('Availability check error:', error);
+-      return { usernameAvailable: true, mobileAvailable: true };
+-    }
++    return () => unsubscribe();
+   };
+
+-  // 加载保存的用户信息
+-  const loadSavedUser = async () => {
+-    try {
+-      // 优先从 localStorage 加载当前登录用户（轻量级信息）
+-      const storedUser = localStorage.getItem('user');
+-      if (storedUser) {
+-        try {
+-          const userData = JSON.parse(storedUser);
+-          
+-          // 如果使用 API，验证 token 是否有效
+-          if (API_CONFIG.storageType === 'api') {
+-            try {
+-              const response = await apiService.verifyToken();
+-              if (response.success && response.user) {
+-                setUser(response.user);
+-                return;
+-              }
+-            } catch (error) {
+-              console.error('Token 验证失败:', error);
+-              // Token 无效，清除本地存储
+-              localStorage.removeItem('user');
+-              localStorage.removeItem('authToken');
+-            }
+-          } else {
+-            // IndexedDB 或 localStorage 模式，直接使用保存的用户信息
+-            setUser(userData);
+-          }
+-        } catch (error) {
+-          console.error('解析用户数据失败:', error);
+-          localStorage.removeItem('user');
+-        }
+-      }
+-    } catch (error) {
+-      console.error('加载用户信息失败:', error);
+-    }
+-  };
++  }, []);
+
+-  const login = async (username: string, password: string): Promise<boolean> => {
+-    // 基本表单验证
+-    if (!username || !password) {
+-      alert('请输入用户名和密码');
+-      return false;
+-    }
+-
+-    if (username.length < 3) {
+-      alert('用户名至少需要3个字符');
+-      return false;
+-    }
+-
+-    if (password.length < 6) {
+-      alert('密码至少需要6个字符');
+-      return false;
+-    }
++  const login = async (email: string, password: string): Promise<void> => {
++    setError(null);
++    setLoading(true);
+ 
+     try {
+-      // 根据配置使用不同的存储方式
+-      if (API_CONFIG.storageType === 'api') {
+-        // 使用后端 API
+-        const response = await apiService.login({ username, password });
+-
+-        if (response.success && response.user) {
+-          const userData: User = {
+-            username: response.user.username,
+-            email: response.user.email,
+-            mobile: response.user.mobile,
+-          };
+-          setUser(userData);
+-          localStorage.setItem('user', JSON.stringify(userData));
+-          return true;
+-        } else {
+-          alert(response.message || '登录失败');
+-          return false;
+-        }
+-      } else if (API_CONFIG.storageType === 'indexeddb') {
+-        // 使用 IndexedDB
+-        const foundUser = await indexedDBStorage.getUserByUsername(username);
+-        
+-        if (!foundUser || foundUser.password !== password) {
+-          alert('用户名或密码错误');
+-          return false;
+-        }
+-
+-        const userData: User = {
+-          username: foundUser.username,
+-          email: foundUser.email,
+-          mobile: foundUser.mobile,
+-        };
+-
+-        setUser(userData);
+-        localStorage.setItem('user', JSON.stringify(userData));
+-        return true;
+-      } else {
+-        // 使用 localStorage（后备方案）
+-        const storedUsers = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
+-        const foundUser = storedUsers.find(
+-          (u: { username: string; password: string }) => 
+-            u.username === username && u.password === password
+-        );
+-
+-        if (!foundUser) {
+-          alert('用户名或密码错误');
+-          return false;
+-        }
+-
+-        const userData: User = {
+-          username: foundUser.username,
+-          email: foundUser.email,
+-          mobile: foundUser.mobile,
+-        };
+-
+-        setUser(userData);
+-        localStorage.setItem('user', JSON.stringify(userData));
+-        return true;
+-      }
+-    } catch (error) {
+-      console.error('登录错误:', error);
+-      alert(error instanceof Error ? error.message : '登录失败，请稍后重试');
+-      return false;
+-    }
++      const result = await signInWithEmailAndPassword(auth, email, password);
++      // User state will be updated by onAuthStateChanged listener
++    } catch (err) {
++      const firebaseError = err as AuthError;
++      const errorMessage = getErrorMessage(firebaseError.code);
++      setError(errorMessage);
++      throw new Error(errorMessage);
++    } finally {
++      setLoading(false);
++    }
+   };
+
+-  const register = async (
+-    username: string, 
+-    password: string, 
+-    mobile?: string, 
+-    referralCode?: string
+-  ): Promise<boolean> => {
+-    // 基本表单验证
+-    if (!username || !password) {
+-      alert('请输入用户名和密码');
+-      return false;
+-    }
+-
+-    if (username.length < 3) {
+-      alert('用户名至少需要3个字符');
+-      return false;
+-    }
+-
+-    if (password.length < 6) {
+-      alert('密码至少需要6个字符');
+-      return false;
+-    }
++  const register = async (
++    email: string,
++    password: string,
++    displayName?: string
++  ): Promise<void> => {
++    setError(null);
++    setLoading(true);
+ 
+     try {
+-      // 根据配置使用不同的存储方式
+-      if (API_CONFIG.storageType === 'api') {
+-        // 使用后端 API
+-        const response = await apiService.register({
+-          username,
+-          password,
+-          mobile,
+-          referralCode,
+-        });
+-
+-        if (response.success && response.user) {
+-          const userData: User = {
+-            username: response.user.username,
+-            email: response.user.email,
+-            mobile: response.user.mobile,
+-          };
+-          setUser(userData);
+-          localStorage.setItem('user', JSON.stringify(userData));
+-          return true;
+-        } else {
+-          alert(response.message || '注册失败');
+-          return false;
+-        }
+-      } else if (API_CONFIG.storageType === 'indexeddb') {
+-        // 使用 IndexedDB
+-        // 检查用户名是否已存在
+-        const userExists = await indexedDBStorage.userExists(username);
+-        if (userExists) {
+-          throw new Error('Username already exists. Please choose another.');
+-        }
+-
+-        // 检查手机号是否已存在
+-        if (mobile) {
+-          const mobileExists = await indexedDBStorage.getUserByMobile(mobile);
+-          if (mobileExists) {
+-            throw new Error('Mobile number already registered. Please use another.');
+-          }
+-        }
+-
+-        // 创建新用户
+-        const newUser: UserData = {
+-          username,
+-          password, // 注意：在实际应用中，密码应该在传输时加密
+-          mobile,
+-          referralCode,
+-          createdAt: new Date().toISOString(),
+-        };
+-
+-        await indexedDBStorage.addUser(newUser);
+-
+-        // 注册成功后自动登录
+-        const userData: User = {
+-          username,
+-          mobile,
+-        };
+-
+-        setUser(userData);
+-        localStorage.setItem('user', JSON.stringify(userData));
+-        return true;
+-      } else {
+-        // 使用 localStorage（后备方案）
+-        const storedUsers = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
+-        
+-        // 检查用户名是否已存在
+-        const userExists = storedUsers.some(
+-          (u: { username: string }) => u.username === username
+-        );
+-        if (userExists) {
+-          throw new Error('Username already exists. Please choose another.');
+-        }
+-
+-        // 检查手机号是否已存在
+-        if (mobile) {
+-          const mobileExists = storedUsers.some(
+-            (u: { mobile?: string }) => u.mobile === mobile
+-          );
+-          if (mobileExists) {
+-            throw new Error('Mobile number already registered. Please use another.');
+-          }
+-        }
+-
+-        const newUser = {
+-          username,
+-          password, // 注意：在实际应用中，密码应该被哈希加密
+-          mobile,
+-          referralCode,
+-          createdAt: new Date().toISOString(),
+-        };
+-
+-        storedUsers.push(newUser);
+-        localStorage.setItem('registeredUsers', JSON.stringify(storedUsers));
+-
+-        // 注册成功后自动登录
+-        const userData: User = {
+-          username,
+-          mobile,
+-        };
+-
+-        setUser(userData);
+-        localStorage.setItem('user', JSON.stringify(userData));
+-        return true;
+-      }
++      const result = await createUserWithEmailAndPassword(auth, email, password);
++      
++      // Update profile with displayName if provided
++      if (displayName) {
++        await updateProfile(result.user, { displayName });
++      }
++      // User state will be updated by onAuthStateChanged listener
+     } catch (error) {
+-      console.error('注册错误:', error);
+-      alert(error instanceof Error ? error.message : '注册失败，请稍后重试');
+-      return false;
++      const firebaseError = error as AuthError;
++      const errorMessage = getErrorMessage(firebaseError.code);
++      setError(errorMessage);
++      throw new Error(errorMessage);
++    } finally {
++      setLoading(false);
+     }
+   };
+
+-  const logout = async () => {
++  const logout = async (): Promise<void> => {
+     try {
+-      // 如果使用 API，调用后端登出接口
+-      if (API_CONFIG.storageType === 'api') {
+-        await apiService.logout();
+-      }
++      await signOut(auth);
++      setUser(null);
++      setError(null);
+     } catch (error) {
+-      console.error('登出错误:', error);
++      const firebaseError = error as AuthError;
++      const errorMessage = getErrorMessage(firebaseError.code);
++      setError(errorMessage);
++      throw new Error(errorMessage);
+     } finally {
+-      // 清除本地用户信息
+-      setUser(null);
+-      localStorage.removeItem('user');
+-      localStorage.removeItem('authToken');
+     }
+   };
+
+   return (
+     <AuthContext.Provider
+       value={{
+         user,
++        loading,
+         isAuthenticated: !!user,
+         login,
+         register,
+-        checkAvailability,
+         logout,
++        error,
+       }}
+     >
+       {children}
+     </AuthContext.Provider>
+   );
+ }
+
+ export function useAuth() {
+   const context = useContext(AuthContext);
+   if (context === undefined) {
+     throw new Error('useAuth must be used within an AuthProvider');
+   }
+   return context;
+ }
++
++// Helper function to convert Firebase error codes to user-friendly messages
++function getErrorMessage(errorCode: string): string {
++  const errorMessages: { [key: string]: string } = {
++    'auth/user-not-found': 'No account found with this email',
++    'auth/wrong-password': 'Incorrect password',
++    'auth/invalid-email': 'Invalid email address',
++    'auth/user-disabled': 'This account has been disabled',
++    'auth/email-already-in-use': 'Email already registered',
++    'auth/weak-password': 'Password is too weak. Use at least 6 characters',
++    'auth/operation-not-allowed': 'Email/password sign-up is not enabled',
++    'auth/too-many-requests': 'Too many login attempts. Try again later',
++    'auth/network-request-failed': 'Network error. Check your connection',
++  };
++
++  return errorMessages[errorCode] || 'An error occurred. Please try again';
++}
+
+
+================================================================================
+## 6. src/app/components/ProtectedRoute.tsx - NEW FILE
+
+--- /dev/null
++++ b/src/app/components/ProtectedRoute.tsx
+@@ -0,0 +1,26 @@
++import React from 'react';
++import { Navigate } from 'react-router-dom';
++import { useAuth } from '../contexts/AuthContext';
++
++interface ProtectedRouteProps {
++  children: React.ReactNode;
++}
++
++/**
++ * ProtectedRoute component that redirects unauthenticated users to /login
++ * Automatically handles loading state while auth state is being determined
++ */
++export function ProtectedRoute({ children }: ProtectedRouteProps) {
++  const { isAuthenticated, loading } = useAuth();
++
++  if (loading) {
++    return (
++      <div className="flex items-center justify-center min-h-screen bg-[#02040a]">
++        <div className="text-white text-lg">Loading...</div>
++      </div>
++    );
++  }
++
++  if (!isAuthenticated) {
++    return <Navigate to="/login" replace />;
++  }
++
++  return <>{children}</>;
++}
+
+
+================================================================================
+## 7. src/main.tsx - Update routing
+
+--- a/src/main.tsx
++++ b/src/main.tsx
+@@ -10,6 +10,7 @@ import {
+ } from 'react-router-dom';
+ 
+ import { AuthProvider } from '@/app/contexts/AuthContext';
++import { ProtectedRoute } from '@/app/components/ProtectedRoute';
+ import App from '@/app/App';
+ import { Login } from '@/app/pages/Login';
+ import { Register } from '@/app/pages/Register';
+@@ -48,8 +49,8 @@ const router = createBrowserRouter([
+       {
+         path: '/',
+-        element: <App />,
++        element: <ProtectedRoute><App /></ProtectedRoute>,
+         children: [
+           // ... all your app routes
+         ],
+       },
+       {
+
+
+================================================================================
+## 8. src/app/pages/Login.tsx - SIMPLIFIED
+
+--- a/src/app/pages/Login.tsx
++++ b/src/app/pages/Login.tsx
+@@ -1,7 +1,7 @@
+ import React, { useState } from 'react';
+ import { Eye, EyeOff, X, AlertCircle } from 'lucide-react';
+ import { motion, AnimatePresence } from 'motion/react';
+ import { Button } from '../components/ui/button';
+ import { Input } from '../components/ui/input';
+ import { Label } from '../components/ui/label';
+@@ -12,37 +12,44 @@ import { Link, useNavigate } from 'react-router-dom';
+ 
+ // Assets
+ import imgLoginPromo from '@/assets/7b5397e1e0b3ef00aac3ed749d986cb7304ad993.png';
+
+ export function Login() {
+   const [showPassword, setShowPassword] = useState(false);
+-  const [username, setUsername] = useState('');
++  const [email, setEmail] = useState('');
+   const [password, setPassword] = useState('');
+   const [rememberMe, setRememberMe] = useState(false);
+   const [isLoading, setIsLoading] = useState(false);
+   const [showForgotModal, setShowForgotModal] = useState(false);
+   
+   // Validation errors
+   const [errors, setErrors] = useState<{
+-    username?: string;
++    email?: string;
+     password?: string;
+     general?: string;
+   }>({});
+   
+-  const { login } = useAuth();
++  const { login, error: authError } = useAuth();
+   const navigate = useNavigate();
+
+   // Validation function
+   const validateForm = () => {
+     const newErrors: typeof errors = {};
+     
+-    // Username validation
+-    if (!username.trim()) {
+-      newErrors.username = 'Username is required';
+-    } else if (username.length < 3) {
+-      newErrors.username = 'Username must be at least 3 characters';
+-    } else if (!/^[a-zA-Z0-9_]+$/.test(username)) {
+-      newErrors.username = 'Username can only contain letters, numbers, and underscores';
+-    }
++    // Email validation
++    if (!email.trim()) {
++      newErrors.email = 'Email is required';
++    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
++      newErrors.email = 'Please enter a valid email address';
++    }
+     
+     // Password validation
+     if (!password.trim()) {
+       newErrors.password = 'Password is required';
+     } else if (password.length < 6) {
+       newErrors.password = 'Password must be at least 6 characters';
+     }
+     
+     setErrors(newErrors);
+     return Object.keys(newErrors).length === 0;
+@@ -51,12 +58,18 @@ export function Login() {
+
+   const handleSubmit = async (e: React.FormEvent) => {
+     e.preventDefault();
+     
+     if (!validateForm()) return;
+     
+     setIsLoading(true);
+     setErrors({});
+     
+     try {
+-      const success = await login(username, password);
+-      if (success) {
++      await login(email, password);
++      // If login succeeds, user state will be updated and ProtectedRoute will redirect to home
+       navigate('/');
+-      } else {
+-        setErrors({ general: 'Invalid username or password' });
+-      }
+     } catch (error) {
+       console.error('Login error:', error);
+-      setErrors({ general: 'Login failed. Please try again later.' });
++      setErrors({ general: authError || 'Login failed. Please try again.' });
+     } finally {
+       setIsLoading(false);
+     }
+
+   return (
+     // ... JSX remains mostly the same, but update field references:
+     // - username → email
+     // - type="text" → type="email" for email field
+     // - Remove username validation from UI
+   );
+ }
+
+
+================================================================================
+## 9. src/app/pages/Register.tsx - SIMPLIFIED (if exists)
+
+--- a/src/app/pages/Register.tsx
++++ b/src/app/pages/Register.tsx
+@@ -1,6 +1,8 @@
+ import React, { useState } from 'react';
+ import { useAuth } from '../contexts/AuthContext';
+ import { useNavigate } from 'react-router-dom';
++import { Button } from '../components/ui/button';
++import { Input } from '../components/ui/input';
+
+ export function Register() {
+   const [email, setEmail] = useState('');
+   const [password, setPassword] = useState('');
+@@ -8,6 +10,7 @@ export function Register() {
+   const [isLoading, setIsLoading] = useState(false);
+   const [errors, setErrors] = useState<{
+     email?: string;
+     password?: string;
+     confirm?: string;
+@@ -15,7 +18,7 @@ export function Register() {
+   }>({});
+   
+-  const { register } = useAuth();
++  const { register, error: authError } = useAuth();
+   const navigate = useNavigate();
+
+   const validateForm = () => {
+@@ -37,7 +40,7 @@ export function Register() {
+     return Object.keys(newErrors).length === 0;
+   };
+
+   const handleSubmit = async (e: React.FormEvent) => {
+     e.preventDefault();
+     
+     if (!validateForm()) return;
+@@ -46,17 +49,16 @@ export function Register() {
+     setErrors({});
+     
+     try {
+-      const success = await register(email, password, displayName);
+-      if (success) {
++      await register(email, password, displayName);
++      // Redirect to home after successful registration
+       navigate('/');
+-      } else {
+-        throw new Error('Registration failed');
+-      }
+     } catch (error) {
+       console.error('Registration error:', error);
+-      setErrors({ general: 'Registration failed. Try another email.' });
++      setErrors({ general: authError || 'Registration failed. Please try again.' });
+     } finally {
+       setIsLoading(false);
+     }
+   };
+
+   return (
+     // ... JSX (similar to Login, but with email, password, confirm password, displayName)
+   );
+ }
+
+
+================================================================================
+## 10. Remove Old Files (No longer needed)
+
+--- a/src/app/services/storage.ts
++++ /dev/null
+@@ -1,250 +0,0 @@
+-(entire file deleted - IndexedDB storage no longer needed)
+
+--- a/src/app/utils/storage-debug.ts
++++ /dev/null
+@@ -1,150 +0,0 @@
+-(entire file deleted - debug utilities no longer needed)
+
+--- a/src/app/config/api.ts
++++ /dev/null
+@@ -1,20 +0,0 @@
+-(entire file deleted - API config no longer needed)
+
+
+================================================================================
+## MIGRATION SUMMARY
+
+✓ Add Firebase SDK to dependencies
+✓ Create Firebase config (environment variables)
+✓ Rewrite AuthContext for Firebase
+✓ Create ProtectedRoute component
+✓ Update Login page (email-based)
+✓ Update Register page (email-based)
+✓ Update routing to use ProtectedRoute
+✓ Remove IndexedDB/localStorage authentication
+✓ Add .env.example for configuration
+✓ Remove old storage service files
+
+BENEFITS:
+- No plaintext password storage (Firebase handles encryption)
+- Persistent sessions (browserLocalPersistence)
+- Automatic session recovery on page reload
+- Automatic redirect to /login for unauthenticated users
+- Firebase error handling with user-friendly messages
+- No custom user management code needed
+- Type-safe with Firebase SDK
+
+NEXT STEPS:
+1. Set up Firebase project at console.firebase.google.com
+2. Copy config variables to .env file
+3. Install dependencies: npm install
+4. Update Login/Register JSX fields (username → email)
+5. Test authentication flow

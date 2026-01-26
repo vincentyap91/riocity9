@@ -16,7 +16,7 @@ import imgLoginPromo from '@/assets/7b5397e1e0b3ef00aac3ed749d986cb7304ad993.png
 
 export function Login() {
   const [showPassword, setShowPassword] = useState(false);
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -24,25 +24,23 @@ export function Login() {
   
   // Validation errors
   const [errors, setErrors] = useState<{
-    username?: string;
+    email?: string;
     password?: string;
     general?: string;
   }>({});
   
-  const { login } = useAuth();
+  const { login, error: authError } = useAuth();
   const navigate = useNavigate();
 
   // Validation function
   const validateForm = () => {
     const newErrors: typeof errors = {};
     
-    // Username validation
-    if (!username.trim()) {
-      newErrors.username = 'Username is required';
-    } else if (username.length < 3) {
-      newErrors.username = 'Username must be at least 3 characters';
-    } else if (!/^[a-zA-Z0-9_]+$/.test(username)) {
-      newErrors.username = 'Username can only contain letters, numbers and underscore';
+    // Email validation
+    if (!email.trim()) {
+      newErrors.email = 'Email is required';
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      newErrors.email = 'Please enter a valid email address';
     }
     
     // Password validation
@@ -57,10 +55,10 @@ export function Login() {
   };
 
   // Clear error when user types
-  const handleUsernameChange = (value: string) => {
-    setUsername(value);
-    if (errors.username) {
-      setErrors(prev => ({ ...prev, username: undefined }));
+  const handleEmailChange = (value: string) => {
+    setEmail(value);
+    if (errors.email) {
+      setErrors(prev => ({ ...prev, email: undefined }));
     }
   };
 
@@ -154,15 +152,11 @@ export function Login() {
               setIsLoading(true);
               setErrors({});
               try {
-                const success = await login(username, password);
-                if (success) {
-                  navigate('/');
-                } else {
-                  setErrors({ general: 'Invalid username or password' });
-                }
+                await login(email, password);
+                navigate('/');
               } catch (error) {
                 console.error('Login error:', error);
-                setErrors({ general: 'Login failed. Please try again later.' });
+                setErrors({ general: authError || 'Login failed. Please try again later.' });
               } finally {
                 setIsLoading(false);
               }
@@ -181,30 +175,31 @@ export function Login() {
               </motion.div>
             )}
             
-            {/* Username */}
+            {/* Email */}
             <motion.div 
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3, delay: 0.3 }}
                 className="space-y-1.5"
             >
-              <Label htmlFor="username" className="text-sm font-medium text-gray-300">Username</Label>
+              <Label htmlFor="email" className="text-sm font-medium text-gray-300">Email</Label>
               <Input 
-                id="username" 
-                placeholder="Enter Username"
-                value={username}
-                onChange={(e) => handleUsernameChange(e.target.value)}
+                id="email" 
+                type="email"
+                placeholder="Enter Email"
+                value={email}
+                onChange={(e) => handleEmailChange(e.target.value)}
                 disabled={isLoading}
                 className={`h-12 bg-[#0f151f] rounded-xl text-white placeholder:text-gray-500 focus-visible:ring-1 transition-all text-sm px-4 shadow-sm ${
-                  errors.username 
+                  errors.email 
                     ? 'border-red-500 border-2 focus-visible:ring-red-500 focus-visible:border-red-500' 
                     : 'border border-white/10 focus-visible:ring-emerald-500 focus-visible:border-emerald-500'
                 }`}
               />
-              {errors.username && (
+              {errors.email && (
                 <p className="text-red-400 text-xs mt-1 flex items-center gap-1">
                   <AlertCircle className="w-3 h-3" />
-                  {errors.username}
+                  {errors.email}
                 </p>
               )}
             </motion.div>

@@ -7,21 +7,8 @@ import { useLanguage } from '../../contexts/LanguageContext';
 export function ReferralBanner() {
     const navigate = useNavigate();
     const { t } = useLanguage();
-    const [referralCode] = useState('HABBAJNBJ');
-    const [referralLink] = useState('https://abc.com/asnbskhkjss?code=HABBAJNBJ');
-    const [copiedCode, setCopiedCode] = useState(false);
+    const [referralLink] = useState('https://abc.com/asnbekhkjss/hamaxph?code=HABBAJNBJ');
     const [copiedLink, setCopiedLink] = useState(false);
-
-    const handleCopyCode = async () => {
-        try {
-            await navigator.clipboard.writeText(referralCode);
-            setCopiedCode(true);
-            setTimeout(() => setCopiedCode(false), 2000);
-        } catch (err) {
-            console.error('Failed to copy:', err);
-            alert('复制失败，请手动复制');
-        }
-    };
 
     const handleCopyLink = async () => {
         try {
@@ -86,30 +73,14 @@ export function ReferralBanner() {
                 <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/20 to-transparent"></div>
                 <div className="relative h-full container mx-auto max-w-[1200px] 2xl:max-w-[1536px] px-4 flex items-center">
                     <div className="w-full max-w-md bg-[#02040a]/80 backdrop-blur-md border border-emerald-500/20 rounded-2xl p-6 md:p-8 flex flex-col gap-6 shadow-xl ml-0 md:ml-8 lg:ml-16">
-                        <div className="space-y-2">
-                            <label className="text-xs font-bold text-yellow-400 tracking-wider">{t("myReferralCode")}</label>
-                            <div className="flex items-center justify-between bg-[#134438]/50 border border-emerald-500/30 rounded-xl p-3 md:p-4 group/input hover:border-emerald-500/60 transition-colors">
-                                <span className="text-white font-mono font-bold tracking-wide uppercase">{referralCode}</span>
-                                <button 
-                                    onClick={handleCopyCode}
-                                    className="p-2 hover:bg-emerald-500/20 rounded-lg transition-colors text-yellow-400 active:scale-95"
-                                    title="Copy referral code"
-                                >
-                                    {copiedCode ? (
-                                        <Check className="w-5 h-5 text-emerald-400" />
-                                    ) : (
-                                        <Copy className="w-5 h-5" />
-                                    )}
-                                </button>
-                            </div>
+                        <div className="space-y-2 text-center">
+                            <h2 className="text-2xl md:text-2xl font-black text-yellow-400">Your Unique Referral Hub</h2>
+                            <p className="font-bold text-white text-sm md:text-base">Share & Grow Your Network</p>
                         </div>
                         <div className="space-y-2">
                             <label className="text-xs font-bold text-yellow-400 tracking-wider">{t("myReferralLink")}</label>
                             <div className="flex items-center justify-between bg-[#134438]/50 border border-emerald-500/30 rounded-xl p-3 md:p-4 group/input hover:border-emerald-500/60 transition-colors">
-                                <div className="flex flex-col truncate pr-4">
-                                    <span className="text-white text-xs truncate">https://abc.com/asnbskhkjss...</span>
-                                    <span className="text-white text-xs font-mono">code={referralCode}</span>
-                                </div>
+                                <span className="text-white text-xs md:text-sm font-mono truncate pr-4">{referralLink}</span>
                                 <button 
                                     onClick={handleCopyLink}
                                     className="p-2 hover:bg-emerald-500/20 rounded-lg transition-colors text-yellow-400 shrink-0 active:scale-95"
