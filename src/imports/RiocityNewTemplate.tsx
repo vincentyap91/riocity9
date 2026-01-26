@@ -1228,13 +1228,34 @@ export default function RiocityNewTemplate() {
               <BackgroundImage1 additionalClassNames="h-[568px] w-[482.094px]">
                 <XtBackgroundImageAndText text="Username" additionalClassNames="top-0 w-[482.094px]" />
                 <div className="absolute content-stretch flex gap-[8px] h-[44px] items-start left-0 top-[60px] w-[482.094px]" data-name="Container">
-                  <div className="bg-[#0f151f] h-[44px] relative rounded-[10px] shrink-0 w-[70px]" data-name="Container">
+                  <div className="bg-[#0f151f] h-[44px] relative rounded-[10px] shrink-0 w-[110px]" data-name="Container">
                     <div aria-hidden="true" className="absolute border border-[rgba(255,255,255,0.1)] border-solid inset-0 pointer-events-none rounded-[10px]" />
-                    <div className="bg-clip-padding border-0 border-[transparent] border-solid content-stretch flex items-center justify-between pl-[13px] pr-[31.688px] py-px relative size-full">
-                      <div className="h-[20px] relative shrink-0 w-[25.313px]" data-name="Text">
-                        <div className="bg-clip-padding border-0 border-[transparent] border-solid content-stretch flex items-start relative size-full">
-                          <p className="basis-0 font-['Arial:Regular',sans-serif] grow leading-[20px] min-h-px min-w-px not-italic relative shrink-0 text-[#d1d5dc] text-[14px]">+60</p>
-                        </div>
+                    <div className="flex items-center justify-between pl-[10px] pr-[10px] py-px relative size-full">
+                      <div className="flex items-center gap-[8px]" data-name="Country">
+                        <span className="inline-block w-[28px] h-[28px] rounded-full overflow-hidden shrink-0" aria-hidden="true">
+                          <svg viewBox="0 0 32 32" className="w-full h-full" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+                            <rect width="32" height="32" fill="#b22234" />
+                            <g fill="#fff">
+                              <rect x="0" y="3" width="32" height="2" />
+                              <rect x="0" y="7" width="32" height="2" />
+                              <rect x="0" y="11" width="32" height="2" />
+                              <rect x="0" y="15" width="32" height="2" />
+                              <rect x="0" y="19" width="32" height="2" />
+                              <rect x="0" y="23" width="32" height="2" />
+                              <rect x="0" y="27" width="32" height="2" />
+                            </g>
+                            <rect x="0" y="0" width="14" height="12" fill="#3c5aa6" />
+                            <g fill="#fff" transform="translate(1.5,1.5) scale(0.6)">
+                              <polygon points="6,0 7.4,4.2 11.8,4.2 8.6,6.8 9.9,11 6,8.6 2.1,11 3.4,6.8 0.2,4.2 4.6,4.2" />
+                            </g>
+                          </svg>
+                        </span>
+                        <p className="basis-0 font-['Arial:Regular',sans-serif] grow leading-[20px] min-h-px min-w-px not-italic relative shrink-0 text-[#d1d5dc] text-[14px]">+60</p>
+                      </div>
+                      <div className="flex items-center gap-[6px]" data-name="Caret">
+                        <svg width="12" height="8" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg" className="opacity-80">
+                          <path d="M1 1l5 5 5-5" stroke="#9aa4b2" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
                       </div>
                     </div>
                   </div>
