@@ -10,6 +10,8 @@ import shareYourLinkIcon from '@/assets/share-your-link.svg';
 import friendRegisterIcon from '@/assets/friend-register.svg';
 import earnBonusIcon from '@/assets/earn-bonus.svg';
 import imgHeroBg from '@/assets/referral-bg.jpg';
+import tierBg from '@/assets/tier-bg.png';
+import tierImg from '@/assets/tier.png';
 
 const commissionRates = [
     {
@@ -211,7 +213,7 @@ export function Referral() {
           {/* Background Image */}
           <div className="absolute inset-0">
             <img
-              src="https://staging.riocity9.com/static/media/tier-bg.png"
+              src={tierBg}
               alt="Deposit Commission Rate Background"
               className="w-full h-full object-cover object-center"
             />
@@ -227,7 +229,7 @@ export function Referral() {
             {/* Tiers Image */}
             <div className="flex items-end justify-end pb-2 w-full md:w-auto">
               <img
-                src="https://staging.riocity9.com/static/media/tier.png"
+                src={tierImg}
                 alt="Deposit commission tiers"
                 className="w-full max-w-full md:max-w-[720px] object-contain"
               />
