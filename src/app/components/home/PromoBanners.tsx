@@ -8,7 +8,7 @@ export function PromoBanners() {
       <div className="relative h-24 md:h-32 rounded-xl overflow-hidden group cursor-pointer border border-white/5 hover:border-blue-500/50 transition-all shadow-lg">
         {/* Background */}
         <div className="absolute inset-0 bg-white">
-             <img src="https://images.unsplash.com/photo-1704213897535-500313098396?w=800&q=80" className="w-full h-full object-cover" />
+             <img src="https://staging.riocity9.com/static/media/promo-announcement.jpg" className="w-full h-full object-cover" />
              <div className="absolute inset-0 bg-gradient-to-r from-white via-white/80 to-transparent"></div>
         </div>
 
@@ -32,7 +32,7 @@ export function PromoBanners() {
       <div className="relative h-24 md:h-32 rounded-xl overflow-hidden group cursor-pointer border border-white/5 hover:border-pink-500/50 transition-all shadow-lg">
         {/* Background */}
         <div className="absolute inset-0 bg-[#FF6B6B]">
-             <img src="https://images.unsplash.com/photo-1760009229725-7ef1990e585f?w=800&q=80" className="w-full h-full object-cover mix-blend-overlay opacity-50" />
+             <img src="https://staging.riocity9.com/static/media/promo-welcome.jpg" className="w-full h-full object-cover mix-blend-overlay opacity-50" />
              <div className="absolute inset-0 bg-gradient-to-r from-[#ff4757] to-[#ff6b81] opacity-90"></div>
         </div>
 

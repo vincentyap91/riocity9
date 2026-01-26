@@ -3,6 +3,9 @@ import { Share2, Users, Info, Copy, Check } from 'lucide-react';
 import { Button } from "../ui/button";
 import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '../../contexts/LanguageContext';
+// Assets - using proper imports for local assets
+import imgReferralBanner from '@/assets/9cc12ccab5ff73c2e07714865ae6549ed3409f4c.png';
+const imgMobileReferral = "https://staging.riocity9.com/static/media/mobile-referral.png";
 
 export function ReferralBanner() {
     const navigate = useNavigate();
@@ -28,7 +31,7 @@ export function ReferralBanner() {
                 {/* Background Image */}
                 <div className="relative w-full">
                     <img 
-                        src="/src/assets/mobile-referral.png" 
+                        src={imgMobileReferral} 
                         alt="referral" 
                         className="w-full h-auto object-cover"
                     />
@@ -66,7 +69,7 @@ export function ReferralBanner() {
             {/* Desktop View - Keep Original Design */}
             <div className="hidden md:block relative w-full rounded-2xl overflow-hidden h-[400px] lg:h-[450px] shadow-2xl group bg-[#1c3f37]">
                 <img 
-                    src="/src/assets/9cc12ccab5ff73c2e07714865ae6549ed3409f4c.png" 
+                    src={imgReferralBanner} 
                     alt="Referral Banner" 
                     className="absolute inset-0 w-full h-full object-cover object-right"
                 />

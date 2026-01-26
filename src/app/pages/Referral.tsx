@@ -5,11 +5,11 @@ import { useAuth } from '../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '../components/ui/button';
 
-// Assets
-const imgHeroBg = "/src/assets/referral-bg.jpg";
-const shareYourLinkIcon = "/src/assets/share-your-link.svg";
-const friendRegisterIcon = "/src/assets/friend-register.svg";
-const earnBonusIcon = "/src/assets/earn-bonus.svg";
+// Assets - using proper imports for local assets
+import shareYourLinkIcon from '@/assets/share-your-link.svg';
+import friendRegisterIcon from '@/assets/friend-register.svg';
+import earnBonusIcon from '@/assets/earn-bonus.svg';
+import imgHeroBg from '@/assets/referral-bg.jpg';
 
 const commissionRates = [
     {
@@ -211,7 +211,7 @@ export function Referral() {
           {/* Background Image */}
           <div className="absolute inset-0">
             <img
-              src="/src/assets/tier-bg.png"
+              src="https://staging.riocity9.com/static/media/tier-bg.png"
               alt="Deposit Commission Rate Background"
               className="w-full h-full object-cover object-center"
             />
@@ -227,7 +227,7 @@ export function Referral() {
             {/* Tiers Image */}
             <div className="flex items-end justify-end pb-2 w-full md:w-auto">
               <img
-                src="/src/assets/tier.png"
+                src="https://staging.riocity9.com/static/media/tier.png"
                 alt="Deposit commission tiers"
                 className="w-full max-w-full md:max-w-[720px] object-contain"
               />

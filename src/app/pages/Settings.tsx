@@ -12,6 +12,8 @@ import {
   UsersRound,
   LogOut,
 } from 'lucide-react';
+// Using proper import for bronze badge image
+import imgBronzeBadge from '@/assets/711e7c00068ea0ecd513e2e0c1cc723c6de60e76.png';
 import { Button } from '../components/ui/button';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
@@ -45,7 +47,7 @@ export function Settings() {
             <div className="relative shrink-0">
                <div className="w-20 h-20 rounded-full border-2 border-[#D4AF37] p-1 shadow-[0_0_15px_-3px_rgba(212,175,55,0.3)] bg-black/40 relative z-10 flex items-center justify-center">
                  <img 
-                   src="/src/assets/711e7c00068ea0ecd513e2e0c1cc723c6de60e76.png" 
+                   src={imgBronzeBadge} 
                    alt="Bronze Badge" 
                    className="w-[85%] h-[85%] object-contain"
                  />
@@ -54,7 +56,7 @@ export function Settings() {
 
             {/* Right side: Info */}
             <div className="flex-1 flex flex-col pt-1">
-              <h2 className="text-[20px] font-black text-white leading-none mb-2.5">{user?.username || 'testvin'}</h2>
+              <h2 className="text-[20px] font-black text-white leading-none mb-2.5">{user?.displayName || user?.email?.split('@')[0] || 'testvin'}</h2>
               
               {/* ID Pill */}
               <div className="flex items-center gap-2 bg-[#0f151f] px-4 py-2 rounded-full border border-white/10 self-start">
@@ -97,7 +99,7 @@ export function Settings() {
             <div className="relative shrink-0">
                <div className="w-24 h-24 rounded-full border-2 border-[#D4AF37] p-1 shadow-[0_0_15px_-3px_rgba(212,175,55,0.3)] bg-black/40 relative z-10">
                  <img 
-                   src="/src/assets/711e7c00068ea0ecd513e2e0c1cc723c6de60e76.png" 
+                   src={imgBronzeBadge} 
                    alt="Bronze Badge" 
                    className="w-full h-full object-cover rounded-full"
                  />
@@ -107,7 +109,7 @@ export function Settings() {
             {/* User Info Section */}
             <div className="flex-1 flex flex-col justify-center space-y-3 w-full">
               <div className="flex flex-wrap items-center justify-between sm:justify-start gap-x-4 gap-y-1">
-                <h2 className="text-2xl font-black text-white tracking-wide">{user?.username || 'Guest'}</h2>
+                <h2 className="text-2xl font-black text-white tracking-wide">{user?.displayName || user?.email?.split('@')[0] || 'Guest'}</h2>
                 <div className="flex items-center gap-2 bg-black/30 px-3 py-1 rounded-full border border-white/5">
                    <span className="text-xs text-gray-400 font-mono tracking-wide">880123456789</span>
                    <button className="text-gray-500 hover:text-white transition-colors">
