@@ -1,8 +1,10 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import {
-  signInAnonymously,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
   signOut,
   onAuthStateChanged,
+  updateProfile,
   setPersistence,
   browserLocalPersistence,
   type User as FirebaseUser,
@@ -20,7 +22,8 @@ interface AuthContextType {
   user: User | null;
   loading: boolean;
   isAuthenticated: boolean;
-  login: () => Promise<void>;
+  login: (username: string, password: string) => Promise<void>;
+  register: (username: string, password: string, mobile?: string) => Promise<void>;
   logout: () => Promise<void>;
   error: string | null;
 }
@@ -55,15 +58,45 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return () => unsubscribe();
   }, []);
 
-  const login = async (): Promise<void> => {
+  const login = async (username: string, password: string): Promise<void> => {
     setError(null);
     setLoading(true);
 
     try {
-      await signInAnonymously(auth);
+      // Convert username to email format for Firebase
+      // If username doesn't contain @, treat it as email with default domain
+      const email = username.includes('@') ? username : `${username}@riocity9.com`;
+      await signInWithEmailAndPassword(auth, email, password);
       // User state will be updated by onAuthStateChanged listener
     } catch (err) {
       const firebaseError = err as AuthError;
+      const errorMessage = getErrorMessage(firebaseError.code);
+      setError(errorMessage);
+      throw new Error(errorMessage);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const register = async (
+    username: string,
+    password: string,
+    mobile?: string
+  ): Promise<void> => {
+    setError(null);
+    setLoading(true);
+
+    try {
+      // Convert username to email format for Firebase
+      const email = username.includes('@') ? username : `${username}@riocity9.com`;
+      const result = await createUserWithEmailAndPassword(auth, email, password);
+      
+      // Update profile with username as displayName
+      await updateProfile(result.user, { displayName: username });
+      
+      // User state will be updated by onAuthStateChanged listener
+    } catch (error) {
+      const firebaseError = error as AuthError;
       const errorMessage = getErrorMessage(firebaseError.code);
       setError(errorMessage);
       throw new Error(errorMessage);
@@ -92,6 +125,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         loading,
         isAuthenticated: !!user,
         login,
+        register,
         logout,
         error,
       }}
@@ -112,7 +146,13 @@ export function useAuth() {
 // Helper function to convert Firebase error codes to user-friendly messages
 function getErrorMessage(errorCode: string): string {
   const errorMessages: { [key: string]: string } = {
-    'auth/operation-not-allowed': 'Anonymous sign-in is not enabled',
+    'auth/user-not-found': 'Username or password is incorrect',
+    'auth/wrong-password': 'Username or password is incorrect',
+    'auth/invalid-email': 'Invalid username format',
+    'auth/user-disabled': 'This account has been disabled',
+    'auth/email-already-in-use': 'Username already registered',
+    'auth/weak-password': 'Password is too weak. Use at least 6 characters',
+    'auth/operation-not-allowed': 'Email/password sign-up is not enabled',
     'auth/too-many-requests': 'Too many login attempts. Try again later',
     'auth/network-request-failed': 'Network error. Check your connection',
   };

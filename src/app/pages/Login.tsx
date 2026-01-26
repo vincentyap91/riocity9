@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, AlertCircle } from 'lucide-react';
+import { Eye, EyeOff, X, AlertCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
@@ -15,16 +15,59 @@ import {
 import imgLoginPromo from '@/assets/7b5397e1e0b3ef00aac3ed749d986cb7304ad993.png';
 
 export function Login() {
+  const [showPassword, setShowPassword] = useState(false);
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [rememberMe, setRememberMe] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [showForgotModal, setShowForgotModal] = useState(false);
   
   // Validation errors
   const [errors, setErrors] = useState<{
+    username?: string;
+    password?: string;
     general?: string;
   }>({});
   
   const { login, error: authError } = useAuth();
   const navigate = useNavigate();
+
+  // Validation function
+  const validateForm = () => {
+    const newErrors: typeof errors = {};
+    
+    // Username validation
+    if (!username.trim()) {
+      newErrors.username = 'Username is required';
+    } else if (username.length < 3) {
+      newErrors.username = 'Username must be at least 3 characters';
+    }
+    
+    // Password validation
+    if (!password) {
+      newErrors.password = 'Password is required';
+    } else if (password.length < 6) {
+      newErrors.password = 'Password must be at least 6 characters';
+    }
+    
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  // Clear error when user types
+  const handleUsernameChange = (value: string) => {
+    setUsername(value);
+    if (errors.username) {
+      setErrors(prev => ({ ...prev, username: undefined }));
+    }
+  };
+
+  const handlePasswordChange = (value: string) => {
+    setPassword(value);
+    if (errors.password) {
+      setErrors(prev => ({ ...prev, password: undefined }));
+    }
+  };
 
   return (
     <div className="flex items-center justify-center py-[4%] font-sans text-white relative overflow-hidden bg-[#0a0f19]">
@@ -101,10 +144,15 @@ export function Login() {
             onSubmit={async (e) => {
               e.preventDefault();
               
+              // Validate before submit
+              if (!validateForm()) {
+                return;
+              }
+              
               setIsLoading(true);
               setErrors({});
               try {
-                await login();
+                await login(username, password);
                 navigate('/');
               } catch (error) {
                 console.error('Login error:', error);
@@ -127,20 +175,131 @@ export function Login() {
               </motion.div>
             )}
             
-            {/* Login Button */}
+            {/* Username */}
             <motion.div 
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3, delay: 0.3 }}
-                className="pt-2"
+                className="space-y-1.5"
+            >
+              <Label htmlFor="username" className="text-sm font-medium text-gray-300">Username</Label>
+              <Input 
+                id="username" 
+                type="text"
+                placeholder="Enter Username"
+                value={username}
+                onChange={(e) => handleUsernameChange(e.target.value)}
+                disabled={isLoading}
+                className={`h-12 bg-[#0f151f] rounded-xl text-white placeholder:text-gray-500 focus-visible:ring-1 transition-all text-sm px-4 shadow-sm ${
+                  errors.username 
+                    ? 'border-red-500 border-2 focus-visible:ring-red-500 focus-visible:border-red-500' 
+                    : 'border border-white/10 focus-visible:ring-emerald-500 focus-visible:border-emerald-500'
+                }`}
+              />
+              {errors.username && (
+                <p className="text-red-400 text-xs mt-1 flex items-center gap-1">
+                  <AlertCircle className="w-3 h-3" />
+                  {errors.username}
+                </p>
+              )}
+            </motion.div>
+
+            {/* Password */}
+            <motion.div 
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, delay: 0.4 }}
+                className="space-y-1.5"
+            >
+              <Label htmlFor="password" className="text-sm font-medium text-gray-300">Password</Label>
+              <div className="relative">
+                <Input 
+                  id="password" 
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Enter Password"
+                  value={password}
+                  onChange={(e) => handlePasswordChange(e.target.value)}
+                  disabled={isLoading}
+                  className={`h-12 bg-[#0f151f] rounded-xl text-white placeholder:text-gray-500 focus-visible:ring-1 pr-12 transition-all text-sm px-4 shadow-sm ${
+                    errors.password 
+                      ? 'border-red-500 border-2 focus-visible:ring-red-500 focus-visible:border-red-500' 
+                      : 'border border-white/10 focus-visible:ring-emerald-500 focus-visible:border-emerald-500'
+                  }`}
+                />
+                <button 
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  disabled={isLoading}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-white transition-colors disabled:opacity-50"
+                >
+                  {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                </button>
+              </div>
+              {errors.password && (
+                <p className="text-red-400 text-xs mt-1 flex items-center gap-1">
+                  <AlertCircle className="w-3 h-3" />
+                  {errors.password}
+                </p>
+              )}
+            </motion.div>
+
+            {/* Remember Me */}
+            <motion.div 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.3, delay: 0.5 }}
+                className="flex items-center space-x-2"
+            >
+                <label className="flex items-start gap-2 cursor-pointer group">
+                    <input 
+                      type="checkbox" 
+                      checked={rememberMe}
+                      onChange={(e) => setRememberMe(e.target.checked)}
+                      disabled={isLoading}
+                      className="mt-0.5 w-4 h-4 rounded border-gray-600 bg-[#0f151f] text-emerald-500 focus:ring-emerald-500 focus:ring-offset-0 disabled:opacity-50" 
+                    />
+                    <span className="text-sm font-bold text-[#4ADE80] group-hover:text-emerald-400 transition-colors cursor-pointer select-none">
+                        Remember Me
+                    </span>
+                </label>
+            </motion.div>
+
+            {/* Buttons Row */}
+            <motion.div 
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, delay: 0.6 }}
+                className="grid grid-cols-2 gap-4 pt-2"
             >
                 <Button 
                     type="submit"
                     disabled={isLoading}
                     className="w-full h-14 bg-[#4f46e5] hover:bg-[#4338ca] text-white font-bold text-base rounded-xl shadow-[0px_10px_15px_-3px_rgba(97,95,255,0.2)] transition-all hover:translate-y-[-1px] disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                    {isLoading ? 'Signing in...' : 'Continue as Guest'}
+                    {isLoading ? 'Logging in...' : 'Log In'}
                 </Button>
+                <Button 
+                    type="button"
+                    variant="outline"
+                    disabled={isLoading}
+                    onClick={() => setShowForgotModal(true)}
+                    className="w-full h-14 bg-transparent border-white/10 hover:bg-white/5 text-gray-300 hover:text-white font-bold text-base rounded-xl shadow-sm transition-transform hover:scale-[1.02] disabled:opacity-50"
+                >
+                    Forgot Password
+                </Button>
+            </motion.div>
+
+            {/* Footer Link */}
+            <motion.div 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.3, delay: 0.7 }}
+                className="text-center pt-4"
+            >
+                <span className="text-white text-sm md:text-sm mr-2">Do not have an account yet?</span>
+                <Link to="/register" className="text-[#FDC700] hover:text-yellow-300 font-bold text-sm md:text-sm underline decoration-solid decoration-2 underline-offset-4 transition-colors">
+                    Register Now!
+                </Link>
             </motion.div>
 
 
@@ -149,6 +308,47 @@ export function Login() {
 
       </motion.div>
 
+      {/* Forgot Password Modal */}
+      <Dialog open={showForgotModal} onOpenChange={setShowForgotModal}>
+        <DialogContent className="bg-[#131b29] border border-white/10 rounded-3xl p-8 max-w-[400px] flex flex-col items-center text-center">
+          {/* Header Icon */}
+          <div className="mb-6 relative">
+            <div className="w-20 h-20 rounded-full bg-emerald-500/10 flex items-center justify-center border border-emerald-500/20">
+              <AlertCircle className="w-10 h-10 text-emerald-500" />
+            </div>
+            <div className="absolute inset-0 bg-emerald-500/20 blur-2xl rounded-full -z-10"></div>
+          </div>
+
+          {/* Text Content */}
+          <div className="space-y-3 mb-8">
+            <h3 className="text-2xl font-black text-white tracking-tight">Forgot Password?</h3>
+            <p className="text-gray-400 text-sm leading-relaxed px-2">
+              For your account security, please contact our <span className="text-emerald-400 font-bold">24/7 Live Support</span> to assist you with password recovery.
+            </p>
+          </div>
+
+          {/* Action Buttons */}
+          <div className="grid grid-cols-1 gap-3 w-full">
+            <Button
+              onClick={() => {
+                // Dispatch custom event to open live chat with forgot password context
+                window.dispatchEvent(new CustomEvent('openLiveChat', { detail: { reason: 'forgot-password' } }));
+                setShowForgotModal(false);
+              }}
+              className="h-12 bg-emerald-500 hover:bg-emerald-400 text-[#0a0f19] font-black text-base rounded-xl transition-all hover:scale-[1.02] active:scale-95 shadow-[0_0_20px_rgba(16,185,129,0.2)]"
+            >
+              Contact Support Now
+            </Button>
+            <Button
+              variant="ghost"
+              onClick={() => setShowForgotModal(false)}
+              className="h-12 text-gray-400 hover:text-white hover:bg-white/5 font-bold text-base rounded-xl transition-colors"
+            >
+              Maybe Later
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

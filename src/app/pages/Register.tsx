@@ -32,24 +32,50 @@ export function Register() {
     general?: string;
   }>({});
   
-  const { login, error: authError } = useAuth();
+  const { register, error: authError } = useAuth();
   const navigate = useNavigate();
 
-  // Validation function - simplified for anonymous auth
-  // Form fields are optional for profile data collection
+  // Validation function
   const validateForm = () => {
     const newErrors: typeof errors = {};
     
-    // Only validate terms agreement (required)
-    if (!agreeTerms) {
-      newErrors.terms = 'You must agree to the Terms & Conditions';
+    // Username validation
+    if (!username.trim()) {
+      newErrors.username = 'Username is required';
+    } else if (username.length < 3) {
+      newErrors.username = 'Username must be at least 3 characters';
+    } else if (username.length > 20) {
+      newErrors.username = 'Username cannot exceed 20 characters';
+    } else if (!/^[a-zA-Z0-9_]+$/.test(username)) {
+      newErrors.username = 'Username can only contain letters, numbers and underscore';
     }
     
-    // Optional: Validate captcha if you want to keep it
+    // Mobile validation
+    if (!mobile.trim()) {
+      newErrors.mobile = 'Mobile number is required';
+    } else if (!/^\d{9,12}$/.test(mobile.replace(/\s/g, ''))) {
+      newErrors.mobile = 'Please enter a valid mobile number (9-12 digits)';
+    }
+    
+    // Password validation
+    if (!password) {
+      newErrors.password = 'Password is required';
+    } else if (password.length < 6) {
+      newErrors.password = 'Password must be at least 6 characters';
+    } else if (password.length > 30) {
+      newErrors.password = 'Password cannot exceed 30 characters';
+    }
+    
+    // Captcha validation
     if (!captcha.trim()) {
       newErrors.captcha = 'Captcha is required';
     } else if (captcha !== captchaValue.replace(/\s/g, '')) {
       newErrors.captcha = 'Invalid captcha code';
+    }
+    
+    // Terms validation
+    if (!agreeTerms) {
+      newErrors.terms = 'You must agree to the Terms & Conditions';
     }
     
     setErrors(newErrors);
@@ -170,14 +196,18 @@ export function Register() {
               setIsLoading(true);
               setErrors({});
               try {
-                // With anonymous auth, we just sign in anonymously
-                // Form fields (username, mobile) can be collected for profile purposes but aren't required for auth
-                await login();
+                await register(username, password, mobile);
                 navigate('/');
               } catch (error) {
                 console.error('Register error:', error);
                 const errorMsg = error instanceof Error ? error.message : 'Registration failed';
-                setErrors(prev => ({ ...prev, general: errorMsg }));
+                if (errorMsg.toLowerCase().includes('username')) {
+                  setErrors(prev => ({ ...prev, username: errorMsg }));
+                } else if (errorMsg.toLowerCase().includes('mobile')) {
+                  setErrors(prev => ({ ...prev, mobile: errorMsg }));
+                } else {
+                  setErrors(prev => ({ ...prev, general: errorMsg }));
+                }
               } finally {
                 setIsLoading(false);
               }
