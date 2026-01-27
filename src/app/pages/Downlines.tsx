@@ -91,10 +91,44 @@ export function Downlines() {
           </button>
         </div>
 
+        {/* Mobile/Tablet: Horizontal Scrollable Sidebar */}
+        <div className="lg:hidden mb-6">
+          <div className="w-full bg-[#1a2230] rounded-[16px] border border-white/5 p-3 overflow-x-auto no-scrollbar">
+            <div className="flex items-center gap-3 min-w-max">
+              <button
+                onClick={() => setActiveTab('summary')}
+                className={`px-5 py-3 rounded-xl text-sm font-bold whitespace-nowrap transition-all flex items-center gap-3 group shrink-0 ${
+                  activeTab === 'summary'
+                    ? 'bg-emerald-500 text-black shadow-[0_0_20px_rgba(16,185,129,0.3)]'
+                    : 'text-gray-400 hover:text-white hover:bg-white/5'
+                }`}
+              >
+                <UsersRound className={`w-5 h-5 shrink-0 transition-colors ${
+                  activeTab === 'summary' ? 'text-black' : 'text-gray-500 group-hover:text-white'
+                }`} />
+                Downline Summary
+              </button>
+              <button
+                onClick={() => setActiveTab('kpis')}
+                className={`px-5 py-3 rounded-xl text-sm font-bold whitespace-nowrap transition-all flex items-center gap-3 group shrink-0 ${
+                  activeTab === 'kpis'
+                    ? 'bg-emerald-500 text-black shadow-[0_0_20px_rgba(16,185,129,0.3)]'
+                    : 'text-gray-400 hover:text-white hover:bg-white/5'
+                }`}
+              >
+                <UsersRound className={`w-5 h-5 shrink-0 transition-colors ${
+                  activeTab === 'kpis' ? 'text-black' : 'text-gray-500 group-hover:text-white'
+                }`} />
+                Downlines KPIs
+              </button>
+            </div>
+          </div>
+        </div>
+
         <div className="flex flex-col lg:flex-row gap-6 items-start">
           
-          {/* Sidebar Menu */}
-          <div className="w-full lg:w-[280px] bg-[#1a2230] rounded-[16px] border border-white/5 p-4 flex flex-col gap-2 shrink-0">
+          {/* Desktop: Vertical Sidebar */}
+          <div className="hidden lg:flex w-[280px] bg-[#1a2230] rounded-[16px] border border-white/5 p-4 flex-col gap-2 shrink-0">
             <button
               onClick={() => setActiveTab('summary')}
               className={`w-full px-5 py-4 rounded-xl text-sm font-bold text-left transition-all flex items-center gap-4 group ${

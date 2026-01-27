@@ -179,7 +179,7 @@ export function Settings() {
             </div>
         </div>
 
-        {/* Logout Button (Floating or at bottom) */}
+        {/* Logout Button */}
         <div className="flex justify-center mt-6">
             <Button 
                 variant="outline" 

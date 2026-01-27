@@ -23,6 +23,7 @@ import {
 import { Button } from '../components/ui/button';
 import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '../contexts/LanguageContext';
+import { sanitizeTextInput } from '../utils/security';
 
 // Mock Data for Payment Methods - Enhanced for Visual Variety
 const POPULAR_METHODS = [
@@ -244,7 +245,7 @@ export function Deposit() {
                             placeholder={t("search")} 
                             className="w-full bg-[#0f151f] border border-white/10 rounded-xl py-3 pl-12 pr-4 text-white focus:outline-none focus:border-emerald-500 transition-colors placeholder:text-gray-600"
                             value={searchQuery}
-                            onChange={(e) => setSearchQuery(e.target.value)}
+                            onChange={(e) => setSearchQuery(sanitizeTextInput(e.target.value))}
                         />
                     </div>
                     
@@ -385,7 +386,16 @@ export function Deposit() {
                      <input 
                          type="number"
                          value={amount}
-                         onChange={(e) => setAmount(e.target.value)}
+                         onChange={(e) => {
+                           // Only allow numbers and decimal point
+                           const sanitized = e.target.value.replace(/[^0-9.]/g, '');
+                           // Prevent multiple decimal points
+                           const parts = sanitized.split('.');
+                           const finalValue = parts.length > 2 
+                             ? parts[0] + '.' + parts.slice(1).join('')
+                             : sanitized;
+                           setAmount(finalValue);
+                         }}
                          placeholder="0.00"
                          className="w-full bg-[#0f151f] border border-white/10 rounded-xl py-4 pl-16 pr-4 text-2xl font-black text-white focus:outline-none focus:border-emerald-500 transition-colors placeholder:text-gray-700"
                      />
@@ -486,7 +496,7 @@ export function Deposit() {
                     <input 
                         type="text"
                         value={referenceId}
-                        onChange={(e) => setReferenceId(e.target.value)}
+                        onChange={(e) => setReferenceId(sanitizeTextInput(e.target.value))}
                         className="w-full bg-[#0f151f] border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-emerald-500 transition-colors placeholder:text-gray-700"
                         placeholder={t("enterReferenceNumber")}
                     />

@@ -10,6 +10,7 @@ import {
   Dialog,
   DialogContent,
 } from '../components/ui/dialog';
+import { sanitizeTextInput, sanitizeUsername } from '../utils/security';
 
 // Assets
 import imgLoginPromo from '@/assets/7b5397e1e0b3ef00aac3ed749d986cb7304ad993.png';
@@ -56,14 +57,16 @@ export function Login() {
 
   // Clear error when user types
   const handleUsernameChange = (value: string) => {
-    setUsername(value);
+    const sanitized = sanitizeUsername(value);
+    setUsername(sanitized);
     if (errors.username) {
       setErrors(prev => ({ ...prev, username: undefined }));
     }
   };
 
   const handlePasswordChange = (value: string) => {
-    setPassword(value);
+    const sanitized = sanitizeTextInput(value);
+    setPassword(sanitized);
     if (errors.password) {
       setErrors(prev => ({ ...prev, password: undefined }));
     }

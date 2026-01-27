@@ -7,6 +7,8 @@ import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
 import { InnerPageLayout } from "../components/shared/InnerPageLayout";
+import { sanitizeTextInput, sanitizeMobileNumber, sanitizeEmail, sanitizeUsername } from '../utils/security';
+import { CountryCodeSelector } from '../components/shared/CountryCodeSelector';
 import {
   Dialog,
   DialogContent,
@@ -39,6 +41,8 @@ export function Profile() {
   const [newAccountName, setNewAccountName] = useState('');
   const [newAccountNumber, setNewAccountNumber] = useState('');
   const [newAccountProvider, setNewAccountProvider] = useState('');
+  const [contactCountryCode, setContactCountryCode] = useState('+60'); // Default to Malaysia
+  const [ewalletCountryCode, setEwalletCountryCode] = useState('+60'); // Default to Malaysia for e-wallet
   
   // Form state for Personal tab
   const [formData, setFormData] = useState({
@@ -64,7 +68,20 @@ export function Profile() {
   }, [user?.mobile]);
 
   const handleInputChange = (field: string, value: string) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
+    let sanitized = value;
+    
+    // Apply appropriate sanitization based on field type
+    if (field === 'contactNumber' || field === 'mobile') {
+      sanitized = sanitizeMobileNumber(value);
+    } else if (field === 'email') {
+      sanitized = sanitizeEmail(value);
+    } else if (field === 'username') {
+      sanitized = sanitizeUsername(value);
+    } else {
+      sanitized = sanitizeTextInput(value);
+    }
+    
+    setFormData(prev => ({ ...prev, [field]: sanitized }));
   };
 
   const handleSave = () => {
@@ -77,6 +94,7 @@ export function Profile() {
     setNewAccountName('');
     setNewAccountNumber('');
     setNewAccountProvider('');
+    setEwalletCountryCode('+60'); // Reset to default
     setIsAddDialogOpen(true);
   };
 
@@ -219,14 +237,23 @@ export function Profile() {
                   <Label htmlFor="contactNumber" className="text-white font-bold text-sm">
                     Contact Number
                   </Label>
-                  <Input
-                    id="contactNumber"
-                    type="tel"
-                    value={formData.contactNumber}
-                    onChange={(e) => handleInputChange('contactNumber', e.target.value)}
-                    placeholder="Enter contact number"
-                    className="bg-[#0f151f] border-white/10 text-white h-12 rounded-xl px-4 focus:border-emerald-500 focus-visible:ring-emerald-500/20"
-                  />
+                  <div className="flex gap-2">
+                    <CountryCodeSelector
+                      value={contactCountryCode}
+                      onChange={setContactCountryCode}
+                      className="shrink-0"
+                    />
+                    <Input
+                      id="contactNumber"
+                      type="tel"
+                      value={formData.contactNumber}
+                      onChange={(e) => handleInputChange('contactNumber', e.target.value)}
+                      placeholder="Enter contact number"
+                      inputMode="numeric"
+                      pattern="[0-9]*"
+                      className="bg-[#0f151f] border-white/10 text-white h-12 rounded-xl px-4 focus:border-emerald-500 focus-visible:ring-emerald-500/20 flex-1"
+                    />
+                  </div>
                 </div>
 
                 <div className="space-y-2">
@@ -461,7 +488,7 @@ export function Profile() {
               </Label>
               <Input
                 value={newAccountName}
-                onChange={(e) => setNewAccountName(e.target.value)}
+                onChange={(e) => setNewAccountName(sanitizeTextInput(e.target.value))}
                 placeholder="Enter account name"
                 className="bg-white text-black h-11 rounded-xl border-transparent focus-visible:ring-emerald-500/30"
               />
@@ -471,12 +498,38 @@ export function Profile() {
               <Label className="text-emerald-400 text-sm font-bold">
                 {addDialogType === 'ewallet' ? 'Mobile Number' : 'Account Number'}
               </Label>
-              <Input
-                value={newAccountNumber}
-                onChange={(e) => setNewAccountNumber(e.target.value)}
-                placeholder={addDialogType === 'ewallet' ? 'Enter mobile number' : 'Enter account number'}
-                className="bg-white text-black h-11 rounded-xl border-transparent focus-visible:ring-emerald-500/30"
-              />
+              {addDialogType === 'ewallet' ? (
+                <div className="flex gap-2">
+                  <CountryCodeSelector
+                    value={ewalletCountryCode}
+                    onChange={setEwalletCountryCode}
+                    className="shrink-0"
+                  />
+                  <Input
+                    value={newAccountNumber}
+                    onChange={(e) => {
+                      const sanitized = sanitizeMobileNumber(e.target.value);
+                      setNewAccountNumber(sanitized);
+                    }}
+                    placeholder="Enter mobile number"
+                    type="tel"
+                    inputMode="numeric"
+                    pattern="[0-9]*"
+                    className="bg-white text-black h-11 rounded-xl border-transparent focus-visible:ring-emerald-500/30 flex-1"
+                  />
+                </div>
+              ) : (
+                <Input
+                  value={newAccountNumber}
+                  onChange={(e) => {
+                    const sanitized = sanitizeTextInput(e.target.value);
+                    setNewAccountNumber(sanitized);
+                  }}
+                  placeholder="Enter account number"
+                  type="text"
+                  className="bg-white text-black h-11 rounded-xl border-transparent focus-visible:ring-emerald-500/30"
+                />
+              )}
             </div>
 
             <div className="space-y-2">
@@ -485,7 +538,7 @@ export function Profile() {
               </Label>
               <Input
                 value={newAccountProvider}
-                onChange={(e) => setNewAccountProvider(e.target.value)}
+                onChange={(e) => setNewAccountProvider(sanitizeTextInput(e.target.value))}
                 placeholder={addDialogType === 'ewallet' ? 'e.g. Touch n Go' : 'e.g. Maybank'}
                 className="bg-white text-black h-11 rounded-xl border-transparent focus-visible:ring-emerald-500/30"
               />

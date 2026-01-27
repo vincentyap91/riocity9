@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-import { Eye, EyeOff, Check, AlertCircle, X, Gift, ChevronDown } from 'lucide-react';
+import { Eye, EyeOff, Check, AlertCircle, X, Gift } from 'lucide-react';
 import { motion } from 'motion/react';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import { sanitizeTextInput, sanitizeUsername, sanitizeMobileNumber } from '../utils/security';
+import { CountryCodeSelector } from '../components/shared/CountryCodeSelector';
 
 // New Assets from design
 import imgPromo from '@/assets/e9d8d4a61ac559bba1f577d68aca956ecbcccdee.png';
@@ -14,6 +16,7 @@ import imgPromo from '@/assets/e9d8d4a61ac559bba1f577d68aca956ecbcccdee.png';
 export function Register() {
   const [showPassword, setShowPassword] = useState(false);
   const [username, setUsername] = useState('');
+  const [countryCode, setCountryCode] = useState('+60'); // Default to Malaysia
   const [mobile, setMobile] = useState('');
   const [password, setPassword] = useState('');
   const [captcha, setCaptcha] = useState('');
@@ -196,7 +199,7 @@ export function Register() {
               setIsLoading(true);
               setErrors({});
               try {
-                await register(username, password, mobile);
+                await register(username, password, mobile, countryCode);
                 navigate('/');
               } catch (error) {
                 console.error('Register error:', error);
@@ -238,7 +241,11 @@ export function Register() {
                   id="username" 
                   placeholder="Enter your username"
                   value={username}
-                  onChange={(e) => { setUsername(e.target.value); clearError('username'); }}
+                  onChange={(e) => { 
+                    const sanitized = sanitizeUsername(e.target.value);
+                    setUsername(sanitized); 
+                    clearError('username'); 
+                  }}
                   disabled={isLoading}
                   className={`h-11 bg-[#0f151f] rounded-xl text-white placeholder:text-gray-500 focus-visible:ring-1 transition-all pl-4 ${
                     errors.username 
@@ -264,22 +271,24 @@ export function Register() {
               <div className="space-y-1.5">
                 <Label htmlFor="mobile" className="text-sm font-medium text-gray-300">Mobile Number</Label>
                 <div className="flex gap-2">
-                  <div className={`h-11 bg-[#0f151f] rounded-xl flex items-center gap-2 px-3 min-w-[120px] text-gray-300 font-medium cursor-pointer hover:bg-white/5 transition-colors ${
-                    errors.mobile ? 'border-red-500 border-2' : 'border border-white/10'
-                  }`}>
-                    <img 
-                      src="https://flagcdn.com/w20/my.png" 
-                      alt="Malaysia" 
-                      className="w-5 h-4 object-cover rounded-sm"
-                    />
-                    <span className="text-sm font-bold text-white">+60</span>
-                    <ChevronDown className="w-4 h-4 text-gray-400" />
-                  </div>
+                  <CountryCodeSelector
+                    value={countryCode}
+                    onChange={setCountryCode}
+                    disabled={isLoading}
+                    error={!!errors.mobile}
+                  />
                   <Input 
                     id="mobile" 
+                    type="tel"
+                    inputMode="numeric"
+                    pattern="[0-9]*"
                     placeholder="Enter your mobile number"
                     value={mobile}
-                    onChange={(e) => { setMobile(e.target.value); clearError('mobile'); }}
+                    onChange={(e) => { 
+                      const sanitized = sanitizeMobileNumber(e.target.value);
+                      setMobile(sanitized); 
+                      clearError('mobile'); 
+                    }}
                     disabled={isLoading}
                     className={`h-11 bg-[#0f151f] rounded-xl text-white placeholder:text-gray-500 focus-visible:ring-1 flex-1 transition-all ${
                       errors.mobile 
@@ -311,7 +320,11 @@ export function Register() {
                     type={showPassword ? "text" : "password"}
                     placeholder="Enter your password"
                     value={password}
-                    onChange={(e) => { setPassword(e.target.value); clearError('password'); }}
+                    onChange={(e) => { 
+                      const sanitized = sanitizeTextInput(e.target.value);
+                      setPassword(sanitized); 
+                      clearError('password'); 
+                    }}
                     disabled={isLoading}
                     className={`h-11 bg-[#0f151f] rounded-xl text-white placeholder:text-gray-500 focus-visible:ring-1 pr-10 transition-all ${
                       errors.password 
@@ -350,7 +363,11 @@ export function Register() {
                         id="captcha"
                         placeholder="Enter captcha"
                         value={captcha}
-                        onChange={(e) => { setCaptcha(e.target.value.replace(/\s/g, '')); clearError('captcha'); }}
+                        onChange={(e) => { 
+                          const sanitized = sanitizeTextInput(e.target.value.replace(/\s/g, ''));
+                          setCaptcha(sanitized); 
+                          clearError('captcha'); 
+                        }}
                         disabled={isLoading}
                         className={`h-11 bg-[#0f151f] rounded-xl text-white placeholder:text-gray-500 focus-visible:ring-1 transition-all ${
                           errors.captcha 

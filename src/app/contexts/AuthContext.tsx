@@ -10,12 +10,23 @@ import {
   type User as FirebaseUser,
   type AuthError,
 } from 'firebase/auth';
-import { auth } from '../config/firebase';
+import { 
+  doc, 
+  setDoc, 
+  getDoc, 
+  serverTimestamp,
+  type Timestamp 
+} from 'firebase/firestore';
+import { auth, db } from '../config/firebase';
 
 interface User {
   uid: string;
   email?: string;
   displayName?: string;
+  username?: string;
+  mobile?: string;
+  countryCode?: string;
+  createdAt?: Date | Timestamp;
 }
 
 interface AuthContextType {
@@ -23,7 +34,7 @@ interface AuthContextType {
   loading: boolean;
   isAuthenticated: boolean;
   login: (username: string, password: string) => Promise<void>;
-  register: (username: string, password: string, mobile?: string) => Promise<void>;
+  register: (username: string, password: string, mobile?: string, countryCode?: string) => Promise<void>;
   logout: () => Promise<void>;
   error: string | null;
 }
@@ -42,13 +53,41 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     });
 
     // Listen to auth state changes
-    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
+    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
       if (firebaseUser) {
-        setUser({
-          uid: firebaseUser.uid,
-          email: firebaseUser.email || undefined,
-          displayName: firebaseUser.displayName || undefined,
-        });
+        try {
+          // Try to fetch user data from Firestore
+          const userDocRef = doc(db, 'users', firebaseUser.uid);
+          const userDocSnap = await getDoc(userDocRef);
+          
+          if (userDocSnap.exists()) {
+            const userData = userDocSnap.data();
+            setUser({
+              uid: firebaseUser.uid,
+              email: firebaseUser.email || userData.email || undefined,
+              displayName: firebaseUser.displayName || userData.displayName || undefined,
+              username: userData.username || undefined,
+              mobile: userData.mobile || undefined,
+              countryCode: userData.countryCode || undefined,
+              createdAt: userData.createdAt || undefined,
+            });
+          } else {
+            // Fallback to basic user data if Firestore doc doesn't exist
+            setUser({
+              uid: firebaseUser.uid,
+              email: firebaseUser.email || undefined,
+              displayName: firebaseUser.displayName || undefined,
+            });
+          }
+        } catch (error) {
+          console.error('Error fetching user data from Firestore:', error);
+          // Fallback to basic user data
+          setUser({
+            uid: firebaseUser.uid,
+            email: firebaseUser.email || undefined,
+            displayName: firebaseUser.displayName || undefined,
+          });
+        }
       } else {
         setUser(null);
       }
@@ -63,6 +102,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setLoading(true);
 
     try {
+      if (!username.trim()) {
+        throw new Error('Username is required');
+      }
+
+      if (!password) {
+        throw new Error('Password is required');
+      }
+
       // Convert username to email format for Firebase
       // If username doesn't contain @, treat it as email with default domain
       const email = username.includes('@') ? username : `${username}@riocity9.com`;
@@ -81,18 +128,54 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const register = async (
     username: string,
     password: string,
-    mobile?: string
+    mobile?: string,
+    countryCode?: string
   ): Promise<void> => {
     setError(null);
     setLoading(true);
 
     try {
+      if (!username.trim()) {
+        throw new Error('Username is required');
+      }
+
+      if (username.length < 3) {
+        throw new Error('Username must be at least 3 characters');
+      }
+
+      if (!password) {
+        throw new Error('Password is required');
+      }
+
+      if (password.length < 6) {
+        throw new Error('Password must be at least 6 characters');
+      }
+
       // Convert username to email format for Firebase
       const email = username.includes('@') ? username : `${username}@riocity9.com`;
       const result = await createUserWithEmailAndPassword(auth, email, password);
       
       // Update profile with username as displayName
       await updateProfile(result.user, { displayName: username });
+      
+      // Save user data to Firestore
+      const userData = {
+        uid: result.user.uid,
+        username: username.trim(),
+        email: email,
+        displayName: username,
+        mobile: mobile || '',
+        countryCode: countryCode || '+60',
+        createdAt: serverTimestamp(),
+        updatedAt: serverTimestamp(),
+        agreeTerms: true,
+        agreeBonus: false, // Can be updated later
+      };
+
+      // Save to Firestore in 'users' collection
+      await setDoc(doc(db, 'users', result.user.uid), userData);
+      
+      console.log('User registered and saved to Firestore:', result.user.uid);
       
       // User state will be updated by onAuthStateChanged listener
     } catch (error) {

@@ -7,6 +7,7 @@ import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
 import { useLanguage } from '../contexts/LanguageContext';
 import { InnerPageLayout } from "../components/shared/InnerPageLayout";
+import { sanitizeTextInput } from '../utils/security';
 
 export function ChangePassword() {
   const navigate = useNavigate();
@@ -114,7 +115,11 @@ export function ChangePassword() {
                                 type={showCurrentPassword ? "text" : "password"}
                                 placeholder="Enter Your Current Password"
                                 value={currentPassword}
-                                onChange={(e) => { setCurrentPassword(e.target.value); if(errors.current) setErrors({...errors, current: undefined}); }}
+                                onChange={(e) => { 
+                                  const sanitized = sanitizeTextInput(e.target.value);
+                                  setCurrentPassword(sanitized); 
+                                  if(errors.current) setErrors({...errors, current: undefined}); 
+                                }}
                                 className={`bg-[#0f151f] border-white/10 text-white h-12 rounded-xl px-4 focus:border-emerald-500 focus-visible:ring-emerald-500/20 pr-12 transition-all ${
                                     errors.current ? 'border-red-500 border-2' : 'border-white/10'
                                 }`}
@@ -146,7 +151,11 @@ export function ChangePassword() {
                                 type={showNewPassword ? "text" : "password"}
                                 placeholder="Enter New Password"
                                 value={newPassword}
-                                onChange={(e) => { setNewPassword(e.target.value); if(errors.new) setErrors({...errors, new: undefined}); }}
+                                onChange={(e) => { 
+                                  const sanitized = sanitizeTextInput(e.target.value);
+                                  setNewPassword(sanitized); 
+                                  if(errors.new) setErrors({...errors, new: undefined}); 
+                                }}
                                 className={`bg-[#0f151f] border-white/10 text-white h-12 rounded-xl px-4 focus:border-emerald-500 focus-visible:ring-emerald-500/20 pr-12 transition-all ${
                                     errors.new ? 'border-red-500 border-2' : 'border-white/10'
                                 }`}
@@ -178,7 +187,11 @@ export function ChangePassword() {
                                 type={showConfirmPassword ? "text" : "password"}
                                 placeholder="Confirm New Password"
                                 value={confirmPassword}
-                                onChange={(e) => { setConfirmPassword(e.target.value); if(errors.confirm) setErrors({...errors, confirm: undefined}); }}
+                                onChange={(e) => { 
+                                  const sanitized = sanitizeTextInput(e.target.value);
+                                  setConfirmPassword(sanitized); 
+                                  if(errors.confirm) setErrors({...errors, confirm: undefined}); 
+                                }}
                                 className={`bg-[#0f151f] border-white/10 text-white h-12 rounded-xl px-4 focus:border-emerald-500 focus-visible:ring-emerald-500/20 pr-12 transition-all ${
                                     errors.confirm ? 'border-red-500 border-2' : 'border-white/10'
                                 }`}

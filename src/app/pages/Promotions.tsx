@@ -44,24 +44,24 @@ export function Promotions() {
             Promotions
           </h1>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-12 gap-y-20">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-x-6 md:gap-x-8 lg:gap-x-12 gap-y-12 md:gap-y-16 lg:gap-y-20">
           {promotions.map((item, index) => (
             <div
               key={item.id}
-              className="group relative flex items-center justify-between min-h-[220px]"
+              className="group relative flex items-center justify-between min-h-[180px] md:min-h-[200px] lg:min-h-[220px]"
             >
               {/* Left Content */}
-              <div className="relative z-10 flex flex-col items-start space-y-6 w-1/2">
-                <h2 className="text-[32px] font-bold leading-[1.1] tracking-tight text-white">
+              <div className="relative z-10 flex flex-col items-start space-y-4 md:space-y-5 lg:space-y-6 w-1/2">
+                <h2 className="text-2xl md:text-[28px] lg:text-[32px] font-bold leading-[1.1] tracking-tight text-white">
                   <span className="block">{item.title[0]}</span>
                   <span className="block">{item.title[1]}</span>
                 </h2>
                 
                 <button 
                   onClick={() => navigate(`/promotions/${item.id}`)}
-                  className="flex items-center gap-2 px-8 py-2.5 rounded-md bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 text-black font-black text-sm shadow-[0_4px_15px_rgba(16,185,129,0.3)] transition-all hover:brightness-110 active:scale-95"
+                  className="flex items-center gap-2 px-6 py-2 md:px-7 md:py-2.5 lg:px-8 lg:py-2.5 rounded-md bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 text-black font-black text-xs md:text-sm shadow-[0_4px_15px_rgba(16,185,129,0.3)] transition-all hover:brightness-110 active:scale-95"
                 >
-                  View More <span className="text-lg">→</span>
+                  View More <span className="text-base md:text-lg">→</span>
                 </button>
               </div>
 
@@ -74,12 +74,12 @@ export function Promotions() {
                 <div className="absolute inset-0 bg-[radial-gradient(circle,_rgba(212,165,32,0.3)_0%,_transparent_70%)] blur-2xl transform scale-125" />
                 
                 {/* Specific decorative elements for each girl could go here, but a general high-quality glow is best */}
-                <div className="absolute w-[200px] h-[200px] bg-amber-500/20 rounded-full blur-[80px] animate-pulse" />
+                <div className="absolute w-[150px] h-[150px] md:w-[180px] md:h-[180px] lg:w-[200px] lg:h-[200px] bg-amber-500/20 rounded-full blur-[80px] animate-pulse" />
                 
                 <img
                   src={item.image}
                   alt={item.imageAlt}
-                  className="relative z-10 w-full max-w-[280px] h-auto object-contain transform transition-transform duration-500 group-hover:scale-105"
+                  className="relative z-10 w-full max-w-[200px] md:max-w-[240px] lg:max-w-[280px] h-auto object-contain transform transition-transform duration-500 group-hover:scale-105"
                 />
               </div>
             </div>

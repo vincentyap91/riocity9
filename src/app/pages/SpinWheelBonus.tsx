@@ -41,10 +41,34 @@ export function SpinWheelBonus() {
           </button>
         </div>
 
+        {/* Mobile/Tablet: Horizontal Scrollable Sidebar */}
+        <div className="lg:hidden mb-6">
+          <div className="w-full bg-[#1a2230] rounded-[16px] border border-white/5 p-3 overflow-x-auto no-scrollbar">
+            <div className="flex items-center gap-3 min-w-max">
+              {BONUS_SIDEBAR_ITEMS.map((item) => (
+                <button
+                  key={item.id}
+                  onClick={() => navigate(item.path)}
+                  className={`px-5 py-3 rounded-xl text-sm font-bold whitespace-nowrap transition-all flex items-center gap-3 group shrink-0 ${
+                    item.id === 'wheel'
+                      ? 'bg-emerald-500 text-black shadow-[0_0_20px_rgba(16,185,129,0.3)]'
+                      : 'text-gray-400 hover:text-white hover:bg-white/5'
+                  }`}
+                >
+                  <item.icon className={`w-5 h-5 shrink-0 transition-colors ${
+                    item.id === 'wheel' ? 'text-black' : 'text-gray-500 group-hover:text-white'
+                  }`} />
+                  <span>{item.label}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+
         <div className="flex flex-col lg:flex-row gap-6 items-start">
           
-          {/* Sidebar Menu */}
-          <div className="w-full lg:w-[280px] bg-[#1a2230] rounded-[16px] border border-white/5 p-4 flex flex-col gap-2 shrink-0">
+          {/* Desktop: Vertical Sidebar */}
+          <div className="hidden lg:flex w-[280px] bg-[#1a2230] rounded-[16px] border border-white/5 p-4 flex-col gap-2 shrink-0">
             {BONUS_SIDEBAR_ITEMS.map((item) => (
               <button
                 key={item.id}

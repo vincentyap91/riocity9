@@ -1,14 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { 
-  ArrowLeft, History, Calendar, Wallet, Dices, 
-  Users, HandCoins, Megaphone,
-  Search, Filter
+  ArrowLeft, X, Calendar, HandCoins, Wallet, Dices, Users, Megaphone
 } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { useLanguage } from '../contexts/LanguageContext';
 import { InnerPageLayout } from "../components/shared/InnerPageLayout";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '../components/ui/select';
 
 const SIDEBAR_ITEMS = [
   { id: 'transaction', label: 'Transaction History', icon: Wallet, path: '/history' },
@@ -18,19 +22,25 @@ const SIDEBAR_ITEMS = [
   { id: 'promotion', label: 'Promotion Record', icon: Megaphone, path: '/history' },
 ];
 
-const QUICK_FILTERS = [
+const QUICK_DATE_BUTTONS = [
   { id: 'today', label: 'Today' },
-  { id: '7days', label: 'Last 7 Days' },
-  { id: '30days', label: 'Last 30 Days' },
-  { id: '60days', label: 'Last 60 Days' },
+  { id: 'yesterday', label: 'Yesterday' },
+  { id: 'thisWeek', label: 'This Week' },
+  { id: 'lastWeek', label: 'Last Week' },
+  { id: 'thisMonth', label: 'This Month' },
+  { id: 'lastMonth', label: 'Last Month' },
 ];
 
-export function HistoryRecord() {
+export function RebateRecord() {
   const navigate = useNavigate();
   const location = useLocation();
   const { t } = useLanguage();
+  const [recordType, setRecordType] = useState('rebate');
+  const [activeDateButton, setActiveDateButton] = useState('thisWeek');
+  const [startDate, setStartDate] = useState('25-01-2026');
+  const [endDate, setEndDate] = useState('31-01-2026');
   
-  // Determine active tab based on current route
+  // Determine active sidebar tab based on current route
   const getActiveTab = () => {
     if (location.pathname === '/history/bet') return 'bet';
     if (location.pathname === '/history/commission') return 'commission';
@@ -39,32 +49,28 @@ export function HistoryRecord() {
   };
   
   const [activeSidebarTab, setActiveSidebarTab] = useState(getActiveTab());
-  const [activeTypeTab, setActiveTypeTab] = useState<'deposits' | 'withdrawals'>('deposits');
-  const [activeFilter, setActiveFilter] = useState('today');
   
-  // Update active tab when route changes
   useEffect(() => {
-    const activeTab = getActiveTab();
-    setActiveSidebarTab(activeTab);
+    setActiveSidebarTab(getActiveTab());
   }, [location.pathname]);
 
-  const depositData = [
-    { id: 'TXN102938', date: '05-03-2023 01:58:00', amount: '50.00', status: 'Approved', description: 'Deposit via Bank Transfer' },
-    { id: 'TXN102939', date: '05-03-2023 04:12:00', amount: '120.00', status: 'Approved', description: 'Deposit via USDT' },
-  ];
+  const handleRecordTypeChange = (value: string) => {
+    setRecordType(value);
+    if (value === 'bet') {
+      navigate('/history/bet');
+    } else if (value === 'commission') {
+      navigate('/history/commission');
+    }
+  };
 
-  const withdrawalData = [
-    { id: 'TXN202940', date: '05-03-2023 10:20:00', amount: '30.00', status: 'Pending', description: 'Withdrawal to Bank' },
-    { id: 'TXN202941', date: '04-03-2023 15:45:00', amount: '200.00', status: 'Rejected', description: 'Withdrawal to USDT' },
-  ];
-
-  const currentData = activeTypeTab === 'deposits' ? depositData : withdrawalData;
+  // No data for now
+  const rebateData: any[] = [];
 
   return (
     <InnerPageLayout className="overflow-hidden">
       <div className="container mx-auto px-4 py-12 max-w-[1024px]">
         
-        {/* Navigation Header (Settings left) */}
+        {/* Navigation Header */}
         <div className="relative flex items-center justify-center mb-6">
           <div className="absolute left-0 flex items-center gap-3">
             <button
@@ -135,39 +141,27 @@ export function HistoryRecord() {
 
           {/* Main Content Area */}
           <div className="flex-1 w-full bg-[#1a2230] rounded-[16px] border border-white/5 p-6 flex flex-col">
-            {/* Title inside card (match Profile behavior) */}
+            {/* Title inside card (match Transaction History) */}
             <div className="flex items-center justify-start gap-3 pb-4">
               <div className="h-10 w-10 rounded-xl bg-black/25 border border-white/10 flex items-center justify-center">
-                <History className="w-5 h-5 text-white/90" />
+                <HandCoins className="w-5 h-5 text-white/90" />
               </div>
-              <span className="text-white font-bold text-base">Transaction History</span>
+              <span className="text-white font-bold text-base">Rebate Record</span>
             </div>
-            
-            {/* Top Controls: Tabs */}
-            <div className="flex flex-col md:flex-row items-center justify-start gap-6 mb-6">
-              {/* Deposits/Withdrawals Tabs */}
-              <div className="w-full max-w-[320px] flex bg-[#0f151f] p-1 rounded-xl border border-white/5">
-                <button
-                  onClick={() => setActiveTypeTab('deposits')}
-                  className={`flex-1 h-10 rounded-lg text-xs font-bold transition-all ${
-                    activeTypeTab === 'deposits'
-                      ? 'bg-emerald-500 text-black shadow-lg'
-                      : 'text-gray-400 hover:text-white hover:bg-white/5'
-                  }`}
-                >
-                  {t("deposit")}
-                </button>
-                <button
-                  onClick={() => setActiveTypeTab('withdrawals')}
-                  className={`flex-1 h-10 rounded-lg text-xs font-bold transition-all ${
-                    activeTypeTab === 'withdrawals'
-                      ? 'bg-emerald-500 text-black shadow-lg'
-                      : 'text-gray-400 hover:text-white hover:bg-white/5'
-                  }`}
-                >
-                  {t("withdrawals")}
-                </button>
-              </div>
+
+            {/* Record Type Selection */}
+            <div className="space-y-2 mb-6">
+              <label className="text-white font-bold text-sm">Record Type</label>
+              <Select value={recordType} onValueChange={handleRecordTypeChange}>
+                <SelectTrigger className="w-full bg-[#0f151f] border-white/10 text-white h-12 rounded-xl focus:border-emerald-500">
+                  <SelectValue placeholder="Select record type" />
+                </SelectTrigger>
+                <SelectContent className="bg-[#1a2230] border-white/10">
+                  <SelectItem value="bet" className="text-white focus:bg-emerald-500/20">Bet Record</SelectItem>
+                  <SelectItem value="commission" className="text-white focus:bg-emerald-500/20">Commission Record</SelectItem>
+                  <SelectItem value="rebate" className="text-white focus:bg-emerald-500/20">Rebate Record</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
 
             {/* Date Selection */}
@@ -177,7 +171,8 @@ export function HistoryRecord() {
                 <div className="relative group">
                   <Input
                     type="text"
-                    defaultValue="01/14/2026"
+                    value={startDate}
+                    onChange={(e) => setStartDate(e.target.value)}
                     className="bg-[#0f151f] border-white/10 text-white h-12 rounded-xl px-4 focus:border-emerald-500 focus-visible:ring-emerald-500/20 pr-10"
                   />
                   <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -188,7 +183,8 @@ export function HistoryRecord() {
                 <div className="relative group">
                   <Input
                     type="text"
-                    defaultValue="01/14/2026"
+                    value={endDate}
+                    onChange={(e) => setEndDate(e.target.value)}
                     className="bg-[#0f151f] border-white/10 text-white h-12 rounded-xl px-4 focus:border-emerald-500 focus-visible:ring-emerald-500/20 pr-10"
                   />
                   <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -196,81 +192,64 @@ export function HistoryRecord() {
               </div>
             </div>
 
-            {/* Quick Filters */}
+            {/* Quick Date Buttons */}
             <div className="flex flex-wrap gap-3 mb-6">
-              {QUICK_FILTERS.map((filter) => (
+              {QUICK_DATE_BUTTONS.map((button) => (
                 <button
-                  key={filter.id}
-                  onClick={() => setActiveFilter(filter.id)}
+                  key={button.id}
+                  onClick={() => setActiveDateButton(button.id)}
                   className={`px-6 h-10 rounded-xl text-xs font-bold transition-all border ${
-                    activeFilter === filter.id
+                    activeDateButton === button.id
                       ? 'border-emerald-500 bg-emerald-500/10 text-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.2)]'
                       : 'border-white/5 bg-[#0f151f] text-gray-400 hover:text-white hover:bg-white/5'
                   }`}
                 >
-                  {filter.label}
+                  {button.label}
                 </button>
               ))}
             </div>
 
-            {/* History Table Container */}
-            <div className="flex-1 flex flex-col bg-[#0f151f] rounded-2xl border border-white/5 overflow-hidden shadow-inner">
-              <div className="overflow-x-auto custom-scrollbar">
-                <table className="w-full text-left border-collapse min-w-[600px]">
-                  <thead>
-                    <tr className="bg-[#1a2230]/80 border-b border-white/5">
-                      <th className="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest">Date / ID</th>
-                      <th className="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest">Description</th>
-                      <th className="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest text-right">Amount</th>
-                      <th className="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest text-center">Status</th>
+          {/* Data Table */}
+          <div className="flex-1 flex flex-col bg-[#0f151f] rounded-2xl border border-white/5 overflow-hidden shadow-inner">
+            <div className="overflow-x-auto custom-scrollbar">
+              <table className="w-full text-left border-collapse min-w-[600px]">
+                <thead>
+                  <tr className="bg-[#1a2230]/80 border-b border-white/5">
+                    <th className="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest">Date</th>
+                    <th className="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest text-center">Rebate</th>
+                    <th className="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest text-center">Sales</th>
+                    <th className="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest text-center">Remark</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-white/5">
+                  {rebateData.length === 0 ? (
+                    <tr>
+                      <td colSpan={4} className="px-6 py-12 text-center">
+                        <span className="text-white text-sm">No Data Found</span>
+                      </td>
                     </tr>
-                  </thead>
-                  <tbody className="divide-y divide-white/5">
-                    {currentData.map((row, index) => (
+                  ) : (
+                    rebateData.map((row, index) => (
                       <tr key={index} className="hover:bg-white/5 transition-all group">
                         <td className="px-6 py-5">
-                          <div className="flex flex-col gap-1">
-                            <span className="text-sm font-bold text-white group-hover:text-emerald-400 transition-colors">{row.date}</span>
-                            <span className="text-[10px] font-mono text-gray-500">{row.id}</span>
-                          </div>
+                          <span className="text-sm text-white font-medium">{row.date}</span>
                         </td>
-                        <td className="px-6 py-5">
-                          <span className="text-sm text-gray-300 font-medium">{row.description}</span>
+                        <td className="px-6 py-5 text-center">
+                          <span className="text-sm text-white font-medium">{row.rebate}</span>
                         </td>
-                        <td className="px-6 py-5 text-right">
-                          <span className={`text-sm font-black ${
-                            activeTypeTab === 'deposits' ? 'text-emerald-400' : 'text-orange-400'
-                          }`}>
-                            {activeTypeTab === 'deposits' ? '+' : '-'}{row.amount}
-                          </span>
+                        <td className="px-6 py-5 text-center">
+                          <span className="text-sm text-white font-medium">{row.sales}</span>
                         </td>
-                        <td className="px-6 py-5">
-                          <div className="flex justify-center">
-                            <span className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest border ${
-                              row.status === 'Approved' ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-500' :
-                              row.status === 'Pending' ? 'bg-yellow-500/10 border-yellow-500/20 text-yellow-500' :
-                              'bg-red-500/10 border-red-500/20 text-red-500'
-                            }`}>
-                              {row.status}
-                            </span>
-                          </div>
+                        <td className="px-6 py-5 text-center">
+                          <span className="text-sm text-white font-medium">{row.remark}</span>
                         </td>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-              
-              {/* Pagination Placeholder */}
-              <div className="p-4 mt-auto border-t border-white/5 flex items-center justify-between">
-                <span className="text-xs text-gray-500">Showing 1-2 of 2 records</span>
-                <div className="flex items-center gap-2">
-                   <button className="px-3 py-1 rounded-lg bg-white/5 text-gray-500 text-xs disabled:opacity-50">Prev</button>
-                   <button className="px-3 py-1 rounded-lg bg-emerald-500/20 text-emerald-500 text-xs font-bold border border-emerald-500/30">1</button>
-                   <button className="px-3 py-1 rounded-lg bg-white/5 text-gray-500 text-xs disabled:opacity-50">Next</button>
-                </div>
-              </div>
+                    ))
+                  )}
+                </tbody>
+              </table>
             </div>
+          </div>
 
           </div>
         </div>
