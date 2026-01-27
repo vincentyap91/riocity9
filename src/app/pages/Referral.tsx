@@ -150,7 +150,7 @@ export function Referral() {
             {/* Right: Total Earnings Card with Coins */}
             <div className="relative lg:mt-8">
               {/* Referral Bonus Card */}
-              <div className="relative z-10 bg-[#1a2230] border border-white/5 rounded-[16px] p-5 shadow-xl">
+              <div className="relative z-10 bg-[#1a2230] border border-white/5 rounded-[10px] p-5 shadow-xl">
                 {isAuthenticated ? (
                   <>
                     <h2 className="text-xl font-bold mb-4">Referral <span className="text-[#6fa85d]">Bonus</span></h2>
@@ -209,7 +209,7 @@ export function Referral() {
 
       {/* Deposit Commission Rate */}
       <div className="container mx-auto max-w-[1200px] 2xl:max-w-[1536px] px-4 mb-12">
-        <div className="relative bg-[#1a2230] border border-white/5 rounded-[16px] p-4 md:p-8 overflow-hidden shadow-xl">
+        <div className="relative bg-[#1a2230] border border-white/5 rounded-[10px] p-4 md:p-8 overflow-hidden shadow-xl">
           {/* Background Image */}
           <div className="absolute inset-0">
             <img
@@ -240,14 +240,14 @@ export function Referral() {
 
       {/* Gaming Commission Rate */}
       <div className="container mx-auto max-w-[1200px] 2xl:max-w-[1536px] px-4 mb-12">
-        <div className="bg-[#1a2230] border border-white/5 rounded-[16px] p-8 shadow-xl">
+        <div className="bg-[#1a2230] border border-white/5 rounded-[10px] p-8 shadow-xl">
           <h2 className="text-3xl font-bold mb-4">Gaming Commission Rate</h2>
           <p className="text-gray-400 mb-8 text-lg">Listing of commission rates you earn from your downlines' bets by game type and provider.</p>
 
           <div className="flex flex-col gap-4">
             <Accordion type="single" collapsible defaultValue="Slots" className="w-full">
               {commissionRates.map((cat, idx) => (
-                <AccordionItem key={idx} value={cat.category} className="!border-b-0 border border-white/10 rounded-none overflow-hidden bg-[#0f151f] mb-4 last:mb-0">
+                <AccordionItem key={idx} value={cat.category} className="!border-b-0 border border-white/5 rounded-[10px] overflow-hidden bg-[#0f151f] mb-4 last:mb-0">
                   <AccordionTrigger className="px-6 py-4 hover:no-underline hover:bg-white/5 transition-colors text-white bg-[#1d2d49] [&>svg]:text-white">
                     <span className="text-lg font-bold">{cat.category}</span>
                   </AccordionTrigger>
@@ -284,7 +284,7 @@ export function Referral() {
 
       {/* FAQ Section */}
       <div className="container mx-auto max-w-[1200px] 2xl:max-w-[1536px] px-4 mb-12">
-        <div className="bg-[#1a2230] border border-white/5 rounded-[16px] p-6 md:p-8 shadow-xl">
+        <div className="bg-[#1a2230] border border-white/5 rounded-[10px] p-6 md:p-8 shadow-xl">
           {/* FAQ Header */}
           <h2 className="text-xl md:text-2xl font-bold text-white mb-4">Frequently Asked Questions</h2>
           <div className="flex justify-start mb-6">
@@ -312,10 +312,10 @@ export function Referral() {
             </div>
           </div>
 
-          <div className="bg-[#0f151f] rounded-none overflow-hidden border border-white/10">
+          <div className="rounded-none overflow-hidden">
             <Accordion type="single" collapsible className="w-full">
               {faqs.map((faq, idx) => (
-                <AccordionItem key={idx} value={`item-${idx}`} className="border-b border-white/10 last:border-0">
+                <AccordionItem key={idx} value={`item-${idx}`} className="border border-white/5 rounded-[10px] mb-4 last:mb-0">
                   <AccordionTrigger className="px-6 py-4 hover:no-underline hover:bg-white/5 transition-colors text-white bg-[#1d2d49] [&>svg]:text-[#d4c766]">
                     <span className="text-base font-bold text-left">{faq.question}</span>
                   </AccordionTrigger>

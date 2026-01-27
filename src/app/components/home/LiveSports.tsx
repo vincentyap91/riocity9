@@ -76,10 +76,10 @@ export function LiveSports() {
       />
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {matches.map((match) => (
+        {matches.map((match, index) => (
           <div
             key={match.id}
-            className="group relative flex flex-col rounded-xl overflow-hidden border border-white/5 bg-[#0f1923] shadow-lg hover:shadow-[0_0_20px_-10px_rgba(249,115,22,0.5)] transition-all duration-300"
+            className={`group relative flex flex-col rounded-xl overflow-hidden border border-white/5 bg-[#0f1923] shadow-lg hover:shadow-[0_0_20px_-10px_rgba(249,115,22,0.5)] transition-all duration-300 ${index === 2 ? 'hidden lg:block' : ''}`}
           >
             {/* Background Image with Overlay */}
             <div className="absolute inset-0 z-0">

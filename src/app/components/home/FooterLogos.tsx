@@ -118,7 +118,7 @@ export function FooterLogos() {
         {/* Row 1: Left Scroll */}
         <div className="flex w-fit animate-marquee marquee-content">
             {[...firstRow, ...firstRow].map((logo, index) => (
-                <div key={`row1-${index}`} className="mx-6 h-8 flex items-center justify-center shrink-0 transition-all duration-300 opacity-60 brightness-0 invert hover:opacity-100 hover:brightness-100 hover:invert-0">
+                <div key={`row1-${index}`} className="mx-6 h-8 flex items-center justify-center shrink-0 transition-all duration-300 opacity-100 brightness-100 invert-40 hover:opacity-100 hover:brightness-100 hover:invert-0">
                     <img 
                         src={logo} 
                         alt="Provider Logo" 
@@ -131,7 +131,7 @@ export function FooterLogos() {
         {/* Row 2: Right Scroll */}
         <div className="flex w-fit animate-marquee-reverse marquee-content">
             {[...secondRow, ...secondRow].map((logo, index) => (
-                <div key={`row2-${index}`} className="mx-6 h-8 flex items-center justify-center shrink-0 transition-all duration-300 opacity-60 brightness-0 invert hover:opacity-100 hover:brightness-100 hover:invert-0">
+                <div key={`row2-${index}`} className="mx-6 h-8 flex items-center justify-center shrink-0 transition-all duration-300 opacity-100 brightness-100 invert-40 hover:opacity-100 hover:brightness-100 hover:invert-0">
                     <img 
                         src={logo} 
                         alt="Provider Logo" 

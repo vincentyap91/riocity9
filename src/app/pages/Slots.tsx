@@ -144,11 +144,11 @@ export function Slots() {
                 </div>
 
                 {/* Game Grid */}
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6 justify-items-center">
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-4 lg:gap-6 justify-items-center">
                     {games.map((game) => (
-                        <div key={game.id} className="flex flex-col items-start gap-3 group cursor-pointer">
+                        <div key={game.id} className="flex flex-col items-start gap-2 md:gap-3 group cursor-pointer w-full max-w-[214px]">
                             <div 
-                                className="relative w-[214px] h-[214px] rounded-2xl overflow-hidden ring-1 ring-white/10 transition-all duration-500 bg-[#1a2536] group-hover:ring-[#fdc700]/30 group-hover:shadow-[0_0_30px_-5px_rgba(253,199,0,0.2)]"
+                                className="relative w-full aspect-square rounded-2xl overflow-hidden ring-1 ring-white/10 transition-all duration-500 bg-[#1a2536] group-hover:ring-[#fdc700]/30 group-hover:shadow-[0_0_30px_-5px_rgba(253,199,0,0.2)]"
                             >
                                 <img 
                                     src={game.image} 
@@ -165,20 +165,20 @@ export function Slots() {
                             </div>
 
                             {/* Content */}
-                            <div className="flex flex-col gap-2 mt-2 w-full">
-                                <h3 className="text-white group-hover:text-emerald-500 font-bold text-[15px] transition-colors w-full px-0.5">
+                            <div className="flex flex-col gap-1.5 md:gap-2 mt-1 md:mt-2 w-full">
+                                <h3 className="text-white group-hover:text-emerald-500 font-bold text-xs md:text-sm lg:text-[15px] transition-colors w-full px-0.5">
                                     {game.title}
                                 </h3>
                                 
                                 {/* Updated RTP Badge: Only Arrow changes color to be subtle */}
-                                <div className="flex items-center gap-2 bg-emerald-500/10 rounded-xl px-3 py-1.5 w-fit border border-emerald-500/20 shadow-[0_0_15px_-5px_rgba(16,185,129,0.1)]">
-                                    <span className="text-emerald-500 font-black text-[12px] tracking-tight">
+                                <div className="flex items-center gap-1.5 md:gap-2 bg-emerald-500/10 rounded-xl px-2 py-1 md:px-3 md:py-1.5 w-fit border border-emerald-500/20 shadow-[0_0_15px_-5px_rgba(16,185,129,0.1)]">
+                                    <span className="text-emerald-500 font-black text-[10px] md:text-[11px] lg:text-[12px] tracking-tight">
                                         RTP {game.rtp}
                                     </span>
                                     {game.trend === 'up' ? (
-                                        <div className="w-0 h-0 border-l-[4px] border-l-transparent border-r-[4px] border-r-transparent border-b-[6px] border-b-emerald-500 mb-0.5 animate-pulse"></div>
+                                        <div className="w-0 h-0 border-l-[3px] md:border-l-[4px] border-l-transparent border-r-[3px] md:border-r-[4px] border-r-transparent border-b-[5px] md:border-b-[6px] border-b-emerald-500 mb-0.5 animate-pulse"></div>
                                     ) : (
-                                        <div className="w-0 h-0 border-l-[4px] border-l-transparent border-r-[4px] border-r-transparent border-t-[6px] border-t-red-500 mt-0.5 animate-pulse"></div>
+                                        <div className="w-0 h-0 border-l-[3px] md:border-l-[4px] border-l-transparent border-r-[3px] md:border-r-[4px] border-r-transparent border-t-[5px] md:border-t-[6px] border-t-red-500 mt-0.5 animate-pulse"></div>
                                     )}
                                 </div>
                             </div>

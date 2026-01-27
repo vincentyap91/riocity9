@@ -74,11 +74,11 @@ export function LiveCasino() {
 
         {/* Providers Grid */}
         <div className="w-full">
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6 justify-items-center">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-4 lg:gap-6 justify-items-center">
             {providers.map((provider) => (
-                <div key={provider.id} className="flex flex-col items-start gap-3 group cursor-pointer">
+                <div key={provider.id} className="flex flex-col items-start gap-2 md:gap-3 group cursor-pointer w-full max-w-[214px]">
                     <div 
-                        className="relative w-[214px] h-[214px] rounded-2xl overflow-hidden ring-1 ring-white/10 transition-all duration-300 bg-[#1a2536]"
+                        className="relative w-full aspect-square rounded-2xl overflow-hidden ring-1 ring-white/10 transition-all duration-300 bg-[#1a2536]"
                     >
                         <img 
                             src={provider.img} 
@@ -95,10 +95,10 @@ export function LiveCasino() {
                     
                     {/* Provider Name */}
                     <div className="flex flex-col gap-1">
-                        <span className="text-sm font-bold text-white group-hover:text-emerald-500 transition-colors">
+                        <span className="text-xs md:text-sm font-bold text-white group-hover:text-emerald-500 transition-colors">
                             {provider.name}
                         </span>
-                        <span className="text-[11px] text-gray-500 font-bold uppercase tracking-wider">Live Casino</span>
+                        <span className="text-[10px] md:text-[11px] text-gray-500 font-bold uppercase tracking-wider">Live Casino</span>
                     </div>
                 </div>
             ))}

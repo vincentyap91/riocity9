@@ -1,8 +1,23 @@
 import React from 'react';
-import { Gamepad2, Dices, Trophy, Fish, Ticket, Zap, Club, Monitor } from 'lucide-react';
+import { Gamepad2, Dices, Trophy, Fish, Ticket, Zap, Club, Monitor, Check } from 'lucide-react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../components/ui/accordion';
 import { Button } from '../components/ui/button';
 import { InnerPageLayout } from "../components/shared/InnerPageLayout";
+import { useAuth } from '../contexts/AuthContext';
+import { useNavigate } from 'react-router-dom';
+
+// Membership Rebate data based on screenshot
+const membershipRebateData = [
+  { category: "Sport", normal: "0.1", bronze: "0.2", silver: "0.3", gold: "0.4", platinum: "0.6", diamond: "0.7", ruby: "0", diamond2: "0" },
+  { category: "Live Casino", normal: "1", bronze: "2", silver: "3", gold: "4", platinum: "5", diamond: "6", ruby: "0", diamond2: "0" },
+  { category: "Slot", normal: "0.1", bronze: "0.2", silver: "0.3", gold: "0.4", platinum: "0.5", diamond: "0.6", ruby: "0", diamond2: "0" },
+  { category: "Fish Hunt", normal: "0.8", bronze: "1", silver: "0", gold: "3", platinum: "0.6", diamond: "0.7", ruby: "0", diamond2: "0" },
+  { category: "Lottery", normal: "0.5", bronze: "1", silver: "0", gold: "3", platinum: "0.6", diamond: "0.7", ruby: "0", diamond2: "0" },
+  { category: "Crash", normal: "0", bronze: "0", silver: "0", gold: "0", platinum: "0", diamond: "0", ruby: "0", diamond2: "0" },
+  { category: "Exchange", normal: "0", bronze: "0", silver: "0", gold: "0", platinum: "0", diamond: "0", ruby: "0", diamond2: "0" },
+  { category: "RNG", normal: "1", bronze: "0", silver: "0", gold: "1", platinum: "0", diamond: "0", ruby: "0", diamond2: "0" },
+  { category: "Poker", normal: "1", bronze: "2", silver: "3", gold: "4", platinum: "3", diamond: "0", ruby: "0", diamond2: "0" },
+];
 
 // Rebate data based on screenshot
 const rebateCategories = [
@@ -84,6 +99,10 @@ const rebateCategories = [
 ];
 
 export function Rebate() {
+  const { user } = useAuth();
+  const navigate = useNavigate();
+  const isAuthenticated = !!user;
+
   return (
     <InnerPageLayout className="overflow-hidden">
       <div className="flex flex-col min-h-screen text-white relative overflow-hidden pb-20 md:pb-0">
@@ -94,103 +113,176 @@ export function Rebate() {
         <div className="mb-8">
           <h1 className="text-3xl md:text-4xl font-bold text-white mb-6">Our Rebate System</h1>
           
-          {/* Claimable Rebate Card */}
-          <div className="bg-[#1a2230] rounded-[16px] p-5 border border-white/5 shadow-xl flex items-center justify-between mb-6">
-            <div>
-              <span className="text-gray-300 text-sm mb-1 block">Claimable Rebate</span>
-              <div className="flex items-center">
-                <span className="text-[#d4c766] text-sm mr-2">PKR</span>
-                <span className="text-[#d4c766] text-2xl font-bold">13.246</span>
+          {/* Login Placeholder - Only visible when NOT logged in */}
+          {!isAuthenticated && (
+            <div className="bg-[#1A2230] rounded-[10px] p-8 md:p-12 border border-white/5 shadow-xl mb-6">
+              <div className="flex flex-col items-center justify-center text-center space-y-6">
+                <p className="text-white text-xl md:text-2xl font-bold">Log In to View Your Rebate Info</p>
+                <Button 
+                  onClick={() => navigate('/login')}
+                  className="bg-[#e6c252] hover:bg-[#ffd65c] text-[#3c1100] font-black text-base md:text-lg px-8 py-3 rounded-xl shadow-[0_0_15px_-3px_rgba(230,194,82,0.4)] transition-all hover:scale-105"
+                >
+                  Login Now!
+                </Button>
               </div>
             </div>
-            <Button className="bg-gradient-to-r from-[#f1c24f] to-[#d59b25] text-[#5c3a00] px-6 py-2.5 rounded-lg font-bold text-base hover:brightness-110 transition-all shadow-[0_4px_15px_rgba(212,165,33,0.35)]">
-              Claim Now
-            </Button>
+          )}
+
+          {/* Claimable Rebate Card - Only visible when logged in */}
+          {isAuthenticated && (
+            <div className="bg-[#1a2230] rounded-[10px] p-5 border border-white/5 shadow-xl flex items-center justify-between mb-6">
+              <div>
+                <span className="text-gray-300 text-sm mb-1 block">Claimable Rebate</span>
+                <div className="flex items-center">
+                  <span className="text-[#d4c766] text-sm mr-2">PKR</span>
+                  <span className="text-[#d4c766] text-2xl font-bold">13.246</span>
+                </div>
+              </div>
+              <Button className="bg-gradient-to-r from-[#f1c24f] to-[#d59b25] text-[#5c3a00] px-6 py-2.5 rounded-lg font-bold text-base hover:brightness-110 transition-all shadow-[0_4px_15px_rgba(212,165,33,0.35)]">
+                Claim Now
+              </Button>
+            </div>
+          )}
+        </div>
+
+        {/* My Rebate & Sales - Only visible when logged in */}
+        {isAuthenticated && (
+          <div className="mb-8">
+            <h2 className="text-xl md:text-2xl font-bold text-white mb-4">My Rebate & Sales</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="bg-[#1a2230] border border-white/5 rounded-[10px] p-6 shadow-xl">
+                <p className="text-gray-300 text-sm mb-1">Total Lifetime Rebate</p>
+                <div className="flex items-center">
+                  <span className="text-[#d4c766] text-sm mr-2">PKR</span>
+                  <span className="text-[#d4c766] text-2xl font-bold">10.743</span>
+                </div>
+              </div>
+              <div className="bg-[#1a2230] border border-white/5 rounded-[10px] p-6 shadow-xl">
+                <p className="text-gray-300 text-sm mb-1">My Individual Sales</p>
+                <div className="flex items-center">
+                  <span className="text-[#d4c766] text-sm mr-2">PKR</span>
+                  <span className="text-[#d4c766] text-2xl font-bold">2,081.910</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Full Width Layout for Membership Rebate */}
+        <div className="w-full mb-8">
+          {/* Membership Rebate Table - Visible for all users */}
+          <div className="w-full">
+            <h2 className="text-xl md:text-2xl font-bold text-white mb-4">Membership Rebate</h2>
+            <div className="bg-[#1a2230] border border-white/5 rounded-[10px] p-4 md:p-6 shadow-xl overflow-x-auto w-full">
+              <div className="min-w-full">
+                {/* Table Header */}
+                <div className="grid grid-cols-9 gap-0 mb-0 border-b border-white/10 rounded-[10px]">
+                  <div className="text-white font-bold text-sm md:text-base p-3 bg-[#0f151f]">Membership Rebate</div>
+                  <div className="text-white font-bold text-sm md:text-base p-3 text-center bg-[#0f151f]">Normal</div>
+                  <div className="text-[#e6c252] font-bold text-sm md:text-base p-3 text-center bg-[#0f151f]">Bronze</div>
+                  <div className="text-white font-bold text-sm md:text-base p-3 text-center bg-[#0f151f]">Silver</div>
+                  <div className="text-[#e6c252] font-bold text-sm md:text-base p-3 text-center bg-[#0f151f]">Gold</div>
+                  <div className="text-white font-bold text-sm md:text-base p-3 text-center bg-[#0f151f]">Platinum</div>
+                  <div className="text-[#e6c252] font-bold text-sm md:text-base p-3 text-center bg-[#0f151f]">Diamond</div>
+                  <div className="text-white font-bold text-sm md:text-base p-3 text-center bg-[#0f151f]">Ruby</div>
+                  <div className="text-white font-bold text-sm md:text-base p-3 text-center bg-[#0f151f]">Diamond II</div>
+                </div>
+                {/* Table Body */}
+                <div className="space-y-0 max-h-[500px] overflow-y-auto">
+                  {membershipRebateData.map((row, idx) => {
+                    const renderCell = (value: string, isHighlight = false) => {
+                      const isZero = value === "0";
+                      const textColor = isZero ? "text-gray-400" : (isHighlight ? "text-[#e6c252]" : "text-white");
+                      return (
+                        <span className={`${textColor} font-medium text-sm`}>
+                          {value}%
+                        </span>
+                      );
+                    };
+
+                    return (
+                      <div key={idx} className="grid grid-cols-9 gap-0 border-b border-white/10 last:border-0 hover:bg-white/5 transition-colors">
+                        <div className="text-white font-semibold text-sm md:text-base p-3 bg-[#1a2230]">{row.category}</div>
+                        <div className="text-center p-3 bg-[#1a2230]">{renderCell(row.normal)}</div>
+                        <div className="text-center p-3 bg-[#1a2230]">{renderCell(row.bronze)}</div>
+                        <div className="text-center p-3 bg-[#1a2230]">{renderCell(row.silver)}</div>
+                        <div className="text-center p-3 bg-[#1a2230]">{renderCell(row.gold)}</div>
+                        <div className="text-center p-3 bg-[#1a2230]">{renderCell(row.platinum)}</div>
+                        <div className="text-center p-3 bg-[#1a2230]">{renderCell(row.diamond, true)}</div>
+                        <div className="text-center p-3 bg-[#1a2230]">{renderCell(row.ruby)}</div>
+                        <div className="text-center p-3 bg-[#1a2230]">{renderCell(row.diamond2)}</div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
-        {/* Two Column Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_0.6fr] gap-8">
+        {/* Single Column Layout */}
+        <div>
           
-          {/* Left Column */}
           <div className="space-y-4 md:space-y-6">
             
-            {/* My Rebate & Sales */}
-            <div>
-              <h2 className="text-xl md:text-2xl font-bold text-white mb-4">My Rebate & Sales</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="bg-[#1a2230] border border-white/5 rounded-[16px] p-6 shadow-xl">
-                  <p className="text-gray-300 text-sm mb-1">Total Lifetime Rebate</p>
-                  <div className="flex items-center">
-                    <span className="text-[#d4c766] text-sm mr-2">PKR</span>
-                    <span className="text-[#d4c766] text-2xl font-bold">10.743</span>
-                  </div>
-                </div>
-                <div className="bg-[#1a2230] border border-white/5 rounded-[16px] p-6 shadow-xl">
-                  <p className="text-gray-300 text-sm mb-1">My Individual Sales</p>
-                  <div className="flex items-center">
-                    <span className="text-[#d4c766] text-sm mr-2">PKR</span>
-                    <span className="text-[#d4c766] text-2xl font-bold">2,081.910</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Guaranteed Rebate */}
-            <div>
-              <h2 className="text-xl md:text-2xl font-bold text-white mb-4">Guaranteed Rebate</h2>
-              
-              <div className="bg-[#1a2230] border border-white/5 rounded-[16px] p-8 shadow-xl">
-                <div className="flex flex-col gap-4">
-                  <Accordion type="single" collapsible defaultValue="Slots" className="w-full">
-                    {rebateCategories.map((cat, idx) => {
-                      const IconComponent = cat.icon;
-                      return (
-                        <AccordionItem key={idx} value={cat.category} className="!border-b-0 border border-white/10 rounded-md overflow-hidden bg-[#0f151f] mb-4 last:mb-0">
-                          <AccordionTrigger className="px-6 py-4 hover:no-underline hover:bg-white/5 transition-colors text-white bg-[#1d2d49] [&>svg]:text-white">
-                            <div className="flex items-center gap-3">
-                              <IconComponent className="w-5 h-5 text-[#d4c766]" />
-                              <span className="text-lg font-bold">{cat.category}</span>
-                            </div>
-                          </AccordionTrigger>
-                          <AccordionContent className="bg-[#0f151f] px-0 py-0">
-                            {cat.items.length > 0 ? (
-                              <div className="w-full">
-                                {/* Table Header */}
-                                <div className="grid grid-cols-2 gap-4 px-6 py-3 border-b border-[#d4c766] bg-[#131b29] text-[#d4c766] font-bold text-sm">
-                                  <div className="text-center">Provider</div>
-                                  <div className="text-center">Rebate</div>
-                                </div>
-                                {/* Table Body */}
-                                {cat.items.map((item, i) => (
-                                  <div key={i} className="grid grid-cols-2 gap-4 px-6 py-4 border-b border-white/10 last:border-0 text-sm font-medium text-white hover:bg-white/5">
-                                    <div className="text-center">{item.provider}</div>
-                                    <div className="text-center">{item.rebate}</div>
-                                  </div>
-                                ))}
+            {/* Guaranteed Rebate - Visible for all users */}
+            <div className="grid grid-cols-1 lg:grid-cols-[1fr_0.6fr] gap-8">
+              {/* Left Column - Guaranteed Rebate Content */}
+              <div>
+                <h2 className="text-xl md:text-2xl font-bold text-white mb-4">Guaranteed Rebate</h2>
+                
+                <div className="bg-[#1a2230] border border-white/5 rounded-[10px] p-8 shadow-xl">
+                  <div className="flex flex-col gap-4">
+                    <Accordion type="single" collapsible defaultValue="Slots" className="w-full">
+                      {rebateCategories.map((cat, idx) => {
+                        const IconComponent = cat.icon;
+                        return (
+                          <AccordionItem key={idx} value={cat.category} className="!border-b-0 border border-white/10 rounded-md overflow-hidden bg-[#0f151f] mb-4 last:mb-0">
+                            <AccordionTrigger className="px-6 py-4 hover:no-underline hover:bg-white/5 transition-colors text-white bg-[#1d2d49] [&>svg]:text-white">
+                              <div className="flex items-center gap-3">
+                                <IconComponent className="w-5 h-5 text-[#d4c766]" />
+                                <span className="text-lg font-bold">{cat.category}</span>
                               </div>
-                            ) : (
-                              <div className="p-6 text-center text-gray-500">No data available for this category yet.</div>
-                            )}
-                          </AccordionContent>
-                        </AccordionItem>
-                      );
-                    })}
-                  </Accordion>
+                            </AccordionTrigger>
+                            <AccordionContent className="bg-[#0f151f] px-0 py-0">
+                              {cat.items.length > 0 ? (
+                                <div className="w-full">
+                                  {/* Table Header */}
+                                  <div className="grid grid-cols-2 gap-4 px-6 py-3 border-b border-[#d4c766] bg-[#131b29] text-[#d4c766] font-bold text-sm">
+                                    <div className="text-center">Provider</div>
+                                    <div className="text-center">Rebate</div>
+                                  </div>
+                                  {/* Table Body */}
+                                  {cat.items.map((item, i) => (
+                                    <div key={i} className="grid grid-cols-2 gap-4 px-6 py-4 border-b border-white/10 last:border-0 text-sm font-medium text-white hover:bg-white/5">
+                                      <div className="text-center">{item.provider}</div>
+                                      <div className="text-center">{item.rebate}</div>
+                                    </div>
+                                  ))}
+                                </div>
+                              ) : (
+                                <div className="p-6 text-center text-gray-500">No data available for this category yet.</div>
+                              )}
+                            </AccordionContent>
+                          </AccordionItem>
+                        );
+                      })}
+                    </Accordion>
+                  </div>
                 </div>
               </div>
-            </div>
-          </div>
 
-          {/* Right Column - Illustration */}
-          <div className="hidden lg:block relative">
-            <div className="sticky top-8">
-              <div className="relative w-full h-[600px] rounded-xl overflow-hidden">
-                <img 
-                  src="https://staging.riocity9.com/static/media/rebate-img.535f6983.png" 
-                  alt="Rebate Illustration" 
-                  className="w-full h-full object-contain"
-                />
+              {/* Right Column - Illustration */}
+              <div className="hidden lg:block relative">
+                <div className="sticky top-8">
+                  <div className="relative w-full h-[600px] rounded-xl overflow-hidden">
+                    <img 
+                      src="https://staging.riocity9.com/static/media/rebate-img.535f6983.png" 
+                      alt="Rebate Illustration" 
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
+                </div>
               </div>
             </div>
           </div>

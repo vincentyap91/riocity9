@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '../../contexts/LanguageContext';
 // Assets - using proper imports for local assets
 import imgReferralBanner from '@/assets/9cc12ccab5ff73c2e07714865ae6549ed3409f4c.png';
-const imgMobileReferral = "https://staging.riocity9.com/static/media/mobile-referral.png";
+import imgMobileReferral from '@/assets/mobile-referral.png';
 
 export function ReferralBanner() {
     const navigate = useNavigate();
@@ -26,8 +26,8 @@ export function ReferralBanner() {
 
     return (
         <div className="relative w-full rounded-2xl overflow-hidden shadow-2xl">
-            {/* Mobile View - Follow HTML Structure */}
-            <div className="md:hidden flex flex-col rounded-2xl overflow-hidden bg-[#0d2818]">
+            {/* Mobile/Tablet View - Follow HTML Structure */}
+            <div className="lg:hidden flex flex-col rounded-2xl overflow-hidden bg-[#0d2818]">
                 {/* Background Image */}
                 <div className="relative w-full">
                     <img 
@@ -37,11 +37,32 @@ export function ReferralBanner() {
                     />
                 </div>
                 
-                {/* Button Group - Below the image (matching screenshot) */}
+                {/* Referral Link Section - Mobile View */}
                 <div className="bg-[#0f1923] backdrop-blur-md border border-emerald-500/20 px-4 py-4">
-                    <div className="space-y-3">
-                        {/* Top Row Buttons - Share and Downlines */}
-                        <div className="grid grid-cols-2 gap-3">
+                    <div className="space-y-4">
+                        {/* My Referral Link */}
+                        <div className="space-y-2">
+                            <label className="text-xs font-bold text-yellow-400 tracking-wider">{t("myReferralLink")}</label>
+                            <div className="flex items-center justify-between bg-[#134438]/50 border border-emerald-500/30 rounded-xl p-3 group/input hover:border-emerald-500/60 transition-colors">
+                                <span className="text-white text-xs font-mono truncate pr-4">{referralLink}</span>
+                                <button 
+                                    onClick={handleCopyLink}
+                                    className="p-2 hover:bg-emerald-500/20 rounded-lg transition-colors text-yellow-400 shrink-0 active:scale-95"
+                                    title="Copy referral link"
+                                >
+                                    {copiedLink ? (
+                                        <Check className="w-5 h-5 text-emerald-400" />
+                                    ) : (
+                                        <Copy className="w-5 h-5" />
+                                    )}
+                                </button>
+                            </div>
+                        </div>
+                        
+                        {/* Button Group */}
+                        <div className="space-y-3">
+                            {/* Top Row Buttons - Share and Downlines */}
+                            <div className="grid grid-cols-2 gap-3">
                             <Button 
                                 onClick={() => navigate('/referral')}
                                 className="bg-emerald-500 hover:bg-emerald-400 text-black font-bold h-12 rounded-xl text-sm shadow-[0_0_15px_-3px_rgba(16,185,129,0.4)] transition-all cursor-pointer"
@@ -55,19 +76,20 @@ export function ReferralBanner() {
                                 <Users className="w-4 h-4 mr-2" /> {t("downlines")}
                             </Button>
                         </div>
-                        {/* Bottom Button - More Info (full width) */}
-                        <Button 
-                            onClick={() => navigate('/referral')}
-                            className="w-full bg-[#e6c252] hover:bg-[#ffd65c] text-[#3c1100] font-bold h-12 rounded-xl text-sm shadow-[0_0_15px_-3px_rgba(230,194,82,0.4)] transition-all cursor-pointer"
-                        >
-                            <Info className="w-4 h-4 mr-2" /> {t("moreInfo")}
-                        </Button>
+                            {/* Bottom Button - More Info (full width) */}
+                            <Button 
+                                onClick={() => navigate('/referral')}
+                                className="w-full bg-[#e6c252] hover:bg-[#ffd65c] text-[#3c1100] font-bold h-12 rounded-xl text-sm shadow-[0_0_15px_-3px_rgba(230,194,82,0.4)] transition-all cursor-pointer"
+                            >
+                                <Info className="w-4 h-4 mr-2" /> {t("moreInfo")}
+                            </Button>
+                        </div>
                     </div>
                 </div>
             </div>
 
             {/* Desktop View - Keep Original Design */}
-            <div className="hidden md:block relative w-full rounded-2xl overflow-hidden h-[400px] lg:h-[450px] shadow-2xl group bg-[#1c3f37]">
+            <div className="hidden lg:block relative w-full rounded-2xl overflow-hidden h-[400px] lg:h-[450px] shadow-2xl group bg-[#1c3f37]">
                 <img 
                     src={imgReferralBanner} 
                     alt="Referral Banner" 

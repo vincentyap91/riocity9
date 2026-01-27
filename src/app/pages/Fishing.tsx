@@ -126,11 +126,11 @@ export function Fishing() {
                 </div>
 
                 {/* Game Grid */}
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6 justify-items-center">
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-4 lg:gap-6 justify-items-center">
                     {fishingGames.map((game) => (
-                        <div key={game.id} className="flex flex-col items-start gap-3 group cursor-pointer">
+                        <div key={game.id} className="flex flex-col items-start gap-2 md:gap-3 group cursor-pointer w-full max-w-[214px]">
                             <div 
-                                className="relative w-[214px] h-[214px] rounded-2xl overflow-hidden ring-1 ring-white/10 transition-all duration-500 bg-[#1a2536] group-hover:ring-[#fdc700]/30 group-hover:shadow-[0_0_30px_-5px_rgba(253,199,0,0.2)]"
+                                className="relative w-full aspect-square rounded-2xl overflow-hidden ring-1 ring-white/10 transition-all duration-500 bg-[#1a2536] group-hover:ring-[#fdc700]/30 group-hover:shadow-[0_0_30px_-5px_rgba(253,199,0,0.2)]"
                             >
                                 <img 
                                     src={game.image} 
@@ -147,11 +147,11 @@ export function Fishing() {
                             </div>
 
                             {/* Content */}
-                            <div className="flex flex-col gap-2 mt-2 w-full">
-                                <h3 className="text-white group-hover:text-emerald-500 font-bold text-[15px] transition-colors w-full px-0.5">
+                            <div className="flex flex-col gap-1.5 md:gap-2 mt-1 md:mt-2 w-full">
+                                <h3 className="text-white group-hover:text-emerald-500 font-bold text-xs md:text-sm lg:text-[15px] transition-colors w-full px-0.5">
                                     {game.title}
                                 </h3>
-                                <span className="text-[11px] text-gray-500 font-bold uppercase tracking-wider">{game.provider}</span>
+                                <span className="text-[10px] md:text-[11px] text-gray-500 font-bold uppercase tracking-wider">{game.provider}</span>
                             </div>
                         </div>
                     ))}
