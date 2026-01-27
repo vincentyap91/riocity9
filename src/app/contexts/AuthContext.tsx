@@ -14,6 +14,10 @@ import {
   doc, 
   setDoc, 
   getDoc, 
+  collection,
+  query,
+  where,
+  getDocs,
   serverTimestamp,
   type Timestamp 
 } from 'firebase/firestore';
@@ -65,8 +69,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             setUser({
               uid: firebaseUser.uid,
               email: firebaseUser.email || userData.email || undefined,
-              displayName: firebaseUser.displayName || userData.displayName || undefined,
-              username: userData.username || undefined,
+              displayName: firebaseUser.displayName || userData.displayName || userData.usernameDisplay || userData.username || undefined,
+              username: userData.usernameDisplay || userData.username || undefined,
               mobile: userData.mobile || undefined,
               countryCode: userData.countryCode || undefined,
               createdAt: userData.createdAt || undefined,
@@ -151,6 +155,28 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         throw new Error('Password must be at least 6 characters');
       }
 
+      // Check if username already exists
+      const usernameQuery = query(
+        collection(db, 'users'),
+        where('username', '==', username.trim().toLowerCase())
+      );
+      const usernameSnapshot = await getDocs(usernameQuery);
+      if (!usernameSnapshot.empty) {
+        throw new Error('Username already registered');
+      }
+
+      // Check if mobile number already exists (if provided)
+      if (mobile && mobile.trim()) {
+        const mobileQuery = query(
+          collection(db, 'users'),
+          where('mobile', '==', mobile.trim())
+        );
+        const mobileSnapshot = await getDocs(mobileQuery);
+        if (!mobileSnapshot.empty) {
+          throw new Error('Mobile number already registered');
+        }
+      }
+
       // Convert username to email format for Firebase
       const email = username.includes('@') ? username : `${username}@riocity9.com`;
       const result = await createUserWithEmailAndPassword(auth, email, password);
@@ -159,12 +185,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       await updateProfile(result.user, { displayName: username });
       
       // Save user data to Firestore
+      // Store username in lowercase for case-insensitive duplicate checking
       const userData = {
         uid: result.user.uid,
-        username: username.trim(),
+        username: username.trim().toLowerCase(),
+        usernameDisplay: username.trim(), // Store original case for display
         email: email,
-        displayName: username,
-        mobile: mobile || '',
+        displayName: username.trim(),
+        mobile: mobile ? mobile.trim() : '',
         countryCode: countryCode || '+60',
         createdAt: serverTimestamp(),
         updatedAt: serverTimestamp(),

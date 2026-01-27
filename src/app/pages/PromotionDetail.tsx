@@ -178,13 +178,13 @@ export function PromotionDetail() {
            <div className="absolute top-1/2 right-0 -translate-y-1/2 w-[400px] h-[400px] bg-emerald-500/10 rounded-full blur-[100px] pointer-events-none" />
            
            <div className="relative z-10 flex-1 space-y-6 text-center md:text-left">
-              <h1 className="text-3xl md:text-5xl font-black leading-tight tracking-tight text-white max-w-md">
+              <h1 className="text-4xl font-bold tracking-tight leading-tight text-white max-w-md">
                 {promo.title}
               </h1>
               <div className="pt-4">
                 <Button 
                   onClick={() => navigate("/deposit")}
-                  className="h-14 px-10 rounded-full bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 text-black font-black text-lg shadow-[0_8px_25px_rgba(16,185,129,0.3)] hover:brightness-110 active:scale-95 transition-all border-none"
+                  className="h-12 px-10 rounded-xl bg-[#00bc7d] hover:bg-[#00a870] text-black font-black text-base shadow-[0_0_20px_-5px_rgba(16,185,129,0.6)] transition-all hover:scale-[1.02]"
                 >
                   {promo.actionText || t("joinDepositNow")}
                 </Button>
@@ -211,7 +211,7 @@ export function PromotionDetail() {
               <div className="flex justify-center py-4">
                 <Button 
                   onClick={() => navigate("/deposit")}
-                  className="h-12 px-12 rounded-full bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 text-black font-black text-base shadow-[0_5px_15px_rgba(16,185,129,0.2)] hover:brightness-110 active:scale-95 transition-all border-none"
+                  className="h-12 px-12 rounded-xl bg-[#00bc7d] hover:bg-[#00a870] text-black font-black text-base shadow-[0_0_20px_-5px_rgba(16,185,129,0.6)] transition-all hover:scale-[1.02]"
                 >
                   {promo.actionText || t("joinDepositNow")}
                 </Button>
@@ -268,13 +268,13 @@ export function PromotionDetail() {
            <div className="flex flex-col sm:flex-row gap-4 pt-12">
                <Button 
                 onClick={() => navigate("/deposit")}
-                className="flex-1 h-14 rounded-2xl bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 text-black font-black text-lg shadow-[0_8px_25px_rgba(16,185,129,0.3)] hover:brightness-110 active:scale-95 transition-all border-none"
+                className="flex-1 h-12 rounded-xl bg-[#00bc7d] hover:bg-[#00a870] text-black font-black text-base shadow-[0_0_20px_-5px_rgba(16,185,129,0.6)] transition-all hover:scale-[1.02]"
                >
                  {t("joinDepositNow")}
                </Button>
                <Button 
                 variant="outline"
-                className="flex-1 h-14 rounded-2xl border-white/10 bg-white/5 text-white font-bold hover:bg-white/10 transition-all"
+                className="flex-1 h-12 rounded-xl border-white/10 bg-white/5 text-white font-bold hover:bg-white/10 transition-all"
                >
                  <MessageCircle className="w-5 h-5 mr-2" />
                  {t("liveSupport")}

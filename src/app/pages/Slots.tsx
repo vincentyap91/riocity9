@@ -86,7 +86,7 @@ export function Slots() {
 
         {/* Simple Title Section */}
         <div className="mt-[-20px] relative z-20 w-full flex flex-col items-center gap-6 py-6">
-            <h2 className="text-4xl md:text-5xl font-black text-pink-500 drop-shadow-[0_0_15px_rgba(236,72,153,0.5)]">
+            <h2 className="text-4xl font-bold tracking-tight text-pink-500 drop-shadow-[0_0_15px_rgba(236,72,153,0.5)]">
                 {t('slots')}
             </h2>
         </div>
@@ -166,13 +166,13 @@ export function Slots() {
 
                             {/* Content */}
                             <div className="flex flex-col gap-1.5 md:gap-2 mt-1 md:mt-2 w-full">
-                                <h3 className="text-white group-hover:text-emerald-500 font-bold text-xs md:text-sm lg:text-[15px] transition-colors w-full px-0.5">
+                                <h3 className="text-white group-hover:text-emerald-500 font-bold text-xs md:text-sm lg:text-base transition-colors w-full px-0.5">
                                     {game.title}
                                 </h3>
                                 
                                 {/* Updated RTP Badge: Only Arrow changes color to be subtle */}
                                 <div className="flex items-center gap-1.5 md:gap-2 bg-emerald-500/10 rounded-xl px-2 py-1 md:px-3 md:py-1.5 w-fit border border-emerald-500/20 shadow-[0_0_15px_-5px_rgba(16,185,129,0.1)]">
-                                    <span className="text-emerald-500 font-black text-[10px] md:text-[11px] lg:text-[12px] tracking-tight">
+                                    <span className="text-emerald-500 font-black text-xs tracking-tight">
                                         RTP {game.rtp}
                                     </span>
                                     {game.trend === 'up' ? (

@@ -30,6 +30,7 @@ import { Settings } from './pages/Settings';
 import { Deposit } from './pages/Deposit';
 import { Withdraw } from './pages/Withdraw';
 import { Referral } from './pages/Referral';
+import { MyRewards } from './pages/MyRewards';
 import { Rebate } from './pages/Rebate';
 import { Membership } from './pages/Membership';
 import { Profile } from './pages/Profile';
@@ -335,7 +336,7 @@ function AppContent() {
                   />
                 </div>
                 <span className="text-2xl font-black tracking-tight text-white hidden xl:block">
-                  Rio<span className="text-emerald-500 transition-colors duration-300 group-hover:text-emerald-400">City9</span>
+                  Rio<span className="text-emerald-400 transition-colors duration-300 group-hover:text-emerald-400">City9</span>
                 </span>
               </Link>
               
@@ -601,6 +602,7 @@ function AppContent() {
                 <Route path="/bonus/:bonusType" element={<Bonus />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/referral" element={<Referral />} />
+                <Route path="/my-rewards" element={<MyRewards />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/settings" element={<Settings />} />
                 <Route path="/profile" element={<Profile />} />
@@ -856,8 +858,8 @@ function AppContent() {
         {/* Floating Live Chat Button */}
         <div className="fixed bottom-24 md:bottom-6 right-6 z-50 flex flex-col items-end gap-4">
           
-          {/* Sitemap Navigation FAB */}
-          <div className="relative">
+          {/* Sitemap Navigation FAB - Temporarily Hidden */}
+          {/* <div className="relative">
              {isNavMenuOpen && (
                  <div className="absolute bottom-16 right-0 w-64 bg-[#131b29] border border-white/10 rounded-xl shadow-2xl p-2 animate-in slide-in-from-bottom-5 fade-in duration-200 overflow-hidden z-50">
                      <div className="text-xs font-bold text-gray-500 px-3 py-2 uppercase tracking-wider border-b border-white/5 mb-1">
@@ -910,7 +912,7 @@ function AppContent() {
              >
                  {isNavMenuOpen ? <X className="h-5 w-5" /> : <Map className="h-5 w-5" />}
              </Button>
-          </div>
+          </div> */}
 
           {/* Live Chat FAB */}
           <div className="relative">

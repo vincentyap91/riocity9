@@ -64,7 +64,7 @@ export function Lottery() {
 
         {/* Simple Title Section */}
         <div className="mt-[-20px] relative z-20 w-full flex flex-col items-center gap-6 py-6">
-            <h2 className="text-4xl md:text-5xl font-black text-purple-500 drop-shadow-[0_0_15px_rgba(168,85,247,0.5)]">
+            <h2 className="text-4xl font-bold tracking-tight text-purple-500 drop-shadow-[0_0_15px_rgba(168,85,247,0.5)]">
                 {t('lotteryKenoTitle')}
             </h2>
         </div>
@@ -163,7 +163,7 @@ export function Lottery() {
 
                             {/* Content */}
                             <div className="flex flex-col gap-2 mt-2 w-full">
-                                <h3 className="text-white group-hover:text-purple-500 font-bold text-[15px] transition-colors w-full px-0.5">
+                                <h3 className="text-white group-hover:text-purple-500 font-bold text-base transition-colors w-full px-0.5">
                                     {game.title}
                                 </h3>
                                 

@@ -85,7 +85,7 @@ export function RebateRecord() {
 
         {/* Mobile/Tablet: Horizontal Scrollable Sidebar */}
         <div className="lg:hidden mb-6">
-          <div className="w-full bg-[#1a2230] rounded-[16px] border border-white/5 p-3 overflow-x-auto no-scrollbar">
+          <div className="w-full bg-[#1a2230] rounded-2xl border border-white/5 p-3 overflow-x-auto no-scrollbar">
             <div className="flex items-center gap-3 min-w-max">
               {SIDEBAR_ITEMS.map((item) => (
                 <button
@@ -98,7 +98,7 @@ export function RebateRecord() {
                   }}
                   className={`px-5 py-3 rounded-xl text-sm font-bold whitespace-nowrap transition-all flex items-center gap-3 group shrink-0 ${
                     activeSidebarTab === item.id
-                      ? 'bg-emerald-500 text-black shadow-[0_0_20px_rgba(16,185,129,0.3)]'
+                      ? 'bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 text-black shadow-lg'
                       : 'text-gray-400 hover:text-white hover:bg-white/5'
                   }`}
                 >
@@ -115,7 +115,7 @@ export function RebateRecord() {
         <div className="flex flex-col lg:flex-row gap-6 items-start">
           
           {/* Desktop: Vertical Sidebar */}
-          <div className="hidden lg:flex w-[280px] bg-[#1a2230] rounded-[16px] border border-white/5 p-4 flex-col gap-2 shrink-0">
+          <div className="hidden lg:flex w-[280px] bg-[#1a2230] rounded-2xl border border-white/5 p-4 flex-col gap-2 shrink-0">
             {SIDEBAR_ITEMS.map((item) => (
               <button
                 key={item.id}
@@ -127,7 +127,7 @@ export function RebateRecord() {
                 }}
                 className={`w-full px-5 py-4 rounded-xl text-sm font-bold text-left transition-all flex items-center gap-4 group ${
                   activeSidebarTab === item.id
-                    ? 'bg-emerald-500 text-black shadow-[0_0_20px_rgba(16,185,129,0.3)]'
+                    ? 'bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 text-black shadow-lg'
                     : 'text-gray-400 hover:text-white hover:bg-white/5'
                 }`}
               >
@@ -140,7 +140,7 @@ export function RebateRecord() {
           </div>
 
           {/* Main Content Area */}
-          <div className="flex-1 w-full bg-[#1a2230] rounded-[16px] border border-white/5 p-6 flex flex-col">
+          <div className="flex-1 w-full bg-[#1a2230] rounded-2xl border border-white/5 p-6 flex flex-col">
             {/* Title inside card (match Transaction History) */}
             <div className="flex items-center justify-start gap-3 pb-4">
               <div className="h-10 w-10 rounded-xl bg-black/25 border border-white/10 flex items-center justify-center">

@@ -48,7 +48,7 @@ export function LiveCasino() {
 
       {/* Simple Title Section */}
       <div className="mt-[-20px] relative z-20 w-full flex flex-col items-center gap-6 py-6 pb-0">
-          <h2 className="text-4xl md:text-5xl font-black text-blue-500 drop-shadow-[0_0_15px_rgba(59,130,246,0.5)]">
+          <h2 className="text-4xl font-bold tracking-tight text-blue-500 drop-shadow-[0_0_15px_rgba(59,130,246,0.5)]">
               {t('liveCasino')}
           </h2>
       </div>

@@ -74,7 +74,7 @@ export function RecentGame() {
             <div className="w-24 h-24 rounded-full bg-emerald-500 opacity-20 blur-[50px]"></div>
           </div>
 
-          <h2 className="text-4xl md:text-5xl font-black text-emerald-500 drop-shadow-[0_0_15px_rgba(16,185,129,0.5)]">
+          <h2 className="text-4xl font-bold tracking-tight text-emerald-500 drop-shadow-[0_0_15px_rgba(16,185,129,0.5)]">
             Recent Games
           </h2>
         </div>

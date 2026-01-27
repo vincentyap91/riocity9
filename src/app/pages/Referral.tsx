@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
-import { Copy, ChevronRight, Info } from 'lucide-react';
+import { Copy, ChevronRight, Info, Users, Gift } from 'lucide-react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../components/ui/accordion';
 import { useAuth } from '../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '../components/ui/button';
+import { useLanguage } from '../contexts/LanguageContext';
 
 // Assets - using proper imports for local assets
 import shareYourLinkIcon from '@/assets/share-your-link.svg';
 import friendRegisterIcon from '@/assets/friend-register.svg';
 import earnBonusIcon from '@/assets/earn-bonus.svg';
 import imgHeroBg from '@/assets/referral-bg.jpg';
-import tierBg from '@/assets/tier-bg.png';
+import tierBg from '@/assets/tier-bg.jpg';
 import tierImg from '@/assets/tier.png';
 
 const commissionRates = [
@@ -46,13 +47,22 @@ const faqs = [
 export function Referral() {
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState<'faq' | 'terms'>('faq');
+  const { t } = useLanguage();
+  const [activeTab, setActiveTab] = useState<'referral' | 'myRewards'>('referral');
+  const [faqTab, setFaqTab] = useState<'faq' | 'terms'>('faq');
+
+  const handleTabChange = (tab: 'referral' | 'myRewards') => {
+    setActiveTab(tab);
+    if (tab === 'myRewards') {
+      navigate('/my-rewards');
+    }
+  };
 
   return (
     <div className="flex flex-col min-h-screen bg-[#02040a] text-white relative overflow-hidden pb-20 md:pb-0">
       
       {/* Hero Section with Form & Total Earnings */}
-      <div className="relative" style={{ paddingTop: `clamp(8%, 100vw, 6%)` }}>
+      <div className="relative pt-6">
         <div className="absolute inset-0">
           <img
             src={imgHeroBg}
@@ -63,13 +73,37 @@ export function Referral() {
           <div className="absolute inset-0 bg-gradient-to-b from-[#0a1510]/40 via-transparent to-[#02040a]"></div>
         </div>
         <div className="container mx-auto max-w-[1200px] 2xl:max-w-[1536px] px-4 relative z-10">
+          {/* Tabs Navigation */}
+          <div className="flex justify-center mb-8">
+            <div className="flex bg-[#0f151f] p-1 rounded-xl border border-white/5 w-full max-w-[350px]">
+              <button 
+                onClick={() => handleTabChange('referral')}
+                className={`flex-1 px-8 py-3 rounded-lg text-sm font-bold transition-all ${activeTab === 'referral' ? 'bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 text-black shadow-lg' : 'text-gray-400 hover:text-white'}`}
+              >
+                <span className="flex items-center justify-center gap-2">
+                  <Users className="w-4 h-4" />
+                  Referral
+                </span>
+              </button>
+              <button 
+                onClick={() => handleTabChange('myRewards')}
+                className={`flex-1 px-8 py-3 rounded-lg text-sm font-bold transition-all ${activeTab === 'myRewards' ? 'bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 text-black shadow-lg' : 'text-gray-400 hover:text-white'}`}
+              >
+                <span className="flex items-center justify-center gap-2">
+                  <Gift className="w-4 h-4" />
+                  My Rewards
+                </span>
+              </button>
+            </div>
+          </div>
+
           <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-10 items-end">
             
             {/* Left: Title & Form */}
             <div className="space-y-8">
               {/* Title */}
               <div className="space-y-4">
-                <h1 className="text-[32px] md:text-[48px] font-bold leading-tight tracking-tight">
+                <h1 className="text-4xl font-bold tracking-tight leading-tight">
                   <span className="block text-white">Invite Friends,</span>
                   <span className="block bg-gradient-to-r from-[#f7e08b] to-[#eab84b] bg-clip-text text-transparent">
                     Earn Passive Income!
@@ -86,10 +120,10 @@ export function Referral() {
                   {/* My Referral Link Section */}
                   <div className="space-y-2">
                     <label className="block text-xs font-bold text-[#d4c766] uppercase tracking-wider">My Referral Link</label>
-                    <div className="bg-[#1A2230] border border-[#2f362f] rounded-xl p-4 flex items-center gap-3 group hover:border-[#d4c766]/30 transition-colors shadow-[0_0_0_1px_rgba(255,255,255,0.04)]">
+                    <div className="bg-[#0f151f] border border-white/10 rounded-xl p-4 flex items-center gap-3 group hover:border-emerald-500/50 transition-colors">
                       <span className="flex-1 text-white text-sm md:text-base font-mono truncate pr-2">https://staging.riocity9.com/en/register?code=589092</span>
                       <button 
-                        className="w-8 h-8 rounded-lg bg-[#2a302c] text-white/70 flex items-center justify-center hover:bg-[#d4c766]/20 hover:text-[#d4c766] transition-all active:scale-95 shrink-0"
+                        className="w-8 h-8 rounded-lg bg-white/5 text-white/70 flex items-center justify-center hover:bg-emerald-500/20 hover:text-emerald-400 transition-all active:scale-95 shrink-0"
                         title="Copy referral link"
                       >
                         <Copy className="w-4 h-4" />
@@ -117,30 +151,30 @@ export function Referral() {
 
               {/* Steps in Hero */}
               <div className="space-y-5 pt-2">
-                <h2 className="text-xl md:text-[22px] font-bold text-white tracking-tight">Invite Your Friends to Earn Passive Income</h2>
+                <h2 className="text-xl md:text-2xl font-bold text-white tracking-tight">Invite Your Friends to Earn Passive Income</h2>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   {/* Step 1 */}
                   <div className="relative bg-[#1A2230] rounded-xl p-6 border border-white/5 flex flex-col items-center justify-center min-h-[160px] shadow-xl">
-                    <div className="absolute left-3 top-3 w-6 h-6 rounded-full bg-[#5A6D8E] text-white text-[11px] font-bold flex items-center justify-center">1</div>
+                    <div className="absolute left-3 top-3 w-6 h-6 rounded-full bg-[#5A6D8E] text-white text-xs font-bold flex items-center justify-center">1</div>
                     <div className="flex flex-col items-center text-center gap-4">
                       <img src={shareYourLinkIcon} alt="Share your link" className="w-12 h-12" />
-                      <p className="text-[12px] font-semibold leading-tight text-white">Share your Link or<br/>Referral Code</p>
+                      <p className="text-xs font-semibold leading-tight text-white">Share your Link or<br/>Referral Code</p>
                     </div>
                   </div>
                   {/* Step 2 */}
                   <div className="relative bg-[#1A2230] rounded-xl p-6 border border-white/5 flex flex-col items-center justify-center min-h-[160px] shadow-xl">
-                    <div className="absolute left-3 top-3 w-6 h-6 rounded-full bg-[#5A6D8E] text-white text-[11px] font-bold flex items-center justify-center">2</div>
+                    <div className="absolute left-3 top-3 w-6 h-6 rounded-full bg-[#5A6D8E] text-white text-xs font-bold flex items-center justify-center">2</div>
                     <div className="flex flex-col items-center text-center gap-4">
                       <img src={friendRegisterIcon} alt="Friend register" className="w-12 h-12" />
-                      <p className="text-[12px] font-semibold leading-tight text-white">Friends Registered<br/>Successfully</p>
+                      <p className="text-xs font-semibold leading-tight text-white">Friends Registered<br/>Successfully</p>
                     </div>
                   </div>
                   {/* Step 3 */}
                   <div className="relative bg-[#1A2230] rounded-xl p-6 border border-white/5 flex flex-col items-center justify-center min-h-[160px] shadow-xl">
-                    <div className="absolute left-3 top-3 w-6 h-6 rounded-full bg-[#5A6D8E] text-white text-[11px] font-bold flex items-center justify-center">3</div>
+                    <div className="absolute left-3 top-3 w-6 h-6 rounded-full bg-[#5A6D8E] text-white text-xs font-bold flex items-center justify-center">3</div>
                     <div className="flex flex-col items-center text-center gap-4">
                       <img src={earnBonusIcon} alt="Earn bonus" className="w-12 h-12" />
-                      <p className="text-[12px] font-semibold leading-tight text-white">Earn Bonus from<br/>Your Downlines</p>
+                      <p className="text-xs font-semibold leading-tight text-white">Earn Bonus from<br/>Your Downlines</p>
                     </div>
                   </div>
                 </div>
@@ -150,13 +184,13 @@ export function Referral() {
             {/* Right: Total Earnings Card with Coins */}
             <div className="relative lg:mt-8">
               {/* Referral Bonus Card */}
-              <div className="relative z-10 bg-[#1a2230] border border-white/5 rounded-[10px] p-5 shadow-xl">
+              <div className="relative z-10 bg-[#1a2230] border border-white/5 rounded-xl p-5 shadow-xl">
                 {isAuthenticated ? (
                   <>
-                    <h2 className="text-xl font-bold mb-4">Referral <span className="text-[#6fa85d]">Bonus</span></h2>
+                    <h2 className="text-2xl font-black mb-4">Referral <span className="text-[#6fa85d]">Bonus</span></h2>
                     
                     {/* Stats */}
-                    <div className="space-y-0 rounded-lg overflow-hidden border border-white/10">
+                    <div className="space-y-0 rounded-xl overflow-hidden border border-white/10">
                       <div className="bg-[#0f151f] border-b border-white/10 p-4">
                         <p className="text-gray-300 text-sm mb-1">Total Referral Commission Bonus</p>
                         <div className="flex items-center">
@@ -180,17 +214,17 @@ export function Referral() {
                     </div>
 
                     {/* Downlines Button */}
-                    <button className="mt-4 w-full bg-gradient-to-r from-[#f1c24f] to-[#d59b25] text-[#5c3a00] px-6 py-2.5 rounded-lg font-bold text-base flex items-center justify-center gap-2 hover:brightness-110 transition-all shadow-[0_4px_15px_rgba(212,165,33,0.35)]">
+                    <button className="mt-4 w-full bg-[#00bc7d] hover:bg-[#00a870] text-black font-black h-12 rounded-xl shadow-[0_0_20px_-5px_rgba(16,185,129,0.6)] transition-all hover:scale-[1.02] flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
                       Downlines <ChevronRight className="w-4 h-4" />
                     </button>
                   </>
                 ) : (
                   <div className="flex flex-col items-center justify-center py-8 text-center">
-                    <h2 className="text-xl font-bold mb-2 text-white">Log In to View Your Unique Referral Info</h2>
+                    <h2 className="text-2xl font-black mb-2 text-white">Log In to View Your Unique Referral Info</h2>
                     <p className="text-gray-400 text-sm mb-6">Sign in to access your referral code, link, and bonus details</p>
                     <Button
                       onClick={() => navigate('/login')}
-                      className="bg-gradient-to-r from-[#00ff88] to-[#00cc76] hover:from-[#05ffa1] hover:to-[#00dd82] text-black font-black text-base px-8 py-2.5 rounded-lg shadow-[0_4px_15px_rgba(0,255,136,0.4)] hover:shadow-[0_6px_20px_rgba(0,255,136,0.6)] transition-all hover:scale-105 active:scale-95"
+                      className="bg-[#00bc7d] hover:bg-[#00a870] text-black font-black text-base rounded-xl px-8 h-12 shadow-[0_0_20px_-5px_rgba(16,185,129,0.6)] transition-all hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       Login Now!
                     </Button>
@@ -209,7 +243,7 @@ export function Referral() {
 
       {/* Deposit Commission Rate */}
       <div className="container mx-auto max-w-[1200px] 2xl:max-w-[1536px] px-4 mb-12">
-        <div className="relative bg-[#1a2230] border border-white/5 rounded-[10px] p-4 md:p-8 overflow-hidden shadow-xl">
+        <div className="relative bg-[#1a2230] border border-white/5 rounded-xl p-4 md:p-8 overflow-hidden shadow-xl">
           {/* Background Image */}
           <div className="absolute inset-0">
             <img
@@ -222,8 +256,8 @@ export function Referral() {
           {/* Content */}
           <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
             <div className="flex-shrink-0">
-                <h2 className="text-2xl md:text-[32px] font-bold text-white mb-2">Deposit Commission Rate</h2>
-                <p className="text-[#d4c766] text-lg md:text-[26px] font-bold mb-4 md:mb-10">Minimum Deposit PRK 30.00</p>
+                <h2 className="text-2xl font-black text-white mb-2">Deposit Commission Rate</h2>
+                <p className="text-[#d4c766] text-lg md:text-2xl font-black mb-4 md:mb-10">Minimum Deposit PRK 30.00</p>
             </div>
 
             {/* Tiers Image */}
@@ -231,7 +265,7 @@ export function Referral() {
               <img
                 src={tierImg}
                 alt="Deposit commission tiers"
-                className="w-full max-w-full md:max-w-[720px] object-contain"
+                className="w-full max-w-full md:max-w-[520px] object-contain"
               />
             </div>
           </div>
@@ -240,16 +274,16 @@ export function Referral() {
 
       {/* Gaming Commission Rate */}
       <div className="container mx-auto max-w-[1200px] 2xl:max-w-[1536px] px-4 mb-12">
-        <div className="bg-[#1a2230] border border-white/5 rounded-[10px] p-8 shadow-xl">
-          <h2 className="text-3xl font-bold mb-4">Gaming Commission Rate</h2>
+        <div className="bg-[#1a2230] border border-white/5 rounded-xl p-8 shadow-xl">
+          <h2 className="text-2xl font-black mb-4 text-white">Gaming Commission Rate</h2>
           <p className="text-gray-400 mb-8 text-lg">Listing of commission rates you earn from your downlines' bets by game type and provider.</p>
 
           <div className="flex flex-col gap-4">
             <Accordion type="single" collapsible defaultValue="Slots" className="w-full">
               {commissionRates.map((cat, idx) => (
-                <AccordionItem key={idx} value={cat.category} className="!border-b-0 border border-white/5 rounded-[10px] overflow-hidden bg-[#0f151f] mb-4 last:mb-0">
+                <AccordionItem key={idx} value={cat.category} className="!border-b-0 border border-white/5 rounded-xl overflow-hidden bg-[#0f151f] mb-4 last:mb-0">
                   <AccordionTrigger className="px-6 py-4 hover:no-underline hover:bg-white/5 transition-colors text-white bg-[#1d2d49] [&>svg]:text-white">
-                    <span className="text-lg font-bold">{cat.category}</span>
+                    <span className="text-lg font-black">{cat.category}</span>
                   </AccordionTrigger>
                   <AccordionContent className="bg-[#0f151f] px-0 py-0">
                     {cat.items.length > 0 ? (
@@ -284,27 +318,27 @@ export function Referral() {
 
       {/* FAQ Section */}
       <div className="container mx-auto max-w-[1200px] 2xl:max-w-[1536px] px-4 mb-12">
-        <div className="bg-[#1a2230] border border-white/5 rounded-[10px] p-6 md:p-8 shadow-xl">
+        <div className="bg-[#1a2230] border border-white/5 rounded-xl p-6 md:p-8 shadow-xl">
           {/* FAQ Header */}
-          <h2 className="text-xl md:text-2xl font-bold text-white mb-4">Frequently Asked Questions</h2>
+          <h2 className="text-2xl font-black text-white mb-4">Frequently Asked Questions</h2>
           <div className="flex justify-start mb-6">
-            <div className="w-full max-w-[340px] flex bg-[#0f151f] p-1 rounded-xl border border-white/5">
+            <div className="flex bg-[#0f151f] p-1 rounded-xl border border-white/5 w-full max-w-[380px]">
               <button
-                onClick={() => setActiveTab('faq')}
-                className={`flex-1 h-10 rounded-lg text-sm font-bold transition-all ${
-                  activeTab === 'faq'
-                    ? 'bg-emerald-500 text-black shadow-lg'
-                    : 'text-gray-400 hover:text-white hover:bg-white/5'
+                onClick={() => setFaqTab('faq')}
+                className={`flex-1 px-8 py-3 rounded-lg text-sm font-bold transition-all ${
+                  faqTab === 'faq'
+                    ? 'bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 text-black shadow-lg'
+                    : 'text-gray-400 hover:text-white'
                 }`}
               >
                 FAQ
               </button>
               <button
-                onClick={() => setActiveTab('terms')}
-                className={`flex-1 h-10 rounded-lg text-sm font-bold transition-all ${
-                  activeTab === 'terms'
-                    ? 'bg-emerald-500 text-black shadow-lg'
-                    : 'text-gray-400 hover:text-white hover:bg-white/5'
+                onClick={() => setFaqTab('terms')}
+                className={`flex-1 px-8 py-3 rounded-lg text-sm font-bold transition-all ${
+                  faqTab === 'terms'
+                    ? 'bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 text-black shadow-lg'
+                    : 'text-gray-400 hover:text-white'
                 }`}
               >
                 Terms & Conditions
@@ -315,7 +349,7 @@ export function Referral() {
           <div className="rounded-none overflow-hidden">
             <Accordion type="single" collapsible className="w-full">
               {faqs.map((faq, idx) => (
-                <AccordionItem key={idx} value={`item-${idx}`} className="border border-white/5 rounded-[10px] mb-4 last:mb-0">
+                <AccordionItem key={idx} value={`item-${idx}`} className="border border-white/5 rounded-xl mb-4 last:mb-0">
                   <AccordionTrigger className="px-6 py-4 hover:no-underline hover:bg-white/5 transition-colors text-white bg-[#1d2d49] [&>svg]:text-[#d4c766]">
                     <span className="text-base font-bold text-left">{faq.question}</span>
                   </AccordionTrigger>

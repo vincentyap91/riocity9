@@ -25,7 +25,7 @@ export function Exchange() {
           <div className="w-24 h-24 rounded-full bg-emerald-500 opacity-20 blur-[50px]"></div>
         </div>
 
-        <h2 className="text-4xl md:text-5xl font-black text-emerald-500 drop-shadow-[0_0_15px_rgba(16,185,129,0.5)]">
+        <h2 className="text-4xl font-bold tracking-tight text-emerald-500 drop-shadow-[0_0_15px_rgba(16,185,129,0.5)]">
           {t("exchange")}
         </h2>
       </div>
@@ -76,7 +76,7 @@ export function Exchange() {
                     <span className="text-sm font-bold text-white group-hover:text-emerald-500 transition-colors">
                       {provider.name}
                     </span>
-                    <span className="text-[11px] text-gray-500 font-bold uppercase tracking-wider">Exchange</span>
+                    <span className="text-xs text-gray-500 font-bold uppercase tracking-wider">Exchange</span>
                   </div>
                 </div>
               ))}

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Eye, EyeOff, X, AlertCircle } from 'lucide-react';
+import { Eye, EyeOff, X, AlertCircle, Loader2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
@@ -113,7 +113,7 @@ export function Login() {
                 className="absolute z-11 text-center top-12"
             >
                  <div className="mb-0">
-                    <h2 className="text-4xl font-bold text-white drop-shadow-md mb-2">Join Us</h2>
+                    <h2 className="text-4xl font-bold tracking-tight text-white drop-shadow-md mb-2">Join Us</h2>
                  </div>
                  <p className="text-white font-bold text-lg leading-tight max-w-xs mx-auto drop-shadow-sm">
                      Play free Daily Spins for a chance to win one of the Jackpots!
@@ -277,16 +277,23 @@ export function Login() {
                 <Button 
                     type="submit"
                     disabled={isLoading}
-                    className="w-full h-14 bg-[#4f46e5] hover:bg-[#4338ca] text-white font-bold text-base rounded-xl shadow-[0px_10px_15px_-3px_rgba(97,95,255,0.2)] transition-all hover:translate-y-[-1px] disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="w-full h-12 bg-[#00bc7d] hover:bg-[#00a870] text-black font-black text-base rounded-xl shadow-[0_0_20px_-5px_rgba(16,185,129,0.6)] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                    {isLoading ? 'Logging in...' : 'Log In'}
+                    {isLoading ? (
+                        <div className="flex items-center gap-2">
+                            <Loader2 className="w-5 h-5 animate-spin" />
+                            <span>Logging in...</span>
+                        </div>
+                    ) : (
+                        'Log In'
+                    )}
                 </Button>
                 <Button 
                     type="button"
                     variant="outline"
                     disabled={isLoading}
                     onClick={() => setShowForgotModal(true)}
-                    className="w-full h-14 bg-transparent border-white/10 hover:bg-white/5 text-gray-300 hover:text-white font-bold text-base rounded-xl shadow-sm transition-transform hover:scale-[1.02] disabled:opacity-50"
+                    className="w-full h-12 bg-transparent border-white/10 hover:bg-white/5 text-gray-300 hover:text-white font-bold text-base rounded-xl shadow-sm transition-transform  disabled:opacity-50"
                 >
                     Forgot Password
                 </Button>

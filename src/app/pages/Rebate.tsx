@@ -111,13 +111,13 @@ export function Rebate() {
         
         {/* Title Section */}
         <div className="mb-8">
-          <h1 className="text-3xl md:text-4xl font-bold text-white mb-6">Our Rebate System</h1>
+          <h1 className="text-3xl font-bold tracking-tight text-white mb-6">Our Rebate System</h1>
           
           {/* Login Placeholder - Only visible when NOT logged in */}
           {!isAuthenticated && (
-            <div className="bg-[#1A2230] rounded-[10px] p-8 md:p-12 border border-white/5 shadow-xl mb-6">
+            <div className="bg-[#1A2230] rounded-xl p-8 md:p-12 border border-white/5 shadow-xl mb-6">
               <div className="flex flex-col items-center justify-center text-center space-y-6">
-                <p className="text-white text-xl md:text-2xl font-bold">Log In to View Your Rebate Info</p>
+                <p className="text-white text-xl md:text-2xl font-black">Log In to View Your Rebate Info</p>
                 <Button 
                   onClick={() => navigate('/login')}
                   className="bg-[#e6c252] hover:bg-[#ffd65c] text-[#3c1100] font-black text-base md:text-lg px-8 py-3 rounded-xl shadow-[0_0_15px_-3px_rgba(230,194,82,0.4)] transition-all hover:scale-105"
@@ -130,7 +130,7 @@ export function Rebate() {
 
           {/* Claimable Rebate Card - Only visible when logged in */}
           {isAuthenticated && (
-            <div className="bg-[#1a2230] rounded-[10px] p-5 border border-white/5 shadow-xl flex items-center justify-between mb-6">
+            <div className="bg-[#1a2230] rounded-xl p-5 border border-white/5 shadow-xl flex items-center justify-between mb-6">
               <div>
                 <span className="text-gray-300 text-sm mb-1 block">Claimable Rebate</span>
                 <div className="flex items-center">
@@ -148,16 +148,16 @@ export function Rebate() {
         {/* My Rebate & Sales - Only visible when logged in */}
         {isAuthenticated && (
           <div className="mb-8">
-            <h2 className="text-xl md:text-2xl font-bold text-white mb-4">My Rebate & Sales</h2>
+            <h2 className="text-2xl font-black text-white mb-4">My Rebate & Sales</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="bg-[#1a2230] border border-white/5 rounded-[10px] p-6 shadow-xl">
+              <div className="bg-[#1a2230] border border-white/5 rounded-xl p-6 shadow-xl">
                 <p className="text-gray-300 text-sm mb-1">Total Lifetime Rebate</p>
                 <div className="flex items-center">
                   <span className="text-[#d4c766] text-sm mr-2">PKR</span>
                   <span className="text-[#d4c766] text-2xl font-bold">10.743</span>
                 </div>
               </div>
-              <div className="bg-[#1a2230] border border-white/5 rounded-[10px] p-6 shadow-xl">
+              <div className="bg-[#1a2230] border border-white/5 rounded-xl p-6 shadow-xl">
                 <p className="text-gray-300 text-sm mb-1">My Individual Sales</p>
                 <div className="flex items-center">
                   <span className="text-[#d4c766] text-sm mr-2">PKR</span>
@@ -172,11 +172,11 @@ export function Rebate() {
         <div className="w-full mb-8">
           {/* Membership Rebate Table - Visible for all users */}
           <div className="w-full">
-            <h2 className="text-xl md:text-2xl font-bold text-white mb-4">Membership Rebate</h2>
-            <div className="bg-[#1a2230] border border-white/5 rounded-[10px] p-4 md:p-6 shadow-xl overflow-x-auto w-full">
+            <h2 className="text-2xl font-black text-white mb-4">Membership Rebate</h2>
+            <div className="bg-[#1a2230] border border-white/5 rounded-xl p-4 md:p-6 shadow-xl overflow-x-auto w-full">
               <div className="min-w-full">
                 {/* Table Header */}
-                <div className="grid grid-cols-9 gap-0 mb-0 border-b border-white/10 rounded-[10px]">
+                <div className="grid grid-cols-9 gap-0 mb-0 border-b border-white/10 rounded-xl">
                   <div className="text-white font-bold text-sm md:text-base p-3 bg-[#0f151f]">Membership Rebate</div>
                   <div className="text-white font-bold text-sm md:text-base p-3 text-center bg-[#0f151f]">Normal</div>
                   <div className="text-[#e6c252] font-bold text-sm md:text-base p-3 text-center bg-[#0f151f]">Bronze</div>
@@ -229,9 +229,9 @@ export function Rebate() {
             <div className="grid grid-cols-1 lg:grid-cols-[1fr_0.6fr] gap-8">
               {/* Left Column - Guaranteed Rebate Content */}
               <div>
-                <h2 className="text-xl md:text-2xl font-bold text-white mb-4">Guaranteed Rebate</h2>
+                <h2 className="text-2xl font-black text-white mb-4">Guaranteed Rebate</h2>
                 
-                <div className="bg-[#1a2230] border border-white/5 rounded-[10px] p-8 shadow-xl">
+                <div className="bg-[#1a2230] border border-white/5 rounded-xl p-8 shadow-xl">
                   <div className="flex flex-col gap-4">
                     <Accordion type="single" collapsible defaultValue="Slots" className="w-full">
                       {rebateCategories.map((cat, idx) => {

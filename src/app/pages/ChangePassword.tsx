@@ -92,7 +92,7 @@ export function ChangePassword() {
         <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="bg-[#1a2230] rounded-[16px] shadow-xl border border-white/5 overflow-hidden"
+            className="bg-[#1a2230] rounded-2xl shadow-xl border border-white/5 overflow-hidden"
         >
             {/* Title inside card (match Profile style) */}
             <div className="flex items-center justify-center gap-3 p-6 pb-4">

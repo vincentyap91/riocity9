@@ -79,7 +79,7 @@ export function HistoryRecord() {
 
         {/* Mobile/Tablet: Horizontal Scrollable Sidebar */}
         <div className="lg:hidden mb-6">
-          <div className="w-full bg-[#1a2230] rounded-[16px] border border-white/5 p-3 overflow-x-auto no-scrollbar">
+          <div className="w-full bg-[#1a2230] rounded-2xl border border-white/5 p-3 overflow-x-auto no-scrollbar">
             <div className="flex items-center gap-3 min-w-max">
               {SIDEBAR_ITEMS.map((item) => (
                 <button
@@ -92,7 +92,7 @@ export function HistoryRecord() {
                   }}
                   className={`px-5 py-3 rounded-xl text-sm font-bold whitespace-nowrap transition-all flex items-center gap-3 group shrink-0 ${
                     activeSidebarTab === item.id
-                      ? 'bg-emerald-500 text-black shadow-[0_0_20px_rgba(16,185,129,0.3)]'
+                      ? 'bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 text-black shadow-lg'
                       : 'text-gray-400 hover:text-white hover:bg-white/5'
                   }`}
                 >
@@ -109,7 +109,7 @@ export function HistoryRecord() {
         <div className="flex flex-col lg:flex-row gap-6 items-start">
           
           {/* Desktop: Vertical Sidebar */}
-          <div className="hidden lg:flex w-[280px] bg-[#1a2230] rounded-[16px] border border-white/5 p-4 flex-col gap-2 shrink-0">
+          <div className="hidden lg:flex w-[280px] bg-[#1a2230] rounded-2xl border border-white/5 p-4 flex-col gap-2 shrink-0">
             {SIDEBAR_ITEMS.map((item) => (
               <button
                 key={item.id}
@@ -121,7 +121,7 @@ export function HistoryRecord() {
                 }}
                 className={`w-full px-5 py-4 rounded-xl text-sm font-bold text-left transition-all flex items-center gap-4 group ${
                   activeSidebarTab === item.id
-                    ? 'bg-emerald-500 text-black shadow-[0_0_20px_rgba(16,185,129,0.3)]'
+                    ? 'bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 text-black shadow-lg'
                     : 'text-gray-400 hover:text-white hover:bg-white/5'
                 }`}
               >
@@ -134,7 +134,7 @@ export function HistoryRecord() {
           </div>
 
           {/* Main Content Area */}
-          <div className="flex-1 w-full bg-[#1a2230] rounded-[16px] border border-white/5 p-6 flex flex-col">
+          <div className="flex-1 w-full bg-[#1a2230] rounded-2xl border border-white/5 p-6 flex flex-col">
             {/* Title inside card (match Profile behavior) */}
             <div className="flex items-center justify-start gap-3 pb-4">
               <div className="h-10 w-10 rounded-xl bg-black/25 border border-white/10 flex items-center justify-center">
@@ -146,27 +146,29 @@ export function HistoryRecord() {
             {/* Top Controls: Tabs */}
             <div className="flex flex-col md:flex-row items-center justify-start gap-6 mb-6">
               {/* Deposits/Withdrawals Tabs */}
-              <div className="w-full max-w-[320px] flex bg-[#0f151f] p-1 rounded-xl border border-white/5">
-                <button
-                  onClick={() => setActiveTypeTab('deposits')}
-                  className={`flex-1 h-10 rounded-lg text-xs font-bold transition-all ${
-                    activeTypeTab === 'deposits'
-                      ? 'bg-emerald-500 text-black shadow-lg'
-                      : 'text-gray-400 hover:text-white hover:bg-white/5'
-                  }`}
-                >
-                  {t("deposit")}
-                </button>
-                <button
-                  onClick={() => setActiveTypeTab('withdrawals')}
-                  className={`flex-1 h-10 rounded-lg text-xs font-bold transition-all ${
-                    activeTypeTab === 'withdrawals'
-                      ? 'bg-emerald-500 text-black shadow-lg'
-                      : 'text-gray-400 hover:text-white hover:bg-white/5'
-                  }`}
-                >
-                  {t("withdrawals")}
-                </button>
+              <div className="flex justify-center">
+                <div className="flex bg-[#0f151f] p-1 rounded-xl border border-white/5 w-full max-w-[313px]">
+                  <button
+                    onClick={() => setActiveTypeTab('deposits')}
+                    className={`flex-1 px-8 py-3 rounded-lg text-sm font-bold transition-all ${
+                      activeTypeTab === 'deposits'
+                        ? 'bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 text-black shadow-lg'
+                        : 'text-gray-400 hover:text-white'
+                    }`}
+                  >
+                    {t("deposit")}
+                  </button>
+                  <button
+                    onClick={() => setActiveTypeTab('withdrawals')}
+                    className={`flex-1 px-8 py-3 rounded-lg text-sm font-bold transition-all ${
+                      activeTypeTab === 'withdrawals'
+                        ? 'bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 text-black shadow-lg'
+                        : 'text-gray-400 hover:text-white'
+                    }`}
+                  >
+                    {t("withdrawals")}
+                  </button>
+                </div>
               </div>
             </div>
 
@@ -231,7 +233,7 @@ export function HistoryRecord() {
                         <td className="px-6 py-5">
                           <div className="flex flex-col gap-1">
                             <span className="text-sm font-bold text-white group-hover:text-emerald-400 transition-colors">{row.date}</span>
-                            <span className="text-[10px] font-mono text-gray-500">{row.id}</span>
+                            <span className="text-xs font-mono text-gray-500">{row.id}</span>
                           </div>
                         </td>
                         <td className="px-6 py-5">
@@ -246,7 +248,7 @@ export function HistoryRecord() {
                         </td>
                         <td className="px-6 py-5">
                           <div className="flex justify-center">
-                            <span className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest border ${
+                            <span className={`px-3 py-1 rounded-full text-xs font-black uppercase tracking-widest border ${
                               row.status === 'Approved' ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-500' :
                               row.status === 'Pending' ? 'bg-yellow-500/10 border-yellow-500/20 text-yellow-500' :
                               'bg-red-500/10 border-red-500/20 text-red-500'

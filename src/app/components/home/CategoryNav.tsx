@@ -84,7 +84,7 @@ export function CategoryNav() {
                                         }`}
                                     >
                                         <cat.icon className={`w-4 h-4 ${cat.color || ''}`} />
-                                        <span className="text-sm font-bold tracking-wide font-[Poppins]">{t(cat.labelKey as any)}</span>
+                                        <span className="text-sm font-bold tracking-wide font-apple">{t(cat.labelKey as any)}</span>
                                         <ChevronDown className="w-3 h-3 ml-1 opacity-70" />
                                     </div>
                                 </DropdownMenuTrigger>
@@ -115,7 +115,7 @@ export function CategoryNav() {
                             }`}
                         >
                             <cat.icon className={`w-4 h-4 ${cat.color || ''} ${isActive ? 'fill-current' : ''}`} />
-                            <span className="text-sm font-bold tracking-wide font-[Poppins]">{t(cat.labelKey as any)}</span>
+                            <span className="text-sm font-bold tracking-wide font-apple">{t(cat.labelKey as any)}</span>
                         </Link>
                     )
                 })}

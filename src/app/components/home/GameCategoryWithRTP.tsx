@@ -162,7 +162,7 @@ export function GameCategoryWithRTP() {
                   <img src={game.image} className="absolute inset-0 w-full h-full object-cover opacity-50 mix-blend-overlay group-hover:scale-110 transition-transform duration-700" />
                   
                   {/* Provider Logo Simulation */}
-                  <div className="z-10 text-center font-black text-white italic drop-shadow-md text-[10px] md:text-base uppercase tracking-tighter opacity-80 group-hover:opacity-100 transition-opacity leading-tight">
+                  <div className="z-10 text-center font-black text-white drop-shadow-md text-[10px] md:text-base uppercase tracking-tighter opacity-80 group-hover:opacity-100 transition-opacity leading-tight">
                     {game.providerLogo}
                   </div>
               </div>

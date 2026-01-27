@@ -89,7 +89,7 @@ export function Membership() {
         
         {/* Title Section */}
         <div className="mb-8">
-          <h1 className="text-3xl md:text-4xl font-bold text-white mb-6">Our Membership Program</h1>
+          <h1 className="text-4xl font-bold tracking-tight text-white mb-6">Our Membership Program</h1>
         </div>
 
         {/* Membership Levels */}
@@ -111,7 +111,7 @@ export function Membership() {
                 </div>
                 <h4 className="text-white font-bold text-xs md:text-sm mb-1 md:mb-2">{level.name}</h4>
                 {level.claimable && (
-                  <button className="w-full bg-gradient-to-r from-[#f1c24f] to-[#d59b25] text-[#5c3a00] px-2 md:px-4 py-1 md:py-2 rounded-lg font-bold text-[10px] md:text-xs hover:brightness-110 transition-all shadow-[0_4px_15px_rgba(212,165,33,0.35)]">
+                  <button className="w-full bg-gradient-to-r from-[#f1c24f] to-[#d59b25] text-[#5c3a00] px-2 md:px-4 py-1 md:py-2 rounded-lg font-bold text-xs hover:brightness-110 transition-all shadow-[0_4px_15px_rgba(212,165,33,0.35)]">
                     Claim
                   </button>
                 )}
@@ -125,7 +125,7 @@ export function Membership() {
           
           {/* Membership Benefits */}
           <div>
-            <h2 className="text-xl md:text-2xl font-bold text-white mb-4">Membership Benefits</h2>
+            <h2 className="text-2xl font-black text-white mb-4">Membership Benefits</h2>
             <div className="bg-[#1a2230] border border-white/5 rounded-[16px] p-6 shadow-xl">
               <div className="space-y-4">
                 {membershipBenefits.map((benefit, idx) => (
@@ -140,7 +140,7 @@ export function Membership() {
 
           {/* Member Rebates */}
           <div>
-            <h2 className="text-xl md:text-2xl font-bold text-white mb-4">Member Rebates</h2>
+            <h2 className="text-2xl font-black text-white mb-4">Member Rebates</h2>
             <div className="bg-[#1a2230] border border-white/5 rounded-[16px] p-6 shadow-xl">
               <div className="space-y-4">
                 {memberRebates.map((rebate, idx) => (
@@ -159,7 +159,7 @@ export function Membership() {
           
           {/* Monthly Level Upgrade Requirement */}
           <div>
-            <h2 className="text-xl md:text-2xl font-bold text-white mb-4">Monthly Level Upgrade Requirement</h2>
+            <h2 className="text-2xl font-black text-white mb-4">Monthly Level Upgrade Requirement</h2>
             <div className="bg-[#1a2230] border border-white/5 rounded-[16px] p-6 shadow-xl">
               <div className="flex justify-between items-center">
                 <span className="text-gray-300 text-sm">Progressive Deposit</span>
@@ -170,7 +170,7 @@ export function Membership() {
 
           {/* Monthly Level Retention Requirement */}
           <div>
-            <h2 className="text-xl md:text-2xl font-bold text-white mb-4">Monthly Level Retention Requirement</h2>
+            <h2 className="text-2xl font-black text-white mb-4">Monthly Level Retention Requirement</h2>
             <div className="bg-[#1a2230] border border-white/5 rounded-[16px] p-6 shadow-xl">
               <div className="flex justify-between items-center">
                 <span className="text-gray-300 text-sm">Past 3 Months Accumulated Deposit</span>
@@ -182,7 +182,7 @@ export function Membership() {
 
         {/* Membership Renewal */}
         <div className="mt-8">
-          <h2 className="text-xl md:text-2xl font-bold text-white mb-4">Membership Renewal</h2>
+          <h2 className="text-2xl font-black text-white mb-4">Membership Renewal</h2>
           <div className="bg-[#1a2230] border border-white/5 rounded-[16px] p-6 shadow-xl">
             <div className="flex justify-between items-center">
               <span className="text-gray-300 text-sm">Membership Renewal</span>

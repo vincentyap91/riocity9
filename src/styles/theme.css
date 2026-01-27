@@ -145,6 +145,9 @@
 
   body {
     @apply bg-background text-foreground;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    letter-spacing: -0.011em;
+    line-height: 1.47059;
     /* Premium Radial Gradient: Visible Emerald Green Spotlight */
     /* Mobile view: gradient at 10% from left */
     background: radial-gradient(circle at 10% 0%, #013b4b 0%, #02040a 10%);
@@ -195,19 +198,22 @@
   label {
     font-size: var(--text-base);
     font-weight: var(--font-weight-medium);
-    line-height: 1.5;
+    line-height: 1.47059;
+    letter-spacing: -0.011em;
   }
 
   button {
     font-size: var(--text-base);
     font-weight: var(--font-weight-medium);
-    line-height: 1.5;
+    line-height: 1.47059;
+    letter-spacing: -0.011em;
   }
 
   input {
     font-size: var(--text-base);
     font-weight: var(--font-weight-normal);
-    line-height: 1.5;
+    line-height: 1.47059;
+    letter-spacing: -0.011em;
   }
 
   a,

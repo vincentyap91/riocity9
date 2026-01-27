@@ -239,11 +239,11 @@ export function Deposit() {
                 {/* Search & Filters */}
                 <div className="space-y-3">
                     <div className="relative">
-                        <Search className="absolute left-4 top-3.5 w-5 h-5 text-gray-500" />
+                        <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
                         <input 
                             type="text" 
                             placeholder={t("search")} 
-                            className="w-full bg-[#0f151f] border border-white/10 rounded-xl py-3 pl-12 pr-4 text-white focus:outline-none focus:border-emerald-500 transition-colors placeholder:text-gray-600"
+                            className="w-full h-12 bg-[#0f151f] border border-white/10 rounded-xl pl-12 pr-4 text-white focus:outline-none focus:border-emerald-500 transition-colors placeholder:text-gray-500"
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(sanitizeTextInput(e.target.value))}
                         />
@@ -300,14 +300,14 @@ export function Deposit() {
                                     <div className="text-left">
                                         <div className="flex items-center gap-2">
                                             <span className="font-bold text-white text-sm">{method.name}</span>
-                                            <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded ${method.badgeColor}`}>
+                                            <span className={`text-xs font-bold px-1.5 py-0.5 rounded ${method.badgeColor}`}>
                                                 {method.category}
                                             </span>
                                         </div>
-                                        <div className="text-[10px] text-gray-500 mt-0.5">
+                                        <div className="text-xs text-gray-500 mt-0.5">
                                             {t("processTime")} <span className="text-gray-300">{method.processTime}</span>
                                         </div>
-                                        <div className="text-[10px] text-gray-600 font-mono">
+                                        <div className="text-xs text-gray-600 font-mono">
                                             {method.limit}
                                         </div>
                                     </div>
@@ -323,19 +323,19 @@ export function Deposit() {
                 {/* Footer Info & Action */}
                 <div className="pt-2 space-y-4">
                     {/* <div className="flex items-center justify-between px-2 py-3 border-t border-white/5">
-                        <div className="flex items-center gap-1.5 text-[10px] text-emerald-500 font-bold">
+                        <div className="flex items-center gap-1.5 text-xs text-emerald-500 font-bold">
                             <ShieldCheck className="w-3 h-3" />
                             Secure
                         </div>
-                        <div className="flex items-center gap-1.5 text-[10px] text-emerald-500 font-bold">
+                        <div className="flex items-center gap-1.5 text-xs text-emerald-500 font-bold">
                             <Zap className="w-3 h-3" />
                             Fast Processing
                         </div>
-                        <div className="flex items-center gap-1.5 text-[10px] text-gray-400 font-bold">
+                        <div className="flex items-center gap-1.5 text-xs text-gray-400 font-bold">
                             <Headphones className="w-3 h-3" />
                             24/7 Support
                         </div>
-                        <div className="flex items-center gap-1.5 text-[10px] text-gray-400 font-bold">
+                        <div className="flex items-center gap-1.5 text-xs text-gray-400 font-bold">
                             <DollarSign className="w-3 h-3" />
                             No Fees
                         </div>
@@ -344,7 +344,7 @@ export function Deposit() {
                     <Button 
                         onClick={handleContinue}
                         disabled={!selectedMethodId}
-                        className="w-full h-12 bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 hover:brightness-110 text-black font-black text-base rounded-xl shadow-[0_5px_15px_rgba(16,185,129,0.35)] transition-all hover:translate-y-[-1px] disabled:opacity-50 disabled:hover:translate-y-0 border-none"
+                        className="w-full h-12 bg-[#00bc7d] hover:bg-[#00a870] text-black font-black text-base rounded-xl shadow-[0_0_20px_-5px_rgba(16,185,129,0.6)] transition-all hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed border-none"
                     >
                         {t("continueToDeposit")} 
                         <ChevronRight className="w-4 h-4 ml-1" />
@@ -364,7 +364,7 @@ export function Deposit() {
                         </div>
                         <div>
                             <div className="text-sm font-bold text-gray-400">{t("selectedMethod")}</div>
-                            <div className="text-lg font-bold text-white">{selectedMethod.name}</div>
+                            <div className="text-lg font-black text-white">{selectedMethod.name}</div>
                         </div>
                     </div>
                     <Button variant="ghost" onClick={() => setStep(1)} className="text-emerald-500 hover:text-emerald-400 hover:bg-emerald-500/10 h-auto py-1 px-3 text-base font-bold uppercase tracking-wider">
@@ -404,17 +404,17 @@ export function Deposit() {
                   {/* Pills */}
                   <div className="grid grid-cols-3 gap-3">
                      <button onClick={() => setAmount('30')} className="relative border border-white/10 hover:border-emerald-500/50 hover:bg-emerald-500/10 rounded-xl p-3 flex flex-col items-center gap-1 transition-all group bg-[#1a2230]">
-                         <span className="absolute -top-2.5 left-1/2 -translate-x-1/2 bg-[#0f151f] text-blue-400 text-[10px] font-bold px-2 py-0.5 rounded border border-blue-500/30">Min</span>
+                         <span className="absolute -top-2.5 left-1/2 -translate-x-1/2 bg-[#0f151f] text-blue-400 text-xs font-bold px-2 py-0.5 rounded border border-blue-500/30">Min</span>
                          <span className="text-xs text-gray-500 group-hover:text-emerald-400">MYR</span>
                          <span className="font-bold text-white">30</span>
                      </button>
                      <button onClick={() => setAmount('100')} className="relative border-2 border-white/80 hover:border-emerald-400 bg-white/5 rounded-xl p-3 flex flex-col items-center gap-1 transition-all group shadow-[0_0_15px_-5px_rgba(255,255,255,0.2)]">
-                         <span className="absolute -top-2.5 left-1/2 -translate-x-1/2 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-[10px] font-bold px-2 py-0.5 rounded shadow-lg">Hot</span>
+                         <span className="absolute -top-2.5 left-1/2 -translate-x-1/2 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs font-bold px-2 py-0.5 rounded shadow-lg">Hot</span>
                          <span className="text-xs text-gray-400 group-hover:text-emerald-400">MYR</span>
                          <span className="font-bold text-white text-lg">100</span>
                      </button>
                      <button onClick={() => setAmount('1000')} className="relative border border-white/10 hover:border-emerald-500/50 hover:bg-emerald-500/10 rounded-xl p-3 flex flex-col items-center gap-1 transition-all group bg-[#1a2230]">
-                         <span className="absolute -top-2.5 left-1/2 -translate-x-1/2 bg-[#0f151f] text-blue-400 text-[10px] font-bold px-2 py-0.5 rounded border border-blue-500/30">Max</span>
+                         <span className="absolute -top-2.5 left-1/2 -translate-x-1/2 bg-[#0f151f] text-blue-400 text-xs font-bold px-2 py-0.5 rounded border border-blue-500/30">Max</span>
                          <span className="text-xs text-gray-500 group-hover:text-emerald-400">MYR</span>
                          <span className="font-bold text-white">1,000</span>
                      </button>
@@ -520,7 +520,7 @@ export function Deposit() {
                         {t("back")}
                     </Button>
                     <Button 
-                        className="h-12 bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 hover:brightness-110 text-black font-black rounded-xl shadow-[0_5px_15px_rgba(16,185,129,0.35)] text-base border-none"
+                        className="h-12 bg-[#00bc7d] hover:bg-[#00a870] text-black font-black rounded-xl shadow-[0_0_20px_-5px_rgba(16,185,129,0.6)] text-base transition-all hover:scale-[1.02] border-none"
                     >
                         {t("submit")}
                     </Button>

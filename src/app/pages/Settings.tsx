@@ -41,7 +41,7 @@ export function Settings() {
       <div className="container mx-auto px-4 pt-4 pb-32 max-w-[640px]">
         
         {/* User Profile Header Card - Mobile Version (Follows Screenshot) */}
-        <div className="md:hidden bg-gradient-to-b from-[#1a2230] to-[#131b29] rounded-[24px] p-5 mb-3 shadow-xl border border-white/5 relative overflow-hidden">
+        <div className="md:hidden bg-gradient-to-b from-[#1a2230] to-[#131b29] rounded-2xl p-5 mb-3 shadow-xl border border-white/5 relative overflow-hidden">
           <div className="flex flex-row gap-5 items-center">
             {/* Left side: Avatar/Badge */}
             <div className="relative shrink-0">
@@ -56,11 +56,11 @@ export function Settings() {
 
             {/* Right side: Info */}
             <div className="flex-1 flex flex-col pt-1">
-              <h2 className="text-[20px] font-black text-white leading-none mb-2.5">{user?.displayName || user?.email?.split('@')[0] || 'testvin'}</h2>
+              <h2 className="text-xl font-black text-white leading-none mb-2.5">{user?.displayName || user?.email?.split('@')[0] || 'testvin'}</h2>
               
               {/* ID Pill */}
               <div className="flex items-center gap-2 bg-[#0f151f] px-4 py-2 rounded-full border border-white/10 self-start">
-                 <span className="text-[11px] text-gray-400 font-mono tracking-wide leading-none">880123456789</span>
+                 <span className="text-xs text-gray-400 font-mono tracking-wide leading-none">880123456789</span>
                  <button 
                    onClick={async () => {
                      try {
@@ -81,7 +81,7 @@ export function Settings() {
           {/* Status Row */}
           <div className="mt-3 flex items-center justify-between leading-none">
             <span className="text-sm font-bold text-[#f28b0c]">{t("bronze")}</span>
-            <div className="text-[11px] text-gray-400 font-medium flex items-center gap-1">
+            <div className="text-xs text-gray-400 font-medium flex items-center gap-1">
               {t("depositToBecome")} <span className="text-[#efbb4b] font-black">3,682</span> {t("toBecome")} <span className="text-white font-black">{t("silver")}!</span>
             </div>
           </div>
@@ -93,7 +93,7 @@ export function Settings() {
         </div>
 
         {/* User Profile Header Card - Desktop Version */}
-        <div className="hidden md:block bg-gradient-to-b from-[#1a2230] to-[#131b29] rounded-[16px] p-6 mb-3 shadow-xl border border-white/5 relative overflow-hidden">
+        <div className="hidden md:block bg-gradient-to-b from-[#1a2230] to-[#131b29] rounded-2xl p-6 mb-3 shadow-xl border border-white/5 relative overflow-hidden">
           <div className="flex flex-col sm:flex-row gap-6 items-start">
             {/* Avatar Section */}
             <div className="relative shrink-0">
@@ -136,7 +136,7 @@ export function Settings() {
         </div>
 
         {/* Balance Card */}
-        <div className="bg-[#1a2230] border border-white/5 rounded-[16px] p-6 mb-4 flex items-center justify-between gap-4 shadow-lg h-[110px]">
+        <div className="bg-[#1a2230] border border-white/5 rounded-2xl p-6 mb-4 flex items-center justify-between gap-4 shadow-lg h-[110px]">
             <div className="flex flex-col justify-center h-full">
                 <div className="text-sm font-bold text-[#00bc7d] mb-1 uppercase tracking-wider">{t("totalBalance")}</div>
                 <div className="flex items-start text-white">
@@ -146,14 +146,14 @@ export function Settings() {
             </div>
             <Button 
                 onClick={() => navigate('/deposit')} 
-                className="bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 hover:brightness-110 text-black font-black text-base rounded-[14px] px-8 h-12 shadow-[0_0_20px_rgba(16,185,129,0.3)] transition-all hover:scale-105 border-none"
+                className="bg-[#00bc7d] hover:bg-[#00a870] text-black font-black text-base rounded-xl px-8 h-12 shadow-[0_0_20px_-5px_rgba(16,185,129,0.6)] transition-all hover:scale-[1.02] border-none"
             >
                 {t("deposit")}
             </Button>
         </div>
 
         {/* Menu List */}
-        <div className="bg-[#1a2230] rounded-[16px] overflow-hidden shadow-lg border border-white/5">
+        <div className="bg-[#1a2230] rounded-2xl overflow-hidden shadow-lg border border-white/5">
             <div className="flex flex-col">
                 {menuItems.map((item, index) => (
                     <button 
@@ -168,7 +168,7 @@ export function Settings() {
                         }}
                     >
                         <div className="flex items-center gap-4">
-                            <div className="w-10 h-10 rounded-[10px] bg-black/40 flex items-center justify-center text-[#99A1AF] group-hover:text-emerald-400 group-hover:bg-emerald-500/10 transition-all">
+                            <div className="w-10 h-10 rounded-xl bg-black/40 flex items-center justify-center text-[#99A1AF] group-hover:text-emerald-400 group-hover:bg-emerald-500/10 transition-all">
                                 <item.icon className="w-5 h-5" />
                             </div>
                             <span className="font-bold text-[#e5e7eb] group-hover:text-white transition-colors text-base">{t(item.labelKey as any)}</span>
@@ -187,7 +187,7 @@ export function Settings() {
                     logout();
                     navigate('/');
                 }}
-                className="gap-2 border-red-500/20 bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white w-48 h-12 rounded-[14px] font-bold transition-all"
+                className="gap-2 border-red-500/20 bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white w-48 h-12 rounded-xl font-bold transition-all"
             >
                 <LogOut className="w-4 h-4" />
                 {t("logout")}

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ArrowLeft, User, Smartphone, Building2, Plus, CheckCircle2, Clock, Trash2, ShieldCheck, CreditCard } from 'lucide-react';
+import { ArrowLeft, User, Smartphone, Building2, Plus, CheckCircle2, Clock, Trash2, ShieldCheck, CreditCard, Loader2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { useLanguage } from '../contexts/LanguageContext';
@@ -43,6 +43,8 @@ export function Profile() {
   const [newAccountProvider, setNewAccountProvider] = useState('');
   const [contactCountryCode, setContactCountryCode] = useState('+60'); // Default to Malaysia
   const [ewalletCountryCode, setEwalletCountryCode] = useState('+60'); // Default to Malaysia for e-wallet
+  const [isSaving, setIsSaving] = useState(false);
+  const [isAddingAccount, setIsAddingAccount] = useState(false);
   
   // Form state for Personal tab
   const [formData, setFormData] = useState({
@@ -84,9 +86,19 @@ export function Profile() {
     setFormData(prev => ({ ...prev, [field]: sanitized }));
   };
 
-  const handleSave = () => {
-    // TODO: Implement save functionality
-    alert('Profile saved successfully!');
+  const handleSave = async () => {
+    setIsSaving(true);
+    try {
+      // TODO: Implement save functionality
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      alert('Profile saved successfully!');
+    } catch (error) {
+      console.error('Save error:', error);
+      alert('Failed to save profile. Please try again.');
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   const openAddDialog = (type: 'ewallet' | 'bank') => {
@@ -98,36 +110,49 @@ export function Profile() {
     setIsAddDialogOpen(true);
   };
 
-  const handleAddAccount = () => {
+  const handleAddAccount = async () => {
     if (!newAccountName.trim() || !newAccountNumber.trim()) {
       return;
     }
 
-    if (addDialogType === 'ewallet') {
-      setEWalletAccounts(prev => [
-        ...prev,
-        {
-          id: `ewallet-${Date.now()}`,
-          number: newAccountNumber.trim(),
-          holder: newAccountName.trim(),
-          verified: false,
-          provider: newAccountProvider.trim() || 'E-wallet',
-        },
-      ]);
-    } else {
-      setBankAccounts(prev => [
-        ...prev,
-        {
-          id: `bank-${Date.now()}`,
-          accountNo: newAccountNumber.trim(),
-          holder: newAccountName.trim(),
-          bankName: newAccountProvider.trim() || 'Bank',
-          verified: true,
-        },
-      ]);
-    }
+    setIsAddingAccount(true);
+    try {
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 800));
 
-    setIsAddDialogOpen(false);
+      if (addDialogType === 'ewallet') {
+        setEWalletAccounts(prev => [
+          ...prev,
+          {
+            id: `ewallet-${Date.now()}`,
+            number: newAccountNumber.trim(),
+            holder: newAccountName.trim(),
+            verified: false,
+            provider: newAccountProvider.trim() || 'E-wallet',
+          },
+        ]);
+      } else {
+        setBankAccounts(prev => [
+          ...prev,
+          {
+            id: `bank-${Date.now()}`,
+            accountNo: newAccountNumber.trim(),
+            holder: newAccountName.trim(),
+            bankName: newAccountProvider.trim() || 'Bank',
+            verified: true,
+          },
+        ]);
+      }
+      setIsAddDialogOpen(false);
+      setNewAccountName('');
+      setNewAccountNumber('');
+      setNewAccountProvider('');
+    } catch (error) {
+      console.error('Add account error:', error);
+      alert('Failed to add account. Please try again.');
+    } finally {
+      setIsAddingAccount(false);
+    }
   };
 
   const handleDeleteEwallet = (id: string) => {
@@ -156,7 +181,7 @@ export function Profile() {
         </div>
 
         {/* Main Content Card (centered, large, rounded like screenshot) */}
-        <div className="bg-[#1a2230] rounded-[16px] shadow-xl border border-white/5 overflow-hidden">
+        <div className="bg-[#1a2230] rounded-2xl shadow-xl border border-white/5 overflow-hidden">
           {/* Title inside card (match screenshot) */}
           <div className="flex items-center justify-center gap-3 p-6 pb-4">
             <div className="h-10 w-10 rounded-xl bg-black/25 border border-white/10 flex items-center justify-center">
@@ -166,27 +191,31 @@ export function Profile() {
           </div>
 
           {/* Tabs (pill, centered) */}
-          <div className="flex justify-center px-6 pb-4">
-            <div className="w-full max-w-[420px] flex bg-[#0f151f] p-1 rounded-xl border border-white/5">
+          <div className="flex justify-center">
+            <div className="flex bg-[#0f151f] p-1 rounded-xl border border-white/5 w-full max-w-[330px]">
               <button
                 onClick={() => setActiveTab('personal')}
-                className={`flex-1 h-10 rounded-lg text-sm font-bold transition-all ${
+                className={`flex-1 px-8 py-3 rounded-lg text-sm font-bold transition-all ${
                   activeTab === 'personal'
-                    ? 'bg-emerald-500 text-black shadow-lg'
-                    : 'text-gray-400 hover:text-white hover:bg-white/5'
+                    ? 'bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 text-black shadow-lg'
+                    : 'text-gray-400 hover:text-white'
                 }`}
               >
-                Personal
+                <span className="flex items-center justify-center gap-2">
+                  Personal
+                </span>
               </button>
               <button
                 onClick={() => setActiveTab('address')}
-                className={`flex-1 h-10 rounded-lg text-sm font-bold transition-all ${
+                className={`flex-1 px-8 py-3 rounded-lg text-sm font-bold transition-all ${
                   activeTab === 'address'
-                    ? 'bg-emerald-500 text-black shadow-lg'
-                    : 'text-gray-400 hover:text-white hover:bg-white/5'
+                    ? 'bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 text-black shadow-lg'
+                    : 'text-gray-400 hover:text-white'
                 }`}
               >
-                Bank / E-wallet
+                <span className="flex items-center justify-center gap-2">
+                  Bank / E-wallet
+                </span>
               </button>
             </div>
           </div>
@@ -349,12 +378,12 @@ export function Profile() {
                               {account.verified ? (
                                 <div className="flex items-center gap-1 bg-emerald-500/10 border border-emerald-500/20 rounded-full px-2 py-0.5">
                                   <CheckCircle2 className="w-3 h-3 text-emerald-500" />
-                                  <span className="text-[10px] font-black text-emerald-500 uppercase tracking-tighter">Verified</span>
+                                  <span className="text-xs font-black text-emerald-500 uppercase tracking-tighter">Verified</span>
                                 </div>
                               ) : (
                                 <div className="flex items-center gap-1 bg-amber-500/10 border border-amber-500/20 rounded-full px-2 py-0.5">
                                   <Clock className="w-3 h-3 text-amber-500" />
-                                  <span className="text-[10px] font-black text-amber-500 uppercase tracking-tighter">Pending</span>
+                                  <span className="text-xs font-black text-amber-500 uppercase tracking-tighter">Pending</span>
                                 </div>
                               )}
                             </div>
@@ -463,9 +492,17 @@ export function Profile() {
               <div className="flex justify-center mt-8 pt-6 border-t border-white/10">
                 <Button
                   onClick={handleSave}
-                  className="bg-emerald-500 hover:bg-emerald-400 text-black font-bold h-12 px-12 rounded-xl text-base shadow-[0_0_15px_-3px_rgba(16,185,129,0.4)] transition-all"
+                  disabled={isSaving}
+                  className="bg-emerald-500 hover:bg-emerald-400 text-black font-bold h-12 px-12 rounded-xl text-base shadow-[0_0_15px_-3px_rgba(16,185,129,0.4)] transition-all hover:scale-[1.02] active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  Save
+                  {isSaving ? (
+                    <div className="flex items-center gap-2">
+                      <Loader2 className="w-5 h-5 animate-spin" />
+                      <span>Saving...</span>
+                    </div>
+                  ) : (
+                    'Save'
+                  )}
                 </Button>
               </div>
             )}
@@ -490,7 +527,7 @@ export function Profile() {
                 value={newAccountName}
                 onChange={(e) => setNewAccountName(sanitizeTextInput(e.target.value))}
                 placeholder="Enter account name"
-                className="bg-white text-black h-11 rounded-xl border-transparent focus-visible:ring-emerald-500/30"
+                className="bg-white text-black h-12 rounded-xl border-transparent focus-visible:ring-emerald-500/30"
               />
             </div>
 
@@ -527,7 +564,7 @@ export function Profile() {
                   }}
                   placeholder="Enter account number"
                   type="text"
-                  className="bg-white text-black h-11 rounded-xl border-transparent focus-visible:ring-emerald-500/30"
+                  className="bg-white text-black h-12 rounded-xl border-transparent focus-visible:ring-emerald-500/30"
                 />
               )}
             </div>
@@ -540,16 +577,24 @@ export function Profile() {
                 value={newAccountProvider}
                 onChange={(e) => setNewAccountProvider(sanitizeTextInput(e.target.value))}
                 placeholder={addDialogType === 'ewallet' ? 'e.g. Touch n Go' : 'e.g. Maybank'}
-                className="bg-white text-black h-11 rounded-xl border-transparent focus-visible:ring-emerald-500/30"
+                className="bg-white text-black h-12 rounded-xl border-transparent focus-visible:ring-emerald-500/30"
               />
             </div>
 
             <Button
               type="button"
               onClick={handleAddAccount}
-              className="w-full h-11 bg-emerald-500 hover:bg-emerald-400 text-black font-bold rounded-xl text-base"
+              disabled={isAddingAccount}
+              className="w-full h-12 bg-emerald-500 hover:bg-emerald-400 text-black font-bold rounded-xl text-base disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Save
+              {isAddingAccount ? (
+                <div className="flex items-center gap-2">
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  <span>Adding...</span>
+                </div>
+              ) : (
+                'Save'
+              )}
             </Button>
           </div>
         </DialogContent>

@@ -23,11 +23,11 @@ export function SectionHeader({ title, icon, subtitle, action, className = "" }:
           
           {/* Title & Subtitle */}
           <div className="flex flex-col justify-center">
-              <h2 className="text-lg md:text-2xl font-black italic text-white uppercase tracking-tighter leading-none transform -skew-x-6">
+              <h2 className="text-lg md:text-2xl font-black text-white uppercase tracking-tighter leading-none">
                   {title}
               </h2>
               {subtitle && (
-                <div className="mt-1 transform -skew-x-6">
+                <div className="mt-1">
                   {subtitle}
                 </div>
               )}

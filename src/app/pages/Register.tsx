@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Eye, EyeOff, Check, AlertCircle, X, Gift } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Eye, EyeOff, Check, AlertCircle, X, Gift, Loader2, RefreshCw } from 'lucide-react';
 import { motion } from 'motion/react';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
@@ -20,10 +20,28 @@ export function Register() {
   const [mobile, setMobile] = useState('');
   const [password, setPassword] = useState('');
   const [captcha, setCaptcha] = useState('');
-  const [captchaValue] = useState('3 9 0 0');
+  const [captchaValue, setCaptchaValue] = useState('');
   const [agreeTerms, setAgreeTerms] = useState(true);
   const [agreeBonus, setAgreeBonus] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
+
+  // Generate random captcha on component mount
+  useEffect(() => {
+    generateCaptcha();
+  }, []);
+
+  // Function to generate random 4-digit captcha
+  const generateCaptcha = () => {
+    const digits = [];
+    for (let i = 0; i < 4; i++) {
+      digits.push(Math.floor(Math.random() * 10));
+    }
+    // Format with spaces: "3 9 0 0"
+    const formatted = digits.join(' ');
+    setCaptchaValue(formatted);
+    // Clear the input field when captcha changes
+    setCaptcha('');
+  };
   
   // Validation errors
   const [errors, setErrors] = useState<{
@@ -140,7 +158,7 @@ export function Register() {
             >
                 <div className="flex items-center gap-2">
                     <Gift className="w-3 h-3 text-white" />
-                    <span className="text-[10px] md:text-xs font-bold text-white uppercase tracking-wider">Exclusive Bonus Offer</span>
+                    <span className="text-xs font-bold text-white uppercase tracking-wider">Exclusive Bonus Offer</span>
                 </div>
             </motion.div>
 
@@ -150,11 +168,11 @@ export function Register() {
                 transition={{ duration: 0.5, delay: 0.4 }}
                 className="relative z-10 space-y-2 mb-8 text-left"
             >
-                <h2 className="text-5xl md:text-6xl font-black text-white drop-shadow-lg leading-[0.9]">
+                <h2 className="text-4xl font-bold tracking-tight text-white drop-shadow-lg leading-tight">
                     125% UP TO <br/>
                     <span className="text-[#FFDF20]">$100</span>
                 </h2>
-                <div className="text-xl md:text-2xl font-bold text-white/90 tracking-wide mt-2">
+                <div className="text-xl md:text-2xl font-black text-white/90 tracking-wide mt-2">
                     + 180 FREE SPINS
                 </div>
                 <div className="text-sm font-medium text-white/60">
@@ -247,7 +265,7 @@ export function Register() {
                     clearError('username'); 
                   }}
                   disabled={isLoading}
-                  className={`h-11 bg-[#0f151f] rounded-xl text-white placeholder:text-gray-500 focus-visible:ring-1 transition-all pl-4 ${
+                  className={`h-12 bg-[#0f151f] rounded-xl text-white placeholder:text-gray-500 focus-visible:ring-1 transition-all pl-4 ${
                     errors.username 
                       ? 'border-red-500 border-2 focus-visible:ring-red-500' 
                       : 'border border-white/10 focus-visible:ring-emerald-500'
@@ -290,7 +308,7 @@ export function Register() {
                       clearError('mobile'); 
                     }}
                     disabled={isLoading}
-                    className={`h-11 bg-[#0f151f] rounded-xl text-white placeholder:text-gray-500 focus-visible:ring-1 flex-1 transition-all ${
+                    className={`h-12 bg-[#0f151f] rounded-xl text-white placeholder:text-gray-500 focus-visible:ring-1 flex-1 transition-all ${
                       errors.mobile 
                         ? 'border-red-500 border-2 focus-visible:ring-red-500' 
                         : 'border border-white/10 focus-visible:ring-emerald-500'
@@ -326,7 +344,7 @@ export function Register() {
                       clearError('password'); 
                     }}
                     disabled={isLoading}
-                    className={`h-11 bg-[#0f151f] rounded-xl text-white placeholder:text-gray-500 focus-visible:ring-1 pr-10 transition-all ${
+                    className={`h-12 bg-[#0f151f] rounded-xl text-white placeholder:text-gray-500 focus-visible:ring-1 pr-10 transition-all ${
                       errors.password 
                         ? 'border-red-500 border-2 focus-visible:ring-red-500' 
                         : 'border border-white/10 focus-visible:ring-emerald-500'
@@ -369,14 +387,25 @@ export function Register() {
                           clearError('captcha'); 
                         }}
                         disabled={isLoading}
-                        className={`h-11 bg-[#0f151f] rounded-xl text-white placeholder:text-gray-500 focus-visible:ring-1 transition-all ${
+                        className={`h-12 bg-[#0f151f] rounded-xl text-white placeholder:text-gray-500 focus-visible:ring-1 transition-all ${
                           errors.captcha 
                             ? 'border-red-500 border-2 focus-visible:ring-red-500' 
                             : 'border border-white/10 focus-visible:ring-emerald-500'
                         }`}
                      />
-                     <div className="h-11 px-4 bg-white/5 border border-white/10 rounded-xl flex items-center justify-center text-white text-lg font-black italic tracking-widest select-none min-w-[100px]">
-                         {captchaValue}
+                     <div className="flex gap-2">
+                       <div className="h-12 px-4 bg-white/5 border border-white/10 rounded-xl flex items-center justify-center text-white text-lg font-black italic tracking-widest select-none min-w-[100px]">
+                           {captchaValue}
+                       </div>
+                       <button
+                         type="button"
+                         onClick={generateCaptcha}
+                         disabled={isLoading}
+                         className="h-12 w-12 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-emerald-500/50 rounded-xl flex items-center justify-center text-white transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                         title="Refresh captcha"
+                       >
+                         <RefreshCw className="w-4 h-4" />
+                       </button>
                      </div>
                 </div>
                 {errors.captcha && (
@@ -441,9 +470,16 @@ export function Register() {
                 <Button 
                     type="submit"
                     disabled={isLoading}
-                    className="w-full h-12 bg-[#4f46e5] hover:bg-[#4338ca] text-white font-bold text-base rounded-xl shadow-[0px_10px_15px_-3px_rgba(97,95,255,0.2)] transition-all hover:translate-y-[-1px] disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="w-full h-12 bg-[#00bc7d] hover:bg-[#00a870] text-black font-black text-base rounded-xl shadow-[0_0_20px_-5px_rgba(16,185,129,0.6)] transition-all hover:scale-[1.02] hover:-translate-y-1 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                    {isLoading ? 'Sign Up...' : 'Sign Up'}
+                    {isLoading ? (
+                        <div className="flex items-center gap-2">
+                            <Loader2 className="w-5 h-5 animate-spin" />
+                            <span>Signing up...</span>
+                        </div>
+                    ) : (
+                        'Sign Up'
+                    )}
                 </Button>
             </motion.div>
 

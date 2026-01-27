@@ -52,14 +52,14 @@ export function Promotions() {
             >
               {/* Left Content */}
               <div className="relative z-10 flex flex-col items-start space-y-4 md:space-y-5 lg:space-y-6 w-1/2">
-                <h2 className="text-2xl md:text-[28px] lg:text-[32px] font-bold leading-[1.1] tracking-tight text-white">
+                <h2 className="text-4xl font-bold tracking-tight leading-tight text-white">
                   <span className="block">{item.title[0]}</span>
                   <span className="block">{item.title[1]}</span>
                 </h2>
                 
                 <button 
                   onClick={() => navigate(`/promotions/${item.id}`)}
-                  className="flex items-center gap-2 px-6 py-2 md:px-7 md:py-2.5 lg:px-8 lg:py-2.5 rounded-md bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 text-black font-black text-xs md:text-sm shadow-[0_4px_15px_rgba(16,185,129,0.3)] transition-all hover:brightness-110 active:scale-95"
+                  className="flex items-center gap-2 px-6 py-2 md:px-7 md:py-2.5 lg:px-8 lg:py-2.5 h-12 rounded-xl bg-[#00bc7d] hover:bg-[#00a870] text-black font-black text-xs md:text-sm shadow-[0_0_20px_-5px_rgba(16,185,129,0.6)] transition-all hover:scale-[1.02]"
                 >
                   View More <span className="text-base md:text-lg">→</span>
                 </button>

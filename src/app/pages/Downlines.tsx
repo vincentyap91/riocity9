@@ -93,13 +93,13 @@ export function Downlines() {
 
         {/* Mobile/Tablet: Horizontal Scrollable Sidebar */}
         <div className="lg:hidden mb-6">
-          <div className="w-full bg-[#1a2230] rounded-[16px] border border-white/5 p-3 overflow-x-auto no-scrollbar">
+          <div className="w-full bg-[#1a2230] rounded-2xl border border-white/5 p-3 overflow-x-auto no-scrollbar">
             <div className="flex items-center gap-3 min-w-max">
               <button
                 onClick={() => setActiveTab('summary')}
                 className={`px-5 py-3 rounded-xl text-sm font-bold whitespace-nowrap transition-all flex items-center gap-3 group shrink-0 ${
                   activeTab === 'summary'
-                    ? 'bg-emerald-500 text-black shadow-[0_0_20px_rgba(16,185,129,0.3)]'
+                    ? 'bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 text-black shadow-lg'
                     : 'text-gray-400 hover:text-white hover:bg-white/5'
                 }`}
               >
@@ -112,7 +112,7 @@ export function Downlines() {
                 onClick={() => setActiveTab('kpis')}
                 className={`px-5 py-3 rounded-xl text-sm font-bold whitespace-nowrap transition-all flex items-center gap-3 group shrink-0 ${
                   activeTab === 'kpis'
-                    ? 'bg-emerald-500 text-black shadow-[0_0_20px_rgba(16,185,129,0.3)]'
+                    ? 'bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 text-black shadow-lg'
                     : 'text-gray-400 hover:text-white hover:bg-white/5'
                 }`}
               >
@@ -128,12 +128,12 @@ export function Downlines() {
         <div className="flex flex-col lg:flex-row gap-6 items-start">
           
           {/* Desktop: Vertical Sidebar */}
-          <div className="hidden lg:flex w-[280px] bg-[#1a2230] rounded-[16px] border border-white/5 p-4 flex-col gap-2 shrink-0">
+          <div className="hidden lg:flex w-[280px] bg-[#1a2230] rounded-2xl border border-white/5 p-4 flex-col gap-2 shrink-0">
             <button
               onClick={() => setActiveTab('summary')}
               className={`w-full px-5 py-4 rounded-xl text-sm font-bold text-left transition-all flex items-center gap-4 group ${
                 activeTab === 'summary'
-                  ? 'bg-emerald-500 text-black shadow-[0_0_20px_rgba(16,185,129,0.3)]'
+                  ? 'bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 text-black shadow-lg'
                   : 'text-gray-400 hover:text-white hover:bg-white/5'
               }`}
             >
@@ -144,7 +144,7 @@ export function Downlines() {
               onClick={() => setActiveTab('kpis')}
               className={`w-full px-5 py-4 rounded-xl text-sm font-bold text-left transition-all flex items-center gap-4 group ${
                 activeTab === 'kpis'
-                  ? 'bg-emerald-500 text-black shadow-[0_0_20px_rgba(16,185,129,0.3)]'
+                  ? 'bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 text-black shadow-lg'
                   : 'text-gray-400 hover:text-white hover:bg-white/5'
               }`}
             >
@@ -154,7 +154,7 @@ export function Downlines() {
           </div>
 
           {/* Main Content Area */}
-          <div className="flex-1 w-full bg-[#1a2230] rounded-[16px] border border-white/5 p-6 flex flex-col">
+          <div className="flex-1 w-full bg-[#1a2230] rounded-2xl border border-white/5 p-6 flex flex-col">
             {/* Title */}
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center gap-3">
@@ -263,27 +263,29 @@ export function Downlines() {
                   <h3 className="text-white font-bold text-base mb-4">Downline L1 KPIs</h3>
                   
                   {/* Status Tabs */}
-                  <div className="flex gap-2 mb-4">
-                    <button
-                      onClick={() => setActiveStatusTab('active')}
-                      className={`px-6 py-3 rounded-xl text-sm font-bold transition-all ${
-                        activeStatusTab === 'active'
-                          ? 'bg-emerald-500 text-black shadow-lg'
-                          : 'bg-[#0f151f] text-white border border-white/5 hover:bg-white/5'
-                      }`}
-                    >
-                      Active Downlines
-                    </button>
-                    <button
-                      onClick={() => setActiveStatusTab('inactive')}
-                      className={`px-6 py-3 rounded-xl text-sm font-bold transition-all ${
-                        activeStatusTab === 'inactive'
-                          ? 'bg-emerald-500 text-black shadow-lg'
-                          : 'bg-[#0f151f] text-white border border-white/5 hover:bg-white/5'
-                      }`}
-                    >
-                      Inactive Downlines
-                    </button>
+                  <div className="flex justify-center mb-4">
+                    <div className="flex bg-[#0f151f] p-1 rounded-xl border border-white/5 w-full max-w-[400px]">
+                      <button
+                        onClick={() => setActiveStatusTab('active')}
+                        className={`flex-1 px-8 py-3 rounded-lg text-sm font-bold transition-all ${
+                          activeStatusTab === 'active'
+                            ? 'bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 text-black shadow-lg'
+                            : 'text-gray-400 hover:text-white'
+                        }`}
+                      >
+                        Active Downlines
+                      </button>
+                      <button
+                        onClick={() => setActiveStatusTab('inactive')}
+                        className={`flex-1 px-8 py-3 rounded-lg text-sm font-bold transition-all ${
+                          activeStatusTab === 'inactive'
+                            ? 'bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 text-black shadow-lg'
+                            : 'text-gray-400 hover:text-white'
+                        }`}
+                      >
+                        Inactive Downlines
+                      </button>
+                    </div>
                   </div>
 
                   {/* Search Bar */}

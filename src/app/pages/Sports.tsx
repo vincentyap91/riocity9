@@ -1,7 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { InsidePageHero } from '../components/shared/InsidePageHero';
-import { InsidePageHeader, PageNavItem } from '../components/shared/InsidePageHeader';
-import { Trophy, Activity, Target, Gamepad2, Grid, ArrowRight } from 'lucide-react';
+import { ArrowRight, Search } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 
 // New Banner
@@ -27,28 +26,41 @@ const sportsProviders = [
 
 export function Sports() {
   const { t } = useLanguage();
-  const sportsNavItems: PageNavItem[] = [
-      { id: 'all', label: t('allSports'), icon: Grid, isActive: true },
-      { id: 'football', label: t('football'), icon: Trophy },
-      { id: 'basketball', label: t('basketball'), icon: Activity },
-      { id: 'tennis', label: t('tennis'), icon: Target },
-      { id: 'esports', label: t('esports'), icon: Gamepad2 },
-  ];
+  const [searchQuery, setSearchQuery] = useState('');
+
   return (
-    <div className="flex flex-col gap-8 pb-24 flex-1 overflow-x-hidden bg-[#02040a]">
+    <div className="flex flex-col flex-1 bg-[#02040a] min-h-screen overflow-x-hidden">
         
         {/* Hero Section */}
         <InsidePageHero image={imgSportsBanner} />
 
-        {/* Header & Nav */}
-        <div className="mt-[-20px] relative z-20">
-            <InsidePageHeader title={t('sports')} navItems={sportsNavItems} iconColor="text-orange-500" />
+        {/* Simple Title Section */}
+        <div className="mt-[-20px] relative z-20 w-full flex flex-col items-center gap-6 py-6">
+            <h2 className="text-4xl font-bold tracking-tight text-orange-500 drop-shadow-[0_0_15px_rgba(249,115,22,0.5)]">
+                {t('sports')}
+            </h2>
         </div>
 
-        {/* Content */}
-        <div className="container mx-auto max-w-[1200px] px-4 mt-4 mb-20">
+        {/* Main Content Area */}
+        <div className="container mx-auto max-w-[1200px] px-4 relative z-10 pb-20 flex flex-col items-center">
+            {/* Search Bar */}
+            <div className="w-full max-w-5xl mb-12">
+                <div className="relative">
+                    <input 
+                        type="text"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        className="w-full h-14 bg-[#16202c] border border-transparent hover:border-white/10 focus:border-orange-500/50 rounded-full pl-6 pr-14 text-white placeholder:text-gray-500 transition-all outline-none"
+                        placeholder={t("searchPlaceholder")}
+                    />
+                    <div className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-orange-600/20 rounded-full text-orange-400">
+                        <Search className="w-5 h-5" />
+                    </div>
+                </div>
+            </div>
+
             {/* Sports Providers Grid */}
-            <div>
+            <div className="w-full">
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-4 lg:gap-6 justify-items-center">
                     {sportsProviders.map((provider) => (
                         <div key={provider.id} className="flex flex-col items-start gap-2 md:gap-3 group cursor-pointer w-full max-w-[214px]">

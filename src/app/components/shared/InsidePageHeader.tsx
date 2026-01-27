@@ -53,7 +53,7 @@ export function InsidePageHeader({ title, navItems, iconColor = "text-pink-500" 
         </div>
 
         {/* Page Title */}
-        <h2 className={`text-4xl md:text-5xl font-black ${iconColor} ${titleShadow}`}>
+        <h2 className={`text-4xl font-bold tracking-tight ${iconColor} ${titleShadow}`}>
             {title}
         </h2>
 
