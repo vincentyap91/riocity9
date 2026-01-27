@@ -50,12 +50,45 @@ export function Referral() {
   const { t } = useLanguage();
   const [activeTab, setActiveTab] = useState<'referral' | 'myRewards'>('referral');
   const [faqTab, setFaqTab] = useState<'faq' | 'terms'>('faq');
+  const [activeHistoryTab, setActiveHistoryTab] = useState<'commission' | 'deposit'>('deposit');
 
   const handleTabChange = (tab: 'referral' | 'myRewards') => {
     setActiveTab(tab);
-    if (tab === 'myRewards') {
-      navigate('/my-rewards');
-    }
+  };
+
+  // Mock data for My Rewards
+  const commissionBonusHistory = [
+    {
+      id: 1,
+      date: '15-10-2025 08:40:00',
+      amount: '0.000',
+      status: 'Claimed',
+      claimedTime: '15-10-2025 08:45:00'
+    },
+  ];
+
+  const depositBonusHistory = [
+    {
+      id: 1,
+      date: '15-10-2025 08:40:00',
+      amount: '2.000',
+      status: 'Unclaimed',
+      claimedTime: ''
+    },
+  ];
+
+  const commissionBonus = {
+    today: '0.000',
+    thisMonth: '0.000',
+    totalClaimed: '0.000',
+    unclaimed: '0.000'
+  };
+
+  const depositBonus = {
+    today: '0.000',
+    thisMonth: '0.000',
+    totalClaimed: '0.000',
+    unclaimed: '2.000'
   };
 
   return (
@@ -97,7 +130,10 @@ export function Referral() {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-10 items-end">
+          {/* Referral Tab Content */}
+          {activeTab === 'referral' && (
+            <>
+            <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-10 items-end">
             
             {/* Left: Title & Form */}
             <div className="space-y-8">
@@ -231,18 +267,195 @@ export function Referral() {
                   </div>
                 )}
               </div>
+              </div>
             </div>
-          </div>
+            </>
+          )}
+
+          {/* My Rewards Tab Content */}
+          {activeTab === 'myRewards' && (
+            <div className="w-full">
+              {/* Bonus Summary Cards */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                
+                {/* Referral Commission Bonus Card */}
+                <div className="bg-[#1a2230] border border-white/5 rounded-xl p-6 shadow-xl">
+                  <div className="flex items-center gap-2 mb-6">
+                    <h3 className="text-xl font-black text-white">Referral Commission Bonus</h3>
+                    <div className="w-5 h-5 rounded-full bg-white/10 flex items-center justify-center">
+                      <Info className="w-3.5 h-3.5 text-gray-400" />
+                    </div>
+                  </div>
+
+                  {/* Summary Stats */}
+                  <div className="space-y-3 mb-6">
+                    <div className="flex justify-between items-center">
+                      <span className="text-gray-300 text-sm">Today:</span>
+                      <span className="text-[#d4c766] text-base font-bold">PKR {commissionBonus.today}</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-gray-300 text-sm">This Month:</span>
+                      <span className="text-[#d4c766] text-base font-bold">PKR {commissionBonus.thisMonth}</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-gray-300 text-sm">Total Claimed:</span>
+                      <span className="text-[#d4c766] text-base font-bold">PKR {commissionBonus.totalClaimed}</span>
+                    </div>
+                  </div>
+
+                  {/* Unclaimed Amount */}
+                  <div className="mb-6 pt-4 border-t border-white/10">
+                    <div className="flex justify-between items-center mb-4">
+                      <span className="text-white text-sm font-bold">Unclaimed Amount:</span>
+                      <span className="text-[#d4c766] text-2xl font-black">PKR {commissionBonus.unclaimed}</span>
+                    </div>
+                    <Button
+                      className="w-full bg-gradient-to-r from-[#f1c24f] to-[#d59b25] text-[#5c3a00] font-black h-12 rounded-xl shadow-[0_4px_15px_rgba(212,165,33,0.35)] hover:brightness-110 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                      disabled={parseFloat(commissionBonus.unclaimed) === 0}
+                    >
+                      Claim
+                    </Button>
+                  </div>
+
+                  {/* Info Note */}
+                  <div className="flex items-start gap-2 pt-4 border-t border-white/10">
+                    <div className="w-5 h-5 rounded-full bg-emerald-500/20 flex items-center justify-center shrink-0 mt-0.5">
+                      <Info className="w-3.5 h-3.5 text-emerald-400" />
+                    </div>
+                    <p className="text-white text-xs leading-relaxed">Bonus will be credited to Main Wallet.</p>
+                  </div>
+                </div>
+
+                {/* Referral Deposit Bonus Card */}
+                <div className="bg-[#1a2230] border border-white/5 rounded-xl p-6 shadow-xl">
+                  <div className="flex items-center gap-2 mb-6">
+                    <h3 className="text-xl font-black text-white">Referral Deposit Bonus</h3>
+                    <div className="w-5 h-5 rounded-full bg-white/10 flex items-center justify-center">
+                      <Info className="w-3.5 h-3.5 text-gray-400" />
+                    </div>
+                  </div>
+
+                  {/* Summary Stats */}
+                  <div className="space-y-3 mb-6">
+                    <div className="flex justify-between items-center">
+                      <span className="text-gray-300 text-sm">Today:</span>
+                      <span className="text-[#d4c766] text-base font-bold">PKR {depositBonus.today}</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-gray-300 text-sm">This Month:</span>
+                      <span className="text-[#d4c766] text-base font-bold">PKR {depositBonus.thisMonth}</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-gray-300 text-sm">Total Claimed:</span>
+                      <span className="text-[#d4c766] text-base font-bold">PKR {depositBonus.totalClaimed}</span>
+                    </div>
+                  </div>
+
+                  {/* Unclaimed Amount */}
+                  <div className="mb-6 pt-4 border-t border-white/10">
+                    <div className="flex justify-between items-center mb-4">
+                      <span className="text-white text-sm font-bold">Unclaimed Amount:</span>
+                      <span className="text-[#d4c766] text-2xl font-black">PKR {depositBonus.unclaimed}</span>
+                    </div>
+                    <Button
+                      className="w-full bg-gradient-to-r from-[#f1c24f] to-[#d59b25] text-[#5c3a00] font-black h-12 rounded-xl shadow-[0_4px_15px_rgba(212,165,33,0.35)] hover:brightness-110 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                      disabled={parseFloat(depositBonus.unclaimed) === 0}
+                    >
+                      Claim
+                    </Button>
+                  </div>
+
+                  {/* Info Note */}
+                  <div className="flex items-start gap-2 pt-4 border-t border-white/10">
+                    <div className="w-5 h-5 rounded-full bg-emerald-500/20 flex items-center justify-center shrink-0 mt-0.5">
+                      <Info className="w-3.5 h-3.5 text-emerald-400" />
+                    </div>
+                    <p className="text-white text-xs leading-relaxed">Bonus will be credited to Bonus Wallet (Coin).</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Bonus History Table */}
+              <div className="bg-[#1a2230] border border-white/5 rounded-xl p-6 shadow-xl">
+                {/* History Tabs */}
+                <div className="flex justify-start mb-6">
+                  <div className="flex bg-[#0f151f] p-1 rounded-xl border border-white/5 w-full max-w-[600px]">
+                    <button
+                      onClick={() => setActiveHistoryTab('commission')}
+                      className={`flex-1 px-8 py-3 rounded-lg text-sm font-bold transition-all ${
+                        activeHistoryTab === 'commission'
+                          ? 'bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 text-black shadow-lg'
+                          : 'text-gray-400 hover:text-white'
+                      }`}
+                    >
+                      Referral Commission Bonus
+                    </button>
+                    <button
+                      onClick={() => setActiveHistoryTab('deposit')}
+                      className={`flex-1 px-8 py-3 rounded-lg text-sm font-bold transition-all ${
+                        activeHistoryTab === 'deposit'
+                          ? 'bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 text-black shadow-lg'
+                          : 'text-gray-400 hover:text-white'
+                      }`}
+                    >
+                      Referral Deposit Bonus
+                    </button>
+                  </div>
+                </div>
+
+                {/* Table */}
+                <div className="overflow-x-auto">
+                  <table className="w-full">
+                    <thead>
+                      <tr className="border-b border-white/10">
+                        <th className="text-left py-4 px-4 text-white font-bold text-sm">Date</th>
+                        <th className="text-left py-4 px-4 text-white font-bold text-sm">Bonus Amount</th>
+                        <th className="text-left py-4 px-4 text-white font-bold text-sm">Status</th>
+                        <th className="text-left py-4 px-4 text-white font-bold text-sm">Claimed Time</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {(activeHistoryTab === 'commission' ? commissionBonusHistory : depositBonusHistory).length > 0 ? (
+                        (activeHistoryTab === 'commission' ? commissionBonusHistory : depositBonusHistory).map((item) => (
+                          <tr key={item.id} className="border-b border-white/5 hover:bg-white/5 transition-colors">
+                            <td className="py-4 px-4 text-white text-sm">{item.date}</td>
+                            <td className="py-4 px-4 text-white text-sm font-bold">{item.amount}</td>
+                            <td className="py-4 px-4">
+                              <span className={`text-sm font-bold ${
+                                item.status === 'Unclaimed' ? 'text-red-500' : 'text-emerald-400'
+                              }`}>
+                                {item.status}
+                              </span>
+                            </td>
+                            <td className="py-4 px-4 text-gray-400 text-sm">{item.claimedTime || '-'}</td>
+                          </tr>
+                        ))
+                      ) : (
+                        <tr>
+                          <td colSpan={4} className="py-8 px-4 text-center text-gray-500 text-sm">
+                            No history available
+                          </td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
 
-      {/* Divider */}
-      <div className="container mx-auto max-w-[1200px] 2xl:max-w-[1536px] px-4">
-        <div className="h-[3px] bg-gradient-to-r from-transparent via-gray-700 to-transparent my-8"></div>
-      </div>
+      {/* Referral Tab Only Sections */}
+      {activeTab === 'referral' && (
+        <>
+          {/* Divider */}
+          <div className="container mx-auto max-w-[1200px] 2xl:max-w-[1536px] px-4">
+            <div className="h-[3px] bg-gradient-to-r from-transparent via-gray-700 to-transparent my-8"></div>
+          </div>
 
-      {/* Deposit Commission Rate */}
-      <div className="container mx-auto max-w-[1200px] 2xl:max-w-[1536px] px-4 mb-12">
+          {/* Deposit Commission Rate */}
+          <div className="container mx-auto max-w-[1200px] 2xl:max-w-[1536px] px-4 mb-12">
         <div className="relative bg-[#1a2230] border border-white/5 rounded-xl p-4 md:p-8 overflow-hidden shadow-xl">
           {/* Background Image */}
           <div className="absolute inset-0">
@@ -316,8 +529,8 @@ export function Referral() {
         </div>
       </div>
 
-      {/* FAQ Section */}
-      <div className="container mx-auto max-w-[1200px] 2xl:max-w-[1536px] px-4 mb-12">
+          {/* FAQ Section */}
+          <div className="container mx-auto max-w-[1200px] 2xl:max-w-[1536px] px-4 mb-12">
         <div className="bg-[#1a2230] border border-white/5 rounded-xl p-6 md:p-8 shadow-xl">
           {/* FAQ Header */}
           <h2 className="text-2xl font-black text-white mb-4">Frequently Asked Questions</h2>
@@ -362,6 +575,8 @@ export function Referral() {
           </div>
         </div>
       </div>
+        </>
+      )}
 
     </div>
   );
