@@ -6,13 +6,6 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { Input } from '../components/ui/input';
 import { useLanguage } from '../contexts/LanguageContext';
 import { InnerPageLayout } from "../components/shared/InnerPageLayout";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '../components/ui/select';
 
 const SIDEBAR_ITEMS = [
   { id: 'transaction', label: 'Transaction History', icon: Wallet, path: '/history' },
@@ -35,7 +28,6 @@ export function CommissionRecord() {
   const navigate = useNavigate();
   const location = useLocation();
   const { t } = useLanguage();
-  const [recordType, setRecordType] = useState('commission');
   const [activeDateButton, setActiveDateButton] = useState('thisWeek');
   const [startDate, setStartDate] = useState('25-01-2026');
   const [endDate, setEndDate] = useState('31-01-2026');
@@ -53,15 +45,6 @@ export function CommissionRecord() {
   useEffect(() => {
     setActiveSidebarTab(getActiveTab());
   }, [location.pathname]);
-
-  const handleRecordTypeChange = (value: string) => {
-    setRecordType(value);
-    if (value === 'bet') {
-      navigate('/history/bet');
-    } else if (value === 'rebate') {
-      navigate('/history/rebate');
-    }
-  };
 
   // No data for now
   const commissionData: any[] = [];
@@ -149,21 +132,6 @@ export function CommissionRecord() {
               <span className="text-white font-bold text-base">Commission Record</span>
             </div>
 
-            {/* Record Type Selection */}
-            <div className="space-y-2 mb-6">
-              <label className="text-white font-bold text-sm">Record Type</label>
-              <Select value={recordType} onValueChange={handleRecordTypeChange}>
-                <SelectTrigger className="w-full bg-[#0f151f] border-white/10 text-white h-12 rounded-xl focus:border-emerald-500">
-                  <SelectValue placeholder="Select record type" />
-                </SelectTrigger>
-                <SelectContent className="bg-[#1a2230] border-white/10">
-                  <SelectItem value="bet" className="text-white focus:bg-emerald-500/20">Bet Record</SelectItem>
-                  <SelectItem value="commission" className="text-white focus:bg-emerald-500/20">Commission Record</SelectItem>
-                  <SelectItem value="rebate" className="text-white focus:bg-emerald-500/20">Rebate Record</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
             {/* Date Selection */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
               <div className="space-y-2">
@@ -198,7 +166,7 @@ export function CommissionRecord() {
                 <button
                   key={button.id}
                   onClick={() => setActiveDateButton(button.id)}
-                  className={`px-6 h-10 rounded-xl text-xs font-bold transition-all border ${
+                  className={`px-6 h-12 rounded-xl text-xs font-bold transition-all border ${
                     activeDateButton === button.id
                       ? 'border-emerald-500 bg-emerald-500/10 text-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.2)]'
                       : 'border-white/5 bg-[#0f151f] text-gray-400 hover:text-white hover:bg-white/5'

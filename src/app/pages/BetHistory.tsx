@@ -41,7 +41,6 @@ export function BetHistory() {
   const navigate = useNavigate();
   const location = useLocation();
   const { t } = useLanguage();
-  const [recordType, setRecordType] = useState('bet');
   const [statistics, setStatistics] = useState('all');
   const [activeDateButton, setActiveDateButton] = useState('thisWeek');
   const [startDate, setStartDate] = useState('26-01-2026');
@@ -60,15 +59,6 @@ export function BetHistory() {
   useEffect(() => {
     setActiveSidebarTab(getActiveTab());
   }, [location.pathname]);
-
-  const handleRecordTypeChange = (value: string) => {
-    setRecordType(value);
-    if (value === 'commission') {
-      navigate('/history/commission');
-    } else if (value === 'rebate') {
-      navigate('/history/rebate');
-    }
-  };
 
   return (
     <InnerPageLayout className="overflow-hidden">
@@ -153,26 +143,11 @@ export function BetHistory() {
               <span className="text-white font-bold text-base">Bet Record</span>
             </div>
 
-            {/* Record Type Selection */}
-            <div className="space-y-2 mb-6">
-              <label className="text-white font-bold text-sm">Record Type</label>
-              <Select value={recordType} onValueChange={handleRecordTypeChange}>
-                <SelectTrigger className="w-full bg-[#0f151f] border-white/10 text-white h-12 rounded-xl focus:border-emerald-500">
-                  <SelectValue placeholder="Select record type" />
-                </SelectTrigger>
-                <SelectContent className="bg-[#1a2230] border-white/10">
-                  <SelectItem value="bet" className="text-white focus:bg-emerald-500/20">Bet Record</SelectItem>
-                  <SelectItem value="commission" className="text-white focus:bg-emerald-500/20">Commission Record</SelectItem>
-                  <SelectItem value="rebate" className="text-white focus:bg-emerald-500/20">Rebate Record</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
             {/* Statistics Selection */}
             <div className="space-y-2 mb-6">
               <label className="text-white font-bold text-sm">Statistics</label>
               <Select value={statistics} onValueChange={setStatistics}>
-                <SelectTrigger className="w-full bg-[#0f151f] border-white/10 text-white h-12 rounded-xl focus:border-emerald-500">
+                <SelectTrigger className="w-full bg-[#0f151f] border-white/10 text-white !h-12 rounded-xl px-4 py-0 data-[size=default]:!h-12 focus:border-emerald-500 focus-visible:ring-emerald-500/20">
                   <SelectValue placeholder="Select statistics" />
                 </SelectTrigger>
                 <SelectContent className="bg-[#1a2230] border-white/10">
@@ -215,7 +190,7 @@ export function BetHistory() {
                 <button
                   key={button.id}
                   onClick={() => setActiveDateButton(button.id)}
-                  className={`px-6 h-10 rounded-xl text-xs font-bold transition-all border ${
+                  className={`px-6 h-12 rounded-xl text-xs font-bold transition-all border ${
                     activeDateButton === button.id
                       ? 'border-emerald-500 bg-emerald-500/10 text-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.2)]'
                       : 'border-white/5 bg-[#0f151f] text-gray-400 hover:text-white hover:bg-white/5'
