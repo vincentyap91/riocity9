@@ -109,9 +109,9 @@ export function Downlines() {
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center gap-3">
                 <div className="h-10 w-10 rounded-xl bg-black/25 border border-white/10 flex items-center justify-center">
-                  <UsersRound className="w-5 h-5 text-emerald-500" />
+                  <UsersRound className="w-5 h-5 text-white" />
                 </div>
-                <span className="text-emerald-500 font-bold text-lg">
+                <span className="text-white font-bold text-base">
                   {activeTab === 'summary' ? 'Downline Summary' : 'Downlines KPIs'}
                 </span>
               </div>
