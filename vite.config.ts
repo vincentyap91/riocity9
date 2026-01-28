@@ -16,4 +16,31 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
     },
   },
+  // --- Dev: HMR + no cache so changes appear without hard refresh ---
+  server: {
+    hmr: true,
+    watch: {
+      usePolling: false,
+    },
+    headers: {
+      'Cache-Control': 'no-store, no-cache, must-revalidate',
+      Pragma: 'no-cache',
+      Expires: '0',
+    },
+  },
+  preview: {
+    headers: {
+      'Cache-Control': 'no-store, no-cache, must-revalidate',
+    },
+  },
+  // --- Build: hashed filenames for cache-busting in production ---
+  build: {
+    rollupOptions: {
+      output: {
+        chunkFileNames: 'assets/[name]-[hash].js',
+        entryFileNames: 'assets/[name]-[hash].js',
+        assetFileNames: 'assets/[name]-[hash][extname]',
+      },
+    },
+  },
 })
