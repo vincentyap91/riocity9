@@ -106,7 +106,7 @@ export function Downlines() {
           {/* Main Content Area */}
           <div className="flex-1 w-full bg-[#1a2230] rounded-2xl border border-white/5 p-6 flex flex-col">
             {/* Title */}
-            <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-3">
                 <div className="h-10 w-10 rounded-xl bg-black/25 border border-white/10 flex items-center justify-center">
                   <UsersRound className="w-5 h-5 text-white" />

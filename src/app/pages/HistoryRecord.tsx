@@ -53,6 +53,8 @@ const betHistoryData = [
 const commissionData: any[] = [];
 const rebateData: any[] = [];
 
+const promotionData: any[] = [];
+
 export function HistoryRecord() {
   const navigate = useNavigate();
   const { t } = useLanguage();
@@ -401,9 +403,52 @@ export function HistoryRecord() {
                 )}
 
                 {activeSidebarTab === 'promotion' && (
-                  <div className="px-6 py-12 text-center">
-                    <span className="text-white text-sm">No Data Found</span>
-                  </div>
+                  <table className="w-full text-left border-collapse min-w-[600px]">
+                    <thead>
+                      <tr className="bg-[#1a2230]/80 border-b border-white/5">
+                        <th className="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest">Date</th>
+                        <th className="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest">Promotion Title</th>
+                        <th className="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest text-center">Status</th>
+                        <th className="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest text-center">Bonus Received</th>
+                        <th className="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest text-center">Completed Time</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-white/5">
+                      {promotionData.length === 0 ? (
+                        <tr>
+                          <td colSpan={5} className="px-6 py-12 text-center">
+                            <span className="text-white text-sm">No Data Found</span>
+                          </td>
+                        </tr>
+                      ) : (
+                        promotionData.map((row, index) => (
+                          <tr key={index} className="hover:bg-white/5 transition-all group">
+                            <td className="px-6 py-5">
+                              <span className="text-sm text-white font-medium">{row.date}</span>
+                            </td>
+                            <td className="px-6 py-5">
+                              <span className="text-sm text-white font-medium">{row.promotionTitle}</span>
+                            </td>
+                            <td className="px-6 py-5 text-center">
+                              <span className={`text-sm font-medium ${
+                                row.status === 'Completed' ? 'text-emerald-400' :
+                                row.status === 'Pending' ? 'text-yellow-500' :
+                                'text-gray-400'
+                              }`}>
+                                {row.status}
+                              </span>
+                            </td>
+                            <td className="px-6 py-5 text-center">
+                              <span className="text-sm text-white font-medium">{row.bonusReceived}</span>
+                            </td>
+                            <td className="px-6 py-5 text-center">
+                              <span className="text-sm text-gray-400 font-medium">{row.completedTime || '-'}</span>
+                            </td>
+                          </tr>
+                        ))
+                      )}
+                    </tbody>
+                  </table>
                 )}
               </div>
               
