@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { InsidePageHero } from '../components/shared/InsidePageHero';
 import { ArrowRight, Search } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
+import { sanitizeTextInput } from '../utils/security';
 
 // Banner
 import imgLotteryBanner from "@/assets/b18479f8e5e33aa224b895a9f36e7daacafa6f8b.png";
@@ -117,7 +118,8 @@ export function Lottery() {
                     <input 
                         type="text"
                         value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
+                        onChange={(e) => setSearchQuery(sanitizeTextInput(e.target.value).slice(0, 50))}
+                        maxLength={50}
                         className="w-full h-14 bg-[#16202c] border border-transparent hover:border-white/10 focus:border-purple-500/50 rounded-full pl-6 pr-14 text-white placeholder:text-gray-500 transition-all outline-none"
                         placeholder={t("searchPlaceholder")}
                     />

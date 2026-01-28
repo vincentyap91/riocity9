@@ -961,7 +961,7 @@ function AppContent() {
                                     <button
                                         key={idx}
                                         onClick={() => {
-                                            setChatMessage(msg);
+                                            setChatMessage(sanitizeTextInput(msg).slice(0, 500));
                                             setShowSuggestedMessages(false);
                                         }}
                                         className="px-3 py-1.5 bg-white text-[#0f1923] text-xs font-medium rounded-full hover:bg-gray-100 transition-colors border border-gray-200"
@@ -981,7 +981,8 @@ function AppContent() {
                             type="text" 
                             placeholder="Type a message..." 
                             value={chatMessage}
-                            onChange={(e) => setChatMessage(e.target.value)}
+                            onChange={(e) => setChatMessage(sanitizeTextInput(e.target.value).slice(0, 500))}
+                            maxLength={500}
                             onFocus={() => setShowSuggestedMessages(true)}
                             className="flex-1 bg-[#1a2536] border border-white/10 rounded-full px-4 py-2 text-sm text-white focus:outline-none focus:border-emerald-500/50"
                         />

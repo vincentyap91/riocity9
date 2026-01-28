@@ -323,7 +323,7 @@ export function Withdraw() {
                         <label className="text-sm font-bold text-gray-400 pl-1">{t("bankName")}</label>
                         <select 
                             value={bankName}
-                            onChange={(e) => setBankName(e.target.value)}
+                            onChange={(e) => setBankName(sanitizeTextInput(e.target.value))}
                             className="w-full bg-[#0f151f] border border-white/10 rounded-xl px-4 py-3.5 text-white focus:outline-none focus:border-emerald-500 transition-colors appearance-none cursor-pointer"
                         >
                             <option value="" disabled>{t("pleaseSelectBank")}</option>

@@ -159,3 +159,43 @@ export function sanitizeEmail(input: string): string {
   
   return sanitized.trim();
 }
+
+/** Allowed MIME types for receipt uploads (no SVG to prevent XSS). */
+const RECEIPT_ALLOWED_TYPES = new Set([
+  'image/jpeg',
+  'image/png',
+  'application/pdf',
+]);
+const RECEIPT_MAX_BYTES = 10 * 1024 * 1024; // 10MB
+
+/**
+ * Returns true if the file looks like an SVG (by type or extension).
+ * Use to block SVG uploads and prevent SVG-based XSS.
+ */
+export function isSvgFile(file: File): boolean {
+  const t = (file.type || '').toLowerCase();
+  const n = (file.name || '').toLowerCase();
+  return (
+    t === 'image/svg+xml' ||
+    n.endsWith('.svg') ||
+    n.endsWith('.svgz')
+  );
+}
+
+export type ReceiptValidationResult =
+  | { ok: true; file: File }
+  | { ok: false; error: string };
+
+/**
+ * Validates a file for receipt upload: blocks SVG, allows only JPG/PNG/PDF, enforces size.
+ * Use for any receipt or document upload in the app.
+ */
+export function validateReceiptFile(file: File | null | undefined): ReceiptValidationResult {
+  if (!file) return { ok: false, error: 'No file selected.' };
+  if (isSvgFile(file)) return { ok: false, error: 'SVG files are not allowed.' };
+  if (!RECEIPT_ALLOWED_TYPES.has(file.type))
+    return { ok: false, error: 'Only JPG, PNG, or PDF files are allowed.' };
+  if (file.size > RECEIPT_MAX_BYTES)
+    return { ok: false, error: 'File is too large. Max 10MB.' };
+  return { ok: true, file };
+}

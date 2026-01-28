@@ -78,28 +78,45 @@ const ChartStyle = ({ id, config }: { id: string; config: ChartConfig }) => {
     return null;
   }
 
-  return (
-    <style
-      dangerouslySetInnerHTML={{
-        __html: Object.entries(THEMES)
-          .map(
-            ([theme, prefix]) => `
-${prefix} [data-chart=${id}] {
+  // Security: this component injects a <style> tag. Harden against CSS injection.
+  const isSafeVarKey = (key: string) => /^[a-zA-Z0-9_-]+$/.test(key);
+  const isSafeCssValue = (value: string) => {
+    const v = value.trim();
+    // Allow common safe CSS color syntaxes and CSS variables.
+    return (
+      /^#[0-9a-fA-F]{3,4}$/.test(v) ||
+      /^#[0-9a-fA-F]{6}$/.test(v) ||
+      /^#[0-9a-fA-F]{8}$/.test(v) ||
+      /^rgb(a)?\(\s*[\d.\s,%]+\)$/.test(v) ||
+      /^hsl(a)?\(\s*[\d.\s,%]+\)$/.test(v) ||
+      /^var\(\s*--[a-zA-Z0-9_-]+\s*(,\s*[^)]+)?\)$/.test(v) ||
+      /^[a-zA-Z]+$/.test(v)
+    );
+  };
+  const escapeCssString = (value: string) =>
+    value.replace(/\\/g, "\\\\").replace(/"/g, '\\"');
+
+  const cssText = Object.entries(THEMES)
+    .map(
+      ([theme, prefix]) => `
+${prefix} [data-chart="${escapeCssString(id)}"] {
 ${colorConfig
   .map(([key, itemConfig]) => {
+    if (!isSafeVarKey(key)) return null;
     const color =
       itemConfig.theme?.[theme as keyof typeof itemConfig.theme] ||
       itemConfig.color;
-    return color ? `  --color-${key}: ${color};` : null;
+    if (!color || !isSafeCssValue(color)) return null;
+    return `  --color-${key}: ${color.trim()};`;
   })
+  .filter(Boolean)
   .join("\n")}
 }
 `,
-          )
-          .join("\n"),
-      }}
-    />
-  );
+    )
+    .join("\n");
+
+  return <style>{cssText}</style>;
 };
 
 const ChartTooltip = RechartsPrimitive.Tooltip;

@@ -17,6 +17,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '../components/ui/select';
+import { sanitizeTextInput } from '../utils/security';
 
 const SIDEBAR_ITEMS: PageSidebarItem[] = [
   { id: 'transaction', label: 'Transaction History', icon: Wallet },
@@ -190,9 +191,10 @@ export function HistoryRecord() {
                       '01/14/2026'
                     }
                     onChange={(e) => {
-                      if (activeSidebarTab === 'bet') setBetStartDate(e.target.value);
-                      else if (activeSidebarTab === 'commission') setCommissionStartDate(e.target.value);
-                      else if (activeSidebarTab === 'rebate') setRebateStartDate(e.target.value);
+                      const v = sanitizeTextInput(e.target.value);
+                      if (activeSidebarTab === 'bet') setBetStartDate(v);
+                      else if (activeSidebarTab === 'commission') setCommissionStartDate(v);
+                      else if (activeSidebarTab === 'rebate') setRebateStartDate(v);
                     }}
                     className="bg-[#0f151f] border-white/10 text-white h-12 rounded-xl px-4 focus:border-emerald-500 focus-visible:ring-emerald-500/20 pr-10"
                   />
@@ -211,9 +213,10 @@ export function HistoryRecord() {
                       '01/14/2026'
                     }
                     onChange={(e) => {
-                      if (activeSidebarTab === 'bet') setBetEndDate(e.target.value);
-                      else if (activeSidebarTab === 'commission') setCommissionEndDate(e.target.value);
-                      else if (activeSidebarTab === 'rebate') setRebateEndDate(e.target.value);
+                      const v = sanitizeTextInput(e.target.value);
+                      if (activeSidebarTab === 'bet') setBetEndDate(v);
+                      else if (activeSidebarTab === 'commission') setCommissionEndDate(v);
+                      else if (activeSidebarTab === 'rebate') setRebateEndDate(v);
                     }}
                     className="bg-[#0f151f] border-white/10 text-white h-12 rounded-xl px-4 focus:border-emerald-500 focus-visible:ring-emerald-500/20 pr-10"
                   />

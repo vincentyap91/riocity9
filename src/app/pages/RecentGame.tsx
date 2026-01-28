@@ -4,6 +4,7 @@ import { ArrowRight, Search } from "lucide-react";
 import { useAuth } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { InnerPageLayout } from "../components/shared/InnerPageLayout";
+import { sanitizeTextInput } from "../utils/security";
 
 // Placeholder data - you can replace this with actual recent games data
 const recentGames = [
@@ -87,7 +88,8 @@ export function RecentGame() {
               <input
                 type="text"
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={(e) => setSearchQuery(sanitizeTextInput(e.target.value).slice(0, 50))}
+                maxLength={50}
                 className="w-full h-14 bg-[#16202c] border border-transparent hover:border-white/10 focus:border-emerald-500/50 rounded-full pl-6 pr-14 text-white placeholder:text-gray-500 transition-all outline-none"
                 placeholder={t("searchPlaceholder")}
               />

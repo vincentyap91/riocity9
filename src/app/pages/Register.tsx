@@ -63,10 +63,10 @@ export function Register() {
     // Username validation
     if (!username.trim()) {
       newErrors.username = 'Username is required';
-    } else if (username.length < 3) {
-      newErrors.username = 'Username must be at least 3 characters';
-    } else if (username.length > 20) {
-      newErrors.username = 'Username cannot exceed 20 characters';
+    } else if (username.length < 2) {
+      newErrors.username = 'Username must be at least 2 characters';
+    } else if (username.length > 10) {
+      newErrors.username = 'Username cannot exceed 10 characters';
     } else if (!/^[a-zA-Z0-9_]+$/.test(username)) {
       newErrors.username = 'Username can only contain letters, numbers and underscore';
     }
@@ -74,17 +74,19 @@ export function Register() {
     // Mobile validation
     if (!mobile.trim()) {
       newErrors.mobile = 'Mobile number is required';
-    } else if (!/^\d{9,12}$/.test(mobile.replace(/\s/g, ''))) {
-      newErrors.mobile = 'Please enter a valid mobile number (9-12 digits)';
+    } else if (!/^\d{2,10}$/.test(mobile.replace(/\s/g, ''))) {
+      newErrors.mobile = 'Please enter a valid mobile number (2-10 digits)';
     }
     
     // Password validation
     if (!password) {
       newErrors.password = 'Password is required';
-    } else if (password.length < 6) {
-      newErrors.password = 'Password must be at least 6 characters';
-    } else if (password.length > 30) {
-      newErrors.password = 'Password cannot exceed 30 characters';
+    } else if (password.length < 2) {
+      newErrors.password = 'Password must be at least 2 characters';
+    } else if (password.length > 100) {
+      newErrors.password = 'Password cannot exceed 100 characters';
+    } else if (!/^[a-zA-Z0-9]+$/.test(password)) {
+      newErrors.password = 'Password can only contain letters and numbers';
     }
     
     // Captcha validation
@@ -260,11 +262,12 @@ export function Register() {
                   placeholder="Enter your username"
                   value={username}
                   onChange={(e) => { 
-                    const sanitized = sanitizeUsername(e.target.value);
+                    const sanitized = sanitizeUsername(e.target.value).slice(0, 10);
                     setUsername(sanitized); 
                     clearError('username'); 
                   }}
                   disabled={isLoading}
+                  maxLength={10}
                   className={`h-12 bg-[#0f151f] rounded-xl text-white placeholder:text-gray-500 focus-visible:ring-1 transition-all pl-4 ${
                     errors.username 
                       ? 'border-red-500 border-2 focus-visible:ring-red-500' 
@@ -303,11 +306,12 @@ export function Register() {
                     placeholder="Enter your mobile number"
                     value={mobile}
                     onChange={(e) => { 
-                      const sanitized = sanitizeMobileNumber(e.target.value);
+                      const sanitized = sanitizeMobileNumber(e.target.value).slice(0, 10);
                       setMobile(sanitized); 
                       clearError('mobile'); 
                     }}
                     disabled={isLoading}
+                    maxLength={10}
                     className={`h-12 bg-[#0f151f] rounded-xl text-white placeholder:text-gray-500 focus-visible:ring-1 flex-1 transition-all ${
                       errors.mobile 
                         ? 'border-red-500 border-2 focus-visible:ring-red-500' 
@@ -339,11 +343,14 @@ export function Register() {
                     placeholder="Enter your password"
                     value={password}
                     onChange={(e) => { 
-                      const sanitized = sanitizeTextInput(e.target.value);
-                      setPassword(sanitized); 
+                      const sanitized = sanitizeTextInput(e.target.value)
+                        .replace(/[^a-zA-Z0-9]/g, '')
+                        .slice(0, 100);
+                      setPassword(sanitized);
                       clearError('password'); 
                     }}
                     disabled={isLoading}
+                    maxLength={100}
                     className={`h-12 bg-[#0f151f] rounded-xl text-white placeholder:text-gray-500 focus-visible:ring-1 pr-10 transition-all ${
                       errors.password 
                         ? 'border-red-500 border-2 focus-visible:ring-red-500' 

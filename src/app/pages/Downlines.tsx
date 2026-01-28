@@ -9,6 +9,7 @@ import { Input } from '../components/ui/input';
 import { useLanguage } from '../contexts/LanguageContext';
 import { InnerPageLayout } from "../components/shared/InnerPageLayout";
 import { PageSidebar, type PageSidebarItem } from '../components/shared/PageSidebar';
+import { sanitizeTextInput } from '../utils/security';
 
 const DOWNLINE_SIDEBAR_ITEMS: PageSidebarItem[] = [
   { id: 'summary', label: 'Downline Summary', icon: UsersRound },
@@ -246,7 +247,10 @@ export function Downlines() {
                     <Input
                       type="text"
                       value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
+                      onChange={(e) =>
+                        setSearchQuery(sanitizeTextInput(e.target.value).slice(0, 50))
+                      }
+                      maxLength={50}
                       placeholder="Search downline username"
                       className="bg-[#0f151f] border-white/10 text-white h-12 rounded-xl pl-12 pr-4 focus:border-emerald-500 focus-visible:ring-emerald-500/20 placeholder:text-gray-600"
                     />

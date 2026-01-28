@@ -40,15 +40,21 @@ export function Login() {
     // Username validation
     if (!username.trim()) {
       newErrors.username = 'Username is required';
-    } else if (username.length < 3) {
-      newErrors.username = 'Username must be at least 3 characters';
+    } else if (username.length < 2) {
+      newErrors.username = 'Username must be at least 2 characters';
+    } else if (username.length > 10) {
+      newErrors.username = 'Username cannot exceed 10 characters';
     }
     
     // Password validation
     if (!password) {
       newErrors.password = 'Password is required';
-    } else if (password.length < 6) {
-      newErrors.password = 'Password must be at least 6 characters';
+    } else if (password.length < 2) {
+      newErrors.password = 'Password must be at least 2 characters';
+    } else if (password.length > 100) {
+      newErrors.password = 'Password cannot exceed 100 characters';
+    } else if (!/^[a-zA-Z0-9]+$/.test(password)) {
+      newErrors.password = 'Password can only contain letters and numbers';
     }
     
     setErrors(newErrors);
@@ -57,7 +63,7 @@ export function Login() {
 
   // Clear error when user types
   const handleUsernameChange = (value: string) => {
-    const sanitized = sanitizeUsername(value);
+    const sanitized = sanitizeUsername(value).slice(0, 10);
     setUsername(sanitized);
     if (errors.username) {
       setErrors(prev => ({ ...prev, username: undefined }));
@@ -65,7 +71,9 @@ export function Login() {
   };
 
   const handlePasswordChange = (value: string) => {
-    const sanitized = sanitizeTextInput(value);
+    const sanitized = sanitizeTextInput(value)
+      .replace(/[^a-zA-Z0-9]/g, '')
+      .slice(0, 100);
     setPassword(sanitized);
     if (errors.password) {
       setErrors(prev => ({ ...prev, password: undefined }));
@@ -193,6 +201,7 @@ export function Login() {
                 value={username}
                 onChange={(e) => handleUsernameChange(e.target.value)}
                 disabled={isLoading}
+                maxLength={10}
                 className={`h-12 bg-[#0f151f] rounded-xl text-white placeholder:text-gray-500 focus-visible:ring-1 transition-all text-sm px-4 shadow-sm ${
                   errors.username 
                     ? 'border-red-500 border-2 focus-visible:ring-red-500 focus-visible:border-red-500' 
@@ -223,6 +232,7 @@ export function Login() {
                   value={password}
                   onChange={(e) => handlePasswordChange(e.target.value)}
                   disabled={isLoading}
+                  maxLength={100}
                   className={`h-12 bg-[#0f151f] rounded-xl text-white placeholder:text-gray-500 focus-visible:ring-1 pr-12 transition-all text-sm px-4 shadow-sm ${
                     errors.password 
                       ? 'border-red-500 border-2 focus-visible:ring-red-500 focus-visible:border-red-500' 

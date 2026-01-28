@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { InsidePageHero } from '../components/shared/InsidePageHero';
 import { Grid, ArrowRight, Search } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
+import { sanitizeTextInput } from '../utils/security';
 
 // New Banner
 import imgFishingBanner from "@/assets/71667b097dc0233c71967c40c7e2dc37f4fa9f8c.png";
@@ -102,7 +103,8 @@ export function Fishing() {
                     <input 
                         type="text"
                         value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
+                        onChange={(e) => setSearchQuery(sanitizeTextInput(e.target.value).slice(0, 50))}
+                        maxLength={50}
                         className="w-full h-14 bg-[#16202c] border border-transparent hover:border-white/10 focus:border-cyan-500/50 rounded-full pl-6 pr-14 text-white placeholder:text-gray-500 transition-all outline-none"
                         placeholder={t("searchPlaceholder")}
                     />

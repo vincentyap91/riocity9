@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { 
   ArrowLeft, 
   ChevronRight, 
@@ -23,7 +23,7 @@ import {
 import { Button } from '../components/ui/button';
 import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '../contexts/LanguageContext';
-import { sanitizeTextInput } from '../utils/security';
+import { sanitizeTextInput, validateReceiptFile } from '../utils/security';
 
 // Mock Data for Payment Methods - Enhanced for Visual Variety
 const POPULAR_METHODS = [
@@ -131,6 +131,9 @@ export function Deposit() {
   const [referenceId, setReferenceId] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
   const [activeTab, setActiveTab] = useState<'deposit' | 'withdrawal'>('deposit');
+  const receiptInputRef = useRef<HTMLInputElement | null>(null);
+  const [receiptFileName, setReceiptFileName] = useState<string>('');
+  const [receiptError, setReceiptError] = useState<string>('');
 
   const handleTabChange = (tab: 'deposit' | 'withdrawal') => {
     setActiveTab(tab);
@@ -166,6 +169,23 @@ export function Deposit() {
   };
 
   const selectedMethod = getSelectedMethod();
+
+  const handleReceiptPick = () => {
+    setReceiptError('');
+    receiptInputRef.current?.click();
+  };
+
+  const handleReceiptChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
+    const result = validateReceiptFile(e.target.files?.[0]);
+    e.target.value = '';
+    if (result.ok) {
+      setReceiptFileName(result.file.name);
+      setReceiptError('');
+    } else {
+      setReceiptFileName('');
+      setReceiptError(result.error);
+    }
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4 font-sans text-white relative bg-[#0a0f19] overflow-x-hidden">
@@ -504,11 +524,32 @@ export function Deposit() {
 
                 <div className="space-y-2">
                     <label className="text-sm font-bold text-gray-400">{t("uploadReceipt")}</label>
-                    <div className="border-2 border-dashed border-white/10 hover:border-emerald-500/50 rounded-xl p-8 flex flex-col items-center justify-center cursor-pointer transition-colors bg-[#0f151f]/50 hover:bg-[#0f151f]">
+                    <input
+                      ref={receiptInputRef}
+                      type="file"
+                      accept="image/jpeg,image/png,application/pdf"
+                      className="hidden"
+                      onChange={handleReceiptChange}
+                    />
+                    <div
+                      onClick={handleReceiptPick}
+                      className="border-2 border-dashed border-white/10 hover:border-emerald-500/50 rounded-xl p-8 flex flex-col items-center justify-center cursor-pointer transition-colors bg-[#0f151f]/50 hover:bg-[#0f151f]"
+                      role="button"
+                      tabIndex={0}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') handleReceiptPick();
+                      }}
+                      aria-label="Upload receipt (JPG, PNG, PDF only)"
+                    >
                         <Upload className="w-8 h-8 text-gray-500 mb-2" />
-                        <span className="text-sm font-bold text-gray-300">{t("tapToUpload")}</span>
+                        <span className="text-sm font-bold text-gray-300">
+                          {receiptFileName ? receiptFileName : t("tapToUpload")}
+                        </span>
                         <span className="text-xs text-gray-600 mt-1">{t("supportedFiles")}</span>
                     </div>
+                    {receiptError && (
+                      <div className="text-xs font-bold text-red-400">{receiptError}</div>
+                    )}
                 </div>
 
                 <div className="grid grid-cols-2 gap-4 pt-4">

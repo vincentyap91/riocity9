@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { InsidePageHero } from '../components/shared/InsidePageHero';
 import { ArrowRight, Search } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
+import { sanitizeTextInput } from '../utils/security';
 
 // Figma Asset Imports
 import imgKh168Marbula2Providericon200X200Px2025101310310355541 from "@/assets/f6a50bd7817f3011aaeb196648cadbe4a3ae53b3.png";
@@ -62,7 +63,8 @@ export function LiveCasino() {
                 <input 
                     type="text"
                     value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
+                    onChange={(e) => setSearchQuery(sanitizeTextInput(e.target.value).slice(0, 50))}
+                    maxLength={50}
                     className="w-full h-14 bg-[#16202c] border border-transparent hover:border-white/10 focus:border-blue-500/50 rounded-full pl-6 pr-14 text-white placeholder:text-gray-500 transition-all outline-none"
                     placeholder={t("searchPlaceholder")}
                 />
