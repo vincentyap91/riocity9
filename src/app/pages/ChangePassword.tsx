@@ -2,12 +2,14 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { Eye, EyeOff, Lock, CheckCircle2, AlertCircle, ArrowLeft } from 'lucide-react';
+import { EmailAuthProvider, reauthenticateWithCredential, updatePassword } from 'firebase/auth';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
 import { useLanguage } from '../contexts/LanguageContext';
 import { InnerPageLayout } from "../components/shared/InnerPageLayout";
 import { sanitizeTextInput } from '../utils/security';
+import { auth } from '../config/firebase';
 
 export function ChangePassword() {
   const navigate = useNavigate();
@@ -57,12 +59,29 @@ export function ChangePassword() {
     if (!validateForm()) return;
 
     setIsLoading(true);
-    // Mock API call
-    setTimeout(() => {
-      setIsLoading(false);
-      alert('Password changed successfully!');
+    setErrors({});
+    try {
+      const user = auth.currentUser;
+      if (!user?.email) {
+        setErrors({ current: 'You must be signed in to change password.' });
+        return;
+      }
+      const credential = EmailAuthProvider.credential(user.email, currentPassword);
+      await reauthenticateWithCredential(user, credential);
+      await updatePassword(user, newPassword);
       navigate('/settings');
-    }, 1500);
+    } catch (err: unknown) {
+      const code = (err as { code?: string })?.code;
+      if (code === 'auth/wrong-password' || code === 'auth/invalid-credential') {
+        setErrors({ current: 'Current password is incorrect.' });
+      } else if (code === 'auth/weak-password') {
+        setErrors({ new: 'New password is too weak.' });
+      } else {
+        setErrors({ current: 'Failed to change password. Please try again.' });
+      }
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const requirements = [

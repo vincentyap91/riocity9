@@ -8,14 +8,18 @@ import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { useLanguage } from '../contexts/LanguageContext';
 import { InnerPageLayout } from "../components/shared/InnerPageLayout";
+import { PageSidebar, type PageSidebarItem } from '../components/shared/PageSidebar';
+
+const DOWNLINE_SIDEBAR_ITEMS: PageSidebarItem[] = [
+  { id: 'summary', label: 'Downline Summary', icon: UsersRound },
+  { id: 'kpis', label: 'Downlines KPIs', icon: UsersRound },
+];
 
 const QUICK_DATE_FILTERS = [
   { id: 'today', label: 'Today' },
-  { id: 'yesterday', label: 'Yesterday' },
-  { id: 'thisWeek', label: 'This Week' },
-  { id: 'lastWeek', label: 'Last Week' },
-  { id: 'thisMonth', label: 'This Month' },
-  { id: 'lastMonth', label: 'Last Month' },
+  { id: '7days', label: 'Last 7 Days' },
+  { id: '30days', label: 'Last 30 Days' },
+  { id: '60days', label: 'Last 60 Days' },
 ];
 
 // Mock data for Downline Summary
@@ -49,7 +53,7 @@ export function Downlines() {
   const navigate = useNavigate();
   const { t } = useLanguage();
   const [activeTab, setActiveTab] = useState<'summary' | 'kpis'>('summary');
-  const [activeDateFilter, setActiveDateFilter] = useState('thisWeek');
+  const [activeDateFilter, setActiveDateFilter] = useState('today');
   const [activeStatusTab, setActiveStatusTab] = useState<'active' | 'inactive'>('active');
   const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState<'deposit' | null>(null);
@@ -91,67 +95,12 @@ export function Downlines() {
           </button>
         </div>
 
-        {/* Mobile/Tablet: Horizontal Scrollable Sidebar */}
-        <div className="lg:hidden mb-6">
-          <div className="w-full bg-[#1a2230] rounded-2xl border border-white/5 p-3 overflow-x-auto no-scrollbar">
-            <div className="flex items-center gap-3 min-w-max">
-              <button
-                onClick={() => setActiveTab('summary')}
-                className={`px-5 py-3 rounded-xl text-sm font-bold whitespace-nowrap transition-all flex items-center gap-3 group shrink-0 ${
-                  activeTab === 'summary'
-                    ? 'bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 text-black shadow-lg'
-                    : 'text-gray-400 hover:text-white hover:bg-white/5'
-                }`}
-              >
-                <UsersRound className={`w-5 h-5 shrink-0 transition-colors ${
-                  activeTab === 'summary' ? 'text-black' : 'text-gray-500 group-hover:text-white'
-                }`} />
-                Downline Summary
-              </button>
-              <button
-                onClick={() => setActiveTab('kpis')}
-                className={`px-5 py-3 rounded-xl text-sm font-bold whitespace-nowrap transition-all flex items-center gap-3 group shrink-0 ${
-                  activeTab === 'kpis'
-                    ? 'bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 text-black shadow-lg'
-                    : 'text-gray-400 hover:text-white hover:bg-white/5'
-                }`}
-              >
-                <UsersRound className={`w-5 h-5 shrink-0 transition-colors ${
-                  activeTab === 'kpis' ? 'text-black' : 'text-gray-500 group-hover:text-white'
-                }`} />
-                Downlines KPIs
-              </button>
-            </div>
-          </div>
-        </div>
-
         <div className="flex flex-col lg:flex-row gap-6 items-start">
-          
-          {/* Desktop: Vertical Sidebar */}
-          <div className="hidden lg:flex w-[280px] bg-[#1a2230] rounded-2xl border border-white/5 p-4 flex-col gap-2 shrink-0">
-            <button
-              onClick={() => setActiveTab('summary')}
-              className={`w-full px-5 py-4 rounded-xl text-sm font-bold text-left transition-all flex items-center gap-4 group ${
-                activeTab === 'summary'
-                  ? 'bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 text-black shadow-lg'
-                  : 'text-gray-400 hover:text-white hover:bg-white/5'
-              }`}
-            >
-              <UsersRound className={`w-5 h-5 ${activeTab === 'summary' ? 'text-black' : 'text-gray-500 group-hover:text-white'} transition-colors`} />
-              Downline Summary
-            </button>
-            <button
-              onClick={() => setActiveTab('kpis')}
-              className={`w-full px-5 py-4 rounded-xl text-sm font-bold text-left transition-all flex items-center gap-4 group ${
-                activeTab === 'kpis'
-                  ? 'bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 text-black shadow-lg'
-                  : 'text-gray-400 hover:text-white hover:bg-white/5'
-              }`}
-            >
-              <UsersRound className={`w-5 h-5 ${activeTab === 'kpis' ? 'text-black' : 'text-gray-500 group-hover:text-white'} transition-colors`} />
-              Downlines KPIs
-            </button>
-          </div>
+          <PageSidebar
+            items={DOWNLINE_SIDEBAR_ITEMS}
+            activeId={activeTab}
+            onSelect={(id) => setActiveTab(id as 'summary' | 'kpis')}
+          />
 
           {/* Main Content Area */}
           <div className="flex-1 w-full bg-[#1a2230] rounded-2xl border border-white/5 p-6 flex flex-col">
@@ -171,46 +120,49 @@ export function Downlines() {
             {activeTab === 'summary' ? (
               <>
                 {/* Date Selection */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
                   <div className="space-y-2">
-                    <label className="text-emerald-500 font-bold text-sm">Start Date</label>
+                    <label className="text-white font-bold text-sm">Start Date</label>
                     <div className="relative group">
                       <Input
                         type="text"
                         defaultValue="19-01-2026"
-                        className="bg-white border-white/10 text-black h-12 rounded-xl px-4 focus:border-emerald-500 focus-visible:ring-emerald-500/20 pr-10"
+                        className="bg-[#0f151f] border-white/10 text-white h-12 rounded-xl px-4 focus:border-emerald-500 focus-visible:ring-emerald-500/20 pr-10"
                       />
                       <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                     </div>
                   </div>
                   <div className="space-y-2">
-                    <label className="text-emerald-500 font-bold text-sm">End Date</label>
+                    <label className="text-white font-bold text-sm">End Date</label>
                     <div className="relative group">
                       <Input
                         type="text"
                         defaultValue="23-01-2026"
-                        className="bg-white border-white/10 text-black h-12 rounded-xl px-4 focus:border-emerald-500 focus-visible:ring-emerald-500/20 pr-10"
+                        className="bg-[#0f151f] border-white/10 text-white h-12 rounded-xl px-4 focus:border-emerald-500 focus-visible:ring-emerald-500/20 pr-10"
                       />
                       <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                     </div>
                   </div>
                 </div>
 
-                {/* Quick Date Filters */}
+                {/* Quick Date Filters (Today / Last 7/30/60 Days) */}
                 <div className="flex flex-wrap gap-3 mb-6">
-                  {QUICK_DATE_FILTERS.map((filter) => (
-                    <button
-                      key={filter.id}
-                      onClick={() => setActiveDateFilter(filter.id)}
-                      className={`px-6 h-10 rounded-xl text-xs font-bold transition-all border ${
-                        activeDateFilter === filter.id
-                          ? 'border-emerald-500 bg-emerald-500 text-white shadow-[0_0_15px_rgba(16,185,129,0.2)]'
-                          : 'border-white/5 bg-[#0f151f] text-gray-400 hover:text-white hover:bg-white/5'
-                      }`}
-                    >
-                      {filter.label}
-                    </button>
-                  ))}
+                  {QUICK_DATE_FILTERS.map((filter) => {
+                    const isActive = activeDateFilter === filter.id;
+                    return (
+                      <button
+                        key={filter.id}
+                        onClick={() => setActiveDateFilter(filter.id)}
+                        className={`px-6 h-10 rounded-xl text-xs font-bold transition-all border ${
+                          isActive
+                            ? 'border-emerald-500 bg-emerald-500/10 text-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.2)]'
+                            : 'border-white/5 bg-[#0f151f] text-gray-400 hover:text-white hover:bg-white/5'
+                        }`}
+                      >
+                        {filter.label}
+                      </button>
+                    );
+                  })}
                 </div>
 
                 {/* Summary Stats Cards */}
@@ -263,7 +215,7 @@ export function Downlines() {
                   <h3 className="text-white font-bold text-base mb-4">Downline L1 KPIs</h3>
                   
                   {/* Status Tabs */}
-                  <div className="flex justify-center mb-4">
+                  <div className="flex justify-start mb-4">
                     <div className="flex bg-[#0f151f] p-1 rounded-xl border border-white/5 w-full max-w-[400px]">
                       <button
                         onClick={() => setActiveStatusTab('active')}

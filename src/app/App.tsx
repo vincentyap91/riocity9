@@ -35,9 +35,6 @@ import { Rebate } from './pages/Rebate';
 import { Membership } from './pages/Membership';
 import { Profile } from './pages/Profile';
 import { HistoryRecord } from './pages/HistoryRecord';
-import { BetHistory } from './pages/BetHistory';
-import { CommissionRecord } from './pages/CommissionRecord';
-import { RebateRecord } from './pages/RebateRecord';
 import { ChangePassword } from './pages/ChangePassword';
 import { ComingSoon } from './pages/ComingSoon';
 import { Bonus } from './pages/Bonus';
@@ -45,6 +42,7 @@ import { NotFound } from './pages/NotFound';
 import { Promotions } from './pages/Promotions';
 import { PromotionDetail } from './pages/PromotionDetail';
 import { Downlines } from './pages/Downlines';
+import { FloatingRewardWidget } from './components/shared/FloatingRewardWidget';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { LanguageProvider, useLanguage } from './contexts/LanguageContext';
 import { sanitizeTextInput } from './utils/security';
@@ -607,9 +605,6 @@ function AppContent() {
                 <Route path="/settings" element={<Settings />} />
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/history" element={<HistoryRecord />} />
-                <Route path="/history/bet" element={<BetHistory />} />
-                <Route path="/history/commission" element={<CommissionRecord />} />
-                <Route path="/history/rebate" element={<RebateRecord />} />
                 <Route path="/deposit" element={<Deposit />} />
                 <Route path="/withdraw" element={<Withdraw />} />
                 {/* Fallback for other routes using Home temporarily or a placeholder */}
@@ -854,6 +849,9 @@ function AppContent() {
         
         {/* Footer */}
         <Footer />
+
+        {/* Floating Reward Widget */}
+        <FloatingRewardWidget />
 
         {/* Floating Live Chat Button */}
         <div className="fixed bottom-24 md:bottom-6 right-6 z-50 flex flex-col items-end gap-4">

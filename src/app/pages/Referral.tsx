@@ -40,7 +40,7 @@ const faqs = [
     },
     {
         question: "What Should You Do?",
-        answer: "Simply share your referral link or code with friends. Once they register and start depositing/playing, you automatically start earning commissions based on their activity."
+        answer: "Simply share your referral link with friends. Once they register and start depositing/playing, you automatically start earning commissions based on their activity."
     }
 ];
 
@@ -146,7 +146,7 @@ export function Referral() {
                   </span>
                 </h1>
                 <p className="text-sm md:text-base text-white/90 leading-relaxed max-w-xl">
-                  Invite your friends using your unique link or referral code, and earn lifetime commissions from their deposits & bets.
+                  Invite your friends using your unique link, and earn lifetime commissions from their deposits & bets.
                 </p>
               </div>
 
@@ -194,7 +194,7 @@ export function Referral() {
                     <div className="absolute left-3 top-3 w-6 h-6 rounded-full bg-[#5A6D8E] text-white text-xs font-bold flex items-center justify-center">1</div>
                     <div className="flex flex-col items-center text-center gap-4">
                       <img src={shareYourLinkIcon} alt="Share your link" className="w-12 h-12" />
-                      <p className="text-xs font-semibold leading-tight text-white">Share your Link or<br/>Referral Code</p>
+                      <p className="text-xs font-semibold leading-tight text-white">Share your<br/>Referral Link</p>
                     </div>
                   </div>
                   {/* Step 2 */}
