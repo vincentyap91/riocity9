@@ -24,6 +24,23 @@ export function ReferralBanner() {
         }
     };
 
+    const handleShare = async () => {
+        try {
+            if (navigator.share) {
+                await navigator.share({
+                    title: 'Share your RioCity9 referral link',
+                    text: 'Join me on RioCity9 and get rewards!',
+                    url: referralLink,
+                });
+            } else {
+                await handleCopyLink();
+                alert('Referral link copied. Share it with your friends!');
+            }
+        } catch (err) {
+            console.error('Share failed:', err);
+        }
+    };
+
     return (
         <div className="relative w-full rounded-2xl overflow-hidden shadow-2xl">
             {/* Mobile/Tablet View - Follow HTML Structure */}
@@ -64,13 +81,13 @@ export function ReferralBanner() {
                             {/* Top Row Buttons - Share and Downlines */}
                             <div className="grid grid-cols-2 gap-3">
                             <Button 
-                                onClick={() => navigate('/referral')}
+                                onClick={handleShare}
                                 className="bg-emerald-500 hover:bg-emerald-400 text-black font-bold h-12 rounded-xl text-sm shadow-[0_0_15px_-3px_rgba(16,185,129,0.4)] transition-all cursor-pointer"
                             >
                                 <Share2 className="w-4 h-4 mr-2" /> {t("share")}
                             </Button>
                             <Button 
-                                onClick={() => navigate('/referral')}
+                                onClick={() => navigate('/downlines')}
                                 className="bg-emerald-500 hover:bg-emerald-400 text-black font-bold h-12 rounded-xl text-sm shadow-[0_0_15px_-3px_rgba(16,185,129,0.4)] transition-all cursor-pointer"
                             >
                                 <Users className="w-4 h-4 mr-2" /> {t("downlines")}
@@ -120,14 +137,23 @@ export function ReferralBanner() {
                             </div>
                         </div>
                         <div className="grid grid-cols-2 gap-4">
-                            <Button className="bg-emerald-500 hover:bg-emerald-400 text-black font-bold h-12 rounded-xl text-base shadow-[0_0_15px_-3px_rgba(16,185,129,0.4)]">
+                            <Button
+                              onClick={handleShare}
+                              className="bg-emerald-500 hover:bg-emerald-400 text-black font-bold h-12 rounded-xl text-base shadow-[0_0_15px_-3px_rgba(16,185,129,0.4)]"
+                            >
                                 <Share2 className="w-4 h-4 mr-2" /> {t("share")}
                             </Button>
-                            <Button className="bg-emerald-500 hover:bg-emerald-400 text-black font-bold h-12 rounded-xl text-base shadow-[0_0_15px_-3px_rgba(16,185,129,0.4)]">
-                                <Users className="w-4 h-4 mr-2" /> {t("downline")}
+                            <Button
+                              onClick={() => navigate('/downlines')}
+                              className="bg-emerald-500 hover:bg-emerald-400 text-black font-bold h-12 rounded-xl text-base shadow-[0_0_15px_-3px_rgba(16,185,129,0.4)]"
+                            >
+                                <Users className="w-4 h-4 mr-2" /> {t("downlines")}
                             </Button>
                         </div>
-                        <Button className="w-full bg-[#e6c252] hover:bg-[#ffd65c] text-[#3c1100] font-bold h-12 rounded-xl text-base shadow-[0_0_15px_-3px_rgba(230,194,82,0.4)]">
+                        <Button
+                          onClick={() => navigate('/referral')}
+                          className="w-full bg-[#e6c252] hover:bg-[#ffd65c] text-[#3c1100] font-bold h-12 rounded-xl text-base shadow-[0_0_15px_-3px_rgba(230,194,82,0.4)]"
+                        >
                             <Info className="w-4 h-4 mr-2" /> {t("moreInfo")}
                         </Button>
                     </div>

@@ -231,7 +231,7 @@ export function HistoryRecord() {
                 <button
                   key={filter.id}
                   onClick={() => setActiveFilter(filter.id)}
-                  className={`px-6 h-10 rounded-xl text-xs font-bold transition-all border ${
+                  className={`px-6 h-10 rounded-xl text-sm font-bold transition-all border ${
                     activeFilter === filter.id
                       ? 'border-emerald-500 bg-emerald-500/10 text-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.2)]'
                       : 'border-white/5 bg-[#0f151f] text-gray-400 hover:text-white hover:bg-white/5'
