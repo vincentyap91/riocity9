@@ -8,14 +8,15 @@
   --font-apple-text: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
-/* Global font settings - Apple style */
+/* Global font settings - readable typography */
 body {
   font-family: var(--font-apple-text);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
-  letter-spacing: -0.011em;
-  line-height: 1.47059;
+  letter-spacing: 0.01em;
+  line-height: 1.58;
+  font-size: 16px;
 }
 
 /* Apply Apple font to all elements */

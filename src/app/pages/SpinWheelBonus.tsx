@@ -13,6 +13,15 @@ const BONUS_SIDEBAR_ITEMS = [
   { id: 'prize', label: 'Prize Box Bonus', icon: Box, path: '/bonus/prize' },
 ];
 
+// Mock reward data (matches screenshot)
+const rewards = [
+  { id: 4416, campaign: 'VW Shiro Test', expiresIn: 'No Expiry' },
+  { id: 3914, campaign: 'VW Shiro Test', expiresIn: 'No Expiry' },
+  { id: 3913, campaign: 'VW Shiro Test', expiresIn: 'No Expiry' },
+  { id: 3912, campaign: 'VW Shiro Test', expiresIn: 'No Expiry' },
+  { id: 3443, campaign: 'VW Shiro Test', expiresIn: 'No Expiry' },
+];
+
 export function SpinWheelBonus() {
   const navigate = useNavigate();
   const { t } = useLanguage();
@@ -122,17 +131,22 @@ export function SpinWheelBonus() {
               <span>Rewards must be completed before the token's expiry date.</span>
             </div>
 
-            {/* Spin Wheel Content */}
-            <div className="flex-1 flex items-center justify-center min-h-[400px]">
-              <div className="text-center">
-                <div className="w-64 h-64 mx-auto mb-6 rounded-full border-4 border-emerald-500/30 bg-[#0f151f] flex items-center justify-center relative">
-                  <Dices className="w-24 h-24 text-emerald-500/50" />
-                  <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 bg-emerald-500 rounded-full border-4 border-white"></div>
+            {/* Reward cards grid (screenshot layout) */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {rewards.map((reward) => (
+                <div key={reward.id} className="bg-[#0f151f] rounded-xl border border-white/5 p-5 flex flex-col">
+                  <div className="text-emerald-500 font-bold text-sm mb-2">Reward #{reward.id}</div>
+                  <div className="text-gray-400 text-xs mb-3">Campaign: {reward.campaign}</div>
+                  <div className="flex items-center gap-2 mb-4">
+                    <Clock className="w-3 h-3 text-gray-500" />
+                    <span className="text-gray-400 text-xs">Expires in:</span>
+                    <span className="text-orange-400 text-xs font-bold">{reward.expiresIn}</span>
+                  </div>
+                  <Button className="w-full bg-emerald-500 hover:bg-emerald-400 text-black font-bold py-3 rounded-xl">
+                    Claim Now
+                  </Button>
                 </div>
-                <Button className="bg-emerald-500 hover:bg-emerald-400 text-black font-bold px-8 py-4 rounded-xl text-lg">
-                  Spin Now
-                </Button>
-              </div>
+              ))}
             </div>
           </div>
         </div>

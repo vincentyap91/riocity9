@@ -1,14 +1,12 @@
 import React, { useMemo } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { ArrowLeft, Info, CheckCircle2, Calendar, ShieldCheck, Users, MessageCircle, Trophy, Gamepad2, ListChecks } from "lucide-react";
+import { ArrowLeft, Trophy, Gamepad2 } from "lucide-react";
 import { Button } from "../components/ui/button";
 import { useLanguage } from "../contexts/LanguageContext";
 import { InnerPageLayout } from "../components/shared/InnerPageLayout";
 
-import girl1 from "@/assets/girl-1.png";
-import girl2 from "@/assets/girl-2.png";
-import girl3 from "@/assets/girl-3.png";
-import girl4 from "@/assets/girl-4.png";
+const PROMO_BANNER_URL =
+  "https://pksoftcdn.azureedge.net/media/580x320_riocityisnowlive-202311171111434006-202311301531190440-202312141426186709-202512181502055463.png";
 
 export function PromotionDetail() {
   const { id } = useParams();
@@ -19,7 +17,6 @@ export function PromotionDetail() {
     "weekly-fix": {
       title: "Bag a Cut of PKR 1,700 on Xlusive Gem Tables",
       subtitle: "Weekly Reload Bonus",
-      image: girl1,
       description: "We've been cooking up something big with Winfinity – and it's finally time to serve. This epic collab brings you 6 exclusive GemBet live casino games with over PKR 1,700 across two tournaments!\n\nDon't forget – every hand you play can land you an Unlimited Daily Jackpot with our New Year, New Jackpot promo!",
       actionText: "Play Eligible Games",
       sections: [
@@ -72,7 +69,6 @@ export function PromotionDetail() {
     "welcome-bonus": {
       title: "Claim 250% Welcome Bonus Up to PKR 50,000",
       subtitle: "New Member Exclusive",
-      image: girl2,
       description: "New to RioCity9? We welcome you with an massive 250% boost on your first three deposits. Start your journey with a big win and explore our vast range of games!",
       actionText: "Claim Now",
       sections: [
@@ -95,7 +91,6 @@ export function PromotionDetail() {
     "birthday-bonus": {
       title: "Celebrate Your Birthday with PKR 7.5K Reward",
       subtitle: "Happy Birthday from RioCity9",
-      image: girl3,
       description: "It's your special day! Let RioCity9 make it even better with a personalized birthday reward. We value our loyal players and want to celebrate with you.",
       actionText: "Check My Gift",
       sections: [
@@ -118,7 +113,6 @@ export function PromotionDetail() {
     "annual-bonus": {
       title: "Loyalty Pays Off: Get up to PKR 5k Every Year",
       subtitle: "Annual Anniversary Bonus",
-      image: girl4,
       description: "Loyalty pays off! Receive an annual bonus as a thank you for being a part of the RioCity9 family. Every year you stay with us, we reward your dedication.",
       actionText: "Claim Anniversary Gift",
       sections: [
@@ -160,11 +154,11 @@ export function PromotionDetail() {
         {/* Background Glow */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[600px] bg-[radial-gradient(ellipse_at_top,_rgba(0,188,125,0.1)_0%,_rgba(0,188,125,0.05)_40%,_transparent_70%)] pointer-events-none" />
 
-        <div className="relative z-10 container mx-auto px-4 pt-8 md:pt-12 max-w-[900px]">
+        <div className="relative z-10 container mx-auto px-4 pt-6 md:pt-8 max-w-[900px]">
         {/* Back Button */}
         <button 
           onClick={() => navigate("/promotions")}
-          className="group flex items-center gap-2 text-gray-400 hover:text-white transition-colors mb-8"
+          className="group flex items-center gap-2 text-gray-400 hover:text-white transition-colors mb-6"
         >
           <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-emerald-500/20 transition-all">
             <ArrowLeft className="w-4 h-4" />
@@ -172,64 +166,57 @@ export function PromotionDetail() {
           <span className="font-bold text-sm">{t("backToPromotions")}</span>
         </button>
 
-        {/* Hero Card - Follows screenshot layout */}
-        <div className="relative bg-[#0b1218] rounded-[32px] overflow-hidden border border-white/5 shadow-2xl mb-12 min-h-[300px] md:min-h-[400px] flex flex-col md:flex-row items-center p-8 md:p-12 gap-8">
-           {/* Glow behind girl */}
-           <div className="absolute top-1/2 right-0 -translate-y-1/2 w-[400px] h-[400px] bg-emerald-500/10 rounded-full blur-[100px] pointer-events-none" />
-           
-           <div className="relative z-10 flex-1 space-y-6 text-center md:text-left">
-              <h1 className="text-4xl font-bold tracking-tight leading-tight text-white max-w-md">
-                {promo.title}
-              </h1>
-              <div className="pt-4">
-                <Button 
-                  onClick={() => navigate("/deposit")}
-                  className="h-12 px-10 rounded-xl bg-[#00bc7d] hover:bg-[#00a870] text-black font-black text-base shadow-[0_0_20px_-5px_rgba(16,185,129,0.6)] transition-all hover:scale-[1.02]"
-                >
-                  {promo.actionText || t("joinDepositNow")}
-                </Button>
-              </div>
+        {/* Hero Card - Banner image + title + CTA */}
+        <div className="relative bg-[#0b1218] rounded-2xl overflow-hidden border border-white/5 shadow-xl mb-8">
+           <div className="relative w-full aspect-[580/320] bg-white/5">
+             <img
+               src={PROMO_BANNER_URL}
+               alt="RioCity is now live"
+               className="w-full h-full object-cover object-center"
+             />
+             <div className="absolute inset-0 bg-gradient-to-t from-[#0b1218]/60 via-transparent to-transparent pointer-events-none" />
            </div>
-
-           <div className="relative z-10 w-full md:w-[45%] flex justify-center items-end">
-              <img 
-                src={promo.image} 
-                alt={promo.title}
-                className="w-full max-w-[320px] md:max-w-[450px] object-contain drop-shadow-[0_20px_50px_rgba(0,0,0,0.5)] transform hover:scale-105 transition-transform duration-700"
-              />
+           <div className="relative z-10 p-5 md:p-6 space-y-4 text-center md:text-left">
+             {promo.subtitle && (
+               <p className="text-emerald-400 font-bold text-xs uppercase tracking-wider">
+                 {promo.subtitle}
+               </p>
+             )}
+             <h1 className="text-2xl md:text-3xl font-bold tracking-tight leading-tight text-white">
+               {promo.title}
+             </h1>
+             <div>
+               <Button
+                 onClick={() => navigate("/deposit")}
+                 className="h-11 px-8 rounded-xl bg-[#00bc7d] hover:bg-[#00a870] text-black font-bold text-sm shadow-[0_0_20px_-5px_rgba(16,185,129,0.6)] transition-all hover:scale-[1.02]"
+               >
+                 Claim
+               </Button>
+             </div>
            </div>
         </div>
 
-        {/* Content Body - Centered like screenshot */}
-        <div className="space-y-12 max-w-[800px] mx-auto">
+        {/* Content Body */}
+        <div className="space-y-8 max-w-[800px] mx-auto">
            {/* Description */}
-           <div className="text-center md:text-left space-y-6">
-              <div className="text-gray-300 text-lg leading-relaxed whitespace-pre-line font-medium opacity-90">
+           <div className="text-center md:text-left">
+              <div className="text-white/90 text-sm md:text-base leading-relaxed whitespace-pre-line font-medium">
                 {promo.description}
-              </div>
-              
-              <div className="flex justify-center py-4">
-                <Button 
-                  onClick={() => navigate("/deposit")}
-                  className="h-12 px-12 rounded-xl bg-[#00bc7d] hover:bg-[#00a870] text-black font-black text-base shadow-[0_0_20px_-5px_rgba(16,185,129,0.6)] transition-all hover:scale-[1.02]"
-                >
-                  {promo.actionText || t("joinDepositNow")}
-                </Button>
               </div>
            </div>
 
            {/* Sections (Prize Overview, etc.) */}
            {promo.sections?.map((section: any, idx: number) => (
-             <div key={idx} className="space-y-6">
-                <h2 className="text-2xl font-black flex items-center gap-3 text-white">
-                   {section.icon && <section.icon className="w-6 h-6 text-emerald-500" />}
+             <div key={idx} className="space-y-4">
+                <h2 className="text-base font-bold flex items-center gap-2 text-white">
+                   {section.icon && <section.icon className="w-5 h-5 text-emerald-500" />}
                    {section.title}
                 </h2>
-                <ul className="space-y-3">
+                <ul className="space-y-2">
                    {section.items.map((item: string, i: number) => (
-                     <li key={i} className="flex items-start gap-3 text-gray-300">
-                        <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 mt-2.5 shrink-0" />
-                        <span className="text-base font-semibold">{item}</span>
+                     <li key={i} className="flex items-start gap-2 text-white/90">
+                        <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 mt-2 shrink-0" />
+                        <span className="text-sm font-medium leading-relaxed">{item}</span>
                      </li>
                    ))}
                 </ul>
@@ -237,13 +224,13 @@ export function PromotionDetail() {
            ))}
 
            {/* Terms & Conditions */}
-           <div className="space-y-6 pt-8 border-t border-white/5">
-              <h2 className="text-2xl font-black text-white">Terms & Conditions</h2>
-              <ul className="space-y-3">
+           <div className="space-y-4 pt-6 border-t border-white/5">
+              <h2 className="text-base font-bold text-white">Terms & Conditions</h2>
+              <ul className="space-y-2">
                  {promo.terms.map((term: string, idx: number) => (
-                   <li key={idx} className="flex items-start gap-3 text-gray-400 text-sm">
+                   <li key={idx} className="flex items-start gap-2 text-white/70 text-sm">
                       <div className="w-1.5 h-1.5 rounded-full bg-emerald-500/30 mt-1.5 shrink-0" />
-                      <span className="leading-relaxed">{term}</span>
+                      <span className="font-medium leading-relaxed">{term}</span>
                    </li>
                  ))}
               </ul>
@@ -251,33 +238,26 @@ export function PromotionDetail() {
 
            {/* More Important Stuff */}
            {promo.important && (
-             <div className="space-y-6">
-                <h2 className="text-2xl font-black text-white">More Important Stuff</h2>
-                <ul className="space-y-3">
+             <div className="space-y-4">
+                <h2 className="text-base font-bold text-white">More Important Stuff</h2>
+                <ul className="space-y-2">
                    {promo.important.map((item: string, idx: number) => (
-                     <li key={idx} className="flex items-start gap-3 text-gray-400 text-sm">
+                     <li key={idx} className="flex items-start gap-2 text-white/70 text-sm">
                         <div className="w-1.5 h-1.5 rounded-full bg-emerald-500/30 mt-1.5 shrink-0" />
-                        <span className="leading-relaxed">{item}</span>
+                        <span className="font-medium leading-relaxed">{item}</span>
                      </li>
                    ))}
                 </ul>
              </div>
            )}
 
-           {/* Bottom Action Button */}
-           <div className="flex flex-col sm:flex-row gap-4 pt-12">
+           {/* Bottom: Claim button only */}
+           <div className="pt-8">
                <Button 
                 onClick={() => navigate("/deposit")}
-                className="flex-1 h-12 rounded-xl bg-[#00bc7d] hover:bg-[#00a870] text-black font-black text-base shadow-[0_0_20px_-5px_rgba(16,185,129,0.6)] transition-all hover:scale-[1.02]"
+                className="w-full h-11 rounded-xl bg-[#00bc7d] hover:bg-[#00a870] text-black font-bold text-sm shadow-[0_0_20px_-5px_rgba(16,185,129,0.6)] transition-all hover:scale-[1.02]"
                >
-                 {t("joinDepositNow")}
-               </Button>
-               <Button 
-                variant="outline"
-                className="flex-1 h-12 rounded-xl border-white/10 bg-white/5 text-white font-bold hover:bg-white/10 transition-all"
-               >
-                 <MessageCircle className="w-5 h-5 mr-2" />
-                 {t("liveSupport")}
+                 Claim
                </Button>
             </div>
         </div>

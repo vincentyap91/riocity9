@@ -3,6 +3,14 @@
 :root {
   /* Default to Dark Theme as requested */
   --font-size: 16px;
+  /* Readable typography */
+  --line-height-tight: 1.35;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.6;
+  --line-height-loose: 1.7;
+  --letter-spacing-tight: -0.01em;
+  --letter-spacing-normal: 0.01em;
+  --letter-spacing-wide: 0.02em;
   
   /* Deep Navy/Black Background */
   --background: #02040a; 
@@ -146,8 +154,9 @@
   body {
     @apply bg-background text-foreground;
     font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    letter-spacing: -0.011em;
-    line-height: 1.47059;
+    letter-spacing: var(--letter-spacing-normal);
+    line-height: var(--line-height-relaxed);
+    font-size: 16px;
     /* Premium Radial Gradient: Visible Emerald Green Spotlight */
     /* Mobile view: gradient at 10% from left */
     background: radial-gradient(circle at 10% 0%, #013b4b 0%, #02040a 10%);
@@ -173,47 +182,66 @@
 
   h1 {
     font-size: var(--text-2xl);
-    font-weight: var(--font-weight-medium);
-    line-height: 1.5;
+    font-weight: 600;
+    line-height: var(--line-height-tight);
+    letter-spacing: var(--letter-spacing-tight);
   }
 
   h2 {
     font-size: var(--text-xl);
-    font-weight: var(--font-weight-medium);
-    line-height: 1.5;
+    font-weight: 600;
+    line-height: var(--line-height-normal);
+    letter-spacing: var(--letter-spacing-tight);
   }
 
   h3 {
     font-size: var(--text-lg);
-    font-weight: var(--font-weight-medium);
-    line-height: 1.5;
+    font-weight: 600;
+    line-height: var(--line-height-normal);
+    letter-spacing: var(--letter-spacing-tight);
   }
 
   h4 {
     font-size: var(--text-base);
-    font-weight: var(--font-weight-medium);
-    line-height: 1.5;
+    font-weight: 600;
+    line-height: var(--line-height-normal);
+    letter-spacing: var(--letter-spacing-tight);
+  }
+
+  p {
+    line-height: var(--line-height-relaxed);
+    letter-spacing: var(--letter-spacing-normal);
+    margin-bottom: 0.75em;
+  }
+
+  p:last-child {
+    margin-bottom: 0;
+  }
+
+  li {
+    line-height: var(--line-height-relaxed);
+    letter-spacing: var(--letter-spacing-normal);
   }
 
   label {
     font-size: var(--text-base);
     font-weight: var(--font-weight-medium);
-    line-height: 1.47059;
-    letter-spacing: -0.011em;
+    line-height: var(--line-height-normal);
+    letter-spacing: var(--letter-spacing-normal);
   }
 
   button {
     font-size: var(--text-base);
     font-weight: var(--font-weight-medium);
-    line-height: 1.47059;
-    letter-spacing: -0.011em;
+    line-height: var(--line-height-normal);
+    letter-spacing: var(--letter-spacing-normal);
   }
 
   input {
     font-size: var(--text-base);
     font-weight: var(--font-weight-normal);
-    line-height: 1.47059;
-    letter-spacing: -0.011em;
+    line-height: var(--line-height-normal);
+    letter-spacing: var(--letter-spacing-normal);
   }
 
   a,
@@ -230,6 +258,21 @@
   input:disabled {
     cursor: not-allowed;
   }
+
+  /* Small text remains readable */
+  .text-xs {
+    line-height: 1.5;
+  }
+  .text-sm {
+    line-height: 1.55;
+  }
+}
+
+/* Readable content block – use for long-form text */
+.readable-content {
+  line-height: var(--line-height-relaxed);
+  letter-spacing: var(--letter-spacing-normal);
+  max-width: 65ch;
 }
 
 @utility no-scrollbar {
