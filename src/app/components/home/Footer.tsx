@@ -8,7 +8,7 @@ import { useLanguage } from '../../contexts/LanguageContext';
 export function Footer() {
   const { t } = useLanguage();
   return (
-    <footer className="bg-[#02040a] border-t border-white/10 pt-8 pb-8 text-sm">
+    <footer className="bg-[#02040a] border-t border-white/10 pt-8 pb-24 md:pb-8 text-sm">
       <div className="container mx-auto max-w-[1200px] 2xl:max-w-[1536px] px-4">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8 mb-16">
           

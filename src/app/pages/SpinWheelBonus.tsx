@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
-import { 
-  ArrowLeft, Dices, X, Wallet, RefreshCw, Ticket, Box, Clock
-} from 'lucide-react';
+import { ArrowLeft, Dices, X, Wallet, RefreshCw, Ticket, Box, Clock } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '../components/ui/button';
 import { useLanguage } from '../contexts/LanguageContext';
 import { InnerPageLayout } from "../components/shared/InnerPageLayout";
+import { ClaimRecordModal } from '../components/shared/ClaimRecordModal';
 
 const BONUS_SIDEBAR_ITEMS = [
   { id: 'wheel', label: 'Spin Wheel Bonus', icon: Dices, path: '/bonus/wheel' },
@@ -26,6 +25,7 @@ export function SpinWheelBonus() {
   const navigate = useNavigate();
   const { t } = useLanguage();
   const [walletBalance] = useState('990.69');
+  const [recordModalOpen, setRecordModalOpen] = useState(false);
 
   return (
     <InnerPageLayout className="overflow-hidden">
@@ -119,7 +119,10 @@ export function SpinWheelBonus() {
                   <div className="text-emerald-500 text-2xl font-black">{walletBalance}</div>
                 </div>
               </div>
-              <Button className="bg-emerald-500 hover:bg-emerald-400 text-black font-bold px-6 py-2 rounded-xl flex items-center gap-2">
+              <Button
+                onClick={() => setRecordModalOpen(true)}
+                className="bg-emerald-500 hover:bg-emerald-400 text-black font-bold px-6 py-2 rounded-xl flex items-center gap-2"
+              >
                 <RefreshCw className="w-4 h-4" />
                 Record
               </Button>
@@ -152,6 +155,13 @@ export function SpinWheelBonus() {
         </div>
 
       </div>
+
+      {/* Shared Claim Record Modal – Type dropdown switches Spin Wheel / Voucher Scratch / Prize Box */}
+      <ClaimRecordModal
+        open={recordModalOpen}
+        onOpenChange={setRecordModalOpen}
+        initialType="spinwheel"
+      />
     </InnerPageLayout>
   );
 }

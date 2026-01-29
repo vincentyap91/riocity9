@@ -23,7 +23,7 @@ const rewardItems = [
 ];
 
 const menuItems = [
-    { labelKey: "lobby", icon: Home, path: "/" },
+    { labelKey: "home", icon: Home, path: "/" },
     { labelKey: "hotGames", icon: Flame, path: "/hot" },
     { labelKey: "allGames", icon: Gamepad2, path: "/all" },
     { labelKey: "sports", icon: Trophy, path: "/sports" },

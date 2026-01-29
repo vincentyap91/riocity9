@@ -18,7 +18,7 @@ export function CategoryNav() {
   const [isScrolled, setIsScrolled] = useState(false);
   
   const categories = [
-    { id: 'lobby', labelKey: 'lobby', icon: Home, path: '/' },
+    { id: 'lobby', labelKey: 'home', icon: Home, path: '/' },
     { id: 'slots', labelKey: 'slots', icon: Gamepad2, path: '/slots' },
     { id: 'live', labelKey: 'liveCasino', icon: Dices, path: '/live-casino' },
     { id: 'sports', labelKey: 'sports', icon: Trophy, path: '/sports' },
@@ -76,7 +76,7 @@ export function CategoryNav() {
                                 <DropdownMenuTrigger className="outline-none">
                                     <div 
                                         className={`flex items-center gap-2 px-4 py-2 rounded-full whitespace-nowrap transition-all group cursor-pointer ${
-                                            (cat.id === 'promotions' || cat.id === 'app') ? 'hidden lg:flex' : ''
+                                            (cat.id === 'promotions' || cat.id === 'app') ? 'hidden 2xl:flex' : ''
                                         } ${
                                             isActive 
                                             ? 'bg-white/10 text-white border border-white/10 shadow-[0_0_15px_-3px_rgba(255,255,255,0.1)]' 
@@ -107,7 +107,7 @@ export function CategoryNav() {
                             to={cat.path}
                             key={cat.id}
                             className={`flex items-center gap-2 px-4 py-2 rounded-full whitespace-nowrap transition-all group ${
-                                (cat.id === 'promotions' || cat.id === 'app') ? 'hidden lg:flex' : ''
+                                (cat.id === 'promotions' || cat.id === 'app') ? 'hidden 2xl:flex' : ''
                             } ${
                                 isActive 
                                 ? 'bg-white/10 text-white border border-white/10 shadow-[0_0_15px_-3px_rgba(255,255,255,0.1)]' 

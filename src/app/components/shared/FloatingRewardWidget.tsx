@@ -26,7 +26,7 @@ export function FloatingRewardWidget() {
   }
 
   return (
-    <div className="fixed bottom-36 md:bottom-24 right-6 z-40 flex items-end gap-3">
+    <div className="fixed bottom-24 left-6 right-auto md:left-auto md:right-6 md:bottom-24 z-40 flex items-end gap-3">
       {/* Bonus Icons Panel - Slides in from right */}
       <AnimatePresence>
         {isExpanded && (

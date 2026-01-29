@@ -48,7 +48,7 @@ import { LanguageProvider, useLanguage } from './contexts/LanguageContext';
 import { sanitizeTextInput } from './utils/security';
 
 const categories = [
-  { id: 'lobby', labelKey: 'lobby', icon: HomeIcon, path: '/' },
+  { id: 'lobby', labelKey: 'home', icon: HomeIcon, path: '/' },
   { id: 'slots', labelKey: 'slots', icon: Gamepad2, path: '/slots' },
   { id: 'live', labelKey: 'liveCasino', icon: Dices, path: '/live-casino' },
   { id: 'sports', labelKey: 'sports', icon: Trophy, path: '/sports' },
@@ -853,7 +853,7 @@ function AppContent() {
         {/* Floating Reward Widget */}
         <FloatingRewardWidget />
 
-        {/* Floating Live Chat Button */}
+        {/* Floating Live Chat Button - on mobile above bottom nav, stays right so gift widget can sit left */}
         <div className="fixed bottom-24 md:bottom-6 right-6 z-50 flex flex-col items-end gap-4">
           
           {/* Sitemap Navigation FAB - Temporarily Hidden */}
