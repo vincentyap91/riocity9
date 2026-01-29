@@ -68,7 +68,7 @@ export function LiveSports() {
             <Button
               variant="ghost"
               size="sm"
-              className="h-8 text-[11px] uppercase font-bold text-[rgb(148,163,184)] hover:text-emerald-400 hover:bg-emerald-500/10 border border-[rgb(148,163,184,0.3)] rounded-full transition-all"
+              className="h-8 text-[11px] uppercase font-bold text-[rgb(148,163,184)] hover:text-[#00bc7d] hover:bg-[#00bc7d]/10 border border-[rgb(148,163,184,0.3)] rounded-full transition-all"
             >
               {t("viewAll")}
             </Button>
@@ -118,7 +118,7 @@ export function LiveSports() {
                   <div
                     className={`w-10 h-10 md:w-16 md:h-16 rounded-full ${match.homeColor} flex items-center justify-center border-2 border-white/20 shadow-[0_0_15px_-5px_rgba(255,255,255,0.3)] ring-2 ring-transparent group-hover:ring-orange-500/30 transition-all`}
                   >
-                    <span className="text-sm md:text-xl font-black text-white drop-shadow-md">
+                    <span className="text-sm md:text-xl font-black text-white">
                       {match.homeTeam
                         .substring(0, 2)
                         .toUpperCase()}
@@ -147,7 +147,7 @@ export function LiveSports() {
                   <div
                     className={`w-10 h-10 md:w-16 md:h-16 rounded-full ${match.awayColor} flex items-center justify-center border-2 border-white/20 shadow-[0_0_15px_-5px_rgba(255,255,255,0.3)] ring-2 ring-transparent group-hover:ring-orange-500/30 transition-all`}
                   >
-                    <span className="text-sm md:text-xl font-black text-white drop-shadow-md">
+                    <span className="text-sm md:text-xl font-black text-white">
                       {match.awayTeam
                         .substring(0, 2)
                         .toUpperCase()}

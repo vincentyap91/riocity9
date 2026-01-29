@@ -17,7 +17,8 @@ export function ComingSoon({
   return (
     <InnerPageLayout className="overflow-hidden">
       <div className="container mx-auto px-4 py-10 max-w-[1024px]">
-        <div className="flex items-center gap-3 mb-6">
+        {/* Header with back button - gap below for inner pages */}
+        <div className="flex items-center gap-3 mb-8">
           <Link
             to={backTo}
             className="h-10 w-10 rounded-full bg-black/20 border border-white/10 flex items-center justify-center hover:bg-white/10 transition-colors"

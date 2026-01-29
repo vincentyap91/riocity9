@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { InsidePageHero } from '../components/shared/InsidePageHero';
-import { Grid, ArrowRight, Search } from 'lucide-react';
+import { Grid, ArrowRight, Search, RefreshCw, DollarSign } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { sanitizeTextInput } from '../utils/security';
+import { PAGE_ACCENT, SECTION_HEADER_TITLE_CLASS } from '../config/themeTokens';
 
 // --- Assets from RiocitySlots.tsx & Mn.tsx ---
 // Hero
@@ -78,6 +79,8 @@ const games = [
 export function Slots() {
   const { t } = useLanguage();
   const [searchQuery, setSearchQuery] = useState('');
+  const [walletBalance] = useState('966.24');
+  const [guaranteedRebate] = useState('5.00%');
 
   return (
     <div className="flex flex-col flex-1 bg-[#02040a] min-h-screen overflow-x-hidden">
@@ -85,9 +88,9 @@ export function Slots() {
         {/* Hero Section */}
         <InsidePageHero image={imgImagePromo} />
 
-        {/* Simple Title Section */}
+        {/* Simple Title Section – color from provider nav */}
         <div className="mt-[-20px] relative z-20 w-full flex flex-col items-center gap-6 py-6">
-            <h2 className="text-4xl font-bold tracking-tight text-pink-500 drop-shadow-[0_0_15px_rgba(236,72,153,0.5)]">
+            <h2 className={PAGE_ACCENT.slots.pageTitleClass}>
                 {t('slots')}
             </h2>
         </div>
@@ -95,8 +98,8 @@ export function Slots() {
         {/* Main Content Area */}
         <div className="container mx-auto max-w-[1200px] px-4 relative z-10 pb-20 flex flex-col items-center">
 
-            {/* Provider Navigation */}
-              <div className="w-full max-w-5xl bg-[#0f1923]/80 backdrop-blur-md border border-white/5 rounded-xl p-2.5 mb-6">
+            {/* 3. Provider Navigation */}
+            <div className="w-full max-w-5xl bg-[#0f1923]/80 backdrop-blur-md border border-white/5 rounded-xl p-2.5 mb-6">
                 <div className="flex items-center gap-2 overflow-x-auto no-scrollbar">
                     {providers.map((p) => (
                         <div
@@ -115,16 +118,46 @@ export function Slots() {
                 </div>
             </div>
 
-            {/* Search Bar */}
+            {/* 4. Wallet + Guaranteed Rebate */}
+            <div className="w-full max-w-5xl mb-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="rounded-xl bg-[#16202c] border border-white/5 px-4 py-3 min-w-0 flex items-center justify-between gap-3">
+                    <div className="flex flex-col gap-0.5 min-w-0">
+                        <span className="text-[#ffbb33] text-xs font-bold uppercase tracking-wide">Wallet</span>
+                        <span className="text-white text-xl md:text-2xl font-black tabular-nums leading-tight">{walletBalance}</span>
+                    </div>
+                    <button
+                        type="button"
+                        className="w-10 h-10 shrink-0 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white/10 transition-colors"
+                        aria-label="Refresh wallet"
+                    >
+                        <RefreshCw className="w-5 h-5 text-white" />
+                    </button>
+                </div>
+                <div className="rounded-xl bg-[#16202c] border border-white/5 px-4 py-3 min-w-0 flex items-center justify-between gap-3">
+                    <div className="flex flex-col gap-0.5 min-w-0">
+                        <span className="text-[#ffbb33] text-xs font-bold uppercase tracking-wide">Guaranteed Rebate</span>
+                        <span className="text-white text-xl md:text-2xl font-black tabular-nums leading-tight">{guaranteedRebate}</span>
+                    </div>
+                    <button
+                        type="button"
+                        className="w-10 h-10 shrink-0 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white/10 transition-colors"
+                        aria-label="Rebate details"
+                    >
+                        <DollarSign className="w-5 h-5 text-white" />
+                    </button>
+                </div>
+            </div>
+
+            {/* Search Bar - below wallet + rebate */}
             <div className="w-full max-w-5xl mb-12">
                 <div className="relative">
-                    <input 
+                    <input
                         type="text"
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(sanitizeTextInput(e.target.value).slice(0, 50))}
                         maxLength={50}
                         className="w-full h-14 bg-[#16202c] border border-transparent hover:border-white/10 focus:border-pink-500/50 rounded-full pl-6 pr-14 text-white placeholder:text-gray-500 transition-all outline-none"
-                        placeholder={t("searchPlaceholder")}
+                        placeholder={t('searchPlaceholder')}
                     />
                     <div className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-pink-600/20 rounded-full text-pink-400">
                         <Search className="w-5 h-5" />
@@ -132,16 +165,15 @@ export function Slots() {
                 </div>
             </div>
 
-            {/* Section: NAGA GAME */}
+            {/* 5. Section Header + 6. Game Grid */}
             <div className="w-full flex flex-col gap-6">
-                
-                {/* Section Header */}
+                {/* Section Header – same accent as provider nav */}
                 <div className="flex items-center justify-center gap-3 mb-4">
-                    <div className="w-10 h-10 rounded-lg bg-[#f6339a]/10 border border-[#f6339a]/20 flex items-center justify-center">
-                        <Grid className="w-5 h-5 text-[#f6339a]" />
+                    <div className={PAGE_ACCENT.slots.sectionHeaderIconBoxClass}>
+                        <Grid className={PAGE_ACCENT.slots.sectionHeaderIconClass} />
                     </div>
-                    <h2 className="text-2xl font-black text-white italic uppercase tracking-tighter">
-                        NAGA <span className="text-[#f6339a]">GAME</span>
+                    <h2 className={SECTION_HEADER_TITLE_CLASS}>
+                        NAGA <span className={PAGE_ACCENT.slots.sectionHeaderAccentClass}>GAME</span>
                     </h2>
                 </div>
 
@@ -150,7 +182,7 @@ export function Slots() {
                     {games.map((game) => (
                         <div key={game.id} className="flex flex-col items-start gap-2 md:gap-3 group cursor-pointer w-full max-w-[214px]">
                             <div 
-                                className="relative w-full aspect-square rounded-2xl overflow-hidden ring-1 ring-white/10 transition-all duration-500 bg-[#1a2536] group-hover:ring-[#fdc700]/30 group-hover:shadow-[0_0_30px_-5px_rgba(253,199,0,0.2)]"
+                                className="relative w-full aspect-square rounded-2xl overflow-hidden ring-1 ring-white/10 transition-all duration-500 bg-[#1a2536] group-hover:ring-emerald-500/30 group-hover:shadow-[0_0_30px_-5px_rgba(16,185,129,0.2)]"
                             >
                                 <img 
                                     src={game.image} 
@@ -160,7 +192,7 @@ export function Slots() {
 
                                 {/* Hover Overlay from Screenshot */}
                                 <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                                    <div className="w-12 h-12 rounded-full bg-emerald-500 flex items-center justify-center shadow-[0_0_20px_rgba(16,185,129,0.4)] transform scale-50 group-hover:scale-100 transition-transform duration-300">
+                                    <div className="w-12 h-12 rounded-full bg-[#00bc7d] flex items-center justify-center shadow-[0_0_20px_rgba(0,188,125,0.4)] transform scale-50 group-hover:scale-100 transition-transform duration-300">
                                         <ArrowRight className="w-6 h-6 text-black stroke-[3]" />
                                     </div>
                                 </div>
@@ -173,7 +205,7 @@ export function Slots() {
                                 </h3>
                                 
                                 {/* Updated RTP Badge: Only Arrow changes color to be subtle */}
-                                <div className="flex items-center gap-1.5 md:gap-2 bg-emerald-500/10 rounded-xl px-2 py-1 md:px-3 md:py-1.5 w-fit border border-emerald-500/20 shadow-[0_0_15px_-5px_rgba(16,185,129,0.1)]">
+                                <div className="flex items-center gap-1.5 md:gap-2 bg-[#00bc7d]/10 rounded-xl px-2 py-1 md:px-3 md:py-1.5 w-fit border border-[#00bc7d]/20 shadow-[0_0_15px_-5px_rgba(0,188,125,0.1)]">
                                     <span className="text-emerald-500 font-black text-xs tracking-tight">
                                         RTP {game.rtp}
                                     </span>

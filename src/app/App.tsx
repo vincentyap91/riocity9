@@ -2,8 +2,8 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { BrowserRouter, Routes, Route, Link, useLocation, useNavigate } from 'react-router-dom';
 import { AnimatePresence, motion } from 'motion/react';
 import { Button } from './components/ui/button';
-import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle, SheetDescription } from './components/ui/sheet';
-import { Search, Menu, MessageCircle, X, Languages, CircleHelp, ChevronDown, Home as HomeIcon, Gamepad2, Dices, Trophy, Fish, Ticket, Star, Smartphone, Gift, Map, LogOut, User, Eye, EyeOff, Plus, LayoutDashboard, Target, Trash2 } from 'lucide-react';
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from './components/ui/sheet';
+import { Search, Menu, MessageCircle, X, Languages, CircleHelp, ChevronDown, Home as HomeIcon, Gamepad2, Dices, Trophy, Fish, Ticket, Star, Smartphone, Gift, Map, User, Eye, EyeOff, Target, Trash2 } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -24,6 +24,9 @@ import { Lottery } from './pages/Lottery';
 import { Poker } from './pages/Poker';
 import { Exchange } from './pages/Exchange';
 import { RecentGame } from './pages/RecentGame';
+import { AllGame } from './pages/AllGame';
+import { HotGame } from './pages/HotGame';
+import { Crash } from './pages/Crash';
 import { Register } from './pages/Register';
 import { Login } from './pages/Login';
 import { Settings } from './pages/Settings';
@@ -56,7 +59,7 @@ const categories = [
   { id: 'lottery', labelKey: 'lottery', icon: Ticket, path: '/lottery' },
   { id: 'vip', labelKey: 'vipClub', icon: Star, path: '/vip', color: 'text-yellow-400' },
   { id: 'promotions', labelKey: 'promotions', icon: Gift, path: '/promotions', color: 'text-pink-400' },
-  { id: 'app', labelKey: 'app', icon: Smartphone, path: '/app', color: 'text-emerald-400' },
+  { id: 'app', labelKey: 'app', icon: Smartphone, path: '/app', color: 'text-[#00bc7d]' },
 ];
 
 import logoSrc from "@/assets/a03f3822b9d12864ad14bfc82b6125e4be8a8d49.png";
@@ -95,6 +98,7 @@ function AppContent() {
   const { currentLang, setCurrentLang, languages, t } = useLanguage();
   const location = useLocation();
   const navigate = useNavigate();
+  const wasAuthenticatedRef = useRef<boolean | null>(null);
 
   const inputRef = useRef<HTMLInputElement | null>(null);
   const searchCategories = [
@@ -141,6 +145,26 @@ function AppContent() {
       setTimeout(() => inputRef.current?.focus(), 100);
     }
   }, [isSearchOpen]);
+
+  // When not logged in: restore "before login" state (close overlays, redirect away from auth-only pages)
+  useEffect(() => {
+    if (!isAuthenticated) {
+      setIsMenuOpen(false);
+      setIsLiveChatOpen(false);
+      setIsSearchOpen(false);
+      setIsRolloverOpen(false);
+      // If user was previously logged in and now isn't (logout/session expired), go home
+      if (wasAuthenticatedRef.current === true) {
+        const authOnlyPaths = ['/settings', '/profile', '/deposit', '/withdraw', '/history', '/my-rewards', '/downlines', '/security'];
+        if (authOnlyPaths.some((p) => location.pathname.startsWith(p))) {
+          navigate('/', { replace: true });
+        }
+      }
+      wasAuthenticatedRef.current = false;
+    } else {
+      wasAuthenticatedRef.current = true;
+    }
+  }, [isAuthenticated, location.pathname, navigate]);
 
   const handleOpenSearch = () => {
     if (!isAuthenticated) return;
@@ -275,7 +299,7 @@ function AppContent() {
             <div className="w-12 h-12 border-4 border-white/5 border-t-emerald-500 rounded-full animate-spin mb-4"></div>
             
             {/* Loading Text */}
-            <div className="text-emerald-500 font-black tracking-[0.2em] text-sm uppercase animate-pulse">
+            <div className="text-[#00bc7d] font-black tracking-[0.2em] text-sm uppercase animate-pulse">
                 {t("loading")}
             </div>
             
@@ -292,7 +316,7 @@ function AppContent() {
             `}</style>
         </div>
       )}
-      <div className="min-h-screen text-foreground font-sans selection:bg-emerald-500/30 selection:text-emerald-400 flex flex-col">
+      <div className="min-h-screen text-foreground font-sans selection:bg-[#00bc7d]/30 selection:text-[#00bc7d] flex flex-col">
         {/* Background Ambience */}
         <div className="fixed inset-0 pointer-events-none z-0">
             {/* Primary Top Glow - More Intensity */}
@@ -316,7 +340,7 @@ function AppContent() {
               {/* Desktop Menu Trigger */}
               <button 
                 onClick={() => setIsMenuOpen(true)}
-                className="h-8 w-8 sm:h-10 sm:w-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-emerald-500 hover:text-emerald-500 hover:bg-white/10 hover:border-emerald-500/50 transition-all duration-300 group"
+                className="h-8 w-8 sm:h-10 sm:w-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-[#00bc7d] hover:text-[#00bc7d] hover:bg-white/10 hover:border-[#00bc7d]/50 transition-all duration-300 group"
               >
                   <Menu className="w-5 h-5 group-hover:scale-110 transition-transform" />
               </button>
@@ -350,7 +374,7 @@ function AppContent() {
                   {isAuthenticated ? (
                       <div className="flex items-center gap-2 sm:gap-3">
                           {/* Combined Balance & Deposit Pill */}
-                          <div className="hidden sm:flex items-center bg-[#131b29]/60 border border-white/10 rounded-[10px] pl-4 pr-1 h-11 transition-all hover:border-emerald-500/30 shadow-lg">
+                          <div className="hidden sm:flex items-center bg-[#131b29]/60 border border-white/10 rounded-[10px] pl-4 pr-1 h-11 transition-all hover:border-[#00bc7d]/30 shadow-lg">
                               {/* Balance Section */}
                               <div className="flex items-center gap-2.5 mr-4">
                                   <button 
@@ -368,7 +392,7 @@ function AppContent() {
                               {/* Deposit Button - Pill Style inside */}
                               <Button
                                 asChild
-                                className="bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 hover:brightness-110 text-black font-black px-6 h-[34px] rounded-[10px] text-[13px] transition-all shadow-[0_2px_10px_rgba(16,185,129,0.3)] border-none"
+                                className="inline-flex items-center justify-center gap-2 whitespace-nowrap py-2 px-6 h-[34px] rounded-[10px] text-[13px] bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 hover:brightness-110 text-black font-black transition-all shadow-[0_2px_10px_rgba(16,185,129,0.3)] border-none"
                               >
                                 <Link to="/deposit">{t("deposit")}</Link>
                               </Button>
@@ -383,17 +407,17 @@ function AppContent() {
                               <Target size={20} />
                             </button>
 
-                            {/* Rollover Dropdown */}
+                            {/* Rollover Dropdown - centered on mobile, right-aligned on desktop */}
                             {isRolloverOpen && (
-                              <div className="absolute top-14 right-0 w-[320px] bg-[#1a2230] rounded-2xl shadow-2xl border border-white/5 overflow-hidden animate-in slide-in-from-top-2 fade-in duration-300 z-50">
+                              <div className="fixed left-1/2 -translate-x-1/2 top-20 w-[min(320px,calc(100vw-2rem))] md:absolute md:left-auto md:right-0 md:top-14 md:translate-x-0 md:w-[320px] bg-[#1a2230] rounded-2xl shadow-2xl border border-white/5 overflow-hidden animate-in slide-in-from-top-2 fade-in duration-300 z-50">
                                 {/* Header Section - Match site spacing */}
                                 <div className="flex items-center gap-3 p-4 border-b border-white/5">
                                   <div className="h-10 w-10 rounded-xl bg-black/25 border border-white/10 flex items-center justify-center shrink-0">
-                                    <Target className="w-5 h-5 text-emerald-500" strokeWidth={2.5} />
+                                    <Target className="w-5 h-5 text-[#00bc7d]" strokeWidth={2.5} />
                                   </div>
                                   <div className="flex flex-col">
                                     <span className="text-white font-bold text-base leading-tight">{t("rolloverStatus")}</span>
-                                    <span className="text-emerald-500 text-[10px] font-black uppercase tracking-wider">{t("completed")}</span>
+                                    <span className="text-[#00bc7d] text-[10px] font-black uppercase tracking-wider">{t("completed")}</span>
                                   </div>
                                 </div>
                                 
@@ -406,23 +430,23 @@ function AppContent() {
                                         <div className="flex items-center gap-1.5">
                                           <span className="text-white font-black text-xs">436</span>
                                           <span className="text-gray-600 text-[10px]">/</span>
-                                          <span className="text-emerald-400 font-black text-xs">436</span>
+                                          <span className="text-[#00bc7d] font-black text-xs">436</span>
                                         </div>
                                       </div>
                                       
                                       {/* Glowing Progress Bar - Match Profile/Settings style */}
                                       <div className="h-2 w-full bg-black/40 rounded-full overflow-hidden border border-white/5 p-[0.5px]">
-                                        <div className="h-full w-full bg-gradient-to-r from-emerald-600 to-emerald-400 rounded-full relative">
+                                        <div className="h-full w-full bg-[#00bc7d] rounded-full relative">
                                           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-[shimmer_2s_infinite]"></div>
                                         </div>
                                       </div>
 
                                       <div className="flex justify-between items-center pt-1">
-                                        <span className="text-emerald-500 text-[10px] font-black uppercase tracking-widest flex items-center gap-1.5">
-                                          <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)] animate-pulse"></div>
+                                        <span className="text-[#00bc7d] text-[10px] font-black uppercase tracking-widest flex items-center gap-1.5">
+                                          <div className="w-1.5 h-1.5 rounded-full bg-[#00bc7d] shadow-[0_0_8px_rgba(0,188,125,0.8)] animate-pulse"></div>
                                           Verified
                                         </span>
-                                        <span className="text-white font-black text-[10px] tracking-tighter bg-emerald-500/10 px-2 py-0.5 rounded">100% DONE</span>
+                                        <span className="text-white font-black text-[10px] tracking-tighter bg-[#00bc7d]/10 px-2 py-0.5 rounded">100% DONE</span>
                                       </div>
                                     </div>
                                   </div>
@@ -487,7 +511,7 @@ function AppContent() {
               {/* Language: Pill Glass Selector with Dropdown */}
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <button className="h-10 px-2 sm:px-2.5 rounded-[10px] bg-white/5 border border-white/10 flex items-center justify-center gap-1.5 text-gray-300 hover:text-white hover:bg-white/10 hover:border-emerald-500/50 transition-all duration-300 group outline-none">
+                  <button className="h-10 px-2 sm:px-2.5 rounded-[10px] bg-white/5 border border-white/10 flex items-center justify-center gap-1.5 text-gray-300 hover:text-white hover:bg-white/10 hover:border-[#00bc7d]/50 transition-all duration-300 group outline-none">
                     <div className="w-6 h-6 sm:w-7 sm:h-7 flex items-center justify-center shrink-0 overflow-hidden rounded-full border border-white/10 bg-[#0a0a0a] shadow-lg relative">
                       <currentLang.icon className="w-full h-full object-cover object-center" />
                       <div className="absolute inset-0 ring-1 ring-inset ring-white/5 rounded-full pointer-events-none"></div>
@@ -506,7 +530,7 @@ function AppContent() {
                         onClick={() => setCurrentLang(lang)}
                         className={`group flex items-center gap-3.5 px-4 py-3.5 rounded-[14px] cursor-pointer transition-all duration-300 outline-none ${
                           currentLang.id === lang.id 
-                          ? 'bg-gradient-to-r from-emerald-500/10 to-transparent text-[#00ff88] shadow-[inset_0_0_20px_rgba(0,255,136,0.02)]' 
+                          ? 'bg-gradient-to-r from-[#00bc7d]/10 to-transparent text-[#00ff88] shadow-[inset_0_0_20px_rgba(0,255,136,0.02)]' 
                           : 'text-white/60 hover:text-white hover:bg-white/5'
                         }`}
                       >
@@ -586,9 +610,9 @@ function AppContent() {
                 <Route path="/lottery" element={<Lottery />} />
                 <Route path="/poker" element={<Poker />} />
                 <Route path="/recent-games" element={<RecentGame />} />
-                <Route path="/crash" element={<ComingSoon title="Crash" backTo="/" backLabel="Home" />} />
-                <Route path="/hot" element={<ComingSoon title="Hot Games" backTo="/" backLabel="Home" />} />
-                <Route path="/all" element={<ComingSoon title="All Games" backTo="/" backLabel="Home" />} />
+                <Route path="/crash" element={<Crash />} />
+                <Route path="/hot" element={<HotGame />} />
+                <Route path="/all" element={<AllGame />} />
                 <Route path="/exchange" element={<Exchange />} />
                 <Route path="/rebate" element={<Rebate />} />
                 <Route path="/vip" element={<Membership />} />
@@ -629,7 +653,7 @@ function AppContent() {
               <div className="flex items-center justify-between px-6 py-4 border-b border-white/5">
                 <div className="flex items-center gap-3">
                   <div className="w-8 h-8 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center">
-                    <Search className="w-4 h-4 text-emerald-500" />
+                    <Search className="w-4 h-4 text-[#00bc7d]" />
                   </div>
                   <h3 className="text-white font-black text-lg uppercase tracking-tighter">{t("searchHeader")}</h3>
                 </div>
@@ -655,7 +679,7 @@ function AppContent() {
                       }
                     }}
                     placeholder={t("searchPlaceholder")}
-                    className="w-full h-14 bg-[#16202c] border border-white/10 rounded-2xl pl-12 pr-12 text-white text-base font-bold placeholder:text-gray-500 outline-none focus:border-emerald-500/30 focus:bg-[#1a2536] transition-all shadow-inner"
+                    className="w-full h-14 bg-[#16202c] border border-white/10 rounded-2xl pl-12 pr-12 text-white text-base font-bold placeholder:text-gray-500 outline-none focus:border-[#00bc7d]/30 focus:bg-[#1a2536] transition-all shadow-inner"
                   />
                   {searchQuery && (
                     <button 
@@ -665,7 +689,7 @@ function AppContent() {
                       <X size={16} />
                     </button>
                   )}
-                  <div className="absolute left-4 top-1/2 -translate-y-1/2 p-2 text-gray-500 group-focus-within:text-emerald-400 transition-colors">
+                  <div className="absolute left-4 top-1/2 -translate-y-1/2 p-2 text-gray-500 group-focus-within:text-[#00bc7d] transition-colors">
                     <Search className="w-5 h-5" />
                   </div>
                 </div>
@@ -679,7 +703,7 @@ function AppContent() {
                       onClick={() => setSelectedSearchCategory(item.value)}
                       className={`shrink-0 px-4 h-9 rounded-lg text-xs font-black transition-all ${
                         selectedSearchCategory === item.value
-                          ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-600/20'
+                          ? 'bg-[#00bc7d] text-white shadow-lg shadow-[#00bc7d]/20'
                           : 'text-gray-400 hover:text-white hover:bg-white/5'
                       }`}
                     >
@@ -712,7 +736,7 @@ function AppContent() {
                           key={item}
                           type="button"
                           onClick={() => setSearchQuery(item)}
-                          className="group flex items-center gap-2 px-3 py-1.5 rounded-lg border border-white/5 bg-white/5 text-[11px] text-gray-400 hover:border-emerald-500/30 hover:text-white transition-all"
+                          className="group flex items-center gap-2 px-3 py-1.5 rounded-lg border border-white/5 bg-white/5 text-[11px] text-gray-400 hover:border-[#00bc7d]/30 hover:text-white transition-all"
                         >
                           {item}
                         </button>
@@ -735,7 +759,7 @@ function AppContent() {
                         key={item.id}
                         type="button"
                         onClick={() => handleItemClick(item)}
-                        className="flex items-center gap-3 rounded-xl border border-white/5 bg-[#111a24] p-3 text-left hover:border-emerald-500/30 hover:bg-[#14202c] transition-all group"
+                        className="flex items-center gap-3 rounded-xl border border-white/5 bg-[#111a24] p-3 text-left hover:border-[#00bc7d]/30 hover:bg-[#14202c] transition-all group"
                       >
                         <div className="h-10 w-10 rounded-lg bg-[#1a2230] border border-white/10 flex items-center justify-center overflow-hidden shrink-0">
                           {item.image ? (
@@ -745,7 +769,7 @@ function AppContent() {
                               className={`w-full h-full ${item.type === 'provider' ? 'object-contain p-1' : 'object-cover'}`} 
                             />
                           ) : (
-                            <div className="text-emerald-400 font-black text-xs uppercase">
+                            <div className="text-[#00bc7d] font-black text-xs uppercase">
                               {item.type === 'provider' ? 'P' : 'G'}
                             </div>
                           )}
@@ -792,8 +816,8 @@ function AppContent() {
             >
               <div className="flex items-center justify-between px-6 py-4 border-b border-white/5">
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center">
-                    <Languages className="w-4 h-4 text-emerald-500" />
+                  <div className="w-8 h-8 rounded-lg bg-[#00bc7d]/10 border border-[#00bc7d]/20 flex items-center justify-center">
+                    <Languages className="w-4 h-4 text-[#00bc7d]" />
                   </div>
                   <h3 className="text-white font-black text-lg uppercase tracking-tighter">{t("changeLanguage")}</h3>
                 </div>
@@ -817,7 +841,7 @@ function AppContent() {
                       }}
                       className={`w-full flex items-center gap-3.5 px-4 py-3.5 rounded-[14px] cursor-pointer transition-all duration-300 outline-none ${
                         currentLang.id === lang.id 
-                          ? 'bg-gradient-to-r from-emerald-500/10 to-transparent text-[#00ff88] shadow-[inset_0_0_20px_rgba(0,255,136,0.02)] border border-emerald-500/30' 
+                          ? 'bg-gradient-to-r from-[#00bc7d]/10 to-transparent text-[#00ff88] shadow-[inset_0_0_20px_rgba(0,255,136,0.02)] border border-[#00bc7d]/30' 
                           : 'text-white/60 hover:text-white hover:bg-white/5 border border-transparent'
                       }`}
                     >
@@ -871,33 +895,33 @@ function AppContent() {
                                 onClick={() => setIsNavMenuOpen(false)}
                                 className="flex items-center gap-3 px-3 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition-colors"
                              >
-                                <cat.icon className="w-4 h-4 text-emerald-500" />
+                                <cat.icon className="w-4 h-4 text-[#00bc7d]" />
                                 <span>{t(cat.labelKey as any)}</span>
                              </Link>
                         ))}
                         <div className="h-px bg-white/5 my-1"></div>
                         <Link to="/settings" onClick={() => setIsNavMenuOpen(false)} className="flex items-center gap-3 px-3 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition-colors">
-                            <span className="w-4 h-4 flex items-center justify-center font-bold text-emerald-500">⚙️</span>
+                            <span className="w-4 h-4 flex items-center justify-center font-bold text-[#00bc7d]">⚙️</span>
                             <span>{t("settings")}</span>
                         </Link>
                         <Link to="/deposit" onClick={() => setIsNavMenuOpen(false)} className="flex items-center gap-3 px-3 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition-colors">
-                            <span className="w-4 h-4 flex items-center justify-center font-bold text-emerald-500">💳</span>
+                            <span className="w-4 h-4 flex items-center justify-center font-bold text-[#00bc7d]">💳</span>
                             <span>{t("deposit")}</span>
                         </Link>
                         <Link to="/withdraw" onClick={() => setIsNavMenuOpen(false)} className="flex items-center gap-3 px-3 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition-colors">
-                            <span className="w-4 h-4 flex items-center justify-center font-bold text-emerald-500">🏧</span>
+                            <span className="w-4 h-4 flex items-center justify-center font-bold text-[#00bc7d]">🏧</span>
                             <span>{t("withdraw")}</span>
                         </Link>
                         <Link to="/register" onClick={() => setIsNavMenuOpen(false)} className="flex items-center gap-3 px-3 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition-colors">
-                            <span className="w-4 h-4 flex items-center justify-center font-bold text-emerald-500">📝</span>
+                            <span className="w-4 h-4 flex items-center justify-center font-bold text-[#00bc7d]">📝</span>
                             <span>{t("register")}</span>
                         </Link>
                         <Link to="/login" onClick={() => setIsNavMenuOpen(false)} className="flex items-center gap-3 px-3 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition-colors">
-                            <span className="w-4 h-4 flex items-center justify-center font-bold text-emerald-500">🔐</span>
+                            <span className="w-4 h-4 flex items-center justify-center font-bold text-[#00bc7d]">🔐</span>
                             <span>{t("login")}</span>
                         </Link>
                        <Link to="/referral" onClick={() => setIsNavMenuOpen(false)} className="flex items-center gap-3 px-3 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition-colors">
-                            <span className="w-4 h-4 flex items-center justify-center font-bold text-emerald-500">🔐</span>
+                            <span className="w-4 h-4 flex items-center justify-center font-bold text-[#00bc7d]">🔐</span>
                             <span>{t("referral")}</span>
                         </Link>
                      </div>
@@ -916,25 +940,25 @@ function AppContent() {
           <div className="relative">
             <Button 
                 onClick={() => setIsLiveChatOpen(!isLiveChatOpen)}
-                className={`h-14 w-14 rounded-full shadow-2xl transition-all duration-300 ${isLiveChatOpen ? 'bg-red-500 hover:bg-red-600 rotate-90' : 'bg-emerald-500 hover:bg-emerald-400 hover:scale-110 animate-bounce'}`}
+                className={`h-14 w-14 rounded-full shadow-2xl transition-all duration-300 ${isLiveChatOpen ? 'bg-red-500 hover:bg-red-600 rotate-90' : 'bg-[#00bc7d] hover:bg-[#00a870] hover:scale-110 animate-bounce'}`}
             >
                 {isLiveChatOpen ? <X className="h-6 w-6" /> : <MessageCircle className="h-7 w-7" />}
             </Button>
             
             {/* Chat Window (Mockup) */}
             {isLiveChatOpen && (
-                <div className="absolute bottom-20 right-0 w-[350px] h-[500px] bg-[#0f1923] border border-emerald-500/30 rounded-2xl shadow-2xl flex flex-col overflow-hidden animate-in slide-in-from-bottom-10 fade-in duration-300 z-50">
+                <div className="absolute bottom-20 right-0 w-[350px] h-[500px] bg-[#0f1923] border border-[#00bc7d]/30 rounded-2xl shadow-2xl flex flex-col overflow-hidden animate-in slide-in-from-bottom-10 fade-in duration-300 z-50">
                     <div className="bg-emerald-600 p-4 flex items-center justify-between">
                         <div className="flex items-center gap-3">
                             <div className="relative">
                                 <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
                                     <CircleHelp className="text-white w-6 h-6" />
                                 </div>
-                                <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-400 rounded-full border-2 border-emerald-600"></div>
+                                <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-400 rounded-full border-2 border-[#00bc7d]"></div>
                             </div>
                             <div>
                                 <div className="font-bold text-white">RioCity9 Support</div>
-                                <div className="text-xs text-emerald-100">Typically replies in 2m</div>
+                                <div className="text-xs text-white/90">Typically replies in 2m</div>
                             </div>
                         </div>
                     </div>
@@ -984,7 +1008,7 @@ function AppContent() {
                             onChange={(e) => setChatMessage(sanitizeTextInput(e.target.value).slice(0, 500))}
                             maxLength={500}
                             onFocus={() => setShowSuggestedMessages(true)}
-                            className="flex-1 bg-[#1a2536] border border-white/10 rounded-full px-4 py-2 text-sm text-white focus:outline-none focus:border-emerald-500/50"
+                            className="flex-1 bg-[#1a2536] border border-white/10 rounded-full px-4 py-2 text-sm text-white focus:outline-none focus:border-[#00bc7d]/50"
                         />
                         <button className="text-gray-500 hover:text-white transition-colors">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/></svg>

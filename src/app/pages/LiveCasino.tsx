@@ -3,8 +3,9 @@ import { InsidePageHero } from '../components/shared/InsidePageHero';
 import { ArrowRight, Search } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { sanitizeTextInput } from '../utils/security';
+import { PAGE_ACCENT } from '../config/themeTokens';
 
-// Figma Asset Imports
+// Asset Imports
 import imgKh168Marbula2Providericon200X200Px2025101310310355541 from "@/assets/f6a50bd7817f3011aaeb196648cadbe4a3ae53b3.png";
 
 // New Banner
@@ -47,9 +48,9 @@ export function LiveCasino() {
       {/* Hero Section */}
       <InsidePageHero image={imgLiveCasinoBanner} />
 
-      {/* Simple Title Section */}
+      {/* Simple Title Section – color from provider / banner */}
       <div className="mt-[-20px] relative z-20 w-full flex flex-col items-center gap-6 py-6 pb-0">
-          <h2 className="text-4xl font-bold tracking-tight text-blue-500 drop-shadow-[0_0_15px_rgba(59,130,246,0.5)]">
+          <h2 className={PAGE_ACCENT.liveCasino.pageTitleClass}>
               {t('liveCasino')}
           </h2>
       </div>
@@ -80,7 +81,7 @@ export function LiveCasino() {
             {providers.map((provider) => (
                 <div key={provider.id} className="flex flex-col items-start gap-2 md:gap-3 group cursor-pointer w-full max-w-[214px]">
                     <div 
-                        className="relative w-full aspect-square rounded-2xl overflow-hidden ring-1 ring-white/10 transition-all duration-300 bg-[#1a2536]"
+                        className="relative w-full aspect-square rounded-2xl overflow-hidden ring-1 ring-white/10 transition-all duration-300 bg-[#1a2536] group-hover:ring-emerald-500/30 group-hover:shadow-[0_0_30px_-5px_rgba(16,185,129,0.2)]"
                     >
                         <img 
                             src={provider.img} 
@@ -89,7 +90,7 @@ export function LiveCasino() {
                         />
                         {/* Hover Overlay from Screenshot */}
                         <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                            <div className="w-12 h-12 rounded-full bg-emerald-500 flex items-center justify-center shadow-[0_0_20px_rgba(16,185,129,0.4)] transform scale-50 group-hover:scale-100 transition-transform duration-300">
+                            <div className="w-12 h-12 rounded-full bg-[#00bc7d] flex items-center justify-center shadow-[0_0_20px_rgba(0,188,125,0.4)] transform scale-50 group-hover:scale-100 transition-transform duration-300">
                                 <ArrowRight className="w-6 h-6 text-black stroke-[3]" />
                             </div>
                         </div>

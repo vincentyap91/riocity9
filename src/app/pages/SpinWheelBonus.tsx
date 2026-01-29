@@ -1,15 +1,23 @@
 import React, { useState } from 'react';
 import { ArrowLeft, Dices, X, Wallet, RefreshCw, Ticket, Box, Clock } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Button } from '../components/ui/button';
 import { useLanguage } from '../contexts/LanguageContext';
 import { InnerPageLayout } from "../components/shared/InnerPageLayout";
+import { PageSidebar, type PageSidebarItem } from '../components/shared/PageSidebar';
 import { ClaimRecordModal } from '../components/shared/ClaimRecordModal';
+import {
+  RECORD_PAGE_ICON_BOX_CLASS,
+  RECORD_PAGE_ICON_CLASS,
+  RECORD_PAGE_TITLE_CLASS,
+  MOBILE,
+  PRIMARY_CTA_CLASS,
+} from '../config/themeTokens';
 
-const BONUS_SIDEBAR_ITEMS = [
-  { id: 'wheel', label: 'Spin Wheel Bonus', icon: Dices, path: '/bonus/wheel' },
-  { id: 'scratch', label: 'Voucher Scratch Bonus', icon: Ticket, path: '/bonus/scratch' },
-  { id: 'prize', label: 'Prize Box Bonus', icon: Box, path: '/bonus/prize' },
+const BONUS_SIDEBAR_ITEMS: PageSidebarItem[] = [
+  { id: 'wheel', label: 'Spin Wheel Bonus', icon: Dices },
+  { id: 'scratch', label: 'Voucher Scratch Bonus', icon: Ticket },
+  { id: 'prize', label: 'Prize Box Bonus', icon: Box },
 ];
 
 // Mock reward data (matches screenshot)
@@ -23,105 +31,65 @@ const rewards = [
 
 export function SpinWheelBonus() {
   const navigate = useNavigate();
+  const { bonusType } = useParams();
   const { t } = useLanguage();
   const [walletBalance] = useState('990.69');
   const [recordModalOpen, setRecordModalOpen] = useState(false);
+  const activeId = bonusType ?? 'wheel';
 
   return (
-    <InnerPageLayout className="overflow-hidden">
-      <div className="container mx-auto px-4 py-12 max-w-[1024px]">
-        
-        {/* Navigation Header */}
-        <div className="relative flex items-center justify-center mb-6">
-          <div className="absolute left-0 flex items-center gap-3">
-            <button
-              onClick={() => navigate('/')}
-              className="h-10 w-10 rounded-full bg-black/20 border border-white/10 flex items-center justify-center hover:bg-white/10 transition-colors"
-            >
-              <ArrowLeft className="w-5 h-5 text-white" />
-            </button>
-            <span className="text-white font-bold text-base">{t("rewardCentre")}</span>
-          </div>
+    <InnerPageLayout className="overflow-x-hidden">
+      <div className={`container mx-auto max-w-[1024px] ${MOBILE.container} pb-20 md:pb-8`}>
+        {/* Top Header – same layout and gap as Profile */}
+        <div className={`flex items-center ${MOBILE.gapSm} ${MOBILE.headerMb} px-2`}>
           <button
             onClick={() => navigate('/')}
-            className="absolute right-0 h-10 w-10 rounded-full bg-black/20 border border-white/10 flex items-center justify-center hover:bg-white/10 transition-colors"
+            className="h-10 w-10 rounded-full bg-black/20 border border-white/10 flex items-center justify-center hover:bg-white/10 transition-colors"
+            aria-label="Back"
+          >
+            <ArrowLeft className="w-5 h-5 text-white" />
+          </button>
+          <span className={`text-white ${MOBILE.pageTitle}`}>{t("rewardCentre")}</span>
+          <button
+            onClick={() => navigate('/')}
+            className="ml-auto h-10 w-10 rounded-full bg-black/20 border border-white/10 flex items-center justify-center hover:bg-white/10 transition-colors"
+            aria-label="Close"
           >
             <X className="w-5 h-5 text-white" />
           </button>
         </div>
 
-        {/* Mobile/Tablet: Horizontal Scrollable Sidebar */}
-        <div className="lg:hidden mb-6">
-          <div className="w-full bg-[#1a2230] rounded-2xl border border-white/5 p-3 overflow-x-auto no-scrollbar">
-            <div className="flex items-center gap-3 min-w-max">
-              {BONUS_SIDEBAR_ITEMS.map((item) => (
-                <button
-                  key={item.id}
-                  onClick={() => navigate(item.path)}
-                  className={`px-5 py-3 rounded-xl text-sm font-bold whitespace-nowrap transition-all flex items-center gap-3 group shrink-0 ${
-                    item.id === 'wheel'
-                      ? 'bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 text-black shadow-lg'
-                      : 'text-gray-400 hover:text-white hover:bg-white/5'
-                  }`}
-                >
-                  <item.icon className={`w-5 h-5 shrink-0 transition-colors ${
-                    item.id === 'wheel' ? 'text-black' : 'text-gray-500 group-hover:text-white'
-                  }`} />
-                  <span>{item.label}</span>
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
+        <div className="flex flex-col lg:flex-row gap-4 md:gap-6 items-start">
+          <PageSidebar
+            items={BONUS_SIDEBAR_ITEMS}
+            activeId={activeId}
+            onSelect={(id) => navigate(`/bonus/${id}`)}
+          />
 
-        <div className="flex flex-col lg:flex-row gap-6 items-start">
-          
-          {/* Desktop: Vertical Sidebar */}
-          <div className="hidden lg:flex w-[280px] bg-[#1a2230] rounded-2xl border border-white/5 p-4 flex-col gap-2 shrink-0">
-            {BONUS_SIDEBAR_ITEMS.map((item) => (
-              <button
-                key={item.id}
-                onClick={() => navigate(item.path)}
-                className={`w-full px-5 py-4 rounded-xl text-sm font-bold text-left transition-all flex items-center gap-4 group ${
-                  item.id === 'wheel'
-                    ? 'bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 text-black shadow-lg'
-                    : 'text-gray-400 hover:text-white hover:bg-white/5'
-                }`}
-              >
-                <item.icon className={`w-5 h-5 transition-colors ${
-                  item.id === 'wheel' ? 'text-black' : 'text-gray-500 group-hover:text-white'
-                }`} />
-                <span>{item.label}</span>
-              </button>
-            ))}
-          </div>
-
-          {/* Main Content Area */}
-          <div className="flex-1 w-full bg-[#1a2230] rounded-2xl border border-white/5 p-6 flex flex-col">
-            {/* Title */}
-            <div className="flex items-center justify-between mb-6">
-              <div className="flex items-center gap-3">
-                <div className="h-10 w-10 rounded-xl bg-black/25 border border-white/10 flex items-center justify-center">
-                  <Dices className="w-5 h-5 text-emerald-500" />
-                </div>
-                <span className="text-emerald-500 font-bold text-lg">{t("spinWheelBonus")}</span>
+          {/* Main Content Area - mobile friendly padding */}
+          <div className="flex-1 w-full min-w-0 bg-[#1a2230] rounded-2xl border border-white/5 p-4 md:p-6 flex flex-col">
+            {/* Title – same tokens as History Record */}
+            <div className="flex items-center justify-start gap-3 pb-3 md:pb-4">
+              <div className={RECORD_PAGE_ICON_BOX_CLASS}>
+                <Dices className={RECORD_PAGE_ICON_CLASS} />
               </div>
+              <span className={RECORD_PAGE_TITLE_CLASS}>{t("spinWheelBonus")}</span>
             </div>
 
-            {/* Wallet Balance Section */}
-            <div className="bg-[#0f151f] rounded-xl border border-white/5 p-4 mb-6 flex items-center justify-between">
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-full bg-yellow-500/20 flex items-center justify-center">
-                  <Wallet className="w-6 h-6 text-yellow-400" />
+            {/* Wallet Balance Section - stack on mobile */}
+            <div className="bg-[#0f151f] rounded-xl border border-white/5 p-4 mb-4 md:mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+              <div className="flex items-center gap-3 md:gap-4">
+                <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-yellow-500/20 flex items-center justify-center shrink-0">
+                  <Wallet className="w-5 h-5 md:w-6 md:h-6 text-yellow-400" />
                 </div>
-                <div>
-                  <div className="text-gray-400 text-sm font-bold mb-1">Wallet Balance:</div>
-                  <div className="text-emerald-500 text-2xl font-black">{walletBalance}</div>
+                <div className="min-w-0">
+                  <div className="text-gray-400 text-xs md:text-sm font-bold mb-0.5">Wallet Balance:</div>
+                  <div className="text-emerald-500 text-xl md:text-2xl font-black truncate">{walletBalance}</div>
                 </div>
               </div>
               <Button
                 onClick={() => setRecordModalOpen(true)}
-                className="bg-emerald-500 hover:bg-emerald-400 text-black font-bold px-6 py-2 rounded-xl flex items-center gap-2"
+                className={`px-4 md:px-6 py-2 rounded-xl flex items-center justify-center gap-2 w-full sm:w-auto shrink-0 font-black ${PRIMARY_CTA_CLASS}`}
               >
                 <RefreshCw className="w-4 h-4" />
                 Record
@@ -129,15 +97,15 @@ export function SpinWheelBonus() {
             </div>
 
             {/* Warning Message */}
-            <div className="flex items-center gap-2 mb-6 text-gray-400 text-sm">
+            <div className="flex items-center gap-2 mb-4 md:mb-6 text-gray-400 text-xs md:text-sm">
               <Clock className="w-4 h-4 text-orange-400" />
               <span>Rewards must be completed before the token's expiry date.</span>
             </div>
 
-            {/* Reward cards grid (screenshot layout) */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {/* Reward cards grid - single column on mobile */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4">
               {rewards.map((reward) => (
-                <div key={reward.id} className="bg-[#0f151f] rounded-xl border border-white/5 p-5 flex flex-col">
+                <div key={reward.id} className="bg-[#0f151f] rounded-xl border border-white/5 p-4 md:p-5 flex flex-col">
                   <div className="text-emerald-500 font-bold text-sm mb-2">Reward #{reward.id}</div>
                   <div className="text-gray-400 text-xs mb-3">Campaign: {reward.campaign}</div>
                   <div className="flex items-center gap-2 mb-4">
@@ -145,7 +113,7 @@ export function SpinWheelBonus() {
                     <span className="text-gray-400 text-xs">Expires in:</span>
                     <span className="text-orange-400 text-xs font-bold">{reward.expiresIn}</span>
                   </div>
-                  <Button className="w-full bg-emerald-500 hover:bg-emerald-400 text-black font-bold py-3 rounded-xl">
+                  <Button className={`w-full py-3 rounded-xl font-black ${PRIMARY_CTA_CLASS}`}>
                     Claim Now
                   </Button>
                 </div>

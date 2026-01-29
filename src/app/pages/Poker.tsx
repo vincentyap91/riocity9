@@ -3,6 +3,7 @@ import { InsidePageHero } from "../components/shared/InsidePageHero";
 import { useLanguage } from "../contexts/LanguageContext";
 import { ArrowRight, Search } from "lucide-react";
 import { sanitizeTextInput } from "../utils/security";
+import { PAGE_ACCENT } from "../config/themeTokens";
 
 const pokerBanner = "https://pksoftcdn.azureedge.net/media/poker%27-202502241408444412.jpg";
 
@@ -37,9 +38,9 @@ export function Poker() {
     <div className="flex flex-col gap-8 pb-24 md:pb-0 flex-1 overflow-x-hidden animate-in fade-in duration-500 bg-[#02040a]">
         <InsidePageHero image={pokerBanner} />
 
-      {/* Simple Title Section */}
+      {/* Simple Title Section – color from provider / banner */}
       <div className="mt-[-20px] relative z-20 w-full flex flex-col items-center gap-6 py-6 pb-0">
-        <h2 className="text-4xl font-bold tracking-tight text-emerald-500 drop-shadow-[0_0_15px_rgba(16,185,129,0.5)]">
+        <h2 className={PAGE_ACCENT.poker.pageTitleClass}>
           {t("poker")}
         </h2>
       </div>
@@ -55,7 +56,7 @@ export function Poker() {
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(sanitizeTextInput(e.target.value).slice(0, 50))}
                     maxLength={50}
-                    className="w-full h-14 bg-[#16202c] border border-transparent hover:border-white/10 focus:border-emerald-500/50 rounded-full pl-6 pr-14 text-white placeholder:text-gray-500 transition-all outline-none"
+                    className="w-full h-14 bg-[#16202c] border border-transparent hover:border-white/10 focus:border-[#00bc7d]/50 rounded-full pl-6 pr-14 text-white placeholder:text-gray-500 transition-all outline-none"
                     placeholder={t("searchPlaceholder")}
                 />
                 <div className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-emerald-600/20 rounded-full text-emerald-400">
@@ -69,7 +70,7 @@ export function Poker() {
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-4 lg:gap-6 justify-items-center">
           {pokerProviders.map((provider) => (
             <div key={provider.id} className="flex flex-col items-start gap-2 md:gap-3 group cursor-pointer w-full max-w-[214px]">
-              <div className="relative w-full aspect-square rounded-2xl overflow-hidden ring-1 ring-white/10 transition-all duration-300 bg-[#1a2536]">
+              <div className="relative w-full aspect-square rounded-2xl overflow-hidden ring-1 ring-white/10 transition-all duration-300 bg-[#1a2536] group-hover:ring-emerald-500/30 group-hover:shadow-[0_0_30px_-5px_rgba(16,185,129,0.2)]">
                 <img
                   src={provider.img}
                   alt={provider.name}
@@ -77,7 +78,7 @@ export function Poker() {
                 />
                 {/* Hover Overlay from Screenshot */}
                 <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                  <div className="w-12 h-12 rounded-full bg-emerald-500 flex items-center justify-center shadow-[0_0_20px_rgba(16,185,129,0.4)] transform scale-50 group-hover:scale-100 transition-transform duration-300">
+                  <div className="w-12 h-12 rounded-full bg-[#00bc7d] flex items-center justify-center shadow-[0_0_20px_rgba(0,188,125,0.4)] transform scale-50 group-hover:scale-100 transition-transform duration-300">
                     <ArrowRight className="w-6 h-6 text-black stroke-[3]" />
                   </div>
                 </div>

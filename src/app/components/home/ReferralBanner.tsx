@@ -59,12 +59,12 @@ export function ReferralBanner() {
                     <div className="space-y-4">
                         {/* My Referral Link */}
                         <div className="space-y-2">
-                            <label className="text-xs font-bold text-yellow-400 tracking-wider">{t("myReferralLink")}</label>
+                            <label className="text-xs font-bold text-[#FFD700] tracking-wider">{t("myReferralLink")}</label>
                             <div className="flex items-center justify-between bg-[#134438]/50 border border-emerald-500/30 rounded-xl p-3 group/input hover:border-emerald-500/60 transition-colors">
                                 <span className="text-white text-xs font-mono truncate pr-4">{referralLink}</span>
                                 <button 
                                     onClick={handleCopyLink}
-                                    className="p-2 hover:bg-emerald-500/20 rounded-lg transition-colors text-yellow-400 shrink-0 active:scale-95"
+                                    className="p-2 hover:bg-[#00bc7d]/20 rounded-lg transition-colors text-[#FFD700] shrink-0 active:scale-95"
                                     title="Copy referral link"
                                 >
                                     {copiedLink ? (
@@ -82,13 +82,13 @@ export function ReferralBanner() {
                             <div className="grid grid-cols-2 gap-3">
                             <Button 
                                 onClick={handleShare}
-                                className="bg-emerald-500 hover:bg-emerald-400 text-black font-bold h-12 rounded-xl text-sm shadow-[0_0_15px_-3px_rgba(16,185,129,0.4)] transition-all cursor-pointer"
+                                className="bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 hover:brightness-110 text-black font-black h-12 rounded-xl text-sm shadow-[0_2px_10px_rgba(16,185,129,0.3)] transition-all cursor-pointer border-none"
                             >
                                 <Share2 className="w-4 h-4 mr-2" /> {t("share")}
                             </Button>
                             <Button 
                                 onClick={() => navigate('/downlines')}
-                                className="bg-emerald-500 hover:bg-emerald-400 text-black font-bold h-12 rounded-xl text-sm shadow-[0_0_15px_-3px_rgba(16,185,129,0.4)] transition-all cursor-pointer"
+                                className="bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 hover:brightness-110 text-black font-black h-12 rounded-xl text-sm shadow-[0_2px_10px_rgba(16,185,129,0.3)] transition-all cursor-pointer border-none"
                             >
                                 <Users className="w-4 h-4 mr-2" /> {t("downlines")}
                             </Button>
@@ -116,16 +116,16 @@ export function ReferralBanner() {
                 <div className="relative h-full container mx-auto max-w-[1200px] 2xl:max-w-[1536px] px-4 flex items-center">
                     <div className="w-full max-w-md bg-[#02040a]/80 backdrop-blur-md border border-emerald-500/20 rounded-2xl p-6 md:p-8 flex flex-col gap-6 shadow-xl ml-0 md:ml-8 lg:ml-16">
                         <div className="space-y-2 text-center">
-                            <h2 className="text-2xl md:text-2xl font-black text-yellow-400">Your Unique Referral Hub</h2>
+                            <h2 className="text-2xl md:text-2xl font-black text-[#FFD700]">Your Unique Referral Hub</h2>
                             <p className="font-bold text-white text-sm md:text-base">Share & Grow Your Network</p>
                         </div>
                         <div className="space-y-2">
-                            <label className="text-xs font-bold text-yellow-400 tracking-wider">{t("myReferralLink")}</label>
+                            <label className="text-xs font-bold text-[#FFD700] tracking-wider">{t("myReferralLink")}</label>
                             <div className="flex items-center justify-between bg-[#134438]/50 border border-emerald-500/30 rounded-xl p-3 md:p-4 group/input hover:border-emerald-500/60 transition-colors">
                                 <span className="text-white text-xs md:text-sm font-mono truncate pr-4">{referralLink}</span>
                                 <button 
                                     onClick={handleCopyLink}
-                                    className="p-2 hover:bg-emerald-500/20 rounded-lg transition-colors text-yellow-400 shrink-0 active:scale-95"
+                                    className="p-2 hover:bg-[#00bc7d]/20 rounded-lg transition-colors text-[#FFD700] shrink-0 active:scale-95"
                                     title="Copy referral link"
                                 >
                                     {copiedLink ? (
@@ -139,20 +139,20 @@ export function ReferralBanner() {
                         <div className="grid grid-cols-2 gap-4">
                             <Button
                               onClick={handleShare}
-                              className="bg-emerald-500 hover:bg-emerald-400 text-black font-bold h-12 rounded-xl text-base shadow-[0_0_15px_-3px_rgba(16,185,129,0.4)]"
+                              className="bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 hover:brightness-110 text-black font-black h-12 rounded-xl text-base shadow-[0_2px_10px_rgba(16,185,129,0.3)] border-none"
                             >
                                 <Share2 className="w-4 h-4 mr-2" /> {t("share")}
                             </Button>
                             <Button
                               onClick={() => navigate('/downlines')}
-                              className="bg-emerald-500 hover:bg-emerald-400 text-black font-bold h-12 rounded-xl text-base shadow-[0_0_15px_-3px_rgba(16,185,129,0.4)]"
+                              className="bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 hover:brightness-110 text-black font-black h-12 rounded-xl text-base shadow-[0_2px_10px_rgba(16,185,129,0.3)] border-none"
                             >
                                 <Users className="w-4 h-4 mr-2" /> {t("downlines")}
                             </Button>
                         </div>
                         <Button
                           onClick={() => navigate('/referral')}
-                          className="w-full bg-[#e6c252] hover:bg-[#ffd65c] text-[#3c1100] font-bold h-12 rounded-xl text-base shadow-[0_0_15px_-3px_rgba(230,194,82,0.4)]"
+                          className="w-full bg-[#FFD700] hover:brightness-110 text-[#1a1a00] font-bold h-12 rounded-xl text-base shadow-[0_4px_14px_rgba(255,215,0,0.4)]"
                         >
                             <Info className="w-4 h-4 mr-2" /> {t("moreInfo")}
                         </Button>

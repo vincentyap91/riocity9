@@ -53,8 +53,15 @@ export function Register() {
     general?: string;
   }>({});
   
-  const { register, error: authError } = useAuth();
+  const { register, error: authError, isAuthenticated } = useAuth();
   const navigate = useNavigate();
+
+  // Redirect to home if already logged in
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/', { replace: true });
+    }
+  }, [isAuthenticated, navigate]);
 
   // Validation function
   const validateForm = () => {
@@ -170,7 +177,7 @@ export function Register() {
                 transition={{ duration: 0.5, delay: 0.4 }}
                 className="relative z-10 space-y-2 mb-8 text-left"
             >
-                <h2 className="text-4xl font-bold tracking-tight text-white drop-shadow-lg leading-tight">
+                <h2 className="text-4xl font-bold tracking-tight text-white leading-tight">
                     125% UP TO <br/>
                     <span className="text-[#FFDF20]">$100</span>
                 </h2>
@@ -271,7 +278,7 @@ export function Register() {
                   className={`h-12 bg-[#0f151f] rounded-xl text-white placeholder:text-gray-500 focus-visible:ring-1 transition-all pl-4 ${
                     errors.username 
                       ? 'border-red-500 border-2 focus-visible:ring-red-500' 
-                      : 'border border-white/10 focus-visible:ring-emerald-500'
+                      : 'border border-white/10 focus-visible:ring-[#00bc7d]'
                   }`}
                 />
                 {errors.username && (
@@ -315,7 +322,7 @@ export function Register() {
                     className={`h-12 bg-[#0f151f] rounded-xl text-white placeholder:text-gray-500 focus-visible:ring-1 flex-1 transition-all ${
                       errors.mobile 
                         ? 'border-red-500 border-2 focus-visible:ring-red-500' 
-                        : 'border border-white/10 focus-visible:ring-emerald-500'
+                        : 'border border-white/10 focus-visible:ring-[#00bc7d]'
                     }`}
                   />
                 </div>
@@ -354,7 +361,7 @@ export function Register() {
                     className={`h-12 bg-[#0f151f] rounded-xl text-white placeholder:text-gray-500 focus-visible:ring-1 pr-10 transition-all ${
                       errors.password 
                         ? 'border-red-500 border-2 focus-visible:ring-red-500' 
-                        : 'border border-white/10 focus-visible:ring-emerald-500'
+                        : 'border border-white/10 focus-visible:ring-[#00bc7d]'
                     }`}
                   />
                   <button 
@@ -397,7 +404,7 @@ export function Register() {
                         className={`h-12 bg-[#0f151f] rounded-xl text-white placeholder:text-gray-500 focus-visible:ring-1 transition-all ${
                           errors.captcha 
                             ? 'border-red-500 border-2 focus-visible:ring-red-500' 
-                            : 'border border-white/10 focus-visible:ring-emerald-500'
+                            : 'border border-white/10 focus-visible:ring-[#00bc7d]'
                         }`}
                      />
                      <div className="flex gap-2">

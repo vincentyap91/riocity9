@@ -3,6 +3,7 @@ import { Flame, Gamepad2, Trophy, Dices, Club, Fish, Plane, Crown, ArrowRightLef
 import { Button } from '../ui/button';
 import { SectionHeader } from './SectionHeader';
 import { useLanguage } from '../../contexts/LanguageContext';
+import { useHorizontalDragScroll } from '../../hooks/useHorizontalDragScroll';
 
 const games = [
   {
@@ -57,8 +58,8 @@ const games = [
 
 export function GameCategoryWithRTP() {
   const { t } = useLanguage();
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [scrollProgress, setScrollProgress] = useState(0);
+  const { scrollRef: scrollContainerRef, handlers: dragScrollHandlers } = useHorizontalDragScroll();
   
   const categories = [
     { nameKey: 'hotGames', icon: Flame, active: false },
@@ -111,7 +112,9 @@ export function GameCategoryWithRTP() {
           <div 
             ref={scrollContainerRef}
             onScroll={handleScroll}
-            className="flex items-center gap-2 overflow-x-auto pb-4 no-scrollbar mask-gradient-right scroll-smooth"
+            className="flex items-center gap-2 overflow-x-auto overflow-y-hidden pb-4 no-scrollbar mask-gradient-right scroll-smooth touch-scroll-x select-none cursor-grab active:cursor-grabbing"
+            style={{ WebkitOverflowScrolling: 'touch', touchAction: 'pan-x' }}
+            {...dragScrollHandlers}
           >
             {categories.map((cat, i) => (
               <Button
@@ -162,7 +165,7 @@ export function GameCategoryWithRTP() {
                   <img src={game.image} className="absolute inset-0 w-full h-full object-cover opacity-50 mix-blend-overlay group-hover:scale-110 transition-transform duration-700" />
                   
                   {/* Provider Logo Simulation */}
-                  <div className="z-10 text-center font-black text-white drop-shadow-md text-[10px] md:text-base uppercase tracking-tighter opacity-80 group-hover:opacity-100 transition-opacity leading-tight">
+                  <div className="z-10 text-center font-black text-white text-[10px] md:text-base uppercase tracking-tighter opacity-80 group-hover:opacity-100 transition-opacity leading-tight">
                     {game.providerLogo}
                   </div>
               </div>

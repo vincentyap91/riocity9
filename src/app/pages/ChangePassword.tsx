@@ -8,6 +8,7 @@ import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
 import { useLanguage } from '../contexts/LanguageContext';
 import { InnerPageLayout } from "../components/shared/InnerPageLayout";
+import { MOBILE } from "../config/themeTokens";
 import { sanitizeTextInput } from '../utils/security';
 import { auth } from '../config/firebase';
 
@@ -92,10 +93,10 @@ export function ChangePassword() {
 
   return (
     <InnerPageLayout className="overflow-hidden">
-      <div className="container mx-auto px-4 py-12 max-w-[640px] pb-20 md:pb-0">
-        {/* Navigation Header (match Profile) */}
-        <div className="relative flex items-center justify-center mb-6">
-          <div className="absolute left-0 flex items-center gap-3">
+      <div className={`container mx-auto max-w-[640px] ${MOBILE.container} pb-20 md:pb-0`}>
+        {/* Navigation Header */}
+        <div className={`relative flex items-center justify-center ${MOBILE.headerMb}`}>
+          <div className={`absolute left-0 flex items-center ${MOBILE.gapSm}`}>
             <button
               onClick={() => navigate('/settings')}
               className="h-10 w-10 rounded-full bg-black/20 border border-white/10 flex items-center justify-center hover:bg-white/10 transition-colors"
@@ -121,10 +122,10 @@ export function ChangePassword() {
                 <span className="text-white font-bold text-base">{t("changePassword")}</span>
             </div>
 
-            <div className="p-6 pt-4">
-                <form onSubmit={handleSave} className="space-y-4">
+            <div className={`${MOBILE.cardPadding} pt-4`}>
+                <form onSubmit={handleSave} className={MOBILE.spaceYSection}>
                     {/* Current Password */}
-                    <div className="space-y-2">
+                    <div className={MOBILE.spaceY}>
                         <Label htmlFor="currentPassword" className="text-white font-bold text-sm flex items-center gap-1">
                             Current Password <span className="text-red-500">*</span>
                         </Label>
@@ -139,7 +140,7 @@ export function ChangePassword() {
                                   setCurrentPassword(sanitized); 
                                   if(errors.current) setErrors({...errors, current: undefined}); 
                                 }}
-                                className={`bg-[#0f151f] border-white/10 text-white h-12 rounded-xl px-4 focus:border-emerald-500 focus-visible:ring-emerald-500/20 pr-12 transition-all ${
+                                className={`bg-[#0f151f] border-white/10 text-white h-12 rounded-xl px-4 focus:border-[#00bc7d] focus-visible:ring-[#00bc7d]/20 pr-12 transition-all ${
                                     errors.current ? 'border-red-500 border-2' : 'border-white/10'
                                 }`}
                             />
@@ -160,8 +161,8 @@ export function ChangePassword() {
                     </div>
 
                     {/* New Password */}
-                    <div className="space-y-2">
-                        <Label htmlFor="newPassword" className="text-white font-bold text-sm flex items-center gap-1">
+                    <div className={MOBILE.spaceY}>
+                        <Label htmlFor="newPassword" className={`text-white ${MOBILE.label} flex items-center ${MOBILE.gapXs}`}>
                             New Password <span className="text-red-500">*</span>
                         </Label>
                         <div className="relative">
@@ -175,7 +176,7 @@ export function ChangePassword() {
                                   setNewPassword(sanitized); 
                                   if(errors.new) setErrors({...errors, new: undefined}); 
                                 }}
-                                className={`bg-[#0f151f] border-white/10 text-white h-12 rounded-xl px-4 focus:border-emerald-500 focus-visible:ring-emerald-500/20 pr-12 transition-all ${
+                                className={`bg-[#0f151f] border-white/10 text-white h-12 rounded-xl px-4 focus:border-[#00bc7d] focus-visible:ring-[#00bc7d]/20 pr-12 transition-all ${
                                     errors.new ? 'border-red-500 border-2' : 'border-white/10'
                                 }`}
                             />
@@ -196,8 +197,8 @@ export function ChangePassword() {
                     </div>
 
                     {/* Confirm New Password */}
-                    <div className="space-y-2">
-                        <Label htmlFor="confirmPassword" className="text-white font-bold text-sm flex items-center gap-1">
+                    <div className={MOBILE.spaceY}>
+                        <Label htmlFor="confirmPassword" className={`text-white ${MOBILE.label} flex items-center ${MOBILE.gapXs}`}>
                             Confirm New Password <span className="text-red-500">*</span>
                         </Label>
                         <div className="relative">
@@ -211,7 +212,7 @@ export function ChangePassword() {
                                   setConfirmPassword(sanitized); 
                                   if(errors.confirm) setErrors({...errors, confirm: undefined}); 
                                 }}
-                                className={`bg-[#0f151f] border-white/10 text-white h-12 rounded-xl px-4 focus:border-emerald-500 focus-visible:ring-emerald-500/20 pr-12 transition-all ${
+                                className={`bg-[#0f151f] border-white/10 text-white h-12 rounded-xl px-4 focus:border-[#00bc7d] focus-visible:ring-[#00bc7d]/20 pr-12 transition-all ${
                                     errors.confirm ? 'border-red-500 border-2' : 'border-white/10'
                                 }`}
                             />
@@ -246,7 +247,7 @@ export function ChangePassword() {
                         <Button 
                             type="submit"
                             disabled={isLoading}
-                            className="bg-emerald-500 hover:bg-emerald-400 text-black font-bold h-12 px-12 rounded-xl text-base shadow-[0_0_15px_-3px_rgba(16,185,129,0.4)] transition-all hover:scale-[1.02] active:scale-95 disabled:opacity-50"
+                            className="bg-[#00bc7d] hover:bg-[#00a870] text-black font-bold h-12 px-12 rounded-xl text-base shadow-[0_0_15px_-3px_rgba(0,188,125,0.4)] transition-all hover:scale-[1.02] active:scale-95 disabled:opacity-50"
                         >
                             {isLoading ? (
                                 <div className="flex items-center gap-2">

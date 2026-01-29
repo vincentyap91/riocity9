@@ -41,7 +41,7 @@ export function PromoBanners() {
                 <Gift className="w-4 h-4 md:w-5 md:h-5 text-[#ff4757] animate-bounce" />
             </div>
             <div>
-                <h3 className="text-base md:text-xl font-black text-white uppercase tracking-tight drop-shadow-sm">Welcome to Our Platform!</h3>
+                <h3 className="text-base md:text-xl font-black text-white uppercase tracking-tight">Welcome to Our Platform!</h3>
                 <p className="text-[10px] md:text-sm font-medium text-pink-100 max-w-[200px] md:max-w-[280px] leading-tight mt-1">
                     New here? Check out our beginner's guide to start winning today.
                 </p>

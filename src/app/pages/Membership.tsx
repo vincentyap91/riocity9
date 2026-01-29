@@ -99,7 +99,7 @@ export function Membership() {
               <div
                 key={level.id}
                 className={`relative bg-[#1a2230] border border-white/5 rounded-[16px] p-2 md:p-3 shadow-xl flex flex-col items-center ${
-                  level.active ? 'ring-2 ring-emerald-500 bg-emerald-500/10' : ''
+                  level.active ? 'ring-2 ring-[#00bc7d] bg-[#00bc7d]/10' : ''
                 }`}
               >
                 <div className="w-full min-h-[40px] md:min-h-[50px] mb-2 flex items-center justify-center">

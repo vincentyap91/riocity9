@@ -59,7 +59,7 @@ function CustomPrevArrow(props: any) {
   const { className, style, onClick } = props;
   return (
     <div
-      className="absolute top-1/2 -left-4 -translate-y-1/2 z-10 cursor-pointer p-2 rounded-full bg-black/50 border border-white/10 text-white hover:bg-emerald-500/20 hover:border-emerald-500/50 transition-all backdrop-blur-sm"
+      className="absolute top-1/2 -left-4 -translate-y-1/2 z-10 cursor-pointer p-2 rounded-full bg-black/50 border border-white/10 text-white hover:bg-[#00bc7d]/20 hover:border-[#00bc7d]/50 transition-all backdrop-blur-sm"
       onClick={onClick}
     >
       <ChevronLeft className="w-5 h-5" />
@@ -71,7 +71,7 @@ function CustomNextArrow(props: any) {
   const { className, style, onClick } = props;
   return (
     <div
-      className="absolute top-1/2 -right-4 -translate-y-1/2 z-10 cursor-pointer p-2 rounded-full bg-black/50 border border-white/10 text-white hover:bg-emerald-500/20 hover:border-emerald-500/50 transition-all backdrop-blur-sm"
+      className="absolute top-1/2 -right-4 -translate-y-1/2 z-10 cursor-pointer p-2 rounded-full bg-black/50 border border-white/10 text-white hover:bg-[#00bc7d]/20 hover:border-[#00bc7d]/50 transition-all backdrop-blur-sm"
       onClick={onClick}
     >
       <ChevronRight className="w-5 h-5" />

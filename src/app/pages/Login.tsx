@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Eye, EyeOff, X, AlertCircle, Loader2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Button } from '../components/ui/button';
@@ -30,8 +30,15 @@ export function Login() {
     general?: string;
   }>({});
   
-  const { login, error: authError } = useAuth();
+  const { login, error: authError, isAuthenticated } = useAuth();
   const navigate = useNavigate();
+
+  // Redirect to home if already logged in
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/', { replace: true });
+    }
+  }, [isAuthenticated, navigate]);
 
   // Validation function
   const validateForm = () => {
@@ -121,9 +128,9 @@ export function Login() {
                 className="absolute z-11 text-center top-12"
             >
                  <div className="mb-0">
-                    <h2 className="text-4xl font-bold tracking-tight text-white drop-shadow-md mb-2">Join Us</h2>
+                    <h2 className="text-4xl font-bold tracking-tight text-white mb-2">Join Us</h2>
                  </div>
-                 <p className="text-white font-bold text-lg leading-tight max-w-xs mx-auto drop-shadow-sm">
+                 <p className="text-white font-bold text-lg leading-tight max-w-xs mx-auto">
                      Play free Daily Spins for a chance to win one of the Jackpots!
                  </p>
             </motion.div>
@@ -205,7 +212,7 @@ export function Login() {
                 className={`h-12 bg-[#0f151f] rounded-xl text-white placeholder:text-gray-500 focus-visible:ring-1 transition-all text-sm px-4 shadow-sm ${
                   errors.username 
                     ? 'border-red-500 border-2 focus-visible:ring-red-500 focus-visible:border-red-500' 
-                    : 'border border-white/10 focus-visible:ring-emerald-500 focus-visible:border-emerald-500'
+                    : 'border border-white/10 focus-visible:ring-[#00bc7d] focus-visible:border-[#00bc7d]'
                 }`}
               />
               {errors.username && (
@@ -236,7 +243,7 @@ export function Login() {
                   className={`h-12 bg-[#0f151f] rounded-xl text-white placeholder:text-gray-500 focus-visible:ring-1 pr-12 transition-all text-sm px-4 shadow-sm ${
                     errors.password 
                       ? 'border-red-500 border-2 focus-visible:ring-red-500 focus-visible:border-red-500' 
-                      : 'border border-white/10 focus-visible:ring-emerald-500 focus-visible:border-emerald-500'
+                      : 'border border-white/10 focus-visible:ring-[#00bc7d] focus-visible:border-[#00bc7d]'
                   }`}
                 />
                 <button 
@@ -333,10 +340,10 @@ export function Login() {
         <DialogContent className="bg-[#131b29] border border-white/10 rounded-3xl p-8 max-w-[400px] flex flex-col items-center text-center">
           {/* Header Icon */}
           <div className="mb-6 relative">
-            <div className="w-20 h-20 rounded-full bg-emerald-500/10 flex items-center justify-center border border-emerald-500/20">
+            <div className="w-20 h-20 rounded-full bg-[#00bc7d]/10 flex items-center justify-center border border-[#00bc7d]/20">
               <AlertCircle className="w-10 h-10 text-emerald-500" />
             </div>
-            <div className="absolute inset-0 bg-emerald-500/20 blur-2xl rounded-full -z-10"></div>
+            <div className="absolute inset-0 bg-[#00bc7d]/20 blur-2xl rounded-full -z-10"></div>
           </div>
 
           {/* Text Content */}
@@ -355,7 +362,7 @@ export function Login() {
                 window.dispatchEvent(new CustomEvent('openLiveChat', { detail: { reason: 'forgot-password' } }));
                 setShowForgotModal(false);
               }}
-              className="h-12 bg-emerald-500 hover:bg-emerald-400 text-[#0a0f19] font-black text-base rounded-xl transition-all hover:scale-[1.02] active:scale-95 shadow-[0_0_20px_rgba(16,185,129,0.2)]"
+              className="h-12 bg-[#00bc7d] hover:bg-[#00a870] text-[#0a0f19] font-black text-base rounded-xl transition-all hover:scale-[1.02] active:scale-95 shadow-[0_0_20px_rgba(0,188,125,0.2)]"
             >
               Contact Support Now
             </Button>

@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
-import { Copy, ChevronRight, Info, Users, Gift } from 'lucide-react';
+import { Copy, ChevronRight, Info, Users, Gift, HandCoins, Wallet, HelpCircle, FileText } from 'lucide-react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../components/ui/accordion';
 import { useAuth } from '../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '../components/ui/button';
 import { useLanguage } from '../contexts/LanguageContext';
+import { MOBILE } from '../config/themeTokens';
+import { SegmentTabs, type SegmentTabsItem } from '../components/shared/SegmentTabs';
+import { EmptyState } from '../components/shared/EmptyState';
 
 // Assets - using proper imports for local assets
 import shareYourLinkIcon from '@/assets/share-your-link.svg';
@@ -106,29 +109,16 @@ export function Referral() {
           <div className="absolute inset-0 bg-gradient-to-b from-[#0a1510]/40 via-transparent to-[#02040a]"></div>
         </div>
         <div className="container mx-auto max-w-[1200px] 2xl:max-w-[1536px] px-4 relative z-10">
-          {/* Tabs Navigation */}
-          <div className="flex justify-center mb-8">
-            <div className="flex bg-[#0f151f] p-1 rounded-xl border border-white/5 w-full max-w-[350px]">
-              <button 
-                onClick={() => handleTabChange('referral')}
-                className={`flex-1 px-8 py-3 rounded-lg text-sm font-bold transition-all ${activeTab === 'referral' ? 'bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 text-black shadow-lg' : 'text-gray-400 hover:text-white'}`}
-              >
-                <span className="flex items-center justify-center gap-2">
-                  <Users className="w-4 h-4" />
-                  Referral
-                </span>
-              </button>
-              <button 
-                onClick={() => handleTabChange('myRewards')}
-                className={`flex-1 px-8 py-3 rounded-lg text-sm font-bold transition-all ${activeTab === 'myRewards' ? 'bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 text-black shadow-lg' : 'text-gray-400 hover:text-white'}`}
-              >
-                <span className="flex items-center justify-center gap-2">
-                  <Gift className="w-4 h-4" />
-                  My Rewards
-                </span>
-              </button>
-            </div>
-          </div>
+          <SegmentTabs
+            items={[
+              { id: 'referral', label: 'Referral', icon: Users },
+              { id: 'myRewards', label: 'My Rewards', icon: Gift },
+            ] as SegmentTabsItem[]}
+            activeId={activeTab}
+            onSelect={(id) => handleTabChange(id as 'referral' | 'myRewards')}
+            className={`!px-1 ${MOBILE.headerMb}`}
+            maxWidth="max-w-[350px]"
+          />
 
           {/* Referral Tab Content */}
           {activeTab === 'referral' && (
@@ -141,7 +131,7 @@ export function Referral() {
               <div className="space-y-4">
                 <h1 className="text-4xl font-bold tracking-tight leading-tight">
                   <span className="block text-white">Invite Friends,</span>
-                  <span className="block bg-gradient-to-r from-[#f7e08b] to-[#eab84b] bg-clip-text text-transparent">
+                  <span className="block text-[#FFD700] font-black">
                     Earn Passive Income!
                   </span>
                 </h1>
@@ -155,11 +145,11 @@ export function Referral() {
                 <div className="space-y-4">
                   {/* My Referral Link Section */}
                   <div className="space-y-2">
-                    <label className="block text-xs font-bold text-[#d4c766] uppercase tracking-wider">My Referral Link</label>
+                    <label className="block text-xs font-bold text-[#FFD700] uppercase tracking-wider">My Referral Link</label>
                     <div className="bg-[#0f151f] border border-white/10 rounded-xl p-4 flex items-center gap-3 group hover:border-emerald-500/50 transition-colors">
                       <span className="flex-1 text-white text-sm md:text-base font-mono truncate pr-2">https://staging.riocity9.com/en/register?code=589092</span>
                       <button 
-                        className="w-8 h-8 rounded-lg bg-white/5 text-white/70 flex items-center justify-center hover:bg-emerald-500/20 hover:text-emerald-400 transition-all active:scale-95 shrink-0"
+                        className="w-8 h-8 rounded-lg bg-white/5 text-white/70 flex items-center justify-center hover:bg-[#00bc7d]/20 hover:text-[#00bc7d] transition-all active:scale-95 shrink-0"
                         title="Copy referral link"
                       >
                         <Copy className="w-4 h-4" />
@@ -230,8 +220,8 @@ export function Referral() {
                       <div className="bg-[#0f151f] border-b border-white/10 p-4">
                         <p className="text-gray-300 text-sm mb-1">Total Referral Commission Bonus</p>
                         <div className="flex items-center">
-                          <span className="text-[#d4c766] text-sm mr-2">PKR</span>
-                          <span className="text-[#d4c766] text-2xl font-bold">75,000</span>
+                          <span className="text-[#FFD700] text-sm mr-2 font-bold">PKR</span>
+                          <span className="text-[#FFD700] text-2xl font-bold">75,000</span>
                           <span className="ml-auto w-6 h-6 rounded-full bg-[#1a2230] text-[#808080] flex items-center justify-center">
                             <Info className="w-3.5 h-3.5" />
                           </span>
@@ -240,8 +230,8 @@ export function Referral() {
                       <div className="bg-[#0f151f] p-4">
                         <p className="text-gray-300 text-sm mb-1">Total Referral Deposit Bonus</p>
                         <div className="flex items-center">
-                          <span className="text-[#d4c766] text-sm mr-2">PKR</span>
-                          <span className="text-[#d4c766] text-2xl font-bold">875,000</span>
+                          <span className="text-[#FFD700] text-sm mr-2 font-bold">PKR</span>
+                          <span className="text-[#FFD700] text-2xl font-bold">875,000</span>
                           <span className="ml-auto w-6 h-6 rounded-full bg-[#1a2230] text-[#808080] flex items-center justify-center">
                             <Info className="w-3.5 h-3.5" />
                           </span>
@@ -250,7 +240,7 @@ export function Referral() {
                     </div>
 
                     {/* Downlines Button */}
-                    <button className="mt-4 w-full bg-[#00bc7d] hover:bg-[#00a870] text-black font-black h-12 rounded-xl shadow-[0_0_20px_-5px_rgba(16,185,129,0.6)] transition-all hover:scale-[1.02] flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
+                    <button className="mt-4 w-full bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 hover:brightness-110 text-black font-black h-12 rounded-xl shadow-[0_2px_10px_rgba(16,185,129,0.3)] transition-all hover:scale-[1.02] flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed border-none">
                       Downlines <ChevronRight className="w-4 h-4" />
                     </button>
                   </>
@@ -260,7 +250,7 @@ export function Referral() {
                     <p className="text-gray-400 text-sm mb-6">Sign in to access your referral code, link, and bonus details</p>
                     <Button
                       onClick={() => navigate('/login')}
-                      className="bg-[#00bc7d] hover:bg-[#00a870] text-black font-black text-base rounded-xl px-8 h-12 shadow-[0_0_20px_-5px_rgba(16,185,129,0.6)] transition-all hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 hover:brightness-110 text-black font-black text-base rounded-xl px-8 h-12 shadow-[0_2px_10px_rgba(16,185,129,0.3)] transition-all hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed border-none"
                     >
                       Login Now!
                     </Button>
@@ -291,15 +281,15 @@ export function Referral() {
                   <div className="space-y-3 mb-6">
                     <div className="flex justify-between items-center">
                       <span className="text-gray-300 text-sm">Today:</span>
-                      <span className="text-[#d4c766] text-base font-bold">PKR {commissionBonus.today}</span>
+                      <span className="text-[#FFD700] text-base font-bold ">PKR {commissionBonus.today}</span>
                     </div>
                     <div className="flex justify-between items-center">
                       <span className="text-gray-300 text-sm">This Month:</span>
-                      <span className="text-[#d4c766] text-base font-bold">PKR {commissionBonus.thisMonth}</span>
+                      <span className="text-[#FFD700] text-base font-bold ">PKR {commissionBonus.thisMonth}</span>
                     </div>
                     <div className="flex justify-between items-center">
                       <span className="text-gray-300 text-sm">Total Claimed:</span>
-                      <span className="text-[#d4c766] text-base font-bold">PKR {commissionBonus.totalClaimed}</span>
+                      <span className="text-[#FFD700] text-base font-bold ">PKR {commissionBonus.totalClaimed}</span>
                     </div>
                   </div>
 
@@ -307,10 +297,10 @@ export function Referral() {
                   <div className="mb-6 pt-4 border-t border-white/10">
                     <div className="flex justify-between items-center mb-4">
                       <span className="text-white text-sm font-bold">Unclaimed Amount:</span>
-                      <span className="text-[#d4c766] text-2xl font-black">PKR {commissionBonus.unclaimed}</span>
+                      <span className="text-[#FFD700] text-2xl font-black">PKR {commissionBonus.unclaimed}</span>
                     </div>
                     <Button
-                      className="w-full bg-gradient-to-r from-[#f1c24f] to-[#d59b25] text-[#5c3a00] font-black h-12 rounded-xl shadow-[0_4px_15px_rgba(212,165,33,0.35)] hover:brightness-110 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="w-full bg-[#FFD700] text-[#1a1a00] font-black h-12 rounded-xl shadow-[0_4px_14px_rgba(255,215,0,0.4)] hover:brightness-110 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                       disabled={parseFloat(commissionBonus.unclaimed) === 0}
                     >
                       Claim
@@ -319,8 +309,8 @@ export function Referral() {
 
                   {/* Info Note */}
                   <div className="flex items-start gap-2 pt-4 border-t border-white/10">
-                    <div className="w-5 h-5 rounded-full bg-emerald-500/20 flex items-center justify-center shrink-0 mt-0.5">
-                      <Info className="w-3.5 h-3.5 text-emerald-400" />
+                    <div className="w-5 h-5 rounded-full bg-[#00bc7d]/20 flex items-center justify-center shrink-0 mt-0.5">
+                      <Info className="w-3.5 h-3.5 text-[#00bc7d]" />
                     </div>
                     <p className="text-white text-xs leading-relaxed">Bonus will be credited to Main Wallet.</p>
                   </div>
@@ -339,15 +329,15 @@ export function Referral() {
                   <div className="space-y-3 mb-6">
                     <div className="flex justify-between items-center">
                       <span className="text-gray-300 text-sm">Today:</span>
-                      <span className="text-[#d4c766] text-base font-bold">PKR {depositBonus.today}</span>
+                      <span className="text-[#FFD700] text-base font-bold ">PKR {depositBonus.today}</span>
                     </div>
                     <div className="flex justify-between items-center">
                       <span className="text-gray-300 text-sm">This Month:</span>
-                      <span className="text-[#d4c766] text-base font-bold">PKR {depositBonus.thisMonth}</span>
+                      <span className="text-[#FFD700] text-base font-bold ">PKR {depositBonus.thisMonth}</span>
                     </div>
                     <div className="flex justify-between items-center">
                       <span className="text-gray-300 text-sm">Total Claimed:</span>
-                      <span className="text-[#d4c766] text-base font-bold">PKR {depositBonus.totalClaimed}</span>
+                      <span className="text-[#FFD700] text-base font-bold ">PKR {depositBonus.totalClaimed}</span>
                     </div>
                   </div>
 
@@ -355,10 +345,10 @@ export function Referral() {
                   <div className="mb-6 pt-4 border-t border-white/10">
                     <div className="flex justify-between items-center mb-4">
                       <span className="text-white text-sm font-bold">Unclaimed Amount:</span>
-                      <span className="text-[#d4c766] text-2xl font-black">PKR {depositBonus.unclaimed}</span>
+                      <span className="text-[#FFD700] text-2xl font-black">PKR {depositBonus.unclaimed}</span>
                     </div>
                     <Button
-                      className="w-full bg-gradient-to-r from-[#f1c24f] to-[#d59b25] text-[#5c3a00] font-black h-12 rounded-xl shadow-[0_4px_15px_rgba(212,165,33,0.35)] hover:brightness-110 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="w-full bg-[#FFD700] text-[#1a1a00] font-black h-12 rounded-xl shadow-[0_4px_14px_rgba(255,215,0,0.4)] hover:brightness-110 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                       disabled={parseFloat(depositBonus.unclaimed) === 0}
                     >
                       Claim
@@ -367,8 +357,8 @@ export function Referral() {
 
                   {/* Info Note */}
                   <div className="flex items-start gap-2 pt-4 border-t border-white/10">
-                    <div className="w-5 h-5 rounded-full bg-emerald-500/20 flex items-center justify-center shrink-0 mt-0.5">
-                      <Info className="w-3.5 h-3.5 text-emerald-400" />
+                    <div className="w-5 h-5 rounded-full bg-[#00bc7d]/20 flex items-center justify-center shrink-0 mt-0.5">
+                      <Info className="w-3.5 h-3.5 text-[#00bc7d]" />
                     </div>
                     <p className="text-white text-xs leading-relaxed">Bonus will be credited to Bonus Wallet (Coin).</p>
                   </div>
@@ -377,28 +367,34 @@ export function Referral() {
 
               {/* Bonus History Table */}
               <div className="bg-[#1a2230] border border-white/5 rounded-xl p-6 shadow-xl">
-                {/* History Tabs */}
-                <div className="flex justify-start mb-6">
-                  <div className="flex bg-[#0f151f] p-1 rounded-xl border border-white/5 w-full max-w-[600px]">
+                {/* History Tabs - smaller on mobile */}
+                <div className="flex justify-start mb-6 overflow-x-auto no-scrollbar touch-scroll-x px-1">
+                  <div className="flex flex-nowrap bg-[#0f151f] p-1 rounded-lg md:rounded-xl border border-white/5 w-full min-w-0 max-w-[600px]">
                     <button
                       onClick={() => setActiveHistoryTab('commission')}
-                      className={`flex-1 px-8 py-3 rounded-lg text-sm font-bold transition-all ${
+                      className={`flex-1 min-w-0 px-3 py-2 md:px-6 md:py-3 rounded-md md:rounded-lg text-xs md:text-sm font-bold transition-all whitespace-nowrap ${
                         activeHistoryTab === 'commission'
-                          ? 'bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 text-black shadow-lg'
+                          ? 'bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 hover:brightness-110 text-black shadow-[0_2px_10px_rgba(16,185,129,0.3)]'
                           : 'text-gray-400 hover:text-white'
                       }`}
                     >
-                      Referral Commission Bonus
+                      <span className="flex items-center justify-center gap-1.5 md:gap-2">
+                        <HandCoins className="w-3.5 h-3.5 md:w-4 md:h-4 shrink-0" />
+                        Commission Bonus
+                      </span>
                     </button>
                     <button
                       onClick={() => setActiveHistoryTab('deposit')}
-                      className={`flex-1 px-8 py-3 rounded-lg text-sm font-bold transition-all ${
+                      className={`flex-1 min-w-0 px-3 py-2 md:px-6 md:py-3 rounded-md md:rounded-lg text-xs md:text-sm font-bold transition-all whitespace-nowrap ${
                         activeHistoryTab === 'deposit'
-                          ? 'bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 text-black shadow-lg'
+                          ? 'bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 hover:brightness-110 text-black shadow-[0_2px_10px_rgba(16,185,129,0.3)]'
                           : 'text-gray-400 hover:text-white'
                       }`}
                     >
-                      Referral Deposit Bonus
+                      <span className="flex items-center justify-center gap-1.5 md:gap-2">
+                        <Wallet className="w-3.5 h-3.5 md:w-4 md:h-4 shrink-0" />
+                        Deposit Bonus
+                      </span>
                     </button>
                   </div>
                 </div>
@@ -422,7 +418,7 @@ export function Referral() {
                             <td className="py-4 px-4 text-white text-sm font-bold">{item.amount}</td>
                             <td className="py-4 px-4">
                               <span className={`text-sm font-bold ${
-                                item.status === 'Unclaimed' ? 'text-red-500' : 'text-emerald-400'
+                                item.status === 'Unclaimed' ? 'text-red-500' : 'text-[#00bc7d]'
                               }`}>
                                 {item.status}
                               </span>
@@ -432,8 +428,8 @@ export function Referral() {
                         ))
                       ) : (
                         <tr>
-                          <td colSpan={4} className="py-8 px-4 text-center text-gray-500 text-sm">
-                            No history available
+                          <td colSpan={4} className="py-8 px-4 text-center">
+                            <EmptyState message="No history available" compact />
                           </td>
                         </tr>
                       )}
@@ -470,7 +466,7 @@ export function Referral() {
           <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
             <div className="flex-shrink-0">
                 <h2 className="text-2xl font-black text-white mb-2">Deposit Commission Rate</h2>
-                <p className="text-[#d4c766] text-lg md:text-2xl font-black mb-4 md:mb-10">Minimum Deposit PRK 30.00</p>
+                <p className="text-[#FFD700] text-lg md:text-2xl font-black mb-4 md:mb-10">Minimum Deposit PRK 30.00</p>
             </div>
 
             {/* Tiers Image */}
@@ -502,7 +498,7 @@ export function Referral() {
                     {cat.items.length > 0 ? (
                       <div className="w-full">
                         {/* Table Header */}
-                        <div className="grid grid-cols-4 gap-4 px-6 py-3 border-b border-[#d4c766] bg-[#131b29] text-[#d4c766] font-bold text-sm">
+                        <div className="grid grid-cols-4 gap-4 px-6 py-3 border-b border-[#FFD700] bg-[#131b29] text-[#FFD700] font-bold text-sm">
                           <div className="text-center">Provider</div>
                           <div className="text-center">Downlines L1</div>
                           <div className="text-center">Downlines L2</div>
@@ -519,7 +515,7 @@ export function Referral() {
                         ))}
                       </div>
                     ) : (
-                      <div className="p-6 text-center text-gray-500">No data available for this category yet.</div>
+                      <EmptyState message="No data available for this category yet." className="p-6" compact />
                     )}
                   </AccordionContent>
                 </AccordionItem>
@@ -534,27 +530,33 @@ export function Referral() {
         <div className="bg-[#1a2230] border border-white/5 rounded-xl p-6 md:p-8 shadow-xl">
           {/* FAQ Header */}
           <h2 className="text-2xl font-black text-white mb-4">Frequently Asked Questions</h2>
-          <div className="flex justify-start mb-6">
-            <div className="flex bg-[#0f151f] p-1 rounded-xl border border-white/5 w-full max-w-[380px]">
+          <div className="flex justify-start mb-6 px-1">
+            <div className="flex flex-nowrap bg-[#0f151f] p-1 rounded-lg md:rounded-xl border border-white/5 w-full max-w-[380px]">
               <button
                 onClick={() => setFaqTab('faq')}
-                className={`flex-1 px-8 py-3 rounded-lg text-sm font-bold transition-all ${
+                className={`flex-1 min-w-0 px-3 py-2 md:px-6 md:py-3 rounded-md md:rounded-lg text-xs md:text-sm font-bold transition-all whitespace-nowrap ${
                   faqTab === 'faq'
-                    ? 'bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 text-black shadow-lg'
+                    ? 'bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 hover:brightness-110 text-black shadow-[0_2px_10px_rgba(16,185,129,0.3)]'
                     : 'text-gray-400 hover:text-white'
                 }`}
               >
-                FAQ
+                <span className="flex items-center justify-center gap-1.5 md:gap-2">
+                  <HelpCircle className="w-3.5 h-3.5 md:w-4 md:h-4 shrink-0" />
+                  FAQ
+                </span>
               </button>
               <button
                 onClick={() => setFaqTab('terms')}
-                className={`flex-1 px-8 py-3 rounded-lg text-sm font-bold transition-all ${
+                className={`flex-1 min-w-0 px-3 py-2 md:px-6 md:py-3 rounded-md md:rounded-lg text-xs md:text-sm font-bold transition-all whitespace-nowrap ${
                   faqTab === 'terms'
-                    ? 'bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 text-black shadow-lg'
+                    ? 'bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 hover:brightness-110 text-black shadow-[0_2px_10px_rgba(16,185,129,0.3)]'
                     : 'text-gray-400 hover:text-white'
                 }`}
               >
-                Terms & Conditions
+                <span className="flex items-center justify-center gap-1.5 md:gap-2">
+                  <FileText className="w-3.5 h-3.5 md:w-4 md:h-4 shrink-0" />
+                  Terms & Conditions
+                </span>
               </button>
             </div>
           </div>
@@ -563,7 +565,7 @@ export function Referral() {
             <Accordion type="single" collapsible className="w-full">
               {faqs.map((faq, idx) => (
                 <AccordionItem key={idx} value={`item-${idx}`} className="border border-white/5 rounded-xl mb-4 last:mb-0">
-                  <AccordionTrigger className="px-6 py-4 hover:no-underline hover:bg-white/5 transition-colors text-white bg-[#1d2d49] [&>svg]:text-[#d4c766]">
+                  <AccordionTrigger className="px-6 py-4 hover:no-underline hover:bg-white/5 transition-colors text-white bg-[#1d2d49] [&>svg]:text-[#FFD700]">
                     <span className="text-base font-bold text-left">{faq.question}</span>
                   </AccordionTrigger>
                   <AccordionContent className="bg-[#0f151f] px-6 py-4">

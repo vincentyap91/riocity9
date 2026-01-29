@@ -285,6 +285,34 @@
   scrollbar-width: none;  /* Firefox */
 }
 
+/* Touch-friendly horizontal drag/scroll for mobile tab strips */
+@utility touch-scroll-x {
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-x;
+  scroll-behavior: smooth;
+  overscroll-behavior-x: contain;
+}
+
+/* Visible horizontal scrollbar for drag-to-scroll (e.g. mobile tab strips) */
+@utility scrollbar-x {
+  &::-webkit-scrollbar {
+    height: 6px;
+  }
+  &::-webkit-scrollbar-track {
+    background: #0f151f;
+    border-radius: 3px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: #1e293b;
+    border-radius: 3px;
+  }
+  &::-webkit-scrollbar-thumb:hover {
+    background: #334155;
+  }
+  scrollbar-width: thin;
+  scrollbar-color: #1e293b #0f151f;
+}
+
 @utility custom-scrollbar {
   &::-webkit-scrollbar {
     width: 6px;

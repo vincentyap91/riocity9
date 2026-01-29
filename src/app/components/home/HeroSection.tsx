@@ -6,7 +6,7 @@ import { Button } from '../ui/button';
 import { ArrowRight, MessageCircle, Wallet, Sparkles, Zap } from 'lucide-react';
 import { useLanguage } from '../../contexts/LanguageContext';
 
-// Figma Imported Assets from Container.tsx
+// Imported Assets
 import img30Bonus from "@/assets/6b79fcd825e505f8172a2d0ba7c9e3799a10c8b3.png";
 import img50Bonus from "@/assets/c15e00d9b1be9da4f11d6d0feffdb780317f68d1.png";
 import imgDeposit from "@/assets/a89549a47117579171a3acb01660952b44ae0f67.png"; // Updated Deposit Image
@@ -32,7 +32,7 @@ export function HeroSection() {
         </div>
     ),
     customPaging: (i: number) => (
-        <div className="rounded-full bg-white/40 hover:bg-emerald-400 transition-all cursor-pointer backdrop-blur-sm" />
+        <div className="rounded-full bg-white/40 hover:bg-[#00bc7d] transition-all cursor-pointer backdrop-blur-sm" />
     )
   };
 
@@ -43,7 +43,7 @@ export function HeroSection() {
         image: imgLive, 
         alt: "RioCity9 Is Now Live",
         action: t("playNow"),
-        showButton: false // The image has "RioCity9" text, button might obscure it? Figma design shows clean image.
+        showButton: false // The image has "RioCity9" text, button might obscure it.
     },
     { 
         id: 2, 
@@ -63,7 +63,7 @@ export function HeroSection() {
 
   return (
     <section className="relative w-full">
-      {/* Figma uses a layout of ~950px main and ~530px side. Ratio is approx 64% / 36% */}
+      {/* Layout: ~950px main and ~530px side. Ratio is approx 64% / 36% */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 h-auto lg:h-[400px] xl:h-[525px]">
         
         {/* Main Banner Slider (Large) */}

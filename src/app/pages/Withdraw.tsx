@@ -15,9 +15,11 @@ import {
 import { Button } from '../components/ui/button';
 import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '../contexts/LanguageContext';
+import { MOBILE, PRIMARY_CTA_CLASS } from '../config/themeTokens';
+import { SegmentTabs, type SegmentTabsItem } from '../components/shared/SegmentTabs';
 import { sanitizeTextInput } from '../utils/security';
 
-// Mock Data for Withdraw Methods (matching Figma design)
+// Mock Data for Withdraw Methods
 const POPULAR_METHODS = [
   {
     id: 'maybank',
@@ -64,7 +66,7 @@ const OTHER_METHODS = [
     category: 'Verified',
     processTime: '17 min',
     limit: '1947.9 +619',
-    badgeColor: 'text-emerald-400 bg-emerald-400/10',
+    badgeColor: 'text-[#00bc7d] bg-[#00bc7d]/10',
     icon: Wallet
   },
   {
@@ -73,7 +75,7 @@ const OTHER_METHODS = [
     category: 'Instant',
     processTime: '15 min',
     limit: '0 - 10.73 ml',
-    badgeColor: 'text-emerald-400 bg-emerald-400/10',
+    badgeColor: 'text-[#00bc7d] bg-[#00bc7d]/10',
     icon: Banknote
   },
   {
@@ -101,7 +103,7 @@ const OTHER_METHODS = [
     category: 'Instant',
     processTime: '11 min',
     limit: '1947.5 - 15.13 ml',
-    badgeColor: 'text-emerald-400 bg-emerald-400/10',
+    badgeColor: 'text-[#00bc7d] bg-[#00bc7d]/10',
     icon: CheckCircle2
   }
 ];
@@ -159,8 +161,8 @@ export function Withdraw() {
 
       {/* Main Wrapper (header outside card, like screenshot) */}
       <div className="relative z-10 w-full max-w-lg">
-        {/* Top Header (outside card) */}
-        <div className="flex items-center gap-3 mb-4 px-2">
+        {/* Top Header (outside card) - gap below for inner pages with back button */}
+        <div className={`flex items-center ${MOBILE.gapSm} ${MOBILE.headerMb} px-2`}>
           <button
             onClick={() => {
               if (step > 1) handleBack();
@@ -177,30 +179,18 @@ export function Withdraw() {
         {/* Main Card */}
         <div className="bg-[#1a2230] border border-white/5 rounded-3xl shadow-2xl flex flex-col overflow-hidden">
           {/* Card Header */}
-          <div className="p-6 pb-4 shrink-0 bg-[#1a2230]">
+          <div className={`${MOBILE.cardPadding} pb-4 shrink-0 bg-[#1a2230]`}>
             {step === 1 ? (
-              <div className="flex justify-center">
-                <div className="flex bg-[#0f151f] p-1 rounded-xl border border-white/5 w-full max-w-[313px]">
-                  <button 
-                      onClick={() => handleTabChange('deposit')}
-                      className={`flex-1 px-8 py-3 rounded-lg text-sm font-bold transition-all ${activeTab === 'deposit' ? 'bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 text-black shadow-lg' : 'text-gray-400 hover:text-white'}`}
-                  >
-                      <span className="flex items-center justify-center gap-2">
-                          <Banknote className="w-4 h-4" />
-                          {t("deposit")}
-                      </span>
-                  </button>
-                  <button 
-                      onClick={() => handleTabChange('withdrawal')}
-                      className={`flex-1 px-8 py-3 rounded-lg text-sm font-bold transition-all ${activeTab === 'withdrawal' ? 'bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 text-black shadow-lg' : 'text-gray-400 hover:text-white'}`}
-                  >
-                      <span className="flex items-center justify-center gap-2">
-                          <Wallet className="w-4 h-4" />
-                          {t("withdrawal")}
-                      </span>
-                  </button>
-                </div>
-              </div>
+              <SegmentTabs
+                items={[
+                  { id: 'deposit', label: t('deposit'), icon: Banknote },
+                  { id: 'withdrawal', label: t('withdrawal'), icon: Wallet },
+                ] as SegmentTabsItem[]}
+                activeId={activeTab}
+                onSelect={(id) => handleTabChange(id as 'deposit' | 'withdrawal')}
+                className="!px-1 !pb-4"
+                maxWidth="max-w-[313px]"
+              />
             ) : (
               <div className="flex items-center justify-center">
                 <h1 className="text-2xl font-black text-white">{t("confirmWithdraw")}</h1>
@@ -209,7 +199,7 @@ export function Withdraw() {
           </div>
 
           {/* Content Area */}
-          <div className="p-6 pt-0">
+          <div className={`${MOBILE.cardPadding} pt-0`}>
           
           {/* STEP 1: SELECTION */}
           {step === 1 && (
@@ -222,7 +212,7 @@ export function Withdraw() {
                     <input 
                         type="text" 
                         placeholder={t("search")} 
-                        className="w-full h-12 bg-[#0f151f] border border-white/10 rounded-xl pl-12 pr-4 text-white focus:outline-none focus:border-emerald-500 transition-colors placeholder:text-gray-500"
+                        className="w-full h-12 bg-[#0f151f] border border-white/10 rounded-xl pl-12 pr-4 text-white focus:outline-none focus:border-[#00bc7d] transition-colors placeholder:text-gray-500"
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(sanitizeTextInput(e.target.value))}
                     />
@@ -260,7 +250,7 @@ export function Withdraw() {
                             <button 
                                 key={method.id}
                                 onClick={() => handleMethodSelect(method.id)}
-                                className={`w-full group bg-[#0f151f] border ${method.isHot ? 'border-red-500/30 bg-gradient-to-r from-red-900/20 to-transparent' : 'border-white/5'} ${selectedMethodId === method.id ? 'border-emerald-500 bg-emerald-500/5' : 'hover:border-emerald-500/30'} rounded-xl p-4 transition-all flex items-center justify-between`}
+                                className={`w-full group bg-[#0f151f] border ${method.isHot ? 'border-red-500/30 bg-gradient-to-r from-red-900/20 to-transparent' : 'border-white/5'} ${selectedMethodId === method.id ? 'border-[#00bc7d] bg-[#00bc7d]/5' : 'hover:border-[#00bc7d]/30'} rounded-xl p-4 transition-all flex items-center justify-between`}
                             >
                                 <div className="flex items-center gap-3">
                                     <div className={`w-10 h-10 rounded-lg ${method.isHot ? 'bg-red-500' : 'bg-[#1a2230]'} flex items-center justify-center text-white border border-white/10`}>
@@ -293,7 +283,7 @@ export function Withdraw() {
                     <Button 
                         onClick={handleContinue}
                         disabled={!selectedMethodId}
-                        className="w-full h-12 bg-[#00bc7d] hover:bg-[#00a870] text-black font-black text-base rounded-xl shadow-[0_0_20px_-5px_rgba(16,185,129,0.6)] transition-all hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed"
+                        className={`w-full h-12 rounded-xl text-base hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed ${PRIMARY_CTA_CLASS}`}
                     >
                         {t("continueToWithdraw")} 
                         <ChevronRight className="w-4 h-4 ml-1" />
@@ -324,7 +314,7 @@ export function Withdraw() {
                         <select 
                             value={bankName}
                             onChange={(e) => setBankName(sanitizeTextInput(e.target.value))}
-                            className="w-full bg-[#0f151f] border border-white/10 rounded-xl px-4 py-3.5 text-white focus:outline-none focus:border-emerald-500 transition-colors appearance-none cursor-pointer"
+                            className="w-full bg-[#0f151f] border border-white/10 rounded-xl px-4 py-3.5 text-white focus:outline-none focus:border-[#00bc7d] transition-colors appearance-none cursor-pointer"
                         >
                             <option value="" disabled>{t("pleaseSelectBank")}</option>
                             <option value="maybank">Maybank</option>
@@ -340,7 +330,7 @@ export function Withdraw() {
                             type="text"
                             value={accountName}
                             onChange={(e) => setAccountName(sanitizeTextInput(e.target.value))}
-                            className="w-full bg-[#0f151f] border border-white/10 rounded-xl px-4 py-3.5 text-white font-bold focus:outline-none focus:border-emerald-500 transition-colors"
+                            className="w-full bg-[#0f151f] border border-white/10 rounded-xl px-4 py-3.5 text-white font-bold focus:outline-none focus:border-[#00bc7d] transition-colors"
                         />
                     </div>
 
@@ -350,7 +340,7 @@ export function Withdraw() {
                             type="text"
                             value={accountNumber}
                             onChange={(e) => setAccountNumber(sanitizeTextInput(e.target.value))}
-                            className="w-full bg-[#0f151f] border border-white/10 rounded-xl px-4 py-3.5 text-white font-bold tracking-wide focus:outline-none focus:border-emerald-500 transition-colors"
+                            className="w-full bg-[#0f151f] border border-white/10 rounded-xl px-4 py-3.5 text-white font-bold tracking-wide focus:outline-none focus:border-[#00bc7d] transition-colors"
                         />
                     </div>
 
@@ -361,7 +351,7 @@ export function Withdraw() {
                             value={referenceId}
                             onChange={(e) => setReferenceId(sanitizeTextInput(e.target.value))}
                             placeholder={t("enterReferenceNumber")}
-                            className="w-full bg-[#0f151f] border border-white/10 rounded-xl px-4 py-3.5 text-white focus:outline-none focus:border-emerald-500 transition-colors placeholder:text-gray-600"
+                            className="w-full bg-[#0f151f] border border-white/10 rounded-xl px-4 py-3.5 text-white focus:outline-none focus:border-[#00bc7d] transition-colors placeholder:text-gray-600"
                         />
                     </div>
                 </div>
@@ -391,13 +381,13 @@ export function Withdraw() {
                               setAmount(finalValue);
                             }}
                             placeholder="0.00"
-                            className="w-full bg-[#0f151f] border border-white/10 rounded-xl py-4 pl-16 pr-4 text-2xl font-black text-white focus:outline-none focus:border-emerald-500 transition-colors placeholder:text-gray-700"
+                            className="w-full bg-[#0f151f] border border-white/10 rounded-xl py-4 pl-16 pr-4 text-2xl font-black text-white focus:outline-none focus:border-[#00bc7d] transition-colors placeholder:text-gray-700"
                         />
                     </div>
 
                     {/* Pills */}
                     <div className="grid grid-cols-3 gap-3">
-                        <button onClick={() => setAmount('30')} className="relative border border-white/10 hover:border-emerald-500/50 hover:bg-emerald-500/10 rounded-xl p-3 flex flex-col items-center gap-1 transition-all group bg-[#1a2230]">
+                        <button onClick={() => setAmount('30')} className="relative border border-white/10 hover:border-[#00bc7d]/50 hover:bg-[#00bc7d]/10 rounded-xl p-3 flex flex-col items-center gap-1 transition-all group bg-[#1a2230]">
                             <span className="absolute -top-2.5 left-1/2 -translate-x-1/2 bg-[#0f151f] text-blue-400 text-xs font-bold px-2 py-0.5 rounded border border-blue-500/30">Min</span>
                             <span className="text-xs text-gray-500 group-hover:text-emerald-400">MYR</span>
                             <span className="font-bold text-white">30</span>
@@ -407,7 +397,7 @@ export function Withdraw() {
                             <span className="text-xs text-gray-400 group-hover:text-emerald-400">MYR</span>
                             <span className="font-bold text-white text-lg">100</span>
                         </button>
-                        <button onClick={() => setAmount('1000')} className="relative border border-white/10 hover:border-emerald-500/50 hover:bg-emerald-500/10 rounded-xl p-3 flex flex-col items-center gap-1 transition-all group bg-[#1a2230]">
+                        <button onClick={() => setAmount('1000')} className="relative border border-white/10 hover:border-[#00bc7d]/50 hover:bg-[#00bc7d]/10 rounded-xl p-3 flex flex-col items-center gap-1 transition-all group bg-[#1a2230]">
                             <span className="absolute -top-2.5 left-1/2 -translate-x-1/2 bg-[#0f151f] text-blue-400 text-xs font-bold px-2 py-0.5 rounded border border-blue-500/30">Max</span>
                             <span className="text-xs text-gray-500 group-hover:text-emerald-400">MYR</span>
                             <span className="font-bold text-white">1,000</span>
@@ -425,7 +415,7 @@ export function Withdraw() {
                         {t("back")}
                     </Button>
                     <Button 
-                        className="h-12 bg-[#00bc7d] hover:bg-[#00a870] text-black font-black rounded-xl shadow-[0_0_20px_-5px_rgba(16,185,129,0.6)] text-base transition-all hover:scale-[1.02]"
+                        className={`h-12 rounded-xl text-base transition-all hover:scale-[1.02] ${PRIMARY_CTA_CLASS}`}
                     >
                         {t("submit")}
                     </Button>

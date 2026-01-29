@@ -127,7 +127,7 @@ export function ClaimRecordModal({
             <div className="space-y-2">
               <label className="text-white font-bold text-sm">Type</label>
               <Select value={recordType} onValueChange={(v) => setRecordType(v as ClaimRecordType)}>
-                <SelectTrigger className="w-full bg-[#0f151f] border-white/10 text-white !h-12 rounded-xl px-4 py-0 data-[size=default]:!h-12 focus:border-emerald-500 focus-visible:ring-emerald-500/20">
+                <SelectTrigger className="w-full bg-[#0f151f] border-white/10 text-white !h-12 rounded-xl px-4 py-0 data-[size=default]:!h-12 focus:border-[#00bc7d] focus-visible:ring-[#00bc7d]/20">
                   <SelectValue placeholder="Type" />
                 </SelectTrigger>
                 <SelectContent className="bg-[#1a2230] border-white/10">
@@ -140,7 +140,7 @@ export function ClaimRecordModal({
             <div className="space-y-2">
               <label className="text-white font-bold text-sm">Status</label>
               <Select value={recordStatus} onValueChange={setRecordStatus}>
-                <SelectTrigger className="w-full bg-[#0f151f] border-white/10 text-white !h-12 rounded-xl px-4 py-0 data-[size=default]:!h-12 focus:border-emerald-500 focus-visible:ring-emerald-500/20">
+                <SelectTrigger className="w-full bg-[#0f151f] border-white/10 text-white !h-12 rounded-xl px-4 py-0 data-[size=default]:!h-12 focus:border-[#00bc7d] focus-visible:ring-[#00bc7d]/20">
                   <SelectValue placeholder="Status" />
                 </SelectTrigger>
                 <SelectContent className="bg-[#1a2230] border-white/10">
@@ -162,7 +162,7 @@ export function ClaimRecordModal({
                   type="text"
                   value={startDate}
                   onChange={(e) => setStartDate(e.target.value)}
-                  className="bg-[#0f151f] border-white/10 text-white h-12 rounded-xl px-4 focus:border-emerald-500 focus-visible:ring-emerald-500/20 pr-10"
+                  className="bg-[#0f151f] border-white/10 text-white h-12 rounded-xl px-4 focus:border-[#00bc7d] focus-visible:ring-[#00bc7d]/20 pr-10"
                 />
                 <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" />
               </div>
@@ -174,7 +174,7 @@ export function ClaimRecordModal({
                   type="text"
                   value={endDate}
                   onChange={(e) => setEndDate(e.target.value)}
-                  className="bg-[#0f151f] border-white/10 text-white h-12 rounded-xl px-4 focus:border-emerald-500 focus-visible:ring-emerald-500/20 pr-10"
+                  className="bg-[#0f151f] border-white/10 text-white h-12 rounded-xl px-4 focus:border-[#00bc7d] focus-visible:ring-[#00bc7d]/20 pr-10"
                 />
                 <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" />
               </div>
@@ -191,7 +191,7 @@ export function ClaimRecordModal({
                   onClick={() => setActiveDatePreset(preset.id)}
                   className={`px-6 h-10 rounded-xl text-sm font-bold transition-all border ${
                     isActive
-                      ? 'border-emerald-500 bg-emerald-500/10 text-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.2)]'
+                      ? 'border-[#00bc7d] bg-[#00bc7d]/10 text-[#00bc7d] shadow-[0_0_15px_rgba(0,188,125,0.2)]'
                       : 'border-white/5 bg-[#0f151f] text-gray-400 hover:text-white hover:bg-white/5'
                   }`}
                 >
@@ -219,7 +219,7 @@ export function ClaimRecordModal({
                   {filteredRecords.map((row) => (
                     <tr key={`${row.type}-${row.id}`} className="hover:bg-white/5 transition-all group">
                       <td className="px-6 py-5">
-                        <span className="text-sm font-bold text-white group-hover:text-emerald-400 transition-colors">{row.id}</span>
+                        <span className="text-sm font-bold text-white group-hover:text-[#00bc7d] transition-colors">{row.id}</span>
                       </td>
                       <td className="px-6 py-5">
                         <span className="text-sm text-gray-300 font-medium">{row.campaign}</span>
@@ -234,7 +234,7 @@ export function ClaimRecordModal({
                         <span className="text-sm text-white font-medium">{row.claimedDate}</span>
                       </td>
                       <td className="px-6 py-5 text-center">
-                        <span className="text-sm font-bold text-emerald-400">{row.reward}</span>
+                        <span className="text-sm font-bold text-[#00bc7d]">{row.reward}</span>
                       </td>
                     </tr>
                   ))}
@@ -248,7 +248,7 @@ export function ClaimRecordModal({
               </span>
               <div className="flex items-center gap-2">
                 <button type="button" className="px-3 py-1 rounded-lg bg-white/5 text-gray-500 text-xs disabled:opacity-50">Prev</button>
-                <button type="button" className="px-3 py-1 rounded-lg bg-emerald-500/20 text-emerald-500 text-xs font-bold border border-emerald-500/30">1</button>
+                <button type="button" className="px-3 py-1 rounded-lg bg-[#00bc7d]/20 text-[#00bc7d] text-xs font-bold border border-[#00bc7d]/30">1</button>
                 <button type="button" className="px-3 py-1 rounded-lg bg-white/5 text-gray-500 text-xs disabled:opacity-50">Next</button>
               </div>
             </div>

@@ -5,6 +5,7 @@ import { useAuth } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { InnerPageLayout } from "../components/shared/InnerPageLayout";
 import { sanitizeTextInput } from "../utils/security";
+import { PAGE_ACCENT } from "../config/themeTokens";
 
 // Placeholder data - you can replace this with actual recent games data
 const recentGames = [
@@ -69,13 +70,13 @@ export function RecentGame() {
         {/* Simple Title Section */}
         <div className="mt-8 relative z-20 w-full flex flex-col items-center gap-6 py-6 pb-0">
           <div className="absolute left-4 top-1/2 -translate-y-1/2 hidden xl:block">
-            <div className="w-24 h-24 rounded-full bg-emerald-500 opacity-20 blur-[50px]"></div>
+            <div className="w-24 h-24 rounded-full bg-[#00bc7d] opacity-20 blur-[50px]"></div>
           </div>
           <div className="absolute right-4 top-1/2 -translate-y-1/2 hidden xl:block">
-            <div className="w-24 h-24 rounded-full bg-emerald-500 opacity-20 blur-[50px]"></div>
+            <div className="w-24 h-24 rounded-full bg-[#00bc7d] opacity-20 blur-[50px]"></div>
           </div>
 
-          <h2 className="text-4xl font-bold tracking-tight text-emerald-500 drop-shadow-[0_0_15px_rgba(16,185,129,0.5)]">
+          <h2 className={PAGE_ACCENT.recentGame.pageTitleClass}>
             Recent Games
           </h2>
         </div>
@@ -90,7 +91,7 @@ export function RecentGame() {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(sanitizeTextInput(e.target.value).slice(0, 50))}
                 maxLength={50}
-                className="w-full h-14 bg-[#16202c] border border-transparent hover:border-white/10 focus:border-emerald-500/50 rounded-full pl-6 pr-14 text-white placeholder:text-gray-500 transition-all outline-none"
+                className="w-full h-14 bg-[#16202c] border border-transparent hover:border-white/10 focus:border-[#00bc7d]/50 rounded-full pl-6 pr-14 text-white placeholder:text-gray-500 transition-all outline-none"
                 placeholder={t("searchPlaceholder")}
               />
               <div className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-emerald-600/20 rounded-full text-emerald-400">
@@ -99,12 +100,12 @@ export function RecentGame() {
             </div>
           </div>
 
-          {/* Games Grid */}
+          {/* Games Grid - same grid and spacing as Slots / LiveCasino */}
           <div className="w-full">
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6 justify-items-center">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-4 lg:gap-6 justify-items-center">
               {filteredGames.map((game) => (
-                <div key={game.id} className="flex flex-col items-start gap-3 group cursor-pointer">
-                  <div className="relative w-[214px] h-[214px] rounded-2xl overflow-hidden ring-1 ring-white/10 transition-all duration-300 bg-[#1a2536]">
+                <div key={game.id} className="flex flex-col items-start gap-2 md:gap-3 group cursor-pointer w-full max-w-[214px]">
+                  <div className="relative w-full aspect-square rounded-2xl overflow-hidden ring-1 ring-white/10 transition-all duration-300 bg-[#1a2536] group-hover:ring-emerald-500/30 group-hover:shadow-[0_0_30px_-5px_rgba(16,185,129,0.2)]">
                     <img
                       src={game.img}
                       alt={game.name}
@@ -112,16 +113,16 @@ export function RecentGame() {
                     />
                     {/* Hover Overlay */}
                     <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                      <div className="w-12 h-12 rounded-full bg-emerald-500 flex items-center justify-center shadow-[0_0_20px_rgba(16,185,129,0.4)] transform scale-50 group-hover:scale-100 transition-transform duration-300">
+                      <div className="w-12 h-12 rounded-full bg-[#00bc7d] flex items-center justify-center shadow-[0_0_20px_rgba(0,188,125,0.4)] transform scale-50 group-hover:scale-100 transition-transform duration-300">
                         <ArrowRight className="w-6 h-6 text-black stroke-[3]" />
                       </div>
                     </div>
                   </div>
-                  <div className="flex flex-col gap-1">
-                    <span className="text-sm font-bold text-white group-hover:text-emerald-500 transition-colors">
+                  <div className="flex flex-col gap-1 md:gap-1.5 mt-1 md:mt-2 w-full px-0.5">
+                    <span className="text-white group-hover:text-emerald-500 font-bold text-xs md:text-sm transition-colors">
                       {game.name}
                     </span>
-                    <span className="text-[11px] text-gray-500 font-bold uppercase tracking-wider">
+                    <span className="text-[10px] md:text-[11px] text-gray-500 font-bold uppercase tracking-wider">
                       {game.category}
                     </span>
                   </div>

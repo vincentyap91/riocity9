@@ -1,8 +1,9 @@
 import React from 'react';
-import { Gamepad2, Dices, Trophy, Fish, Ticket, Zap, Club, Monitor, Check } from 'lucide-react';
+import { Gamepad2, Dices, Trophy, Fish, Ticket, Zap, Club, Monitor } from 'lucide-react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../components/ui/accordion';
 import { Button } from '../components/ui/button';
 import { InnerPageLayout } from "../components/shared/InnerPageLayout";
+import { EmptyState } from '../components/shared/EmptyState';
 import { useAuth } from '../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
@@ -261,7 +262,7 @@ export function Rebate() {
                                   ))}
                                 </div>
                               ) : (
-                                <div className="p-6 text-center text-gray-500">No data available for this category yet.</div>
+                                <EmptyState message="No data available for this category yet." className="p-6" compact />
                               )}
                             </AccordionContent>
                           </AccordionItem>

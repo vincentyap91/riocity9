@@ -19,6 +19,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { useLanguage } from '../contexts/LanguageContext';
 import { InnerPageLayout } from "../components/shared/InnerPageLayout";
+import { MOBILE } from "../config/themeTokens";
 
 export function Settings() {
   const navigate = useNavigate();
@@ -41,7 +42,7 @@ export function Settings() {
       <div className="container mx-auto px-4 pt-4 pb-32 max-w-[640px]">
         
         {/* User Profile Header Card - Mobile Version (Follows Screenshot) */}
-        <div className="md:hidden bg-gradient-to-b from-[#1a2230] to-[#131b29] rounded-2xl p-5 mb-3 shadow-xl border border-white/5 relative overflow-hidden">
+        <div className={`md:hidden bg-gradient-to-b from-[#1a2230] to-[#131b29] rounded-2xl ${MOBILE.cardPadding} ${MOBILE.sectionMb} shadow-xl border border-white/5 relative overflow-hidden`}>
           <div className="flex flex-row gap-5 items-center">
             {/* Left side: Avatar/Badge */}
             <div className="relative shrink-0">
@@ -56,11 +57,10 @@ export function Settings() {
 
             {/* Right side: Info */}
             <div className="flex-1 flex flex-col pt-1">
-              <h2 className="text-xl font-black text-white leading-none mb-2.5">{user?.displayName || user?.email?.split('@')[0] || 'testvin'}</h2>
-              
+              <h2 className={`${MOBILE.title} text-white leading-none ${MOBILE.sectionMb}`}>{user?.displayName || user?.email?.split('@')[0] || 'testvin'}</h2>
               {/* ID Pill */}
-              <div className="flex items-center gap-2 bg-[#0f151f] px-4 py-2 rounded-full border border-white/10 self-start">
-                 <span className="text-xs text-gray-400 font-mono tracking-wide leading-none">880123456789</span>
+              <div className={`flex items-center ${MOBILE.gapSm} bg-[#0f151f] px-4 py-2 rounded-full border border-white/10 self-start`}>
+                 <span className={`${MOBILE.caption} font-mono tracking-wide leading-none`}>880123456789</span>
                  <button 
                    onClick={async () => {
                      try {
@@ -88,13 +88,13 @@ export function Settings() {
           
           {/* Progress Bar (at the bottom of the card) */}
           <div className="mt-2 h-2 w-full bg-black/40 rounded-full overflow-hidden border border-white/5 shadow-inner">
-             <div className="h-full w-[8%] bg-gradient-to-r from-emerald-500 to-emerald-400 rounded-full shadow-[0_0_10px_rgba(16,185,129,0.55)]"></div>
+             <div className="h-full w-[8%] bg-[#00bc7d] rounded-full shadow-[0_0_10px_rgba(0,188,125,0.55)]"></div>
           </div>
         </div>
 
         {/* User Profile Header Card - Desktop Version */}
-        <div className="hidden md:block bg-gradient-to-b from-[#1a2230] to-[#131b29] rounded-2xl p-6 mb-3 shadow-xl border border-white/5 relative overflow-hidden">
-          <div className="flex flex-col sm:flex-row gap-6 items-start">
+        <div className={`hidden md:block bg-gradient-to-b from-[#1a2230] to-[#131b29] rounded-2xl ${MOBILE.cardPadding} ${MOBILE.sectionMb} shadow-xl border border-white/5 relative overflow-hidden`}>
+          <div className={`flex flex-col sm:flex-row ${MOBILE.gap} items-start`}>
             {/* Avatar Section */}
             <div className="relative shrink-0">
                <div className="w-24 h-24 rounded-full border-2 border-[#D4AF37] p-1 shadow-[0_0_15px_-3px_rgba(212,175,55,0.3)] bg-black/40 relative z-10">
@@ -146,7 +146,7 @@ export function Settings() {
             </div>
             <Button 
                 onClick={() => navigate('/deposit')} 
-                className="bg-[#00bc7d] hover:bg-[#00a870] text-black font-black text-base rounded-xl px-8 h-12 shadow-[0_0_20px_-5px_rgba(16,185,129,0.6)] transition-all hover:scale-[1.02] border-none"
+                className="bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 hover:brightness-110 text-black font-black text-base rounded-xl px-8 h-12 shadow-[0_2px_10px_rgba(16,185,129,0.3)] transition-all hover:scale-[1.02] border-none"
             >
                 {t("deposit")}
             </Button>
@@ -168,7 +168,7 @@ export function Settings() {
                         }}
                     >
                         <div className="flex items-center gap-4">
-                            <div className="w-10 h-10 rounded-xl bg-black/40 flex items-center justify-center text-[#99A1AF] group-hover:text-emerald-400 group-hover:bg-emerald-500/10 transition-all">
+                            <div className="w-10 h-10 rounded-xl bg-black/40 flex items-center justify-center text-[#99A1AF] group-hover:text-[#00bc7d] group-hover:bg-[#00bc7d]/10 transition-all">
                                 <item.icon className="w-5 h-5" />
                             </div>
                             <span className="font-bold text-[#e5e7eb] group-hover:text-white transition-colors text-base">{t(item.labelKey as any)}</span>

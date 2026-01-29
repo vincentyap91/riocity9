@@ -117,7 +117,7 @@ export function CountryCodeSelector({
                   w-full px-4 py-3 flex items-center gap-3 text-left transition-all
                   ${
                     selectedCountry.dialCode === country.dialCode
-                      ? 'bg-emerald-500/10 text-emerald-400'
+                      ? 'bg-[#00bc7d]/10 text-[#00bc7d]'
                       : 'text-gray-300 hover:bg-white/5 hover:text-white'
                   }
                 `}
@@ -133,7 +133,7 @@ export function CountryCodeSelector({
                   <div className="text-xs text-gray-400 truncate">{country.name}</div>
                 </div>
                 {selectedCountry.dialCode === country.dialCode && (
-                  <div className="w-2 h-2 rounded-full bg-emerald-500 shrink-0"></div>
+                  <div className="w-2 h-2 rounded-full bg-[#00bc7d] shrink-0"></div>
                 )}
               </button>
             ))}

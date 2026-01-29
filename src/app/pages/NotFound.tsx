@@ -8,7 +8,8 @@ export function NotFound() {
   return (
     <InnerPageLayout className="overflow-hidden">
       <div className="container mx-auto px-4 py-10 max-w-[1024px]">
-        <div className="flex items-center gap-3 mb-6">
+        {/* Header with back button - gap below for inner pages */}
+        <div className="flex items-center gap-3 mb-8">
           <Link
             to="/"
             className="h-10 w-10 rounded-full bg-black/20 border border-white/10 flex items-center justify-center hover:bg-white/10 transition-colors"
@@ -30,7 +31,7 @@ export function NotFound() {
             <div className="pt-4">
               <Link
                 to="/"
-                className="inline-flex h-12 px-8 items-center justify-center bg-emerald-500 hover:bg-emerald-400 text-black font-bold rounded-xl transition-colors"
+                className="inline-flex h-12 px-8 items-center justify-center bg-[#00bc7d] hover:bg-[#00a870] text-black font-bold rounded-xl transition-colors"
               >
                 Go Home
               </Link>

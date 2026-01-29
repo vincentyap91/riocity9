@@ -9,7 +9,6 @@ import {
   Copy, 
   Upload, 
   ShieldCheck, 
-  MessageSquare,
   Ticket,
   Search,
   Wallet,
@@ -23,6 +22,8 @@ import {
 import { Button } from '../components/ui/button';
 import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '../contexts/LanguageContext';
+import { MOBILE, PRIMARY_CTA_CLASS } from '../config/themeTokens';
+import { SegmentTabs, type SegmentTabsItem } from '../components/shared/SegmentTabs';
 import { sanitizeTextInput, validateReceiptFile } from '../utils/security';
 
 // Mock Data for Payment Methods - Enhanced for Visual Variety
@@ -69,7 +70,7 @@ const OTHER_METHODS = [
     processTime: '17 min',
     limit: '1947.9 +619',
     status: 'success',
-    badgeColor: 'text-emerald-400 bg-emerald-400/10',
+    badgeColor: 'text-[#00bc7d] bg-[#00bc7d]/10',
     icon: Wallet
   },
   {
@@ -79,7 +80,7 @@ const OTHER_METHODS = [
     processTime: '15 min',
     limit: '0 - 10.73 ml',
     status: 'success',
-    badgeColor: 'text-emerald-400 bg-emerald-400/10',
+    badgeColor: 'text-[#00bc7d] bg-[#00bc7d]/10',
     icon: Banknote
   },
   {
@@ -110,7 +111,7 @@ const OTHER_METHODS = [
     processTime: '11 min',
     limit: '1947.5 - 15.13 ml',
     status: 'success',
-    badgeColor: 'text-emerald-400 bg-emerald-400/10',
+    badgeColor: 'text-[#00bc7d] bg-[#00bc7d]/10',
     icon: CheckCircle2
   }
 ];
@@ -197,8 +198,8 @@ export function Deposit() {
 
       {/* Main Wrapper */}
       <div className="relative z-10 w-full max-w-lg">
-        {/* Top Header (outside card) */}
-        <div className="flex items-center gap-3 mb-4 px-2">
+        {/* Top Header (outside card) - gap below for inner pages with back button */}
+        <div className={`flex items-center ${MOBILE.gapSm} ${MOBILE.headerMb} px-2`}>
           <button
             onClick={() => {
               if (step > 1) handleBack();
@@ -209,7 +210,7 @@ export function Deposit() {
           >
             <ArrowLeft className="w-5 h-5 text-white" />
           </button>
-          <span className="text-white font-bold text-base">{t("settings")}</span>
+          <span className={`text-white ${MOBILE.pageTitle}`}>{t("settings")}</span>
         </div>
 
         {/* Main Card */}
@@ -217,28 +218,16 @@ export function Deposit() {
           {/* Card Header */}
           <div className="p-6 pb-4 shrink-0 bg-[#1a2230]">
             {step === 1 ? (
-              <div className="flex justify-center">
-                <div className="flex bg-[#0f151f] p-1 rounded-xl border border-white/5 w-full max-w-[313px]">
-                  <button 
-                      onClick={() => handleTabChange('deposit')}
-                      className={`flex-1 px-8 py-3 rounded-lg text-sm font-bold transition-all ${activeTab === 'deposit' ? 'bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 text-black shadow-lg' : 'text-gray-400 hover:text-white'}`}
-                  >
-                      <span className="flex items-center justify-center gap-2">
-                          <Banknote className="w-4 h-4" />
-                          {t("deposit")}
-                      </span>
-                  </button>
-                  <button 
-                      onClick={() => handleTabChange('withdrawal')}
-                      className={`flex-1 px-8 py-3 rounded-lg text-sm font-bold transition-all ${activeTab === 'withdrawal' ? 'bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 text-black shadow-lg' : 'text-gray-400 hover:text-white'}`}
-                  >
-                      <span className="flex items-center justify-center gap-2">
-                          <Wallet className="w-4 h-4" />
-                          {t("withdrawal")}
-                      </span>
-                  </button>
-                </div>
-              </div>
+              <SegmentTabs
+                items={[
+                  { id: 'deposit', label: t('deposit'), icon: Banknote },
+                  { id: 'withdrawal', label: t('withdrawal'), icon: Wallet },
+                ] as SegmentTabsItem[]}
+                activeId={activeTab}
+                onSelect={(id) => handleTabChange(id as 'deposit' | 'withdrawal')}
+                className="!px-1 !pb-4"
+                maxWidth="max-w-[313px]"
+              />
             ) : (
               <div className="flex items-center justify-center">
                 <h1 className="text-xl font-bold text-white">
@@ -249,7 +238,7 @@ export function Deposit() {
           </div>
 
           {/* Content Area */}
-          <div className="p-6 pt-0">
+          <div className={`${MOBILE.cardPadding} pt-0`}>
           
           {/* STEP 1: SELECTION */}
           {step === 1 && (
@@ -263,7 +252,7 @@ export function Deposit() {
                         <input 
                             type="text" 
                             placeholder={t("search")} 
-                            className="w-full h-12 bg-[#0f151f] border border-white/10 rounded-xl pl-12 pr-4 text-white focus:outline-none focus:border-emerald-500 transition-colors placeholder:text-gray-500"
+                            className="w-full h-12 bg-[#0f151f] border border-white/10 rounded-xl pl-12 pr-4 text-white focus:outline-none focus:border-[#00bc7d] transition-colors placeholder:text-gray-500"
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(sanitizeTextInput(e.target.value))}
                         />
@@ -364,7 +353,7 @@ export function Deposit() {
                     <Button 
                         onClick={handleContinue}
                         disabled={!selectedMethodId}
-                        className="w-full h-12 bg-[#00bc7d] hover:bg-[#00a870] text-black font-black text-base rounded-xl shadow-[0_0_20px_-5px_rgba(16,185,129,0.6)] transition-all hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed border-none"
+                        className={`w-full h-12 rounded-xl text-base hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed ${PRIMARY_CTA_CLASS}`}
                     >
                         {t("continueToDeposit")} 
                         <ChevronRight className="w-4 h-4 ml-1" />
@@ -387,7 +376,7 @@ export function Deposit() {
                             <div className="text-lg font-black text-white">{selectedMethod.name}</div>
                         </div>
                     </div>
-                    <Button variant="ghost" onClick={() => setStep(1)} className="text-emerald-500 hover:text-emerald-400 hover:bg-emerald-500/10 h-auto py-1 px-3 text-base font-bold uppercase tracking-wider">
+                    <Button variant="ghost" onClick={() => setStep(1)} className="text-[#00bc7d] hover:text-[#00a870] hover:bg-[#00bc7d]/10 h-auto py-1 px-3 text-base font-bold uppercase tracking-wider">
                         {t("change")}
                     </Button>
                 </div>
@@ -417,13 +406,13 @@ export function Deposit() {
                            setAmount(finalValue);
                          }}
                          placeholder="0.00"
-                         className="w-full bg-[#0f151f] border border-white/10 rounded-xl py-4 pl-16 pr-4 text-2xl font-black text-white focus:outline-none focus:border-emerald-500 transition-colors placeholder:text-gray-700"
+                         className="w-full bg-[#0f151f] border border-white/10 rounded-xl py-4 pl-16 pr-4 text-2xl font-black text-white focus:outline-none focus:border-[#00bc7d] transition-colors placeholder:text-gray-700"
                      />
                   </div>
 
                   {/* Pills */}
                   <div className="grid grid-cols-3 gap-3">
-                     <button onClick={() => setAmount('30')} className="relative border border-white/10 hover:border-emerald-500/50 hover:bg-emerald-500/10 rounded-xl p-3 flex flex-col items-center gap-1 transition-all group bg-[#1a2230]">
+                     <button onClick={() => setAmount('30')} className="relative border border-white/10 hover:border-[#00bc7d]/50 hover:bg-[#00bc7d]/10 rounded-xl p-3 flex flex-col items-center gap-1 transition-all group bg-[#1a2230]">
                          <span className="absolute -top-2.5 left-1/2 -translate-x-1/2 bg-[#0f151f] text-blue-400 text-xs font-bold px-2 py-0.5 rounded border border-blue-500/30">Min</span>
                          <span className="text-xs text-gray-500 group-hover:text-emerald-400">MYR</span>
                          <span className="font-bold text-white">30</span>
@@ -433,7 +422,7 @@ export function Deposit() {
                          <span className="text-xs text-gray-400 group-hover:text-emerald-400">MYR</span>
                          <span className="font-bold text-white text-lg">100</span>
                      </button>
-                     <button onClick={() => setAmount('1000')} className="relative border border-white/10 hover:border-emerald-500/50 hover:bg-emerald-500/10 rounded-xl p-3 flex flex-col items-center gap-1 transition-all group bg-[#1a2230]">
+                     <button onClick={() => setAmount('1000')} className="relative border border-white/10 hover:border-[#00bc7d]/50 hover:bg-[#00bc7d]/10 rounded-xl p-3 flex flex-col items-center gap-1 transition-all group bg-[#1a2230]">
                          <span className="absolute -top-2.5 left-1/2 -translate-x-1/2 bg-[#0f151f] text-blue-400 text-xs font-bold px-2 py-0.5 rounded border border-blue-500/30">Max</span>
                          <span className="text-xs text-gray-500 group-hover:text-emerald-400">MYR</span>
                          <span className="font-bold text-white">1,000</span>
@@ -444,7 +433,7 @@ export function Deposit() {
                <Button 
                  onClick={handleAmountSubmit}
                  disabled={!amount}
-                 className="w-full h-12 bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 hover:brightness-110 text-black font-black text-base rounded-xl shadow-[0_5px_15px_rgba(16,185,129,0.35)] transition-all hover:translate-y-[-1px] disabled:opacity-50 disabled:hover:translate-y-0 border-none"
+                 className={`w-full h-12 rounded-xl text-base hover:translate-y-[-1px] disabled:opacity-50 disabled:hover:translate-y-0 ${PRIMARY_CTA_CLASS}`}
                >
                  {t("confirmAndDeposit")}
                </Button>
@@ -517,7 +506,7 @@ export function Deposit() {
                         type="text"
                         value={referenceId}
                         onChange={(e) => setReferenceId(sanitizeTextInput(e.target.value))}
-                        className="w-full bg-[#0f151f] border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-emerald-500 transition-colors placeholder:text-gray-700"
+                        className="w-full bg-[#0f151f] border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#00bc7d] transition-colors placeholder:text-gray-700"
                         placeholder={t("enterReferenceNumber")}
                     />
                 </div>
@@ -561,7 +550,7 @@ export function Deposit() {
                         {t("back")}
                     </Button>
                     <Button 
-                        className="h-12 bg-[#00bc7d] hover:bg-[#00a870] text-black font-black rounded-xl shadow-[0_0_20px_-5px_rgba(16,185,129,0.6)] text-base transition-all hover:scale-[1.02] border-none"
+                        className={`h-12 rounded-xl text-base transition-all hover:scale-[1.02] ${PRIMARY_CTA_CLASS}`}
                     >
                         {t("submit")}
                     </Button>

@@ -155,12 +155,12 @@ export function PromotionDetail() {
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[600px] bg-[radial-gradient(ellipse_at_top,_rgba(0,188,125,0.1)_0%,_rgba(0,188,125,0.05)_40%,_transparent_70%)] pointer-events-none" />
 
         <div className="relative z-10 container mx-auto px-4 pt-6 md:pt-8 max-w-[900px]">
-        {/* Back Button */}
+        {/* Back Button - gap below for inner pages with back button */}
         <button 
           onClick={() => navigate("/promotions")}
-          className="group flex items-center gap-2 text-gray-400 hover:text-white transition-colors mb-6"
+          className="group flex items-center gap-2 text-gray-400 hover:text-white transition-colors mb-8"
         >
-          <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-emerald-500/20 transition-all">
+          <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-[#00bc7d]/20 transition-all">
             <ArrowLeft className="w-4 h-4" />
           </div>
           <span className="font-bold text-sm">{t("backToPromotions")}</span>
@@ -188,7 +188,7 @@ export function PromotionDetail() {
              <div>
                <Button
                  onClick={() => navigate("/deposit")}
-                 className="h-11 px-8 rounded-xl bg-[#00bc7d] hover:bg-[#00a870] text-black font-bold text-sm shadow-[0_0_20px_-5px_rgba(16,185,129,0.6)] transition-all hover:scale-[1.02]"
+                 className="h-11 px-8 rounded-xl bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 hover:brightness-110 text-black font-black text-sm shadow-[0_2px_10px_rgba(16,185,129,0.3)] transition-all hover:scale-[1.02] border-none"
                >
                  Claim
                </Button>
@@ -215,7 +215,7 @@ export function PromotionDetail() {
                 <ul className="space-y-2">
                    {section.items.map((item: string, i: number) => (
                      <li key={i} className="flex items-start gap-2 text-white/90">
-                        <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 mt-2 shrink-0" />
+                        <div className="w-1.5 h-1.5 rounded-full bg-[#00bc7d] mt-2 shrink-0" />
                         <span className="text-sm font-medium leading-relaxed">{item}</span>
                      </li>
                    ))}
@@ -229,7 +229,7 @@ export function PromotionDetail() {
               <ul className="space-y-2">
                  {promo.terms.map((term: string, idx: number) => (
                    <li key={idx} className="flex items-start gap-2 text-white/70 text-sm">
-                      <div className="w-1.5 h-1.5 rounded-full bg-emerald-500/30 mt-1.5 shrink-0" />
+                      <div className="w-1.5 h-1.5 rounded-full bg-[#00bc7d]/30 mt-1.5 shrink-0" />
                       <span className="font-medium leading-relaxed">{term}</span>
                    </li>
                  ))}
@@ -243,7 +243,7 @@ export function PromotionDetail() {
                 <ul className="space-y-2">
                    {promo.important.map((item: string, idx: number) => (
                      <li key={idx} className="flex items-start gap-2 text-white/70 text-sm">
-                        <div className="w-1.5 h-1.5 rounded-full bg-emerald-500/30 mt-1.5 shrink-0" />
+                        <div className="w-1.5 h-1.5 rounded-full bg-[#00bc7d]/30 mt-1.5 shrink-0" />
                         <span className="font-medium leading-relaxed">{item}</span>
                      </li>
                    ))}
@@ -255,7 +255,7 @@ export function PromotionDetail() {
            <div className="pt-8">
                <Button 
                 onClick={() => navigate("/deposit")}
-                className="w-full h-11 rounded-xl bg-[#00bc7d] hover:bg-[#00a870] text-black font-bold text-sm shadow-[0_0_20px_-5px_rgba(16,185,129,0.6)] transition-all hover:scale-[1.02]"
+                className="w-full h-11 rounded-xl bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 hover:brightness-110 text-black font-black text-sm shadow-[0_2px_10px_rgba(16,185,129,0.3)] transition-all hover:scale-[1.02] border-none"
                >
                  Claim
                </Button>

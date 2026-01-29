@@ -3,6 +3,7 @@ import { InsidePageHero } from '../components/shared/InsidePageHero';
 import { Grid, ArrowRight, Search } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { sanitizeTextInput } from '../utils/security';
+import { PAGE_ACCENT, SECTION_HEADER_TITLE_CLASS } from '../config/themeTokens';
 
 // New Banner
 import imgFishingBanner from "@/assets/71667b097dc0233c71967c40c7e2dc37f4fa9f8c.png";
@@ -67,9 +68,9 @@ export function Fishing() {
         {/* Hero Section */}
         <InsidePageHero image={imgFishingBanner} />
 
-        {/* Simple Title Section */}
+        {/* Simple Title Section – color from provider nav */}
         <div className="mt-[-20px] relative z-20 w-full flex flex-col items-center gap-6 py-6">
-            <h2 className="text-4xl font-bold tracking-tight text-cyan-500 drop-shadow-[0_0_15px_rgba(6,182,212,0.5)]">
+            <h2 className={PAGE_ACCENT.fishing.pageTitleClass}>
                 {t('fishingGamesTitle')}
             </h2>
         </div>
@@ -117,13 +118,13 @@ export function Fishing() {
             {/* Section: FISHING GAME */}
             <div className="w-full flex flex-col gap-6">
                 
-                {/* Section Header */}
+                {/* Section Header – same accent as provider nav */}
                 <div className="flex items-center justify-center gap-3 mb-4">
-                    <div className="w-10 h-10 rounded-lg bg-[#06b6d4]/10 border border-[#06b6d4]/20 flex items-center justify-center">
-                        <Grid className="w-5 h-5 text-[#06b6d4]" />
+                    <div className={PAGE_ACCENT.fishing.sectionHeaderIconBoxClass}>
+                        <Grid className={PAGE_ACCENT.fishing.sectionHeaderIconClass} />
                     </div>
-                    <h2 className="text-2xl font-black text-white italic uppercase tracking-tighter">
-                        Fa <span className="text-[#06b6d4]">CHAI</span>
+                    <h2 className={SECTION_HEADER_TITLE_CLASS}>
+                        Fa <span className={PAGE_ACCENT.fishing.sectionHeaderAccentClass}>CHAI</span>
                     </h2>
                 </div>
 
@@ -132,7 +133,7 @@ export function Fishing() {
                     {fishingGames.map((game) => (
                         <div key={game.id} className="flex flex-col items-start gap-2 md:gap-3 group cursor-pointer w-full max-w-[214px]">
                             <div 
-                                className="relative w-full aspect-square rounded-2xl overflow-hidden ring-1 ring-white/10 transition-all duration-500 bg-[#1a2536] group-hover:ring-[#fdc700]/30 group-hover:shadow-[0_0_30px_-5px_rgba(253,199,0,0.2)]"
+                                className="relative w-full aspect-square rounded-2xl overflow-hidden ring-1 ring-white/10 transition-all duration-500 bg-[#1a2536] group-hover:ring-emerald-500/30 group-hover:shadow-[0_0_30px_-5px_rgba(16,185,129,0.2)]"
                             >
                                 <img 
                                     src={game.image} 
@@ -142,7 +143,7 @@ export function Fishing() {
 
                                 {/* Hover Overlay from Screenshot */}
                                 <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                                    <div className="w-12 h-12 rounded-full bg-emerald-500 flex items-center justify-center shadow-[0_0_20px_rgba(16,185,129,0.4)] transform scale-50 group-hover:scale-100 transition-transform duration-300">
+                                    <div className="w-12 h-12 rounded-full bg-[#00bc7d] flex items-center justify-center shadow-[0_0_20px_rgba(0,188,125,0.4)] transform scale-50 group-hover:scale-100 transition-transform duration-300">
                                         <ArrowRight className="w-6 h-6 text-black stroke-[3]" />
                                     </div>
                                 </div>

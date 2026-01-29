@@ -14,7 +14,7 @@ import { PromoBanners } from '../components/home/PromoBanners';
 import { ReferralBanner } from '../components/home/ReferralBanner';
 import { useLanguage } from '../contexts/LanguageContext';
 
-// Figma Assets
+// Assets
 import imgSuperSpeed from "@/assets/2947d765690866fed806f4ef749e66c8f9d99118.png";
 import imgDragonTiger from "@/assets/a96a529a33b6ec94623485790da7169f56c3044d.png";
 import imgBlackjack from "@/assets/1bceafa1502f0c6f06db1585621af18d071c3b23.png";

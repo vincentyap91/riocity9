@@ -1,6 +1,5 @@
 import React from 'react';
 import { User, ArrowRightLeft } from 'lucide-react';
-import { cn } from '../../components/ui/utils';
 import { SectionHeader } from './SectionHeader';
 import { useLanguage } from '../../contexts/LanguageContext';
 
@@ -51,7 +50,7 @@ export function LiveTransactions() {
                     </span>
                 </div>
                 <div className="py-3 text-center flex items-center justify-center gap-2">
-                    <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse hidden md:block"></div>
+                    <div className="w-2 h-2 rounded-full bg-[#00bc7d] animate-pulse hidden md:block"></div>
                     <span className="text-[10px] md:text-xs font-bold text-emerald-400 uppercase tracking-widest">
                         {t("lastWithdrawals")}
                     </span>
@@ -79,7 +78,6 @@ export function LiveTransactions() {
                         {/* Amount */}
                         <div className="flex flex-col items-end">
                             <span className="font-bold text-white tabular-nums text-sm md:text-base tracking-tight">
-                                <span className="text-xs text-gray-600 mr-0.5 md:mr-1">₨</span>
                                 <span className="text-blue-400">{t.amount}</span>
                             </span>
                         </div>
@@ -106,7 +104,6 @@ export function LiveTransactions() {
                          {/* Amount */}
                          <div className="flex flex-col items-end">
                             <span className="font-bold text-white tabular-nums text-sm md:text-base tracking-tight">
-                                <span className="text-xs text-gray-600 mr-0.5 md:mr-1">₨</span>
                                 <span className="text-emerald-400">{t.amount}</span>
                             </span>
                         </div>

@@ -23,7 +23,7 @@ export function InsidePageHero({
   glowClassName
 }: InsidePageHeroProps) {
   return (
-    <div className={cn("relative w-full flex flex-col items-center justify-center min-h-[300px] md:min-h-[400px] overflow-hidden ", className)}>
+    <div className={cn("relative w-full flex flex-col items-center justify-center min-h-[107px] md:min-h-[400px] overflow-hidden", className)}>
       
       {/* Background Glows - Adjusted to be subtle like the screenshot */}
       <div className={cn("absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[60%] h-[60%] bg-[#1a2c5a]/30 rounded-full blur-[120px] pointer-events-none", glowClassName)}></div>
@@ -37,13 +37,32 @@ export function InsidePageHero({
              <img 
                 src={image} 
                 alt="Promo" 
-                className="w-full h-auto object-contain drop-shadow-2xl animate-in fade-in duration-1000"
+                className="w-full h-auto object-contain animate-in fade-in duration-1000"
              />
 
             {/* Gradient Overlay for blending */}
             <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#02040a]"></div>
         </div>
 
+      </div>
+      <div className="hidden md:block">
+      {/* Left-right gradient overlay for blending with page */}
+        <div
+          className="absolute inset-0 pointer-events-none z-20"
+          style={{
+            background:
+              "linear-gradient(to right, #02040a 9%, transparent 30%, transparent 85%, #02040a 100%)",
+          }}
+          aria-hidden
+        />
+        <div
+          className="absolute inset-0 pointer-events-none z-20"
+          style={{
+            background:
+              "linear-gradient(to left, #02040a 9%, transparent 30%, transparent 85%, #02040a 100%)",
+          }}
+          aria-hidden
+        />
       </div>
     </div>
   );

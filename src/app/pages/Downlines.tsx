@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { 
   ArrowLeft, UsersRound, Calendar, Search, 
-  ChevronUp, ChevronDown, X
+  ChevronUp, ChevronDown, X, UserCheck, UserX, BarChart3
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '../components/ui/button';
@@ -9,11 +9,12 @@ import { Input } from '../components/ui/input';
 import { useLanguage } from '../contexts/LanguageContext';
 import { InnerPageLayout } from "../components/shared/InnerPageLayout";
 import { PageSidebar, type PageSidebarItem } from '../components/shared/PageSidebar';
+import { MOBILE } from '../config/themeTokens';
 import { sanitizeTextInput } from '../utils/security';
 
 const DOWNLINE_SIDEBAR_ITEMS: PageSidebarItem[] = [
   { id: 'summary', label: 'Downline Summary', icon: UsersRound },
-  { id: 'kpis', label: 'Downlines KPIs', icon: UsersRound },
+  { id: 'kpis', label: 'Downlines KPIs', icon: BarChart3 },
 ];
 
 const QUICK_DATE_FILTERS = [
@@ -75,18 +76,18 @@ export function Downlines() {
 
   return (
     <InnerPageLayout className="overflow-hidden">
-      <div className="container mx-auto px-4 py-12 max-w-[1024px]">
+      <div className={`container mx-auto max-w-[1024px] ${MOBILE.container}`}>
         
-        {/* Navigation Header */}
-        <div className="relative flex items-center justify-between mb-6">
-          <div className="flex items-center gap-3">
+        {/* Navigation Header – same gap below as on all inner pages */}
+        <div className={`relative flex items-center justify-between ${MOBILE.headerMb}`}>
+          <div className={`flex items-center ${MOBILE.gapSm}`}>
             <button
               onClick={() => navigate('/settings')}
               className="h-10 w-10 rounded-full bg-black/20 border border-white/10 flex items-center justify-center hover:bg-white/10 transition-colors"
             >
               <ArrowLeft className="w-5 h-5 text-white" />
             </button>
-            <span className="text-white font-bold text-base">{t("settings")}</span>
+            <span className={`text-white ${MOBILE.pageTitle}`}>{t("settings")}</span>
           </div>
           <button
             onClick={() => navigate('/settings')}
@@ -104,12 +105,15 @@ export function Downlines() {
           />
 
           {/* Main Content Area */}
-          <div className="flex-1 w-full bg-[#1a2230] rounded-2xl border border-white/5 p-6 flex flex-col">
-            {/* Title */}
-            <div className="flex items-center justify-between mb-3">
-              <div className="flex items-center gap-3">
+          <div className={`flex-1 w-full bg-[#1a2230] rounded-2xl border border-white/5 ${MOBILE.cardPadding} flex flex-col`}>
+            {/* Title - icon matches active sidebar item */}
+            <div className={`flex items-center justify-between ${MOBILE.sectionMb}`}>
+              <div className={`flex items-center ${MOBILE.gapSm}`}>
                 <div className="h-10 w-10 rounded-xl bg-black/25 border border-white/10 flex items-center justify-center">
-                  <UsersRound className="w-5 h-5 text-white" />
+                  {(() => {
+                    const TitleIcon = DOWNLINE_SIDEBAR_ITEMS.find((i) => i.id === activeTab)?.icon ?? UsersRound;
+                    return <TitleIcon className="w-5 h-5 text-white" />;
+                  })()}
                 </div>
                 <span className="text-white font-bold text-base">
                   {activeTab === 'summary' ? 'Downline Summary' : 'Downlines KPIs'}
@@ -121,25 +125,25 @@ export function Downlines() {
             {activeTab === 'summary' ? (
               <>
                 {/* Date Selection */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
-                  <div className="space-y-2">
-                    <label className="text-white font-bold text-sm">Start Date</label>
+                <div className={`grid grid-cols-1 sm:grid-cols-2 ${MOBILE.gap} ${MOBILE.sectionMb}`}>
+                  <div className={MOBILE.spaceY}>
+                    <label className={`text-white ${MOBILE.label}`}>Start Date</label>
                     <div className="relative group">
                       <Input
                         type="text"
                         defaultValue="19-01-2026"
-                        className="bg-[#0f151f] border-white/10 text-white h-12 rounded-xl px-4 focus:border-emerald-500 focus-visible:ring-emerald-500/20 pr-10"
+                        className="bg-[#0f151f] border-white/10 text-white h-12 rounded-xl px-4 focus:border-[#00bc7d] focus-visible:ring-[#00bc7d]/20 pr-10"
                       />
                       <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                     </div>
                   </div>
-                  <div className="space-y-2">
-                    <label className="text-white font-bold text-sm">End Date</label>
+                  <div className={MOBILE.spaceY}>
+                    <label className={`text-white ${MOBILE.label}`}>End Date</label>
                     <div className="relative group">
                       <Input
                         type="text"
                         defaultValue="23-01-2026"
-                        className="bg-[#0f151f] border-white/10 text-white h-12 rounded-xl px-4 focus:border-emerald-500 focus-visible:ring-emerald-500/20 pr-10"
+                        className="bg-[#0f151f] border-white/10 text-white h-12 rounded-xl px-4 focus:border-[#00bc7d] focus-visible:ring-[#00bc7d]/20 pr-10"
                       />
                       <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                     </div>
@@ -156,7 +160,7 @@ export function Downlines() {
                         onClick={() => setActiveDateFilter(filter.id)}
                       className={`px-6 h-10 rounded-xl text-sm font-bold transition-all border ${
                           isActive
-                            ? 'border-emerald-500 bg-emerald-500/10 text-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.2)]'
+                            ? 'border-[#00bc7d] bg-[#00bc7d]/10 text-[#00bc7d] shadow-[0_0_15px_rgba(0,188,125,0.2)]'
                             : 'border-white/5 bg-[#0f151f] text-gray-400 hover:text-white hover:bg-white/5'
                         }`}
                       >
@@ -216,27 +220,33 @@ export function Downlines() {
                   <h3 className="text-white font-bold text-base mb-4">Downline L1 KPIs</h3>
                   
                   {/* Status Tabs */}
-                  <div className="flex justify-start mb-4">
-                    <div className="flex bg-[#0f151f] p-1 rounded-xl border border-white/5 w-full max-w-[400px]">
+                  <div className="flex justify-start mb-4 px-1">
+                    <div className="flex flex-nowrap bg-[#0f151f] p-1 rounded-lg md:rounded-xl border border-white/5 w-full max-w-[400px]">
                       <button
                         onClick={() => setActiveStatusTab('active')}
-                        className={`flex-1 px-8 py-3 rounded-lg text-sm font-bold transition-all ${
+                        className={`flex-1 min-w-0 px-3 py-2 md:px-6 md:py-3 rounded-md md:rounded-lg text-xs md:text-sm font-bold transition-all whitespace-nowrap ${
                           activeStatusTab === 'active'
-                            ? 'bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 text-black shadow-lg'
+                            ? 'bg-[#00bc7d] hover:bg-[#00a870] text-black shadow-lg'
                             : 'text-gray-400 hover:text-white'
                         }`}
                       >
-                        Active Downlines
+                        <span className="flex items-center justify-center gap-1.5 md:gap-2">
+                          <UserCheck className="w-3.5 h-3.5 md:w-4 md:h-4 shrink-0" />
+                          Active Downlines
+                        </span>
                       </button>
                       <button
                         onClick={() => setActiveStatusTab('inactive')}
-                        className={`flex-1 px-8 py-3 rounded-lg text-sm font-bold transition-all ${
+                        className={`flex-1 min-w-0 px-3 py-2 md:px-6 md:py-3 rounded-md md:rounded-lg text-xs md:text-sm font-bold transition-all whitespace-nowrap ${
                           activeStatusTab === 'inactive'
-                            ? 'bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 text-black shadow-lg'
+                            ? 'bg-[#00bc7d] hover:bg-[#00a870] text-black shadow-lg'
                             : 'text-gray-400 hover:text-white'
                         }`}
                       >
-                        Inactive Downlines
+                        <span className="flex items-center justify-center gap-1.5 md:gap-2">
+                          <UserX className="w-3.5 h-3.5 md:w-4 md:h-4 shrink-0" />
+                          Inactive Downlines
+                        </span>
                       </button>
                     </div>
                   </div>
@@ -252,7 +262,7 @@ export function Downlines() {
                       }
                       maxLength={50}
                       placeholder="Search downline username"
-                      className="bg-[#0f151f] border-white/10 text-white h-12 rounded-xl pl-12 pr-4 focus:border-emerald-500 focus-visible:ring-emerald-500/20 placeholder:text-gray-600"
+                      className="bg-[#0f151f] border-white/10 text-white h-12 rounded-xl pl-12 pr-4 focus:border-[#00bc7d] focus-visible:ring-[#00bc7d]/20 placeholder:text-gray-600"
                     />
                   </div>
 

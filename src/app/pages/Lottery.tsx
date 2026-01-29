@@ -3,6 +3,8 @@ import { InsidePageHero } from '../components/shared/InsidePageHero';
 import { ArrowRight, Search } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { sanitizeTextInput } from '../utils/security';
+import { PAGE_ACCENT } from '../config/themeTokens';
+import { EmptyState } from '../components/shared/EmptyState';
 
 // Banner
 import imgLotteryBanner from "@/assets/b18479f8e5e33aa224b895a9f36e7daacafa6f8b.png";
@@ -13,7 +15,6 @@ import imgLucky6 from "@/assets/6018f5c05dbb4a11b804de6d1749571ae91ebb42.png";
 
 const PROVIDER_GAMEPLAY_LOGO = "https://pksoftcdn.azureedge.net/media/gameplay-202511180733318039.png";
 const PROVIDER_93CONNECT_LOGO = "https://riocity-cdn.azureedge.net/riocity/93connect-202402021532267517.png";
-const EMPTY_STATE_IMAGE = "https://pksoftcdn.azureedge.net/media/placeholder_riocity-202408050928489215.jpg";
 
 interface LotteryGame {
   id: number;
@@ -63,9 +64,9 @@ export function Lottery() {
         {/* Hero Section */}
         <InsidePageHero image={imgLotteryBanner} />
 
-        {/* Simple Title Section */}
+        {/* Simple Title Section – color from provider / banner */}
         <div className="mt-[-20px] relative z-20 w-full flex flex-col items-center gap-6 py-6">
-            <h2 className="text-4xl font-bold tracking-tight text-purple-500 drop-shadow-[0_0_15px_rgba(168,85,247,0.5)]">
+            <h2 className={PAGE_ACCENT.lottery.pageTitleClass}>
                 {t('lotteryKenoTitle')}
             </h2>
         </div>
@@ -129,14 +130,14 @@ export function Lottery() {
                 </div>
             </div>
 
-            {/* Game Grid */}
+            {/* Game Grid – same layout as Fishing page */}
             {filteredGames.length > 0 ? (
               <div className="w-full">
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6 justify-items-center">
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-4 lg:gap-6 justify-items-center">
                     {filteredGames.map((game) => (
-                        <div key={game.id} className="flex flex-col items-start gap-3 group cursor-pointer">
+                        <div key={game.id} className="flex flex-col items-start gap-2 md:gap-3 group cursor-pointer w-full max-w-[214px]">
                             <div 
-                                className="relative w-[214px] h-[214px] rounded-2xl overflow-hidden ring-1 ring-white/10 transition-all duration-500 bg-[#1a2536] group-hover:ring-purple-500/30 group-hover:shadow-[0_0_30px_-5px_rgba(168,85,247,0.2)]"
+                                className="relative w-full aspect-square rounded-2xl overflow-hidden ring-1 ring-white/10 transition-all duration-500 bg-[#1a2536] group-hover:ring-emerald-500/30 group-hover:shadow-[0_0_30px_-5px_rgba(16,185,129,0.2)]"
                             >
                                 <img 
                                     src={game.image} 
@@ -144,38 +145,21 @@ export function Lottery() {
                                     className="w-full h-full object-cover transform transition-transform duration-500 group-hover:scale-110" 
                                 />
 
-                                {/* Provider Logo Overlay */}
-                                {game.provider_logo && (
-                                  <div className="absolute top-2 left-2 bg-black/60 backdrop-blur-md px-2 py-1 rounded-lg flex items-center gap-1.5">
-                                    <img 
-                                      src={game.provider_logo} 
-                                      alt={game.provider} 
-                                      className="h-4 w-auto object-contain max-w-[60px]" 
-                                    />
-                                  </div>
-                                )}
-
-                                {/* Hover Overlay */}
+                                {/* Hover Overlay – same as Fishing */}
                                 <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                                    <div className="w-12 h-12 rounded-full bg-purple-500 flex items-center justify-center shadow-[0_0_20px_rgba(168,85,247,0.4)] transform scale-50 group-hover:scale-100 transition-transform duration-300">
-                                        <ArrowRight className="w-6 h-6 text-white stroke-[3]" />
+                                    <div className="w-12 h-12 rounded-full bg-[#00bc7d] flex items-center justify-center shadow-[0_0_20px_rgba(0,188,125,0.4)] transform scale-50 group-hover:scale-100 transition-transform duration-300">
+                                        <ArrowRight className="w-6 h-6 text-black stroke-[3]" />
                                     </div>
                                 </div>
                             </div>
 
-                            {/* Content */}
-                            <div className="flex flex-col gap-2 mt-2 w-full">
-                                <h3 className="text-white group-hover:text-purple-500 font-bold text-base transition-colors w-full px-0.5">
+                            {/* Content – same as Fishing: title + provider line */}
+                            <div className="flex flex-col gap-1.5 md:gap-2 mt-1 md:mt-2 w-full">
+                                <h3 className="text-white group-hover:text-emerald-500 font-bold text-xs md:text-sm lg:text-base transition-colors w-full px-0.5">
                                     {game.title}
                                 </h3>
-                                
-                                {/* Provider Badge */}
                                 {game.provider && (
-                                  <div className="flex items-center gap-2 bg-purple-500/10 rounded-xl px-3 py-1.5 w-fit border border-purple-500/20 shadow-[0_0_15px_-5px_rgba(168,85,247,0.1)]">
-                                    <span className="text-purple-400 font-black text-[12px] tracking-tight">
-                                        {game.provider}
-                                    </span>
-                                  </div>
+                                  <span className="text-[10px] md:text-[11px] text-gray-500 font-bold uppercase tracking-wider">{game.provider}</span>
                                 )}
                             </div>
                         </div>
@@ -184,8 +168,7 @@ export function Lottery() {
               </div>
             ) : (
               <div className="w-full flex flex-col items-center justify-center py-20">
-                <img src={EMPTY_STATE_IMAGE} alt="" className="w-48 h-48 object-contain mb-4 opacity-80" />
-                <div className="text-gray-500 text-lg font-bold">No games found</div>
+                <EmptyState message="No games found" />
               </div>
             )}
 

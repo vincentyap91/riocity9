@@ -26,7 +26,7 @@ export function FloatingRewardWidget() {
   }
 
   return (
-    <div className="fixed bottom-24 left-6 right-auto md:left-auto md:right-6 md:bottom-24 z-40 flex items-end gap-3">
+    <div className="fixed bottom-45 right-6 left-auto md:bottom-24 z-40 flex items-end gap-3">
       {/* Bonus Icons Panel - Slides in from right */}
       <AnimatePresence>
         {isExpanded && (
@@ -100,7 +100,7 @@ export function FloatingRewardWidget() {
           <img
             src="https://pksoftcdn.azureedge.net/media/floating-icon-202510101416400018-202511120902419089.png"
             alt="Rewards"
-            className="w-full h-full object-contain drop-shadow-2xl"
+            className="w-full h-full object-contain"
           />
         </motion.button>
         

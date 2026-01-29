@@ -3,9 +3,10 @@ import { Link, useLocation } from 'react-router-dom';
 import { 
     Gift, Ticket, Box, Home, Flame, Gamepad2, Trophy, Dices, 
     Fish, ArrowLeftRight, Club, Plane, Megaphone, Users, 
-    HandCoins, Crown, Clock, MessageCircle, Facebook, Send, Phone,
+    HandCoins, Crown, MessageCircle, Facebook, Send, Phone,
     Sparkles, ChevronUp, History
 } from 'lucide-react';
+import { useAuth } from '../../contexts/AuthContext';
 import {
   Accordion,
   AccordionContent,
@@ -48,6 +49,7 @@ interface SidebarMenuProps {
 export function SidebarMenu({ onItemClick }: SidebarMenuProps) {
     const location = useLocation();
     const { t } = useLanguage();
+    const { isAuthenticated, logout } = useAuth();
 
     return (
         <div className="flex flex-col h-full bg-[#02040a] text-white overflow-y-auto custom-scrollbar">
@@ -121,8 +123,22 @@ export function SidebarMenu({ onItemClick }: SidebarMenuProps) {
             {/* Bottom Section */}
             <div className="p-3 mt-auto space-y-3">
                 
-                {/* Live Chat Card */}
-                <div className="bg-[#131b29] border border-white/10 rounded-xl p-3 flex items-center justify-between group cursor-pointer hover:border-[#00ff88]/50 transition-all shadow-lg hover:shadow-[#00ff88]/10">
+                {/* Live Chat Card - click opens live chat popup and closes sidebar */}
+                <div
+                    role="button"
+                    tabIndex={0}
+                    onClick={() => {
+                        window.dispatchEvent(new CustomEvent('openLiveChat'));
+                        onItemClick?.();
+                    }}
+                    onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                            window.dispatchEvent(new CustomEvent('openLiveChat'));
+                            onItemClick?.();
+                        }
+                    }}
+                    className="bg-[#131b29] border border-white/10 rounded-xl p-3 flex items-center justify-between group cursor-pointer hover:border-[#00ff88]/50 transition-all shadow-lg hover:shadow-[#00ff88]/10"
+                >
                     <div className="flex items-center gap-3">
                         <div className="w-10 h-10 rounded-full bg-[#00ff88] flex items-center justify-center shadow-[0_0_15px_-3px_rgba(0,255,136,0.5)] group-hover:scale-105 transition-transform">
                             <MessageCircle className="w-5 h-5 text-[#131b29] fill-[#131b29]" />
@@ -150,14 +166,26 @@ export function SidebarMenu({ onItemClick }: SidebarMenuProps) {
                     </a>
                 </div>
 
-                {/* Login / Sign Up Button */}
-                <Button
-                    asChild
-                    className="w-full h-11 bg-gradient-to-r from-[#00ff88] to-[#00cc76] hover:from-[#05ffa1] hover:to-[#00dd82] text-black font-black text-base rounded-xl shadow-[0_8px_25px_-5px_rgba(0,255,136,0.4)] hover:shadow-[0_12px_30px_-5px_rgba(0,255,136,0.6)] tracking-tighter uppercase italic transition-all hover:scale-[1.02] active:scale-[0.98] border-none"
-                    onClick={onItemClick}
-                >
-                    <Link to="/login">{t("loginSignUp")}</Link>
-                </Button>
+                {/* Login / Sign Up when logged out; Log Out when logged in */}
+                {isAuthenticated ? (
+                    <Button
+                        onClick={() => {
+                            logout();
+                            onItemClick?.();
+                        }}
+                        className="w-full h-11 bg-gradient-to-r from-[#00ff88] to-[#00cc76] hover:from-[#05ffa1] hover:to-[#00dd82] text-black font-black text-base rounded-xl shadow-[0_8px_25px_-5px_rgba(0,255,136,0.4)] hover:shadow-[0_12px_30px_-5px_rgba(0,255,136,0.6)] tracking-tighter uppercase italic transition-all hover:scale-[1.02] active:scale-[0.98] border-none"
+                    >
+                        {t("logout")}
+                    </Button>
+                ) : (
+                    <Button
+                        asChild
+                        className="w-full h-11 bg-gradient-to-r from-[#00ff88] to-[#00cc76] hover:from-[#05ffa1] hover:to-[#00dd82] text-black font-black text-base rounded-xl shadow-[0_8px_25px_-5px_rgba(0,255,136,0.4)] hover:shadow-[0_12px_30px_-5px_rgba(0,255,136,0.6)] tracking-tighter uppercase italic transition-all hover:scale-[1.02] active:scale-[0.98] border-none"
+                        onClick={onItemClick}
+                    >
+                        <Link to="/login">{t("loginSignUp")}</Link>
+                    </Button>
+                )}
             </div>
 
         </div>

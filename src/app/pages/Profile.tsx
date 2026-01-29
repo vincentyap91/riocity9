@@ -7,6 +7,8 @@ import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
 import { InnerPageLayout } from "../components/shared/InnerPageLayout";
+import { SegmentTabs, type SegmentTabsItem } from "../components/shared/SegmentTabs";
+import { MOBILE } from "../config/themeTokens";
 import { sanitizeTextInput, sanitizeMobileNumber, sanitizeEmail, sanitizeUsername } from '../utils/security';
 import { CountryCodeSelector } from '../components/shared/CountryCodeSelector';
 import {
@@ -165,23 +167,21 @@ export function Profile() {
 
   return (
     <InnerPageLayout className="overflow-hidden">
-      <div className="container mx-auto px-4 py-12 max-w-[1024px]">
-        {/* Navigation Header (Settings left) */}
-        <div className="relative flex items-center justify-center mb-6">
-          <div className="absolute left-0 flex items-center gap-3">
-            <button
-              onClick={() => navigate('/settings')}
-              className="h-10 w-10 rounded-full bg-black/20 border border-white/10 flex items-center justify-center hover:bg-white/10 transition-colors"
-              aria-label="Back to Settings"
-            >
-              <ArrowLeft className="w-5 h-5 text-white" />
-            </button>
-            <span className="text-white font-bold text-base">{t("settings")}</span>
-          </div>
+      <div className={`container mx-auto max-w-[1024px] ${MOBILE.container}`}>
+        {/* Top Header – same layout and gap as Deposit page */}
+        <div className={`flex items-center ${MOBILE.gapSm} ${MOBILE.headerMb} px-2`}>
+          <button
+            onClick={() => navigate('/settings')}
+            className="h-10 w-10 rounded-full bg-black/20 border border-white/10 flex items-center justify-center hover:bg-white/10 transition-colors"
+            aria-label="Back to Settings"
+          >
+            <ArrowLeft className="w-5 h-5 text-white" />
+          </button>
+          <span className={`text-white ${MOBILE.pageTitle}`}>{t("settings")}</span>
         </div>
 
-        {/* Main Content Card (centered, large, rounded like screenshot) */}
-        <div className="bg-[#1a2230] rounded-2xl shadow-xl border border-white/5 overflow-hidden">
+        {/* Main Content Card – same gap below header as Deposit */}
+        <div className="bg-[#1a2230] border border-white/5 rounded-2xl shadow-xl overflow-hidden">
           {/* Title inside card (match screenshot) */}
           <div className="flex items-center justify-center gap-3 p-6 pb-4">
             <div className="h-10 w-10 rounded-xl bg-black/25 border border-white/10 flex items-center justify-center">
@@ -190,41 +190,20 @@ export function Profile() {
             <span className="text-white font-bold text-base">{t("myProfile")}</span>
           </div>
 
-          {/* Tabs (pill, centered) */}
-          <div className="flex justify-center">
-            <div className="flex bg-[#0f151f] p-1 rounded-xl border border-white/5 w-full max-w-[330px]">
-              <button
-                onClick={() => setActiveTab('personal')}
-                className={`flex-1 px-8 py-3 rounded-lg text-sm font-bold transition-all ${
-                  activeTab === 'personal'
-                    ? 'bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 text-black shadow-lg'
-                    : 'text-gray-400 hover:text-white'
-                }`}
-              >
-                <span className="flex items-center justify-center gap-2">
-                  Personal
-                </span>
-              </button>
-              <button
-                onClick={() => setActiveTab('address')}
-                className={`flex-1 px-8 py-3 rounded-lg text-sm font-bold transition-all ${
-                  activeTab === 'address'
-                    ? 'bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 text-black shadow-lg'
-                    : 'text-gray-400 hover:text-white'
-                }`}
-              >
-                <span className="flex items-center justify-center gap-2">
-                  Bank / E-wallet
-                </span>
-              </button>
-            </div>
-          </div>
+          <SegmentTabs
+            items={[
+              { id: 'personal', label: 'Personal', icon: User },
+              { id: 'address', label: 'Bank / E-wallet', icon: CreditCard },
+            ] as SegmentTabsItem[]}
+            activeId={activeTab}
+            onSelect={(id) => setActiveTab(id as 'personal' | 'address')}
+          />
 
-          <div className="p-6 pt-4">
+          <div className={`${MOBILE.cardPadding} pt-4`}>
             {activeTab === 'personal' ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="username" className="text-white font-bold text-sm">
+              <div className={`grid grid-cols-1 md:grid-cols-2 ${MOBILE.gap}`}>
+                <div className={MOBILE.spaceY}>
+                  <Label htmlFor="username" className={`text-white ${MOBILE.label}`}>
                     Username
                   </Label>
                   <Input
@@ -232,7 +211,7 @@ export function Profile() {
                     type="text"
                     value={formData.username}
                     onChange={(e) => handleInputChange('username', e.target.value)}
-                    className="bg-[#0f151f] border-white/10 text-white h-12 rounded-xl px-4 focus:border-emerald-500 focus-visible:ring-emerald-500/20"
+                    className="bg-[#0f151f] border-white/10 text-white h-12 rounded-xl px-4 focus:border-[#00bc7d] focus-visible:ring-[#00bc7d]/20"
                   />
                 </div>
 
@@ -245,12 +224,12 @@ export function Profile() {
                     type="text"
                     value={formData.fullName}
                     onChange={(e) => handleInputChange('fullName', e.target.value)}
-                    className="bg-[#0f151f] border-white/10 text-white h-12 rounded-xl px-4 focus:border-emerald-500 focus-visible:ring-emerald-500/20"
+                    className="bg-[#0f151f] border-white/10 text-white h-12 rounded-xl px-4 focus:border-[#00bc7d] focus-visible:ring-[#00bc7d]/20"
                   />
                 </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="email" className="text-white font-bold text-sm">
+                <div className={MOBILE.spaceY}>
+                  <Label htmlFor="email" className={`text-white ${MOBILE.label}`}>
                     Email
                   </Label>
                   <Input
@@ -258,7 +237,7 @@ export function Profile() {
                     type="email"
                     value={formData.email}
                     onChange={(e) => handleInputChange('email', e.target.value)}
-                    className="bg-[#0f151f] border-white/10 text-white h-12 rounded-xl px-4 focus:border-emerald-500 focus-visible:ring-emerald-500/20"
+                    className="bg-[#0f151f] border-white/10 text-white h-12 rounded-xl px-4 focus:border-[#00bc7d] focus-visible:ring-[#00bc7d]/20"
                   />
                 </div>
 
@@ -280,13 +259,13 @@ export function Profile() {
                       placeholder="Enter contact number"
                       inputMode="numeric"
                       pattern="[0-9]*"
-                      className="bg-[#0f151f] border-white/10 text-white h-12 rounded-xl px-4 focus:border-emerald-500 focus-visible:ring-emerald-500/20 flex-1"
+                      className="bg-[#0f151f] border-white/10 text-white h-12 rounded-xl px-4 focus:border-[#00bc7d] focus-visible:ring-[#00bc7d]/20 flex-1"
                     />
                   </div>
                 </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="registrationDate" className="text-white font-bold text-sm">
+                <div className={MOBILE.spaceY}>
+                  <Label htmlFor="registrationDate" className={`text-white ${MOBILE.label}`}>
                     Registration Date
                   </Label>
                   <Input
@@ -294,12 +273,12 @@ export function Profile() {
                     type="text"
                     value={formData.registrationDate}
                     onChange={(e) => handleInputChange('registrationDate', e.target.value)}
-                    className="bg-[#0f151f] border-white/10 text-white h-12 rounded-xl px-4 focus:border-emerald-500 focus-visible:ring-emerald-500/20"
+                    className="bg-[#0f151f] border-white/10 text-white h-12 rounded-xl px-4 focus:border-[#00bc7d] focus-visible:ring-[#00bc7d]/20"
                   />
                 </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="dateOfBirth" className="text-white font-bold text-sm">
+                <div className={MOBILE.spaceY}>
+                  <Label htmlFor="dateOfBirth" className={`text-white ${MOBILE.label}`}>
                     Date of Birth
                   </Label>
                   <Input
@@ -307,7 +286,7 @@ export function Profile() {
                     type="text"
                     value={formData.dateOfBirth}
                     onChange={(e) => handleInputChange('dateOfBirth', e.target.value)}
-                    className="bg-[#0f151f] border-white/10 text-white h-12 rounded-xl px-4 focus:border-emerald-500 focus-visible:ring-emerald-500/20"
+                    className="bg-[#0f151f] border-white/10 text-white h-12 rounded-xl px-4 focus:border-[#00bc7d] focus-visible:ring-[#00bc7d]/20"
                   />
                 </div>
 
@@ -319,7 +298,7 @@ export function Profile() {
                     value={formData.gender}
                     onValueChange={(value) => handleInputChange('gender', value)}
                   >
-                    <SelectTrigger className="!h-12 bg-[#0f151f] border-white/10 text-white rounded-xl px-4 py-0 data-[size=default]:!h-12 focus:border-emerald-500 focus-visible:ring-emerald-500/20">
+                    <SelectTrigger className="!h-12 bg-[#0f151f] border-white/10 text-white rounded-xl px-4 py-0 data-[size=default]:!h-12 focus:border-[#00bc7d] focus-visible:ring-[#00bc7d]/20">
                       <SelectValue placeholder="Select gender" />
                     </SelectTrigger>
                     <SelectContent className="bg-[#131b29] border-white/10 text-white">
@@ -330,8 +309,8 @@ export function Profile() {
                   </Select>
                 </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="currency" className="text-white font-bold text-sm">
+                <div className={MOBILE.spaceY}>
+                  <Label htmlFor="currency" className={`text-white ${MOBILE.label}`}>
                     Currency
                   </Label>
                   <Input
@@ -339,7 +318,7 @@ export function Profile() {
                     type="text"
                     value={formData.currency}
                     onChange={(e) => handleInputChange('currency', e.target.value)}
-                    className="bg-[#0f151f] border-white/10 text-white h-12 rounded-xl px-4 focus:border-emerald-500 focus-visible:ring-emerald-500/20"
+                    className="bg-[#0f151f] border-white/10 text-white h-12 rounded-xl px-4 focus:border-[#00bc7d] focus-visible:ring-[#00bc7d]/20"
                   />
                 </div>
               </div>
@@ -370,15 +349,15 @@ export function Profile() {
                       >
                         <div className="flex items-center gap-4">
                           <div className="h-12 w-12 rounded-xl bg-[#1a2230] border border-white/10 flex items-center justify-center group-hover:scale-110 transition-transform">
-                            <Smartphone className="w-6 h-6 text-gray-400 group-hover:text-emerald-400 transition-colors" />
+                            <Smartphone className="w-6 h-6 text-gray-400 group-hover:text-[#00bc7d] transition-colors" />
                           </div>
                           <div className="flex flex-col gap-0.5">
                             <div className="flex items-center gap-2">
                               <span className="text-white font-black text-sm tracking-wide">{account.number}</span>
                               {account.verified ? (
                                 <div className="flex items-center gap-1 bg-emerald-500/10 border border-emerald-500/20 rounded-full px-2 py-0.5">
-                                  <CheckCircle2 className="w-3 h-3 text-emerald-500" />
-                                  <span className="text-xs font-black text-emerald-500 uppercase tracking-tighter">Verified</span>
+                                  <CheckCircle2 className="w-3 h-3 text-[#00bc7d]" />
+                                  <span className="text-xs font-black text-[#00bc7d] uppercase tracking-tighter">Verified</span>
                                 </div>
                               ) : (
                                 <div className="flex items-center gap-1 bg-amber-500/10 border border-amber-500/20 rounded-full px-2 py-0.5">
@@ -446,8 +425,8 @@ export function Profile() {
                               <div className="flex items-center gap-2">
                                 <span className="text-white font-black text-sm tracking-wide">{account.accountNo}</span>
                                 <div className="flex items-center gap-1 bg-emerald-500/10 border border-emerald-500/20 rounded-full px-2 py-0.5">
-                                  <ShieldCheck className="w-3 h-3 text-emerald-500" />
-                                  <span className="text-[10px] font-black text-emerald-500 uppercase tracking-tighter">Linked</span>
+                                  <ShieldCheck className="w-3 h-3 text-[#00bc7d]" />
+                                  <span className="text-[10px] font-black text-[#00bc7d] uppercase tracking-tighter">Linked</span>
                                 </div>
                               </div>
                               <div className="text-gray-500 text-xs font-bold uppercase tracking-tight">
@@ -493,7 +472,7 @@ export function Profile() {
                 <Button
                   onClick={handleSave}
                   disabled={isSaving}
-                  className="bg-emerald-500 hover:bg-emerald-400 text-black font-bold h-12 px-12 rounded-xl text-base shadow-[0_0_15px_-3px_rgba(16,185,129,0.4)] transition-all hover:scale-[1.02] active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="bg-[#00bc7d] hover:bg-[#00a870] text-black font-bold h-12 px-12 rounded-xl text-base shadow-[0_0_15px_-3px_rgba(0,188,125,0.4)] transition-all hover:scale-[1.02] active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {isSaving ? (
                     <div className="flex items-center gap-2">
@@ -513,26 +492,26 @@ export function Profile() {
       <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
         <DialogContent className="bg-[#1a1a1a] border-white/10 text-white rounded-2xl">
           <DialogHeader className="space-y-1">
-            <DialogTitle className="text-emerald-400 text-lg font-bold">
+            <DialogTitle className="text-[#00bc7d] text-lg font-bold">
               {addDialogType === 'ewallet' ? 'Add Phone Number' : 'Add Bank Account'}
             </DialogTitle>
           </DialogHeader>
 
           <div className="space-y-4">
             <div className="space-y-2">
-              <Label className="text-emerald-400 text-sm font-bold">
+              <Label className="text-[#00bc7d] text-sm font-bold">
                 Account Name
               </Label>
               <Input
                 value={newAccountName}
                 onChange={(e) => setNewAccountName(sanitizeTextInput(e.target.value))}
                 placeholder="Enter account name"
-                className="bg-white text-black h-12 rounded-xl border-transparent focus-visible:ring-emerald-500/30"
+                className="bg-white text-black h-12 rounded-xl border-transparent focus-visible:ring-[#00bc7d]/30"
               />
             </div>
 
             <div className="space-y-2">
-              <Label className="text-emerald-400 text-sm font-bold">
+              <Label className="text-[#00bc7d] text-sm font-bold">
                 {addDialogType === 'ewallet' ? 'Mobile Number' : 'Account Number'}
               </Label>
               {addDialogType === 'ewallet' ? (
@@ -552,7 +531,7 @@ export function Profile() {
                     type="tel"
                     inputMode="numeric"
                     pattern="[0-9]*"
-                    className="bg-white text-black h-11 rounded-xl border-transparent focus-visible:ring-emerald-500/30 flex-1"
+                    className="bg-white text-black h-11 rounded-xl border-transparent focus-visible:ring-[#00bc7d]/30 flex-1"
                   />
                 </div>
               ) : (
@@ -564,20 +543,20 @@ export function Profile() {
                   }}
                   placeholder="Enter account number"
                   type="text"
-                  className="bg-white text-black h-12 rounded-xl border-transparent focus-visible:ring-emerald-500/30"
+                  className="bg-white text-black h-12 rounded-xl border-transparent focus-visible:ring-[#00bc7d]/30"
                 />
               )}
             </div>
 
             <div className="space-y-2">
-              <Label className="text-emerald-400 text-sm font-bold">
+              <Label className="text-[#00bc7d] text-sm font-bold">
                 {addDialogType === 'ewallet' ? 'E-wallet Provider' : 'Bank Name'}
               </Label>
               <Input
                 value={newAccountProvider}
                 onChange={(e) => setNewAccountProvider(sanitizeTextInput(e.target.value))}
                 placeholder={addDialogType === 'ewallet' ? 'e.g. Touch n Go' : 'e.g. Maybank'}
-                className="bg-white text-black h-12 rounded-xl border-transparent focus-visible:ring-emerald-500/30"
+                className="bg-white text-black h-12 rounded-xl border-transparent focus-visible:ring-[#00bc7d]/30"
               />
             </div>
 
@@ -585,7 +564,7 @@ export function Profile() {
               type="button"
               onClick={handleAddAccount}
               disabled={isAddingAccount}
-              className="w-full h-12 bg-emerald-500 hover:bg-emerald-400 text-black font-bold rounded-xl text-base disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full h-12 bg-[#00bc7d] hover:bg-[#00a870] text-black font-bold rounded-xl text-base disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isAddingAccount ? (
                 <div className="flex items-center gap-2">

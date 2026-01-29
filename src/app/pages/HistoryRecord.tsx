@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { 
   ArrowLeft, History, Calendar, Wallet, Dices, 
   Users, HandCoins, Megaphone,
-  Search, Filter, X
+  Search, X
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '../components/ui/button';
@@ -18,6 +18,13 @@ import {
   SelectValue,
 } from '../components/ui/select';
 import { sanitizeTextInput } from '../utils/security';
+import {
+  RECORD_PAGE_ICON_BOX_CLASS,
+  RECORD_PAGE_ICON_CLASS,
+  RECORD_PAGE_TITLE_CLASS,
+  MOBILE,
+} from '../config/themeTokens';
+import { EmptyState } from '../components/shared/EmptyState';
 
 const SIDEBAR_ITEMS: PageSidebarItem[] = [
   { id: 'transaction', label: 'Transaction History', icon: Wallet },
@@ -96,11 +103,10 @@ export function HistoryRecord() {
 
   return (
     <InnerPageLayout className="overflow-hidden">
-      <div className="container mx-auto px-4 py-12 max-w-[1024px]">
-        
+      <div className={`container mx-auto max-w-[1024px] ${MOBILE.container}`}>
         {/* Navigation Header */}
-        <div className="relative flex items-center justify-between mb-6">
-          <div className="flex items-center gap-3">
+        <div className={`relative flex items-center justify-between ${MOBILE.headerMb}`}>
+          <div className={`flex items-center ${MOBILE.gapSm}`}>
             <button
               onClick={() => navigate('/settings')}
               className="h-10 w-10 rounded-full bg-black/20 border border-white/10 flex items-center justify-center hover:bg-white/10 transition-colors"
@@ -117,7 +123,7 @@ export function HistoryRecord() {
           </button>
         </div>
 
-        <div className="flex flex-col lg:flex-row gap-6 items-start">
+        <div className={`flex flex-col lg:flex-row ${MOBILE.gap} items-start`}>
           <PageSidebar
             items={SIDEBAR_ITEMS}
             activeId={activeSidebarTab}
@@ -125,42 +131,32 @@ export function HistoryRecord() {
           />
 
           {/* Main Content Area */}
-          <div className="flex-1 w-full bg-[#1a2230] rounded-2xl border border-white/5 p-6 flex flex-col">
+          <div className={`flex-1 w-full bg-[#1a2230] rounded-2xl border border-white/5 ${MOBILE.cardPadding} flex flex-col`}>
             {/* Title inside card */}
-            <div className="flex items-center justify-start gap-3 pb-4">
-              <div className="h-10 w-10 rounded-xl bg-black/25 border border-white/10 flex items-center justify-center">
-                <TitleIcon className="w-5 h-5 text-white/90" />
+            <div className={`flex items-center justify-start ${MOBILE.gapSm} pb-4`}>
+              <div className={RECORD_PAGE_ICON_BOX_CLASS}>
+                <TitleIcon className={RECORD_PAGE_ICON_CLASS} />
               </div>
-              <span className="text-white font-bold text-base">{title}</span>
+              <span className={RECORD_PAGE_TITLE_CLASS}>{title}</span>
             </div>
             
-            {/* Transaction History: Deposits/Withdrawals Tabs */}
+            {/* Transaction History: Type dropdown – same style as Bet Record Statistics */}
             {activeSidebarTab === 'transaction' && (
-              <div className="flex flex-col md:flex-row items-center justify-start gap-6 mb-6">
-                <div className="flex justify-center">
-                  <div className="flex bg-[#0f151f] p-1 rounded-xl border border-white/5 w-full max-w-[313px]">
-                    <button
-                      onClick={() => setActiveTypeTab('deposits')}
-                      className={`flex-1 px-8 py-3 rounded-lg text-sm font-bold transition-all ${
-                        activeTypeTab === 'deposits'
-                          ? 'bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 text-black shadow-lg'
-                          : 'text-gray-400 hover:text-white'
-                      }`}
-                    >
+              <div className={`${MOBILE.spaceY} ${MOBILE.sectionMb}`}>
+                <label className={`text-white ${MOBILE.label}`}>Type</label>
+                <Select value={activeTypeTab} onValueChange={(v) => setActiveTypeTab(v as 'deposits' | 'withdrawals')}>
+                  <SelectTrigger className="w-full bg-[#0f151f] border-white/10 text-white !h-12 rounded-xl px-4 py-0 data-[size=default]:!h-12 focus:border-[#00bc7d] focus-visible:ring-[#00bc7d]/20">
+                    <SelectValue placeholder="Select type" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-[#1a2230] border-white/10">
+                    <SelectItem value="deposits" className="text-white focus:bg-[#00bc7d]/20">
                       {t("deposit")}
-                    </button>
-                    <button
-                      onClick={() => setActiveTypeTab('withdrawals')}
-                      className={`flex-1 px-8 py-3 rounded-lg text-sm font-bold transition-all ${
-                        activeTypeTab === 'withdrawals'
-                          ? 'bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 text-black shadow-lg'
-                          : 'text-gray-400 hover:text-white'
-                      }`}
-                    >
+                    </SelectItem>
+                    <SelectItem value="withdrawals" className="text-white focus:bg-[#00bc7d]/20">
                       {t("withdrawals")}
-                    </button>
-                  </div>
-                </div>
+                    </SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
             )}
 
@@ -169,11 +165,11 @@ export function HistoryRecord() {
               <div className="space-y-2 mb-6">
                 <label className="text-white font-bold text-sm">Statistics</label>
                 <Select value={statistics} onValueChange={setStatistics}>
-                  <SelectTrigger className="w-full bg-[#0f151f] border-white/10 text-white !h-12 rounded-xl px-4 py-0 data-[size=default]:!h-12 focus:border-emerald-500 focus-visible:ring-emerald-500/20">
+                  <SelectTrigger className="w-full bg-[#0f151f] border-white/10 text-white !h-12 rounded-xl px-4 py-0 data-[size=default]:!h-12 focus:border-[#00bc7d] focus-visible:ring-[#00bc7d]/20">
                     <SelectValue placeholder="Select statistics" />
                   </SelectTrigger>
                   <SelectContent className="bg-[#1a2230] border-white/10">
-                    <SelectItem value="all" className="text-white focus:bg-emerald-500/20">All</SelectItem>
+                    <SelectItem value="all" className="text-white focus:bg-[#00bc7d]/20">All</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -198,7 +194,7 @@ export function HistoryRecord() {
                       else if (activeSidebarTab === 'commission') setCommissionStartDate(v);
                       else if (activeSidebarTab === 'rebate') setRebateStartDate(v);
                     }}
-                    className="bg-[#0f151f] border-white/10 text-white h-12 rounded-xl px-4 focus:border-emerald-500 focus-visible:ring-emerald-500/20 pr-10"
+                    className="bg-[#0f151f] border-white/10 text-white h-12 rounded-xl px-4 focus:border-[#00bc7d] focus-visible:ring-[#00bc7d]/20 pr-10"
                   />
                   <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                 </div>
@@ -220,7 +216,7 @@ export function HistoryRecord() {
                       else if (activeSidebarTab === 'commission') setCommissionEndDate(v);
                       else if (activeSidebarTab === 'rebate') setRebateEndDate(v);
                     }}
-                    className="bg-[#0f151f] border-white/10 text-white h-12 rounded-xl px-4 focus:border-emerald-500 focus-visible:ring-emerald-500/20 pr-10"
+                    className="bg-[#0f151f] border-white/10 text-white h-12 rounded-xl px-4 focus:border-[#00bc7d] focus-visible:ring-[#00bc7d]/20 pr-10"
                   />
                   <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                 </div>
@@ -235,7 +231,7 @@ export function HistoryRecord() {
                   onClick={() => setActiveFilter(filter.id)}
                   className={`px-6 h-10 rounded-xl text-sm font-bold transition-all border ${
                     activeFilter === filter.id
-                      ? 'border-emerald-500 bg-emerald-500/10 text-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.2)]'
+                      ? 'border-[#00bc7d] bg-[#00bc7d]/10 text-[#00bc7d] shadow-[0_0_15px_rgba(0,188,125,0.2)]'
                       : 'border-white/5 bg-[#0f151f] text-gray-400 hover:text-white hover:bg-white/5'
                   }`}
                 >
@@ -338,7 +334,7 @@ export function HistoryRecord() {
                       {commissionData.length === 0 ? (
                         <tr>
                           <td colSpan={4} className="px-6 py-12 text-center">
-                            <span className="text-white text-sm">No Data Found</span>
+                            <EmptyState message="No Data Found" compact />
                           </td>
                         </tr>
                       ) : (
@@ -377,7 +373,7 @@ export function HistoryRecord() {
                       {rebateData.length === 0 ? (
                         <tr>
                           <td colSpan={4} className="px-6 py-12 text-center">
-                            <span className="text-white text-sm">No Data Found</span>
+                            <EmptyState message="No Data Found" compact />
                           </td>
                         </tr>
                       ) : (
@@ -417,7 +413,7 @@ export function HistoryRecord() {
                       {promotionData.length === 0 ? (
                         <tr>
                           <td colSpan={5} className="px-6 py-12 text-center">
-                            <span className="text-white text-sm">No Data Found</span>
+                            <EmptyState message="No Data Found" compact />
                           </td>
                         </tr>
                       ) : (
@@ -463,7 +459,7 @@ export function HistoryRecord() {
                   </span>
                   <div className="flex items-center gap-2">
                      <button className="px-3 py-1 rounded-lg bg-white/5 text-gray-500 text-xs disabled:opacity-50">Prev</button>
-                     <button className="px-3 py-1 rounded-lg bg-emerald-500/20 text-emerald-500 text-xs font-bold border border-emerald-500/30">1</button>
+                     <button className="px-3 py-1 rounded-lg bg-[#00bc7d]/20 text-[#00bc7d] text-xs font-bold border border-[#00bc7d]/30">1</button>
                      <button className="px-3 py-1 rounded-lg bg-white/5 text-gray-500 text-xs disabled:opacity-50">Next</button>
                   </div>
                 </div>

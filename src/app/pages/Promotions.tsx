@@ -140,7 +140,7 @@ const categories = [
   { id: "other", label: "Other", icon: Gift },
   { id: "poker", label: "Poker", icon: Spade },
   { id: "slots", label: "Slots", icon: Gamepad2 },
-  { id: "sports", label: "Spo...", icon: Trophy },
+  { id: "sports", label: "Sports", icon: Trophy },
 ];
 
 interface PromotionCardProps {
@@ -170,7 +170,7 @@ function PromotionCard({ promotion, onNavigate, isFirst = false }: PromotionCard
       <div className="flex flex-col px-4 md:px-5 lg:px-6 pb-4 md:pb-5 lg:pb-6 pt-0">
         {/* First Text Block: Badges */}
         <div className="flex items-center gap-2 flex-wrap mb-3 md:mb-4">
-          <span className="px-2 py-1 text-xs font-bold rounded border text-emerald-400 bg-emerald-500/10 border-emerald-500/20">
+          <span className="px-2 py-1 text-xs font-bold rounded border text-[#00bc7d] bg-[#00bc7d]/10 border-[#00bc7d]/20">
             {promotion.category}
           </span>
           <span className="px-2 py-1 text-xs font-bold rounded flex items-center gap-1 border text-white/80 bg-white/5 border-white/10">
@@ -239,7 +239,7 @@ export function Promotions() {
                 onClick={() => setActiveCategory(category.id)}
                 className={`px-6 h-10 rounded-xl text-sm font-bold transition-all border ${
                   isActive
-                    ? "border-emerald-500 bg-emerald-500/10 text-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.2)]"
+                    ? "border-[#00bc7d] bg-[#00bc7d]/10 text-[#00bc7d] shadow-[0_0_15px_rgba(0,188,125,0.2)]"
                     : "border-white/5 bg-[#0f151f] text-gray-400 hover:text-white hover:bg-white/5"
                 }`}
               >
@@ -266,7 +266,7 @@ export function Promotions() {
           <div className="mt-6 flex justify-center">
             <button 
               onClick={handleLoadMore}
-              className="px-10 py-2.5 rounded-full border border-emerald-500/20 bg-[#061a14] text-emerald-500/80 text-xs font-bold uppercase tracking-[0.2em] hover:bg-emerald-500/10 hover:text-emerald-400 transition-all shadow-[0_0_20px_rgba(0,188,125,0.05)]"
+              className="px-10 py-2.5 rounded-full border border-[#00bc7d]/20 bg-[#061a14] text-[#00bc7d]/80 text-xs font-bold uppercase tracking-[0.2em] hover:bg-[#00bc7d]/10 hover:text-[#00bc7d] transition-all shadow-[0_0_20px_rgba(0,188,125,0.05)]"
             >
               View More
             </button>

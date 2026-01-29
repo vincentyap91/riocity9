@@ -188,7 +188,7 @@ function PayoutCard({ item }: { item: any }) {
                     </div>
                 </div>
                 
-                <div className="text-base font-bold text-emerald-400 drop-shadow-[0_0_5px_rgba(16,185,129,0.4)]">
+                <div className="text-base font-bold text-emerald-400">
                     {item.amount}
                 </div>
             </div>
