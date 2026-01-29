@@ -82,21 +82,21 @@ export function ReferralBanner() {
                             <div className="grid grid-cols-2 gap-3">
                             <Button 
                                 onClick={handleShare}
-                                className="bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 hover:brightness-110 text-black font-black h-12 rounded-xl text-sm shadow-[0_2px_10px_rgba(16,185,129,0.3)] transition-all cursor-pointer border-none"
+                                className="bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 hover:brightness-110 hover:shadow-[0_4px_16px_rgba(16,185,129,0.4)] text-black font-black h-12 rounded-xl text-sm shadow-[0_2px_10px_rgba(16,185,129,0.3)] transition-all cursor-pointer border-none"
                             >
                                 <Share2 className="w-4 h-4 mr-2" /> {t("share")}
                             </Button>
                             <Button 
                                 onClick={() => navigate('/downlines')}
-                                className="bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 hover:brightness-110 text-black font-black h-12 rounded-xl text-sm shadow-[0_2px_10px_rgba(16,185,129,0.3)] transition-all cursor-pointer border-none"
+                                className="bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 hover:brightness-110 hover:shadow-[0_4px_16px_rgba(16,185,129,0.4)] text-black font-black h-12 rounded-xl text-sm shadow-[0_2px_10px_rgba(16,185,129,0.3)] transition-all cursor-pointer border-none"
                             >
                                 <Users className="w-4 h-4 mr-2" /> {t("downlines")}
                             </Button>
                         </div>
-                            {/* Bottom Button - More Info (full width) */}
+                            {/* Bottom Button - More Info (full width) – gradient yellow, match Share/Downlines layout */}
                             <Button 
                                 onClick={() => navigate('/referral')}
-                                className="w-full bg-[#e6c252] hover:bg-[#ffd65c] text-[#3c1100] font-bold h-12 rounded-xl text-sm shadow-[0_0_15px_-3px_rgba(230,194,82,0.4)] transition-all cursor-pointer"
+                                className="w-full h-12 rounded-xl text-sm font-black text-black border-none transition-all cursor-pointer bg-gradient-to-b from-yellow-400 via-amber-400 to-amber-500 hover:brightness-110 hover:shadow-[0_4px_16px_rgba(245,158,11,0.4)] shadow-[0_2px_10px_rgba(245,158,11,0.3)]"
                             >
                                 <Info className="w-4 h-4 mr-2" /> {t("moreInfo")}
                             </Button>
@@ -139,20 +139,20 @@ export function ReferralBanner() {
                         <div className="grid grid-cols-2 gap-4">
                             <Button
                               onClick={handleShare}
-                              className="bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 hover:brightness-110 text-black font-black h-12 rounded-xl text-base shadow-[0_2px_10px_rgba(16,185,129,0.3)] border-none"
+                              className="bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 hover:brightness-110 hover:shadow-[0_4px_16px_rgba(16,185,129,0.4)] text-black font-black h-12 rounded-xl text-base shadow-[0_2px_10px_rgba(16,185,129,0.3)] border-none"
                             >
                                 <Share2 className="w-4 h-4 mr-2" /> {t("share")}
                             </Button>
                             <Button
                               onClick={() => navigate('/downlines')}
-                              className="bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 hover:brightness-110 text-black font-black h-12 rounded-xl text-base shadow-[0_2px_10px_rgba(16,185,129,0.3)] border-none"
+                              className="bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 hover:brightness-110 hover:shadow-[0_4px_16px_rgba(16,185,129,0.4)] text-black font-black h-12 rounded-xl text-base shadow-[0_2px_10px_rgba(16,185,129,0.3)] border-none"
                             >
                                 <Users className="w-4 h-4 mr-2" /> {t("downlines")}
                             </Button>
                         </div>
                         <Button
                           onClick={() => navigate('/referral')}
-                          className="w-full bg-[#FFD700] hover:brightness-110 text-[#1a1a00] font-bold h-12 rounded-xl text-base shadow-[0_4px_14px_rgba(255,215,0,0.4)]"
+                          className="w-full h-12 rounded-xl text-base font-black text-black border-none transition-all cursor-pointer bg-gradient-to-b from-yellow-400 via-amber-400 to-amber-500 hover:brightness-110 hover:shadow-[0_4px_16px_rgba(245,158,11,0.4)] shadow-[0_2px_10px_rgba(245,158,11,0.3)]"
                         >
                             <Info className="w-4 h-4 mr-2" /> {t("moreInfo")}
                         </Button>

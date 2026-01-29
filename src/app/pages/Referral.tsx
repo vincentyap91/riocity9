@@ -240,7 +240,7 @@ export function Referral() {
                     </div>
 
                     {/* Downlines Button */}
-                    <button className="mt-4 w-full bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 hover:brightness-110 text-black font-black h-12 rounded-xl shadow-[0_2px_10px_rgba(16,185,129,0.3)] transition-all hover:scale-[1.02] flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed border-none">
+                    <button className="mt-4 w-full bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 hover:brightness-110 hover:shadow-[0_4px_16px_rgba(16,185,129,0.4)] text-black font-black h-12 rounded-xl shadow-[0_2px_10px_rgba(16,185,129,0.3)] transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed border-none">
                       Downlines <ChevronRight className="w-4 h-4" />
                     </button>
                   </>
@@ -250,7 +250,7 @@ export function Referral() {
                     <p className="text-gray-400 text-sm mb-6">Sign in to access your referral code, link, and bonus details</p>
                     <Button
                       onClick={() => navigate('/login')}
-                      className="bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 hover:brightness-110 text-black font-black text-base rounded-xl px-8 h-12 shadow-[0_2px_10px_rgba(16,185,129,0.3)] transition-all hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed border-none"
+                      className="bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 hover:brightness-110 hover:shadow-[0_4px_16px_rgba(16,185,129,0.4)] text-black font-black text-base rounded-xl px-8 h-12 shadow-[0_2px_10px_rgba(16,185,129,0.3)] transition-all disabled:opacity-50 disabled:cursor-not-allowed border-none"
                     >
                       Login Now!
                     </Button>
@@ -374,7 +374,7 @@ export function Referral() {
                       onClick={() => setActiveHistoryTab('commission')}
                       className={`flex-1 min-w-0 px-3 py-2 md:px-6 md:py-3 rounded-md md:rounded-lg text-xs md:text-sm font-bold transition-all whitespace-nowrap ${
                         activeHistoryTab === 'commission'
-                          ? 'bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 hover:brightness-110 text-black shadow-[0_2px_10px_rgba(16,185,129,0.3)]'
+                          ? 'bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 hover:brightness-110 hover:shadow-[0_2px_12px_rgba(16,185,129,0.35)] text-black shadow-[0_2px_10px_rgba(16,185,129,0.3)]'
                           : 'text-gray-400 hover:text-white'
                       }`}
                     >
@@ -387,7 +387,7 @@ export function Referral() {
                       onClick={() => setActiveHistoryTab('deposit')}
                       className={`flex-1 min-w-0 px-3 py-2 md:px-6 md:py-3 rounded-md md:rounded-lg text-xs md:text-sm font-bold transition-all whitespace-nowrap ${
                         activeHistoryTab === 'deposit'
-                          ? 'bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 hover:brightness-110 text-black shadow-[0_2px_10px_rgba(16,185,129,0.3)]'
+                          ? 'bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 hover:brightness-110 hover:shadow-[0_2px_12px_rgba(16,185,129,0.35)] text-black shadow-[0_2px_10px_rgba(16,185,129,0.3)]'
                           : 'text-gray-400 hover:text-white'
                       }`}
                     >
@@ -536,7 +536,7 @@ export function Referral() {
                 onClick={() => setFaqTab('faq')}
                 className={`flex-1 min-w-0 px-3 py-2 md:px-6 md:py-3 rounded-md md:rounded-lg text-xs md:text-sm font-bold transition-all whitespace-nowrap ${
                   faqTab === 'faq'
-                    ? 'bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 hover:brightness-110 text-black shadow-[0_2px_10px_rgba(16,185,129,0.3)]'
+                    ? 'bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 hover:brightness-110 hover:shadow-[0_2px_12px_rgba(16,185,129,0.35)] text-black shadow-[0_2px_10px_rgba(16,185,129,0.3)]'
                     : 'text-gray-400 hover:text-white'
                 }`}
               >
@@ -549,7 +549,7 @@ export function Referral() {
                 onClick={() => setFaqTab('terms')}
                 className={`flex-1 min-w-0 px-3 py-2 md:px-6 md:py-3 rounded-md md:rounded-lg text-xs md:text-sm font-bold transition-all whitespace-nowrap ${
                   faqTab === 'terms'
-                    ? 'bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 hover:brightness-110 text-black shadow-[0_2px_10px_rgba(16,185,129,0.3)]'
+                    ? 'bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 hover:brightness-110 hover:shadow-[0_2px_12px_rgba(16,185,129,0.35)] text-black shadow-[0_2px_10px_rgba(16,185,129,0.3)]'
                     : 'text-gray-400 hover:text-white'
                 }`}
               >

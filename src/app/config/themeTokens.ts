@@ -104,13 +104,13 @@ export const SECTION_HEADER_ICON_BOX_CLASS =
 export const SECTION_HEADER_ICON_CLASS = "w-5 h-5 text-[#00bc7d]";
 export const SECTION_HEADER_ACCENT_CLASS = "text-[#00bc7d]";
 
-/** Primary CTA (deposit/withdraw buttons): emerald gradient, black text, shadow */
+/** Primary CTA (deposit/withdraw buttons): emerald gradient, black text, shadow, enhanced hover */
 export const PRIMARY_CTA_CLASS =
-  "bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 hover:brightness-110 text-black font-black transition-all shadow-[0_2px_10px_rgba(16,185,129,0.3)] border-none";
+  "bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 hover:brightness-110 hover:shadow-[0_4px_16px_rgba(16,185,129,0.4)] text-black font-black transition-all shadow-[0_2px_10px_rgba(16,185,129,0.3)] border-none";
 
-/** Nav pill / tab active state – matches primary CTA gradient */
+/** Nav pill / tab active state – matches primary CTA gradient, enhanced hover */
 export const NAV_ACTIVE_CLASS =
-  "bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 hover:brightness-110 text-black shadow-[0_2px_10px_rgba(16,185,129,0.3)]";
+  "bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 hover:brightness-110 hover:shadow-[0_2px_12px_rgba(16,185,129,0.35)] text-black shadow-[0_2px_10px_rgba(16,185,129,0.3)]";
 
 /** History Record / Bonus record-style page: icon box + icon + title (same as /history) */
 export const RECORD_PAGE_ICON_BOX_CLASS =

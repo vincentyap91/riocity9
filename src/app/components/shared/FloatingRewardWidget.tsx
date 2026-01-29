@@ -40,7 +40,7 @@ export function FloatingRewardWidget() {
             {/* Collapse Button on Left */}
             <button
               onClick={handleCollapse}
-              className="w-8 h-8 rounded-full bg-gradient-to-br from-orange-500 to-orange-600 flex items-center justify-center hover:from-orange-400 hover:to-orange-500 active:scale-95 transition-all shadow-lg"
+              className="w-8 h-8 rounded-full bg-gradient-to-br from-orange-500 to-orange-600 flex items-center justify-center hover:from-orange-400 hover:to-orange-500 hover:shadow-[0_4px_20px_rgba(249,115,22,0.5)] transition-all shadow-lg"
               aria-label="Collapse"
             >
               <ChevronRight className="w-4 h-4 text-white" />

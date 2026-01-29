@@ -173,14 +173,14 @@ export function SidebarMenu({ onItemClick }: SidebarMenuProps) {
                             logout();
                             onItemClick?.();
                         }}
-                        className="w-full h-11 bg-gradient-to-r from-[#00ff88] to-[#00cc76] hover:from-[#05ffa1] hover:to-[#00dd82] text-black font-black text-base rounded-xl shadow-[0_8px_25px_-5px_rgba(0,255,136,0.4)] hover:shadow-[0_12px_30px_-5px_rgba(0,255,136,0.6)] tracking-tighter uppercase italic transition-all hover:scale-[1.02] active:scale-[0.98] border-none"
+                        className="w-full h-11 bg-gradient-to-r from-[#00ff88] to-[#00cc76] hover:from-[#05ffa1] hover:to-[#00dd82] text-black font-black text-base rounded-xl shadow-[0_8px_25px_-5px_rgba(0,255,136,0.4)] hover:shadow-[0_12px_30px_-5px_rgba(0,255,136,0.6)] tracking-tighter uppercase italic transition-all border-none"
                     >
                         {t("logout")}
                     </Button>
                 ) : (
                     <Button
                         asChild
-                        className="w-full h-11 bg-gradient-to-r from-[#00ff88] to-[#00cc76] hover:from-[#05ffa1] hover:to-[#00dd82] text-black font-black text-base rounded-xl shadow-[0_8px_25px_-5px_rgba(0,255,136,0.4)] hover:shadow-[0_12px_30px_-5px_rgba(0,255,136,0.6)] tracking-tighter uppercase italic transition-all hover:scale-[1.02] active:scale-[0.98] border-none"
+                        className="w-full h-11 bg-gradient-to-r from-[#00ff88] to-[#00cc76] hover:from-[#05ffa1] hover:to-[#00dd82] text-black font-black text-base rounded-xl shadow-[0_8px_25px_-5px_rgba(0,255,136,0.4)] hover:shadow-[0_12px_30px_-5px_rgba(0,255,136,0.6)] tracking-tighter uppercase italic transition-all border-none"
                         onClick={onItemClick}
                     >
                         <Link to="/login">{t("loginSignUp")}</Link>

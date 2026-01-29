@@ -188,7 +188,7 @@ export function PromotionDetail() {
              <div>
                <Button
                  onClick={() => navigate("/deposit")}
-                 className="h-11 px-8 rounded-xl bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 hover:brightness-110 text-black font-black text-sm shadow-[0_2px_10px_rgba(16,185,129,0.3)] transition-all hover:scale-[1.02] border-none"
+                 className="h-11 px-8 rounded-xl bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 hover:brightness-110 hover:shadow-[0_4px_16px_rgba(16,185,129,0.4)] text-black font-black text-sm shadow-[0_2px_10px_rgba(16,185,129,0.3)] transition-all border-none"
                >
                  Claim
                </Button>
@@ -255,7 +255,7 @@ export function PromotionDetail() {
            <div className="pt-8">
                <Button 
                 onClick={() => navigate("/deposit")}
-                className="w-full h-11 rounded-xl bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 hover:brightness-110 text-black font-black text-sm shadow-[0_2px_10px_rgba(16,185,129,0.3)] transition-all hover:scale-[1.02] border-none"
+                className="w-full h-11 rounded-xl bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 hover:brightness-110 hover:shadow-[0_4px_16px_rgba(16,185,129,0.4)] text-black font-black text-sm shadow-[0_2px_10px_rgba(16,185,129,0.3)] transition-all border-none"
                >
                  Claim
                </Button>

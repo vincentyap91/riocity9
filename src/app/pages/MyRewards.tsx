@@ -175,7 +175,7 @@ export function MyRewards() {
                 onClick={() => setActiveHistoryTab('commission')}
                 className={`flex-1 min-w-0 px-4 md:px-8 py-3 rounded-lg ${MOBILE.label} transition-all whitespace-nowrap ${
                   activeHistoryTab === 'commission'
-                    ? 'bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 hover:brightness-110 text-black shadow-[0_2px_10px_rgba(16,185,129,0.3)]'
+                    ? 'bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 hover:brightness-110 hover:shadow-[0_2px_12px_rgba(16,185,129,0.35)] text-black shadow-[0_2px_10px_rgba(16,185,129,0.3)]'
                     : 'text-gray-400 hover:text-white'
                 }`}
               >
@@ -185,7 +185,7 @@ export function MyRewards() {
                 onClick={() => setActiveHistoryTab('deposit')}
                 className={`flex-1 min-w-0 px-4 md:px-8 py-3 rounded-lg ${MOBILE.label} transition-all whitespace-nowrap ${
                   activeHistoryTab === 'deposit'
-                    ? 'bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 hover:brightness-110 text-black shadow-[0_2px_10px_rgba(16,185,129,0.3)]'
+                    ? 'bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 hover:brightness-110 hover:shadow-[0_2px_12px_rgba(16,185,129,0.35)] text-black shadow-[0_2px_10px_rgba(16,185,129,0.3)]'
                     : 'text-gray-400 hover:text-white'
                 }`}
               >

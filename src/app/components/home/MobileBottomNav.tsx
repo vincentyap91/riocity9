@@ -16,7 +16,7 @@ function MobileBottomNavAfterLogin({ onMenuClick }: { onMenuClick?: () => void }
         
         {/* Center CTA - Wallet/Deposit */}
         <div className="relative -top-5">
-            <Link to="/deposit" className="w-14 h-14 rounded-full bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 hover:brightness-110 flex items-center justify-center shadow-[0_2px_10px_rgba(16,185,129,0.3)] border-4 border-[#0a0f19] active:scale-95 transition-all">
+            <Link to="/deposit" className="w-14 h-14 rounded-full bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 hover:brightness-110 hover:shadow-[0_4px_20px_rgba(16,185,129,0.4)] flex items-center justify-center shadow-[0_2px_10px_rgba(16,185,129,0.3)] border-4 border-[#0a0f19] transition-all">
                 <Wallet className="w-6 h-6 text-black fill-black/20" />
             </Link>
         </div>

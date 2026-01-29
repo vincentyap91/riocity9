@@ -276,7 +276,7 @@ export function Deposit() {
                             <button 
                                 key={method.id}
                                 onClick={() => handleMethodSelect(method.id)}
-                                className={`relative overflow-hidden rounded-xl p-3 text-left transition-all ${selectedMethodId === method.id ? 'ring-2 ring-emerald-500 scale-[0.98]' : 'hover:scale-[0.98]'} ${method.bg}`}
+                                className={`relative overflow-hidden rounded-xl p-3 text-left transition-all border ${selectedMethodId === method.id ? 'border-emerald-500/50 shadow-[0_0_12px_rgba(16,185,129,0.12)]' : 'border-transparent hover:border-emerald-500/50 hover:shadow-[0_0_12px_rgba(16,185,129,0.12)]'} ${method.bg}`}
                             >
                                 <div className="relative z-10 flex flex-col h-full justify-between min-h-[80px]">
                                     <div className={`flex items-start justify-between ${method.text}`}>
@@ -300,10 +300,18 @@ export function Deposit() {
                             <button 
                                 key={method.id}
                                 onClick={() => handleMethodSelect(method.id)}
-                                className={`w-full group bg-[#0f151f] border ${method.isHot ? 'border-red-500/30 bg-gradient-to-r from-red-900/20 to-transparent' : 'border-white/5'} ${selectedMethodId === method.id ? 'border-emerald-500 bg-emerald-500/5' : 'hover:border-emerald-500/30'} rounded-xl p-4 transition-all flex items-center justify-between`}
+                                className={`w-full group rounded-xl p-4 transition-all flex items-center justify-between border ${
+                                  selectedMethodId === method.id
+                                    ? method.isHot
+                                      ? 'border-red-500/50 bg-red-500/10 shadow-[0_0_12px_rgba(239,68,68,0.12)]'
+                                      : 'border-emerald-500/50 bg-emerald-500/10 shadow-[0_0_12px_rgba(16,185,129,0.12)]'
+                                    : method.isHot
+                                      ? 'border-red-500/30 bg-gradient-to-r from-red-900/20 to-transparent hover:border-red-500/50 hover:bg-red-500/10 hover:shadow-[0_0_12px_rgba(239,68,68,0.12)]'
+                                      : 'border-white/10 bg-[#0f151f] hover:border-emerald-500/50 hover:bg-emerald-500/10 hover:shadow-[0_0_12px_rgba(16,185,129,0.12)]'
+                                }`}
                             >
                                 <div className="flex items-center gap-3">
-                                    <div className={`w-10 h-10 rounded-lg ${method.isHot ? 'bg-red-500' : 'bg-[#1a2230]'} flex items-center justify-center text-white border border-white/10`}>
+                                    <div className={`w-10 h-10 rounded-lg ${method.isHot ? 'bg-red-600/70 border-red-500/30' : 'bg-[#1a2230] border-white/10'} flex items-center justify-center text-white border`}>
                                         <method.icon className="w-5 h-5" />
                                     </div>
                                     <div className="text-left">
@@ -322,7 +330,7 @@ export function Deposit() {
                                     </div>
                                 </div>
                                 <div className="text-right">
-                                     <ChevronRight className={`w-5 h-5 ${selectedMethodId === method.id ? 'text-emerald-500' : 'text-gray-600'} group-hover:text-emerald-500 transition-colors`} />
+                                     <ChevronRight className={`w-5 h-5 shrink-0 transition-colors ${selectedMethodId === method.id ? 'text-emerald-400' : 'text-gray-500 group-hover:text-emerald-400'}`} />
                                 </div>
                             </button>
                         ))}
@@ -353,7 +361,7 @@ export function Deposit() {
                     <Button 
                         onClick={handleContinue}
                         disabled={!selectedMethodId}
-                        className={`w-full h-12 rounded-xl text-base hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed ${PRIMARY_CTA_CLASS}`}
+                        className={`w-full h-12 rounded-xl text-base disabled:opacity-50 disabled:cursor-not-allowed ${PRIMARY_CTA_CLASS}`}
                     >
                         {t("continueToDeposit")} 
                         <ChevronRight className="w-4 h-4 ml-1" />
@@ -433,7 +441,7 @@ export function Deposit() {
                <Button 
                  onClick={handleAmountSubmit}
                  disabled={!amount}
-                 className={`w-full h-12 rounded-xl text-base hover:translate-y-[-1px] disabled:opacity-50 disabled:hover:translate-y-0 ${PRIMARY_CTA_CLASS}`}
+                 className={`w-full h-12 rounded-xl text-base disabled:opacity-50 ${PRIMARY_CTA_CLASS}`}
                >
                  {t("confirmAndDeposit")}
                </Button>
@@ -550,7 +558,7 @@ export function Deposit() {
                         {t("back")}
                     </Button>
                     <Button 
-                        className={`h-12 rounded-xl text-base transition-all hover:scale-[1.02] ${PRIMARY_CTA_CLASS}`}
+                        className={`h-12 rounded-xl text-base transition-all ${PRIMARY_CTA_CLASS}`}
                     >
                         {t("submit")}
                     </Button>
