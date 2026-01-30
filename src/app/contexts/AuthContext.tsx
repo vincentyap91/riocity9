@@ -22,6 +22,7 @@ import {
   type Timestamp 
 } from 'firebase/firestore';
 import { auth, db } from '../config/firebase';
+import { getOrCreateDeviceId } from '../utils/deviceId';
 
 interface User {
   uid: string;
@@ -117,7 +118,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       // Convert username to email format for Firebase
       // If username doesn't contain @, treat it as email with default domain
       const email = username.includes('@') ? username : `${username}@riocity9.com`;
-      await signInWithEmailAndPassword(auth, email, password);
+      const result = await signInWithEmailAndPassword(auth, email, password);
+      // Single-device: write current device so other tabs/devices can detect "login from another device"
+      // Firestore: allow read/write on users/{uid}/session/current when request.auth.uid === uid
+      const deviceId = getOrCreateDeviceId();
+      await setDoc(doc(db, 'users', result.user.uid, 'session', 'current'), {
+        deviceId,
+        updatedAt: serverTimestamp(),
+      });
       // User state will be updated by onAuthStateChanged listener
     } catch (err) {
       const firebaseError = err as AuthError;

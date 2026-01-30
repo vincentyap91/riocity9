@@ -1,9 +1,12 @@
 import React, { createContext, useContext, useRef, useCallback, useEffect, useMemo, ReactNode } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import { onSnapshot, doc } from 'firebase/firestore';
 import { useAuth } from './AuthContext';
 import { useSessionManager } from '../hooks/useSessionManager';
 import { SessionModal } from '../components/shared/SessionModal';
 import { setSessionNotifyAnotherDevice, setSessionNotifyExpired } from '../utils/sessionNotifyRef';
+import { getOrCreateDeviceId } from '../utils/deviceId';
+import { db } from '../config/firebase';
 
 type NotifyAnotherDeviceLogin = () => void;
 
@@ -13,7 +16,7 @@ const SessionContext = createContext<NotifyAnotherDeviceLogin | undefined>(undef
 const TEST_TIMEOUT_MS = 15 * 1000;
 
 export function SessionProvider({ children }: { children: ReactNode }) {
-  const { isAuthenticated, logout } = useAuth();
+  const { user, isAuthenticated, logout } = useAuth();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const useTestTimeout = searchParams.get('inactivityTest') === '1';
@@ -51,6 +54,22 @@ export function SessionProvider({ children }: { children: ReactNode }) {
       setSessionNotifyExpired(null);
     };
   }, [stableNotify, notifySessionExpired]);
+
+  // Single-device: when user logs in on another device, Firestore session doc updates; show modal and logout here
+  useEffect(() => {
+    if (!isAuthenticated || !user?.uid) return;
+    const sessionRef = doc(db, 'users', user.uid, 'session', 'current');
+    const myDeviceId = getOrCreateDeviceId();
+    const unsubscribe = onSnapshot(sessionRef, (snap) => {
+      const data = snap.data();
+      const currentDeviceId = data?.deviceId;
+      if (!currentDeviceId) return;
+      if (currentDeviceId !== myDeviceId) {
+        notifyAnotherDeviceLogin();
+      }
+    });
+    return () => unsubscribe();
+  }, [isAuthenticated, user?.uid, notifyAnotherDeviceLogin]);
 
   return (
     <SessionContext.Provider value={stableNotify}>
