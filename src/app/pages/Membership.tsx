@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import { InnerPageLayout } from "../components/shared/InnerPageLayout";
+import React from 'react';
+import { InnerPageLayout } from '../components/shared/InnerPageLayout';
+import { Button } from '../components/ui/button';
 
 const membershipLevels = [
   {
@@ -111,9 +112,9 @@ export function Membership() {
                 </div>
                 <h4 className="text-white font-bold text-xs md:text-sm mb-1 md:mb-2">{level.name}</h4>
                 {level.claimable && (
-                  <button className="w-full bg-gradient-to-r from-[#f1c24f] to-[#d59b25] text-[#5c3a00] px-2 md:px-4 py-1 md:py-2 rounded-lg font-bold text-xs hover:brightness-110 hover:shadow-[0_4px_16px_rgba(212,165,33,0.4)] transition-all shadow-[0_4px_15px_rgba(212,165,33,0.35)]">
+                  <Button className="w-full bg-[#FFD700] text-[#1a1a00] font-black h-9 md:h-10 rounded-xl hover:brightness-110 transition-all disabled:opacity-50 disabled:cursor-not-allowed text-xs md:text-sm">
                     Claim
-                  </button>
+                  </Button>
                 )}
               </div>
             ))}

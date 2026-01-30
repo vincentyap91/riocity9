@@ -93,22 +93,20 @@ export function ChangePassword() {
 
   return (
     <InnerPageLayout className="overflow-hidden">
-      <div className={`container mx-auto max-w-[640px] ${MOBILE.container} pb-20 md:pb-0`}>
-        {/* Navigation Header */}
-        <div className={`relative flex items-center justify-center ${MOBILE.headerMb}`}>
-          <div className={`absolute left-0 flex items-center ${MOBILE.gapSm}`}>
-            <button
-              onClick={() => navigate('/settings')}
-              className="h-10 w-10 rounded-full bg-black/20 border border-white/10 flex items-center justify-center hover:bg-white/10 transition-colors"
-              aria-label="Back to Settings"
-            >
-              <ArrowLeft className="w-5 h-5 text-white" />
-            </button>
-            <span className="text-white font-bold text-base">{t("settings")}</span>
-          </div>
+      <div className={`container mx-auto max-w-[640px] ${MOBILE.settingsPageContainer}`}>
+        {/* Navigation Header – same gap below as Profile (back + card) */}
+        <div className={`flex items-center ${MOBILE.gapSm} ${MOBILE.headerMb} px-2`}>
+          <button
+            onClick={() => navigate('/settings')}
+            className="h-10 w-10 rounded-full bg-black/20 border border-white/10 flex items-center justify-center hover:bg-white/10 transition-colors"
+            aria-label="Back to Settings"
+          >
+            <ArrowLeft className="w-5 h-5 text-white" />
+          </button>
+          <span className={`text-white ${MOBILE.pageTitle}`}>{t("settings")}</span>
         </div>
 
-        {/* Change Password Card (match Profile style) */}
+        {/* Change Password Card – same content gap inside as Profile */}
         <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -247,7 +245,7 @@ export function ChangePassword() {
                         <Button 
                             type="submit"
                             disabled={isLoading}
-                            className="bg-[#00bc7d] hover:bg-[#00a870] text-black font-bold h-12 px-12 rounded-xl text-base shadow-[0_0_15px_-3px_rgba(0,188,125,0.4)] transition-all hover:scale-[1.02] active:scale-95 disabled:opacity-50"
+                            className="bg-[#00bc7d] hover:bg-[#00a870] text-black font-bold h-12 px-12 rounded-xl text-base transition-all hover:scale-[1.02] active:scale-95 disabled:opacity-50"
                         >
                             {isLoading ? (
                                 <div className="flex items-center gap-2">

@@ -167,7 +167,7 @@ export function Profile() {
 
   return (
     <InnerPageLayout className="overflow-hidden">
-      <div className={`container mx-auto max-w-[1024px] ${MOBILE.container}`}>
+      <div className={`container mx-auto max-w-[1024px] ${MOBILE.settingsPageContainer}`}>
         {/* Top Header – same layout and gap as Deposit page */}
         <div className={`flex items-center ${MOBILE.gapSm} ${MOBILE.headerMb} px-2`}>
           <button
@@ -375,7 +375,7 @@ export function Profile() {
                           {!account.verified && (
                             <button
                               type="button"
-                              className="h-10 px-5 rounded-xl bg-amber-500 hover:bg-amber-400 text-black text-[11px] font-black uppercase tracking-wider transition-all hover:scale-105 active:scale-95 shadow-lg shadow-amber-500/20"
+                              className="h-10 px-5 rounded-xl bg-amber-500 hover:bg-amber-400 text-black text-[11px] font-black uppercase tracking-wider transition-all hover:scale-105 active:scale-95"
                             >
                               Verify OTP
                             </button>
@@ -472,7 +472,7 @@ export function Profile() {
                 <Button
                   onClick={handleSave}
                   disabled={isSaving}
-                  className="bg-[#00bc7d] hover:bg-[#00a870] text-black font-bold h-12 px-12 rounded-xl text-base shadow-[0_0_15px_-3px_rgba(0,188,125,0.4)] transition-all hover:scale-[1.02] active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="bg-[#00bc7d] hover:bg-[#00a870] text-black font-bold h-12 px-12 rounded-xl text-base transition-all hover:scale-[1.02] active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {isSaving ? (
                     <div className="flex items-center gap-2">

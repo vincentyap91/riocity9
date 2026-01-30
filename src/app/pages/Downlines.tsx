@@ -76,7 +76,7 @@ export function Downlines() {
 
   return (
     <InnerPageLayout className="overflow-hidden">
-      <div className={`container mx-auto max-w-[1024px] ${MOBILE.container}`}>
+      <div className={`container mx-auto max-w-[1024px] ${MOBILE.settingsPageContainer}`}>
         
         {/* Navigation Header – same gap below as on all inner pages */}
         <div className={`relative flex items-center justify-between ${MOBILE.headerMb}`}>
@@ -160,7 +160,7 @@ export function Downlines() {
                         onClick={() => setActiveDateFilter(filter.id)}
                       className={`px-6 h-10 rounded-xl text-sm font-bold transition-all border ${
                           isActive
-                            ? 'border-[#00bc7d] bg-[#00bc7d]/10 text-[#00bc7d] shadow-[0_0_15px_rgba(0,188,125,0.2)]'
+                            ? 'border-[#00bc7d] bg-[#00bc7d]/10 text-[#00bc7d]'
                             : 'border-white/5 bg-[#0f151f] text-gray-400 hover:text-white hover:bg-white/5'
                         }`}
                       >
@@ -226,7 +226,7 @@ export function Downlines() {
                         onClick={() => setActiveStatusTab('active')}
                         className={`flex-1 min-w-0 px-3 py-2 md:px-6 md:py-3 rounded-md md:rounded-lg text-xs md:text-sm font-bold transition-all whitespace-nowrap ${
                           activeStatusTab === 'active'
-                            ? 'bg-[#00bc7d] hover:bg-[#00a870] text-black shadow-lg'
+                            ? 'bg-[#00bc7d] hover:bg-[#00a870] text-black'
                             : 'text-gray-400 hover:text-white'
                         }`}
                       >
@@ -239,7 +239,7 @@ export function Downlines() {
                         onClick={() => setActiveStatusTab('inactive')}
                         className={`flex-1 min-w-0 px-3 py-2 md:px-6 md:py-3 rounded-md md:rounded-lg text-xs md:text-sm font-bold transition-all whitespace-nowrap ${
                           activeStatusTab === 'inactive'
-                            ? 'bg-[#00bc7d] hover:bg-[#00a870] text-black shadow-lg'
+                            ? 'bg-[#00bc7d] hover:bg-[#00a870] text-black'
                             : 'text-gray-400 hover:text-white'
                         }`}
                       >

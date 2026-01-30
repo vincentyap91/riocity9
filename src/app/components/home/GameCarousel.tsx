@@ -76,7 +76,7 @@ export function GameCarousel({ title, icon, items, className, slidesToShow = 4, 
         icon={icon}
         action={
           <div className="flex items-center gap-2">
-            <Button variant="ghost" size="sm" className="hidden sm:flex h-8 text-[11px] uppercase font-bold text-[rgb(148,163,184)] hover:text-[#00bc7d] hover:bg-[#00bc7d]/10 border border-[rgb(148,163,184,0.3)] rounded-full transition-all mr-2">
+            <Button variant="ghost" size="sm" className="hidden sm:flex h-9 text-xs font-bold uppercase text-gray-400 hover:text-[#00bc7d] hover:bg-[#00bc7d]/10 border border-white/10 rounded-xl transition-all mr-2">
               {t("viewAll")}
             </Button>
             <div className="flex gap-1">
@@ -117,7 +117,7 @@ export function GameCarousel({ title, icon, items, className, slidesToShow = 4, 
                   
                   {/* Overlay on Hover */}
                   <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                    <div className="w-12 h-12 rounded-full bg-[#00bc7d] flex items-center justify-center shadow-[0_0_20px_rgba(0,188,125,0.4)] transform scale-50 group-hover:scale-100 transition-transform duration-300">
+                    <div className="w-12 h-12 rounded-full bg-[#00bc7d] flex items-center justify-center transform scale-50 group-hover:scale-100 transition-transform duration-300">
                       <ArrowRight className="w-6 h-6 text-black stroke-[3]" />
                     </div>
                   </div>

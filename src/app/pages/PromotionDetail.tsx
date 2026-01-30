@@ -3,7 +3,9 @@ import { useParams, useNavigate } from "react-router-dom";
 import { ArrowLeft, Trophy, Gamepad2 } from "lucide-react";
 import { Button } from "../components/ui/button";
 import { useLanguage } from "../contexts/LanguageContext";
+import { useActivePromo } from "../contexts/ActivePromoContext";
 import { InnerPageLayout } from "../components/shared/InnerPageLayout";
+import { MOBILE } from "../config/themeTokens";
 
 const PROMO_BANNER_URL =
   "https://pksoftcdn.azureedge.net/media/580x320_riocityisnowlive-202311171111434006-202311301531190440-202312141426186709-202512181502055463.png";
@@ -12,6 +14,8 @@ export function PromotionDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
   const { t } = useLanguage();
+  const { activePromo, setActivePromo } = useActivePromo();
+  const isThisPromoActive = id != null && activePromo?.id === id;
 
   const promotionData: Record<string, any> = useMemo(() => ({
     "weekly-fix": {
@@ -150,11 +154,11 @@ export function PromotionDetail() {
 
   return (
     <InnerPageLayout className="overflow-hidden">
-      <div className="relative min-h-screen text-white pb-32 overflow-x-hidden">
+      <div className="relative min-h-screen text-white overflow-x-hidden">
         {/* Background Glow */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[600px] bg-[radial-gradient(ellipse_at_top,_rgba(0,188,125,0.1)_0%,_rgba(0,188,125,0.05)_40%,_transparent_70%)] pointer-events-none" />
 
-        <div className="relative z-10 container mx-auto px-4 pt-6 md:pt-8 max-w-[900px]">
+        <div className={`relative z-10 container mx-auto max-w-[900px] ${MOBILE.settingsPageContainer}`}>
         {/* Back Button - gap below for inner pages with back button */}
         <button 
           onClick={() => navigate("/promotions")}
@@ -185,12 +189,29 @@ export function PromotionDetail() {
              <h1 className="text-2xl md:text-3xl font-bold tracking-tight leading-tight text-white">
                {promo.title}
              </h1>
-             <div>
+             <div className="flex flex-wrap items-center gap-3">
                <Button
-                 onClick={() => navigate("/deposit")}
-                 className="h-11 px-8 rounded-xl bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 hover:brightness-110 hover:shadow-[0_4px_16px_rgba(16,185,129,0.4)] text-black font-black text-sm shadow-[0_2px_10px_rgba(16,185,129,0.3)] transition-all border-none"
+                 onClick={() => {
+                   if (isThisPromoActive) {
+                     setActivePromo(null);
+                   } else if (id && promo?.title) {
+                     setActivePromo({
+                       id,
+                       name: promo.title,
+                       promoRolloverCurrent: 58.8,
+                       promoRolloverTarget: 60,
+                       targetCurrent: 0.1,
+                       targetTarget: 20,
+                     });
+                   }
+                 }}
+                 className={
+                   isThisPromoActive
+                     ? "h-11 px-8 rounded-xl border border-[#00bc7d]/30 text-[#00bc7d] hover:bg-[#00bc7d]/10 font-bold text-sm transition-all bg-transparent"
+                     : "h-11 px-8 rounded-xl bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 hover:brightness-110 text-black font-black text-sm transition-all border-none"
+                 }
                >
-                 Claim
+                 {isThisPromoActive ? t("deactivatePromo") : "Claim"}
                </Button>
              </div>
            </div>
@@ -251,13 +272,30 @@ export function PromotionDetail() {
              </div>
            )}
 
-           {/* Bottom: Claim button only */}
+           {/* Bottom: Claim / Deactivate (same toggle as hero) */}
            <div className="pt-8">
-               <Button 
-                onClick={() => navigate("/deposit")}
-                className="w-full h-11 rounded-xl bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 hover:brightness-110 hover:shadow-[0_4px_16px_rgba(16,185,129,0.4)] text-black font-black text-sm shadow-[0_2px_10px_rgba(16,185,129,0.3)] transition-all border-none"
+               <Button
+                 onClick={() => {
+                   if (isThisPromoActive) {
+                     setActivePromo(null);
+                   } else if (id && promo?.title) {
+                     setActivePromo({
+                       id,
+                       name: promo.title,
+                       promoRolloverCurrent: 58.8,
+                       promoRolloverTarget: 60,
+                       targetCurrent: 0.1,
+                       targetTarget: 20,
+                     });
+                   }
+                 }}
+                 className={
+                   isThisPromoActive
+                     ? "w-full h-11 rounded-xl border border-[#00bc7d]/30 text-[#00bc7d] hover:bg-[#00bc7d]/10 font-bold text-sm transition-all bg-transparent"
+                     : "w-full h-11 rounded-xl bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 hover:brightness-110 text-black font-black text-sm transition-all border-none"
+                 }
                >
-                 Claim
+                 {isThisPromoActive ? t("deactivatePromo") : "Claim"}
                </Button>
             </div>
         </div>

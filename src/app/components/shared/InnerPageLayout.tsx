@@ -21,7 +21,7 @@ export function InnerPageLayout({
   return (
     <div
       className={cn(
-        "min-h-screen w-full relative overflow-x-hidden font-sans text-white",
+        "w-full relative overflow-x-hidden font-sans text-white",
         className
       )}
     >

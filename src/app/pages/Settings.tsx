@@ -39,7 +39,7 @@ export function Settings() {
 
   return (
     <InnerPageLayout className="overflow-hidden">
-      <div className="container mx-auto px-4 pt-4 pb-32 max-w-[640px]">
+      <div className={`container mx-auto max-w-[640px] ${MOBILE.settingsPageContainer}`}>
         
         {/* User Profile Header Card - Mobile Version (Follows Screenshot) */}
         <div className={`md:hidden bg-gradient-to-b from-[#1a2230] to-[#131b29] rounded-2xl ${MOBILE.cardPadding} ${MOBILE.sectionMb} shadow-xl border border-white/5 relative overflow-hidden`}>

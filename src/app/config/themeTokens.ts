@@ -104,13 +104,13 @@ export const SECTION_HEADER_ICON_BOX_CLASS =
 export const SECTION_HEADER_ICON_CLASS = "w-5 h-5 text-[#00bc7d]";
 export const SECTION_HEADER_ACCENT_CLASS = "text-[#00bc7d]";
 
-/** Primary CTA (deposit/withdraw buttons): emerald gradient, black text, shadow, enhanced hover */
+/** Primary CTA (deposit/withdraw buttons): emerald gradient, black text, enhanced hover */
 export const PRIMARY_CTA_CLASS =
-  "bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 hover:brightness-110 hover:shadow-[0_4px_16px_rgba(16,185,129,0.4)] text-black font-black transition-all shadow-[0_2px_10px_rgba(16,185,129,0.3)] border-none";
+  "bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 hover:brightness-110 text-black font-black transition-all border-none";
 
 /** Nav pill / tab active state – matches primary CTA gradient, enhanced hover */
 export const NAV_ACTIVE_CLASS =
-  "bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 hover:brightness-110 hover:shadow-[0_2px_12px_rgba(16,185,129,0.35)] text-black shadow-[0_2px_10px_rgba(16,185,129,0.3)]";
+  "bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 hover:brightness-110 text-black";
 
 /** History Record / Bonus record-style page: icon box + icon + title (same as /history) */
 export const RECORD_PAGE_ICON_BOX_CLASS =
@@ -122,6 +122,8 @@ export const RECORD_PAGE_TITLE_CLASS = "text-white font-bold text-base";
 export const MOBILE = {
   /** Page container: horizontal padding, vertical padding */
   container: "px-4 py-4 md:py-6",
+  /** Settings & inner pages: main container padding (more vertical breathing room) */
+  settingsPageContainer: "px-4 py-6 md:py-8",
   /** Card/section padding */
   cardPadding: "p-4 md:p-6",
   /** Section margin bottom */
@@ -142,10 +144,26 @@ export const MOBILE = {
   label: "text-xs md:text-sm font-bold",
   /** Body text */
   body: "text-sm md:text-base",
-  /** Card/section title */
-  title: "text-base md:text-lg font-bold",
+  /** Card/section title (e.g. Live Jackpot pool, All Games, Live Casino, Hot Providers, etc.) */
+  title: "text-lg md:text-2xl font-bold",
   /** Page/screen title (e.g. Settings, My Profile) */
   pageTitle: "text-base md:text-lg font-bold",
   /** Caption / secondary text */
   caption: "text-xs text-gray-400",
+} as const;
+
+/** Homepage: section spacing and container (consistent with Settings/Promotions) */
+export const HOME_PAGE = {
+  /** Horizontal padding for homepage sections */
+  containerPx: "px-4",
+  /** Vertical + horizontal padding for top block (Hero area) */
+  topBlockPadding: "px-4 pt-6 md:pt-8 pb-6 md:pb-8",
+  /** Gap between homepage sections (e.g. Hero, Jackpot, Game sections); desktop: gap-12 */
+  sectionGap: "gap-6 md:gap-12",
+  /** Max width container (match Promotions/Referral) */
+  maxWidth: "max-w-[1200px] 2xl:max-w-[1536px]",
+  /** Card style: bg, border, radius (match wallet/settings cards) */
+  card: "bg-[#1a2230] border border-white/5 rounded-2xl overflow-hidden",
+  /** Bottom padding for mobile nav clearance */
+  bottomPadding: "pb-20 md:pb-8",
 } as const;

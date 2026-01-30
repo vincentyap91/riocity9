@@ -2,7 +2,7 @@ import React from 'react';
 import { AnnouncementBar } from '../components/home/AnnouncementBar';
 import { HeroSection } from '../components/home/HeroSection';
 import { JackpotBoard } from '../components/home/JackpotBoard';
-import { Wallet, Users, Trophy, Zap, Dices, Gamepad2 } from 'lucide-react';
+import { Dices, Gamepad2, Trophy } from 'lucide-react';
 import { GameCarousel } from '../components/home/GameCarousel';
 import { GameCategoryWithRTP } from '../components/home/GameCategoryWithRTP';
 import { HotProviders } from '../components/home/HotProviders';
@@ -10,9 +10,10 @@ import { LiveSports } from '../components/home/LiveSports';
 import { RecentBigWins } from '../components/home/RecentBigWins';
 import { RecentPayout } from '../components/home/RecentPayout';
 import { LiveTransactions } from '../components/home/LiveTransactions';
-import { PromoBanners } from '../components/home/PromoBanners';
 import { ReferralBanner } from '../components/home/ReferralBanner';
 import { useLanguage } from '../contexts/LanguageContext';
+import { useAuth } from '../contexts/AuthContext';
+import { HOME_PAGE, MOBILE, PAGE_ACCENT } from '../config/themeTokens';
 
 // Assets
 import imgSuperSpeed from "@/assets/2947d765690866fed806f4ef749e66c8f9d99118.png";
@@ -67,150 +68,128 @@ const slotGames = [
 
 export function Home() {
   const { t } = useLanguage();
+  const { isAuthenticated } = useAuth();
+  const liveCasinoAccent = PAGE_ACCENT.liveCasino;
+  const sportsAccent = PAGE_ACCENT.sports;
+  const slotsAccent = PAGE_ACCENT.slots;
+
   return (
     <div className="flex flex-col flex-1 overflow-x-hidden">
-        
-        {/* Top Section - Transparent/Gradient Background */}
-        <div className="container mx-auto max-w-[1200px] 2xl:max-w-[1536px] px-4 pt-4 md:pt-6 pb-6 md:pb-8">
-            <HeroSection />
-            
-            <div className="mt-4 md:mt-6">
-                <AnnouncementBar />
+      {/* Top Section: Hero, Announcement, Jackpot – design system padding & gap */}
+      <div className={`container mx-auto ${HOME_PAGE.maxWidth} ${HOME_PAGE.topBlockPadding} flex flex-col ${HOME_PAGE.sectionGap}`}>
+        <HeroSection />
+        <AnnouncementBar />
+        <JackpotBoard />
+      </div>
+
+      {/* Dark Section: Game sections – design system gap-6/gap-8, single container */}
+      <div className={`bg-[#02040a] flex-1 w-full pt-6 md:pt-8 flex flex-col ${HOME_PAGE.sectionGap} ${HOME_PAGE.bottomPadding}`}>
+        <div className={`container mx-auto ${HOME_PAGE.maxWidth} ${HOME_PAGE.containerPx} flex flex-col ${HOME_PAGE.sectionGap}`}>
+          <section>
+            <GameCategoryWithRTP />
+          </section>
+
+          <section>
+            <GameCarousel
+              title={
+                <span>
+                  {(() => {
+                    const text = t("liveCasinoTitle");
+                    const parts = text.split(" ");
+                    if (parts.length > 1) {
+                      return <>{parts[0]} <span className={liveCasinoAccent.sectionHeaderAccentClass}>{parts.slice(1).join(" ")}</span></>;
+                    }
+                    return <span className={liveCasinoAccent.sectionHeaderAccentClass}>{text}</span>;
+                  })()}
+                </span>
+              }
+              icon={
+                <div className={liveCasinoAccent.sectionHeaderIconBoxClass}>
+                  <Dices className={liveCasinoAccent.sectionHeaderIconClass} />
+                </div>
+              }
+              items={liveCasinoGames}
+            />
+          </section>
+
+          <section>
+            <HotProviders />
+          </section>
+
+          <section>
+            <LiveSports />
+          </section>
+
+          <section>
+            <GameCarousel
+              title={
+                <span>
+                  {(() => {
+                    const text = t("latestSports");
+                    const parts = text.split(" ");
+                    if (parts.length > 1) {
+                      return <>{parts[0]} <span className={sportsAccent.sectionHeaderAccentClass}>{parts.slice(1).join(" ")}</span></>;
+                    }
+                    return <span className={sportsAccent.sectionHeaderAccentClass}>{text}</span>;
+                  })()}
+                </span>
+              }
+              slidesToShow={5}
+              aspectRatio="aspect-square"
+              icon={
+                <div className={sportsAccent.sectionHeaderIconBoxClass}>
+                  <Trophy className={sportsAccent.sectionHeaderIconClass} />
+                </div>
+              }
+              items={sportsEvents}
+            />
+          </section>
+
+          <section>
+            <div className={`grid grid-cols-1 xl:grid-cols-2 ${MOBILE.gap}`}>
+              <div className="h-[400px]">
+                <RecentBigWins />
+              </div>
+              <div className="h-[400px]">
+                <RecentPayout />
+              </div>
             </div>
+          </section>
 
-            <div className="mt-6 md:mt-8">
-                <JackpotBoard />
-            </div>
+          <section>
+            <GameCarousel
+              title={
+                <span>
+                  {(() => {
+                    const text = t("popularSlots");
+                    const parts = text.split(" ");
+                    if (parts.length > 1) {
+                      return <>{parts[0]} <span className={slotsAccent.sectionHeaderAccentClass}>{parts.slice(1).join(" ")}</span></>;
+                    }
+                    return <span className={slotsAccent.sectionHeaderAccentClass}>{text}</span>;
+                  })()}
+                </span>
+              }
+              icon={
+                <div className={slotsAccent.sectionHeaderIconBoxClass}>
+                  <Gamepad2 className={slotsAccent.sectionHeaderIconClass} />
+                </div>
+              }
+              items={slotGames}
+            />
+          </section>
+
+          {isAuthenticated && (
+            <section>
+              <ReferralBanner />
+            </section>
+          )}
+
+          <section>
+            <LiveTransactions />
+          </section>
         </div>
-        
-        {/* Dark Background Section - Starts after Jackpot */}
-        <div className="bg-[#02040a] flex-1 w-full pt-6 md:pt-8 flex flex-col gap-6 md:gap-12 pb-20 md:pb-0">
-            
-            {/* Game Category With RTP */}
-            <section className="container mx-auto max-w-[1200px] 2xl:max-w-[1536px] px-4">
-               <GameCategoryWithRTP />
-            </section>
-          
-            {/* Game Carousel: Live Casino */}
-            <section className="container mx-auto max-w-[1200px] 2xl:max-w-[1536px] px-4">
-              <GameCarousel 
-                title={
-                  <span>
-                    {(() => {
-                      const text = t("liveCasinoTitle");
-                      const parts = text.split(" ");
-                      if (parts.length > 1) {
-                        return (
-                          <>
-                            {parts[0]} <span className="text-[#51a2ff]">{parts.slice(1).join(" ")}</span>
-                          </>
-                        );
-                      }
-                      return <span className="text-[#51a2ff]">{text}</span>;
-                    })()}
-                  </span>
-                } 
-                icon={
-                    <div className="p-1.5 bg-blue-500/10 rounded-lg border border-blue-500/20">
-                        <Dices className="text-blue-400 w-5 h-5" />
-                    </div>
-                }
-                items={liveCasinoGames}
-              />
-            </section>
-
-            {/* Hot Providers */}
-            <section className="container mx-auto max-w-[1200px] 2xl:max-w-[1536px] px-4">
-               <HotProviders />
-            </section>
-
-            {/* Live Sports */}
-            <section className="container mx-auto max-w-[1200px] 2xl:max-w-[1536px] px-4">
-               <LiveSports />
-            </section>
-
-            {/* Game Carousel: Sports */}
-            <section className="container mx-auto max-w-[1200px] 2xl:max-w-[1536px] px-4">
-              <GameCarousel 
-                title={
-                  <span>
-                    {(() => {
-                      const text = t("latestSports");
-                      const parts = text.split(" ");
-                      if (parts.length > 1) {
-                        return (
-                          <>
-                            {parts[0]} <span className="text-[#ff8904]">{parts.slice(1).join(" ")}</span>
-                          </>
-                        );
-                      }
-                      return <span className="text-[#ff8904]">{text}</span>;
-                    })()}
-                  </span>
-                } 
-                slidesToShow={5}
-                aspectRatio="aspect-square"
-                icon={
-                    <div className="p-1.5 bg-orange-500/10 rounded-lg border border-orange-500/20">
-                        <Trophy className="text-orange-400 w-5 h-5" />
-                    </div>
-                }
-                items={sportsEvents}
-              />
-            </section>
-
-            {/* Recent Wins & Payouts */}
-            <section className="container mx-auto max-w-[1200px] 2xl:max-w-[1536px] px-4">
-               {/* Height adjusted to accommodate items vertically */}
-               <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
-                 <div className="h-[400px]">
-                    <RecentBigWins />
-                 </div>
-                 <div className="h-[400px]">
-                    <RecentPayout />
-                 </div>
-               </div>
-            </section>
-
-              {/* Game Carousel: Slots */}
-              <section className="container mx-auto max-w-[1200px] 2xl:max-w-[1536px] px-4">
-               <GameCarousel 
-                 title={
-                   <span>
-                     {(() => {
-                       const text = t("popularSlots");
-                       const parts = text.split(" ");
-                       if (parts.length > 1) {
-                         return (
-                           <>
-                             {parts[0]} <span className="text-[#c27aff]">{parts.slice(1).join(" ")}</span>
-                           </>
-                         );
-                       }
-                       return <span className="text-[#c27aff]">{text}</span>;
-                     })()}
-                   </span>
-                 } 
-                 icon={
-                     <div className="p-1.5 bg-purple-500/10 rounded-lg border border-purple-500/20">
-                         <Gamepad2 className="text-purple-400 w-5 h-5" />
-                     </div>
-                 }
-                 items={slotGames}
-               />
-             </section>
-
-             {/* Referral Banner */}
-             <section className="container mx-auto max-w-[1200px] 2xl:max-w-[1536px] px-4 py-6">
-                <ReferralBanner />
-             </section>
-
-             {/* Live Transactions */}
-             <section className="container mx-auto max-w-[1200px] 2xl:max-w-[1536px] px-4 mb-4 lg:mb-20">
-                <LiveTransactions />
-             </section>
-
-        </div>
+      </div>
     </div>
   );
 }

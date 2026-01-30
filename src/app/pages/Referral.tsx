@@ -145,7 +145,7 @@ export function Referral() {
                 <div className="space-y-4">
                   {/* My Referral Link Section */}
                   <div className="space-y-2">
-                    <label className="block text-xs font-bold text-[#FFD700] uppercase tracking-wider">My Referral Link</label>
+                    <label className="block text-sm font-bold text-[#FFD700] uppercase tracking-wider">My Referral Link</label>
                     <div className="bg-[#0f151f] border border-white/10 rounded-xl p-4 flex items-center gap-3 group hover:border-emerald-500/50 transition-colors">
                       <span className="flex-1 text-white text-sm md:text-base font-mono truncate pr-2">https://staging.riocity9.com/en/register?code=589092</span>
                       <button 
@@ -157,18 +157,30 @@ export function Referral() {
                     </div>
                   </div>
 
-                  {/* Share via social Media */}
+                  {/* Share via social media */}
                   <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 pt-2">
-                    <span className="text-white/90 text-xs font-semibold uppercase tracking-wide whitespace-nowrap">Share via social Media</span>
-                    <div className="flex items-center gap-3">
-                      <button className="w-8 h-8 rounded-full bg-[#1877F2] flex items-center justify-center cursor-pointer hover:brightness-110 hover:scale-110 transition-all active:scale-95">
-                        <svg className="w-4 h-4 text-white fill-current" viewBox="0 0 24 24"><path d="M9.19795 21.5H13.198V13.4901H16.8021L17.198 9.50977H13.198V7.5C13.198 6.94772 13.6457 6.5 14.198 6.5H17.198V2.5H14.198C11.4365 2.5 9.19795 4.73858 9.19795 7.5V9.50977H7.19795L6.80206 13.4901H9.19795V21.5Z" /></svg>
+                    <span className="text-white/90 text-sm font-semibold uppercase tracking-wide whitespace-nowrap">Share via social media</span>
+                    <div className="flex items-center gap-2 sm:gap-3">
+                      <button
+                        type="button"
+                        className="w-10 h-10 rounded-xl bg-[#1877F2] flex items-center justify-center cursor-pointer hover:brightness-110 active:scale-95 transition-all border border-white/10"
+                        aria-label="Share on Facebook"
+                      >
+                        <svg className="w-5 h-5 text-white fill-current" viewBox="0 0 24 24" aria-hidden><path d="M9.19795 21.5H13.198V13.4901H16.8021L17.198 9.50977H13.198V7.5C13.198 6.94772 13.6457 6.5 14.198 6.5H17.198V2.5H14.198C11.4365 2.5 9.19795 4.73858 9.19795 7.5V9.50977H7.19795L6.80206 13.4901H9.19795V21.5Z" /></svg>
                       </button>
-                      <button className="w-8 h-8 rounded-full bg-[#2AABEE] flex items-center justify-center cursor-pointer hover:brightness-110 hover:scale-110 transition-all active:scale-95">
-                        <svg className="w-4 h-4 text-white fill-current" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM16.64 8.8C16.49 10.38 15.82 14.22 15.48 15.66C15.34 16.27 15.06 16.47 14.79 16.5C14.2 16.56 13.75 16.11 13.18 15.74C12.29 15.16 11.78 14.79 10.92 14.22C9.92 13.56 10.57 13.2 11.14 12.61C11.29 12.46 13.85 10.13 13.9 9.92C13.91 9.89 13.91 9.78 13.84 9.72C13.77 9.66 13.67 9.68 13.59 9.7C12.56 10.34 7.27 13.67 6.2 14.12C5.68 14.33 5.23 14.33 4.85 14.22C4.43 14.09 3.64 13.87 3.05 13.68C2.33 13.45 2.87 13.06 3.37 12.86C6.1 11.79 11.27 9.66 13.43 8.76C15.42 7.93 16.94 7.57 16.64 8.8Z" /></svg>
+                      <button
+                        type="button"
+                        className="w-10 h-10 rounded-xl bg-[#1DA1F2] flex items-center justify-center cursor-pointer hover:brightness-110 active:scale-95 transition-all border border-white/10"
+                        aria-label="Share on X (Twitter)"
+                      >
+                        <svg className="w-5 h-5 text-white fill-current" viewBox="0 0 24 24" aria-hidden><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" /></svg>
                       </button>
-                      <button className="w-8 h-8 rounded-full bg-[#25D366] flex items-center justify-center cursor-pointer hover:brightness-110 hover:scale-110 transition-all active:scale-95">
-                        <svg className="w-4 h-4 text-white fill-current" viewBox="0 0 24 24"><path d="M17.472 14.382C17.312 14.302 16.519 13.912 16.371 13.852C16.223 13.792 16.115 13.762 16.007 13.922C15.899 14.082 15.589 14.442 15.495 14.552C15.401 14.662 15.307 14.672 15.147 14.592C14.987 14.512 14.473 14.344 13.864 13.801C13.385 13.374 13.062 12.847 12.968 12.687C12.874 12.527 12.958 12.44 13.038 12.361C13.11 12.29 13.198 12.176 13.278 12.083C13.358 11.99 13.388 11.92 13.442 11.81C13.496 11.7 13.469 11.61 13.429 11.53C13.389 11.45 13.079 10.688 12.951 10.378C12.822 10.078 12.695 10.118 12.607 10.118C12.525 10.118 12.431 10.118 12.337 10.118C12.243 10.118 12.091 10.153 11.963 10.293C11.835 10.433 11.472 10.773 11.472 11.463C11.472 12.153 11.975 12.82 12.043 12.91C12.111 13 13.037 14.43 14.457 15.044C15.632 15.553 15.872 15.473 16.128 15.45C16.384 15.426 16.953 15.113 17.071 14.787C17.189 14.461 17.189 14.182 17.154 14.123C17.119 14.065 17.026 14.03 17.472 14.382ZM12.049 2C6.527 2 2.049 6.478 2.049 12C2.049 13.766 2.508 15.429 3.324 16.906L2 22L7.23 20.65C8.654 21.465 10.292 21.933 12.049 21.933C17.571 21.933 22.049 17.455 22.049 11.933C22.049 6.411 17.571 2 12.049 2Z" /></svg>
+                      <button
+                        type="button"
+                        className="w-10 h-10 rounded-xl bg-[#25D366] flex items-center justify-center cursor-pointer hover:brightness-110 active:scale-95 transition-all border border-white/10"
+                        aria-label="Share on WhatsApp"
+                      >
+                        <svg className="w-5 h-5 text-white fill-current" viewBox="0 0 24 24" aria-hidden><path d="M17.472 14.382C17.312 14.302 16.519 13.912 16.371 13.852C16.223 13.792 16.115 13.762 16.007 13.922C15.899 14.082 15.589 14.442 15.495 14.552C15.401 14.662 15.307 14.672 15.147 14.592C14.987 14.512 14.473 14.344 13.864 13.801C13.385 13.374 13.062 12.847 12.968 12.687C12.874 12.527 12.958 12.44 13.038 12.361C13.11 12.29 13.198 12.176 13.278 12.083C13.358 11.99 13.388 11.92 13.442 11.81C13.496 11.7 13.469 11.61 13.429 11.53C13.389 11.45 13.079 10.688 12.951 10.378C12.822 10.078 12.695 10.118 12.607 10.118C12.525 10.118 12.431 10.118 12.337 10.118C12.243 10.118 12.091 10.153 11.963 10.293C11.835 10.433 11.472 10.773 11.472 11.463C11.472 12.153 11.975 12.82 12.043 12.91C12.111 13 13.037 14.43 14.457 15.044C15.632 15.553 15.872 15.473 16.128 15.45C16.384 15.426 16.953 15.113 17.071 14.787C17.189 14.461 17.189 14.182 17.154 14.123C17.119 14.065 17.026 14.03 17.472 14.382ZM12.049 2C6.527 2 2.049 6.478 2.049 12C2.049 13.766 2.508 15.429 3.324 16.906L2 22L7.23 20.65C8.654 21.465 10.292 21.933 12.049 21.933C17.571 21.933 22.049 17.455 22.049 11.933C22.049 6.411 17.571 2 12.049 2Z" /></svg>
                       </button>
                     </div>
                   </div>
@@ -184,7 +196,7 @@ export function Referral() {
                     <div className="absolute left-3 top-3 w-6 h-6 rounded-full bg-[#5A6D8E] text-white text-xs font-bold flex items-center justify-center">1</div>
                     <div className="flex flex-col items-center text-center gap-4">
                       <img src={shareYourLinkIcon} alt="Share your link" className="w-12 h-12" />
-                      <p className="text-xs font-semibold leading-tight text-white">Share your<br/>Referral Link</p>
+                      <p className="text-sm font-semibold leading-tight text-white">Share your<br/>Referral Link</p>
                     </div>
                   </div>
                   {/* Step 2 */}
@@ -192,7 +204,7 @@ export function Referral() {
                     <div className="absolute left-3 top-3 w-6 h-6 rounded-full bg-[#5A6D8E] text-white text-xs font-bold flex items-center justify-center">2</div>
                     <div className="flex flex-col items-center text-center gap-4">
                       <img src={friendRegisterIcon} alt="Friend register" className="w-12 h-12" />
-                      <p className="text-xs font-semibold leading-tight text-white">Friends Registered<br/>Successfully</p>
+                      <p className="text-sm font-semibold leading-tight text-white">Friends Registered<br/>Successfully</p>
                     </div>
                   </div>
                   {/* Step 3 */}
@@ -200,7 +212,7 @@ export function Referral() {
                     <div className="absolute left-3 top-3 w-6 h-6 rounded-full bg-[#5A6D8E] text-white text-xs font-bold flex items-center justify-center">3</div>
                     <div className="flex flex-col items-center text-center gap-4">
                       <img src={earnBonusIcon} alt="Earn bonus" className="w-12 h-12" />
-                      <p className="text-xs font-semibold leading-tight text-white">Earn Bonus from<br/>Your Downlines</p>
+                      <p className="text-sm font-semibold leading-tight text-white">Earn Bonus from<br/>Your Downlines</p>
                     </div>
                   </div>
                 </div>
@@ -240,7 +252,7 @@ export function Referral() {
                     </div>
 
                     {/* Downlines Button */}
-                    <button className="mt-4 w-full bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 hover:brightness-110 hover:shadow-[0_4px_16px_rgba(16,185,129,0.4)] text-black font-black h-12 rounded-xl shadow-[0_2px_10px_rgba(16,185,129,0.3)] transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed border-none">
+                    <button className="mt-4 w-full bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 hover:brightness-110 text-black font-black h-12 rounded-xl transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed border-none">
                       Downlines <ChevronRight className="w-4 h-4" />
                     </button>
                   </>
@@ -250,7 +262,7 @@ export function Referral() {
                     <p className="text-gray-400 text-sm mb-6">Sign in to access your referral code, link, and bonus details</p>
                     <Button
                       onClick={() => navigate('/login')}
-                      className="bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 hover:brightness-110 hover:shadow-[0_4px_16px_rgba(16,185,129,0.4)] text-black font-black text-base rounded-xl px-8 h-12 shadow-[0_2px_10px_rgba(16,185,129,0.3)] transition-all disabled:opacity-50 disabled:cursor-not-allowed border-none"
+                      className="bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 hover:brightness-110 text-black font-black text-base rounded-xl px-8 h-12 transition-all disabled:opacity-50 disabled:cursor-not-allowed border-none"
                     >
                       Login Now!
                     </Button>
@@ -300,7 +312,7 @@ export function Referral() {
                       <span className="text-[#FFD700] text-2xl font-black">PKR {commissionBonus.unclaimed}</span>
                     </div>
                     <Button
-                      className="w-full bg-[#FFD700] text-[#1a1a00] font-black h-12 rounded-xl shadow-[0_4px_14px_rgba(255,215,0,0.4)] hover:brightness-110 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="w-full bg-[#FFD700] text-[#1a1a00] font-black h-12 rounded-xl hover:brightness-110 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                       disabled={parseFloat(commissionBonus.unclaimed) === 0}
                     >
                       Claim
@@ -308,11 +320,11 @@ export function Referral() {
                   </div>
 
                   {/* Info Note */}
-                  <div className="flex items-start gap-2 pt-4 border-t border-white/10">
-                    <div className="w-5 h-5 rounded-full bg-[#00bc7d]/20 flex items-center justify-center shrink-0 mt-0.5">
+                  <div className="flex items-center gap-2 pt-4 border-t border-white/10">
+                    <div className="w-5 h-5 rounded-full bg-[#00bc7d]/20 flex items-center justify-center shrink-0">
                       <Info className="w-3.5 h-3.5 text-[#00bc7d]" />
                     </div>
-                    <p className="text-white text-xs leading-relaxed">Bonus will be credited to Main Wallet.</p>
+                    <p className="text-white text-sm leading-relaxed">Bonus will be credited to Main Wallet.</p>
                   </div>
                 </div>
 
@@ -348,7 +360,7 @@ export function Referral() {
                       <span className="text-[#FFD700] text-2xl font-black">PKR {depositBonus.unclaimed}</span>
                     </div>
                     <Button
-                      className="w-full bg-[#FFD700] text-[#1a1a00] font-black h-12 rounded-xl shadow-[0_4px_14px_rgba(255,215,0,0.4)] hover:brightness-110 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="w-full bg-[#FFD700] text-[#1a1a00] font-black h-12 rounded-xl hover:brightness-110 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                       disabled={parseFloat(depositBonus.unclaimed) === 0}
                     >
                       Claim
@@ -356,11 +368,11 @@ export function Referral() {
                   </div>
 
                   {/* Info Note */}
-                  <div className="flex items-start gap-2 pt-4 border-t border-white/10">
-                    <div className="w-5 h-5 rounded-full bg-[#00bc7d]/20 flex items-center justify-center shrink-0 mt-0.5">
+                  <div className="flex items-center gap-2 pt-4 border-t border-white/10">
+                    <div className="w-5 h-5 rounded-full bg-[#00bc7d]/20 flex items-center justify-center shrink-0">
                       <Info className="w-3.5 h-3.5 text-[#00bc7d]" />
                     </div>
-                    <p className="text-white text-xs leading-relaxed">Bonus will be credited to Bonus Wallet (Coin).</p>
+                    <p className="text-white text-sm leading-relaxed">Bonus will be credited to Bonus Wallet (Coin).</p>
                   </div>
                 </div>
               </div>
@@ -374,7 +386,7 @@ export function Referral() {
                       onClick={() => setActiveHistoryTab('commission')}
                       className={`flex-1 min-w-0 px-3 py-2 md:px-6 md:py-3 rounded-md md:rounded-lg text-xs md:text-sm font-bold transition-all whitespace-nowrap ${
                         activeHistoryTab === 'commission'
-                          ? 'bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 hover:brightness-110 hover:shadow-[0_2px_12px_rgba(16,185,129,0.35)] text-black shadow-[0_2px_10px_rgba(16,185,129,0.3)]'
+                          ? 'bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 hover:brightness-110 text-black'
                           : 'text-gray-400 hover:text-white'
                       }`}
                     >
@@ -387,7 +399,7 @@ export function Referral() {
                       onClick={() => setActiveHistoryTab('deposit')}
                       className={`flex-1 min-w-0 px-3 py-2 md:px-6 md:py-3 rounded-md md:rounded-lg text-xs md:text-sm font-bold transition-all whitespace-nowrap ${
                         activeHistoryTab === 'deposit'
-                          ? 'bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 hover:brightness-110 hover:shadow-[0_2px_12px_rgba(16,185,129,0.35)] text-black shadow-[0_2px_10px_rgba(16,185,129,0.3)]'
+                          ? 'bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 hover:brightness-110 text-black'
                           : 'text-gray-400 hover:text-white'
                       }`}
                     >
@@ -536,7 +548,7 @@ export function Referral() {
                 onClick={() => setFaqTab('faq')}
                 className={`flex-1 min-w-0 px-3 py-2 md:px-6 md:py-3 rounded-md md:rounded-lg text-xs md:text-sm font-bold transition-all whitespace-nowrap ${
                   faqTab === 'faq'
-                    ? 'bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 hover:brightness-110 hover:shadow-[0_2px_12px_rgba(16,185,129,0.35)] text-black shadow-[0_2px_10px_rgba(16,185,129,0.3)]'
+                    ? 'bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 hover:brightness-110 text-black'
                     : 'text-gray-400 hover:text-white'
                 }`}
               >
@@ -549,7 +561,7 @@ export function Referral() {
                 onClick={() => setFaqTab('terms')}
                 className={`flex-1 min-w-0 px-3 py-2 md:px-6 md:py-3 rounded-md md:rounded-lg text-xs md:text-sm font-bold transition-all whitespace-nowrap ${
                   faqTab === 'terms'
-                    ? 'bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 hover:brightness-110 hover:shadow-[0_2px_12px_rgba(16,185,129,0.35)] text-black shadow-[0_2px_10px_rgba(16,185,129,0.3)]'
+                    ? 'bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 hover:brightness-110 text-black'
                     : 'text-gray-400 hover:text-white'
                 }`}
               >

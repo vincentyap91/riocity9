@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ThumbsUp, DollarSign, Fish, Dices, Gift, Spade, Gamepad2, Trophy } from "lucide-react";
+import { MOBILE } from "../config/themeTokens";
 
 // import girl1 from "@/assets/girl-1.png";
 // import girl2 from "@/assets/girl-2.png";
@@ -219,11 +220,11 @@ export function Promotions() {
   }, [activeCategory]);
 
   return (
-    <div className="relative min-h-screen text-white overflow-hidden pb-20 md:pb-0">
+    <div className="relative min-h-screen text-white overflow-hidden">
       {/* Background Glow */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[600px] bg-[radial-gradient(ellipse_at_top,_rgba(0,188,125,0.1)_0%,_rgba(0,188,125,0.05)_40%,_transparent_70%)] pointer-events-none" />
 
-      <div className="relative z-10 container mx-auto px-4 pt-16 pb-6 max-w-[1400px]">
+      <div className={`relative z-10 container mx-auto max-w-[1400px] ${MOBILE.settingsPageContainer}`}>
         <h1 className="text-center text-4xl font-bold tracking-tight text-white mb-8">
           Promotions
         </h1>
@@ -239,7 +240,7 @@ export function Promotions() {
                 onClick={() => setActiveCategory(category.id)}
                 className={`px-6 h-10 rounded-xl text-sm font-bold transition-all border ${
                   isActive
-                    ? "border-[#00bc7d] bg-[#00bc7d]/10 text-[#00bc7d] shadow-[0_0_15px_rgba(0,188,125,0.2)]"
+                    ? "border-[#00bc7d] bg-[#00bc7d]/10 text-[#00bc7d]"
                     : "border-white/5 bg-[#0f151f] text-gray-400 hover:text-white hover:bg-white/5"
                 }`}
               >
@@ -266,7 +267,7 @@ export function Promotions() {
           <div className="mt-6 flex justify-center">
             <button 
               onClick={handleLoadMore}
-              className="px-10 py-2.5 rounded-full border border-[#00bc7d]/20 bg-[#061a14] text-[#00bc7d]/80 text-xs font-bold uppercase tracking-[0.2em] hover:bg-[#00bc7d]/10 hover:text-[#00bc7d] transition-all shadow-[0_0_20px_rgba(0,188,125,0.05)]"
+              className="px-10 py-2.5 rounded-full border border-[#00bc7d]/20 bg-[#061a14] text-[#00bc7d]/80 text-xs font-bold uppercase tracking-[0.2em] hover:bg-[#00bc7d]/10 hover:text-[#00bc7d] transition-all"
             >
               View More
             </button>

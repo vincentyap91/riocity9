@@ -162,7 +162,7 @@ export function LiveSports() {
 
             {/* Bottom Button */}
             <div className="relative z-10">
-              <Button className="w-full rounded-none h-12 text-base font-bold uppercase tracking-wider bg-orange-600 hover:bg-orange-500 text-white shadow-inner transition-colors">
+              <Button className="w-full rounded-none h-12 text-base font-bold uppercase tracking-wider bg-orange-600 hover:bg-orange-500 text-white transition-colors">
                 {t("betNow")}
               </Button>
             </div>

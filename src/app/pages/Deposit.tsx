@@ -425,7 +425,7 @@ export function Deposit() {
                          <span className="text-xs text-gray-500 group-hover:text-emerald-400">MYR</span>
                          <span className="font-bold text-white">30</span>
                      </button>
-                     <button onClick={() => setAmount('100')} className="relative border-2 border-white/80 hover:border-emerald-400 bg-white/5 rounded-xl p-3 flex flex-col items-center gap-1 transition-all group shadow-[0_0_15px_-5px_rgba(255,255,255,0.2)]">
+                     <button onClick={() => setAmount('100')} className="relative border-2 border-white/80 hover:border-emerald-400 bg-white/5 rounded-xl p-3 flex flex-col items-center gap-1 transition-all group">
                          <span className="absolute -top-2.5 left-1/2 -translate-x-1/2 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs font-bold px-2 py-0.5 rounded shadow-lg">Hot</span>
                          <span className="text-xs text-gray-400 group-hover:text-emerald-400">MYR</span>
                          <span className="font-bold text-white text-lg">100</span>

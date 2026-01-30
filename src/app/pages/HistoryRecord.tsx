@@ -103,7 +103,7 @@ export function HistoryRecord() {
 
   return (
     <InnerPageLayout className="overflow-hidden">
-      <div className={`container mx-auto max-w-[1024px] ${MOBILE.container}`}>
+      <div className={`container mx-auto max-w-[1024px] ${MOBILE.settingsPageContainer}`}>
         {/* Navigation Header */}
         <div className={`relative flex items-center justify-between ${MOBILE.headerMb}`}>
           <div className={`flex items-center ${MOBILE.gapSm}`}>
@@ -231,7 +231,7 @@ export function HistoryRecord() {
                   onClick={() => setActiveFilter(filter.id)}
                   className={`px-6 h-10 rounded-xl text-sm font-bold transition-all border ${
                     activeFilter === filter.id
-                      ? 'border-[#00bc7d] bg-[#00bc7d]/10 text-[#00bc7d] shadow-[0_0_15px_rgba(0,188,125,0.2)]'
+                      ? 'border-[#00bc7d] bg-[#00bc7d]/10 text-[#00bc7d]'
                       : 'border-white/5 bg-[#0f151f] text-gray-400 hover:text-white hover:bg-white/5'
                   }`}
                 >

@@ -26,7 +26,7 @@ export function JackpotBoard() {
   }, []);
 
   return (
-    <div className="w-full bg-[rgba(2,10,2,0.6)] border border-white/5 rounded-xl p-4 md:p-6 relative overflow-hidden group">
+    <div className="w-full bg-[rgba(2,10,2,0.6)] border border-white/5 rounded-2xl p-4 md:p-6 relative overflow-hidden group">
       
       <div className="relative z-10">
         <SectionHeader 
@@ -44,7 +44,7 @@ export function JackpotBoard() {
             action={null}
         />
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
             {/* Grand - Purple */}
             <JackpotCard 
                 title={t("grand")} 

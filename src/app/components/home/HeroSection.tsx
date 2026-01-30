@@ -81,7 +81,7 @@ export function HeroSection() {
                         {/* Action Button - Floating Call to Action */}
                         {slide.showButton && (
                             <div className="absolute bottom-8 right-8 z-20 hidden md:block">
-                                <Button className="h-12 px-8 bg-[#00bc7d] hover:bg-[#00a870] text-black font-black text-lg uppercase rounded-xl shadow-[0_0_20px_-5px_rgba(16,185,129,0.6)] transition-all hover:scale-105 hover:-translate-y-1 ring-2 ring-[#00bc7d]/50 ring-offset-2 ring-offset-black">
+                                <Button className="h-12 px-8 bg-[#00bc7d] hover:bg-[#00a870] text-black font-black text-lg uppercase rounded-xl transition-all hover:scale-105 hover:-translate-y-1 ring-2 ring-[#00bc7d]/50 ring-offset-2 ring-offset-black">
                                     {slide.action} <ArrowRight className="ml-2 w-5 h-5" />
                                 </Button>
                             </div>

@@ -139,7 +139,7 @@ export function Rebate() {
                   <span className="text-[#d4c766] text-2xl font-bold">13.246</span>
                 </div>
               </div>
-              <Button className="bg-gradient-to-r from-[#f1c24f] to-[#d59b25] text-[#5c3a00] px-6 py-2.5 rounded-lg font-bold text-base hover:brightness-110 hover:shadow-[0_4px_20px_rgba(212,165,33,0.45)] transition-all shadow-[0_4px_15px_rgba(212,165,33,0.35)]">
+              <Button className="bg-gradient-to-r from-[#f1c24f] to-[#d59b25] text-[#5c3a00] px-6 py-2.5 rounded-lg font-bold text-base hover:brightness-110 transition-all">
                 Claim Now
               </Button>
             </div>
