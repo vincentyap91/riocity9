@@ -9,16 +9,16 @@ type NotifyAnotherDeviceLogin = () => void;
 
 const SessionContext = createContext<NotifyAnotherDeviceLogin | undefined>(undefined);
 
-/** In dev, ?inactivityTest=1 uses 15s timeout so you can test the modal without waiting 25 min */
-const DEV_TEST_TIMEOUT_MS = 15 * 1000;
+/** ?inactivityTest=1 uses 15s timeout so you can test the modal on dev or production without waiting 25 min */
+const TEST_TIMEOUT_MS = 15 * 1000;
 
 export function SessionProvider({ children }: { children: ReactNode }) {
   const { isAuthenticated, logout } = useAuth();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const useTestTimeout = import.meta.env.DEV && searchParams.get('inactivityTest') === '1';
+  const useTestTimeout = searchParams.get('inactivityTest') === '1';
   const warningAfterMs = useMemo(
-    () => (useTestTimeout ? DEV_TEST_TIMEOUT_MS : undefined),
+    () => (useTestTimeout ? TEST_TIMEOUT_MS : undefined),
     [useTestTimeout]
   );
 
