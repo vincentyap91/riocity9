@@ -170,12 +170,12 @@ function PromotionCard({ promotion, onNavigate, isFirst = false }: PromotionCard
       {/* Bottom Content Area */}
       <div className="flex flex-col px-4 md:px-5 lg:px-6 pb-4 md:pb-5 lg:pb-6 pt-0">
         {/* First Text Block: Badges */}
-        <div className="flex items-center gap-2 flex-wrap mb-3 md:mb-4">
-          <span className="px-2 py-1 text-xs font-bold rounded border text-[#00bc7d] bg-[#00bc7d]/10 border-[#00bc7d]/20">
+        <div className="flex items-center gap-1.5 md:gap-2 flex-wrap mb-2 md:mb-4">
+          <span className="px-1.5 py-0.5 md:px-2 md:py-1 text-[10px] md:text-xs font-bold rounded border text-[#00bc7d] bg-[#00bc7d]/10 border-[#00bc7d]/20">
             {promotion.category}
           </span>
-          <span className="px-2 py-1 text-xs font-bold rounded flex items-center gap-1 border text-white/80 bg-white/5 border-white/10">
-            <ThumbsUp className="w-3 h-3" />
+          <span className="px-1.5 py-0.5 md:px-2 md:py-1 text-[10px] md:text-xs font-bold rounded flex items-center gap-1 border border-white/10 text-white/70 bg-white/5 md:text-white/80">
+            <ThumbsUp className="w-2.5 h-2.5 md:w-3 md:h-3 shrink-0" />
             {promotion.badge}
           </span>
         </div>
@@ -186,7 +186,7 @@ function PromotionCard({ promotion, onNavigate, isFirst = false }: PromotionCard
         </h2>
 
         {/* Third Text Block: Description */}
-        <p className="text-sm text-gray-400">
+        <p className="text-sm text-gray-400 line-clamp-2">
           {promotion.description}
         </p>
       </div>
@@ -251,7 +251,7 @@ export function Promotions() {
         </div>
 
         {/* Promotion Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4">
           {displayedPromotions.map((promotion, index) => (
             <PromotionCard
               key={promotion.id}
