@@ -46,6 +46,7 @@ import { PromotionDetail } from './pages/PromotionDetail';
 import { Downlines } from './pages/Downlines';
 import { FloatingRewardWidget } from './components/shared/FloatingRewardWidget';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
+import { SessionProvider } from './contexts/SessionContext';
 import { LanguageProvider, useLanguage } from './contexts/LanguageContext';
 import { ActivePromoProvider, useActivePromo } from './contexts/ActivePromoContext';
 import { sanitizeTextInput } from './utils/security';
@@ -1196,7 +1197,9 @@ export default function App() {
       <LanguageProvider>
         <ActivePromoProvider>
           <BrowserRouter>
-            <AppContent />
+            <SessionProvider>
+              <AppContent />
+            </SessionProvider>
           </BrowserRouter>
         </ActivePromoProvider>
       </LanguageProvider>
