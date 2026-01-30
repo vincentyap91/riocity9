@@ -345,37 +345,40 @@ export function Profile() {
                     {eWalletAccounts.map((account) => (
                       <div
                         key={account.id}
-                        className="group flex items-center justify-between gap-4 bg-[#0f151f] hover:bg-[#141b29] rounded-2xl p-5 border border-white/5 transition-all duration-300 hover:shadow-lg"
+                        className="group flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4 bg-[#0f151f] hover:bg-[#141b29] rounded-2xl p-4 sm:p-5 border border-white/5 transition-all duration-300 hover:shadow-lg"
                       >
-                        <div className="flex items-center gap-4">
-                          <div className="h-12 w-12 rounded-xl bg-[#1a2230] border border-white/10 flex items-center justify-center group-hover:scale-110 transition-transform">
+                        {/* Row 1 (mobile: icon + number/badge stack; desktop: same row as actions) */}
+                        <div className="flex min-w-0 flex-1 items-start sm:items-center gap-3 sm:gap-4">
+                          <div className="h-12 w-12 shrink-0 rounded-xl bg-[#1a2230] border border-white/10 flex items-center justify-center group-hover:scale-110 transition-transform">
                             <Smartphone className="w-6 h-6 text-gray-400 group-hover:text-[#00bc7d] transition-colors" />
                           </div>
-                          <div className="flex flex-col gap-0.5">
-                            <div className="flex items-center gap-2">
-                              <span className="text-white font-black text-sm tracking-wide">{account.number}</span>
+                          <div className="flex min-w-0 flex-1 flex-col gap-1.5 sm:gap-0.5">
+                            {/* Mobile: number then badge stacked so number can wrap; desktop: inline */}
+                            <div className="flex flex-col gap-1.5 sm:flex-row sm:flex-wrap sm:items-center sm:gap-2">
+                              <span className="text-white font-black text-sm tracking-wide break-all sm:break-normal sm:truncate-none">{account.number}</span>
                               {account.verified ? (
-                                <div className="flex items-center gap-1 bg-emerald-500/10 border border-emerald-500/20 rounded-full px-2 py-0.5">
+                                <div className="flex shrink-0 items-center gap-1 bg-emerald-500/10 border border-emerald-500/20 rounded-full px-2 py-0.5 w-fit">
                                   <CheckCircle2 className="w-3 h-3 text-[#00bc7d]" />
                                   <span className="text-xs font-black text-[#00bc7d] uppercase tracking-tighter">Verified</span>
                                 </div>
                               ) : (
-                                <div className="flex items-center gap-1 bg-amber-500/10 border border-amber-500/20 rounded-full px-2 py-0.5">
+                                <div className="flex shrink-0 items-center gap-1 bg-amber-500/10 border border-amber-500/20 rounded-full px-2 py-0.5 w-fit">
                                   <Clock className="w-3 h-3 text-amber-500" />
                                   <span className="text-xs font-black text-amber-500 uppercase tracking-tighter">Pending</span>
                                 </div>
                               )}
                             </div>
-                            <div className="text-gray-500 text-xs font-bold uppercase tracking-tight">
+                            <div className="text-gray-500 text-xs font-bold uppercase tracking-tight break-words sm:truncate sm:truncate-none">
                               {account.provider} • {account.holder}
                             </div>
                           </div>
                         </div>
-                        <div className="flex items-center gap-2">
+                        {/* Row 2 on mobile: actions with separator; desktop: inline */}
+                        <div className="flex shrink-0 items-center justify-end gap-2 sm:justify-start border-t border-white/5 pt-3 sm:border-t-0 sm:pt-0">
                           {!account.verified && (
                             <button
                               type="button"
-                              className="h-10 px-5 rounded-xl bg-amber-500 hover:bg-amber-400 text-black text-[11px] font-black uppercase tracking-wider transition-all hover:scale-105 active:scale-95"
+                              className="h-11 min-h-[44px] px-4 sm:px-5 rounded-xl bg-amber-500 hover:bg-amber-400 text-black text-[11px] font-black uppercase tracking-wider transition-all hover:scale-105 active:scale-95 touch-manipulation"
                             >
                               Verify OTP
                             </button>
@@ -383,7 +386,7 @@ export function Profile() {
                           <button
                             type="button"
                             onClick={() => handleDeleteEwallet(account.id)}
-                            className="h-10 w-10 flex items-center justify-center rounded-xl bg-white/5 text-gray-500 hover:bg-red-500/10 hover:text-red-500 transition-all duration-300"
+                            className="h-11 w-11 min-h-[44px] min-w-[44px] flex items-center justify-center rounded-xl bg-white/5 text-gray-500 hover:bg-red-500/10 hover:text-red-500 transition-all duration-300 touch-manipulation"
                           >
                             <Trash2 size={18} />
                           </button>
@@ -415,32 +418,34 @@ export function Profile() {
                       bankAccounts.map((account) => (
                         <div
                           key={account.id}
-                          className="group flex items-center justify-between gap-4 bg-[#0f151f] hover:bg-[#141b29] rounded-2xl p-5 border border-white/5 transition-all duration-300 hover:shadow-lg"
+                          className="group flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4 bg-[#0f151f] hover:bg-[#141b29] rounded-2xl p-4 sm:p-5 border border-white/5 transition-all duration-300 hover:shadow-lg"
                         >
-                          <div className="flex items-center gap-4">
-                            <div className="h-12 w-12 rounded-xl bg-[#1a2230] border border-white/10 flex items-center justify-center group-hover:scale-110 transition-transform">
+                          <div className="flex min-w-0 flex-1 items-start sm:items-center gap-3 sm:gap-4">
+                            <div className="h-12 w-12 shrink-0 rounded-xl bg-[#1a2230] border border-white/10 flex items-center justify-center group-hover:scale-110 transition-transform">
                               <Building2 className="w-6 h-6 text-gray-400 group-hover:text-blue-400 transition-colors" />
                             </div>
-                            <div className="flex flex-col gap-0.5">
-                              <div className="flex items-center gap-2">
-                                <span className="text-white font-black text-sm tracking-wide">{account.accountNo}</span>
-                                <div className="flex items-center gap-1 bg-emerald-500/10 border border-emerald-500/20 rounded-full px-2 py-0.5">
+                            <div className="flex min-w-0 flex-1 flex-col gap-1.5 sm:gap-0.5">
+                              <div className="flex flex-col gap-1.5 sm:flex-row sm:flex-wrap sm:items-center sm:gap-2">
+                                <span className="text-white font-black text-sm tracking-wide break-all sm:break-normal sm:truncate-none">{account.accountNo}</span>
+                                <div className="flex shrink-0 items-center gap-1 bg-emerald-500/10 border border-emerald-500/20 rounded-full px-2 py-0.5 w-fit">
                                   <ShieldCheck className="w-3 h-3 text-[#00bc7d]" />
                                   <span className="text-[10px] font-black text-[#00bc7d] uppercase tracking-tighter">Linked</span>
                                 </div>
                               </div>
-                              <div className="text-gray-500 text-xs font-bold uppercase tracking-tight">
+                              <div className="text-gray-500 text-xs font-bold uppercase tracking-tight break-words sm:truncate sm:truncate-none">
                                 {account.bankName} • {account.holder}
                               </div>
                             </div>
                           </div>
-                          <button
-                            type="button"
-                            onClick={() => handleDeleteBank(account.id)}
-                            className="h-10 w-10 flex items-center justify-center rounded-xl bg-white/5 text-gray-500 hover:bg-red-500/10 hover:text-red-500 transition-all duration-300"
-                          >
-                            <Trash2 size={18} />
-                          </button>
+                          <div className="flex shrink-0 items-center justify-end sm:justify-start border-t border-white/5 pt-3 sm:border-t-0 sm:pt-0">
+                            <button
+                              type="button"
+                              onClick={() => handleDeleteBank(account.id)}
+                              className="h-11 w-11 min-h-[44px] min-w-[44px] flex items-center justify-center rounded-xl bg-white/5 text-gray-500 hover:bg-red-500/10 hover:text-red-500 transition-all duration-300 touch-manipulation"
+                            >
+                              <Trash2 size={18} />
+                            </button>
+                          </div>
                         </div>
                       ))
                     ) : (
