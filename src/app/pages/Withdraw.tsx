@@ -188,7 +188,7 @@ export function Withdraw() {
                 ] as SegmentTabsItem[]}
                 activeId={activeTab}
                 onSelect={(id) => handleTabChange(id as 'deposit' | 'withdrawal')}
-                className="!px-1 !pb-4"
+                className="!px-1 !pb-0"
                 maxWidth="max-w-[313px]"
               />
             ) : (
