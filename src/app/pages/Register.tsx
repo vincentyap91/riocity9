@@ -70,8 +70,8 @@ export function Register() {
     // Username validation
     if (!username.trim()) {
       newErrors.username = 'Username is required';
-    } else if (username.length < 2) {
-      newErrors.username = 'Username must be at least 2 characters';
+    } else if (username.length < 3) {
+      newErrors.username = 'Username must be at least 3 characters';
     } else if (username.length > 10) {
       newErrors.username = 'Username cannot exceed 10 characters';
     } else if (!/^[a-zA-Z0-9_]+$/.test(username)) {
@@ -88,8 +88,8 @@ export function Register() {
     // Password validation
     if (!password) {
       newErrors.password = 'Password is required';
-    } else if (password.length < 2) {
-      newErrors.password = 'Password must be at least 2 characters';
+    } else if (password.length < 6) {
+      newErrors.password = 'Password must be at least 6 characters';
     } else if (password.length > 100) {
       newErrors.password = 'Password cannot exceed 100 characters';
     } else if (!/^[a-zA-Z0-9]+$/.test(password)) {
@@ -231,10 +231,25 @@ export function Register() {
               } catch (error) {
                 console.error('Register error:', error);
                 const errorMsg = error instanceof Error ? error.message : 'Registration failed';
-                if (errorMsg.toLowerCase().includes('username')) {
-                  setErrors(prev => ({ ...prev, username: errorMsg }));
-                } else if (errorMsg.toLowerCase().includes('mobile')) {
-                  setErrors(prev => ({ ...prev, mobile: errorMsg }));
+                const normalized = errorMsg.toLowerCase();
+                if (normalized.includes('username')) {
+                  setErrors(prev => ({
+                    ...prev,
+                    username: 'Username is not available. Please choose another.',
+                    general: undefined,
+                  }));
+                } else if (normalized.includes('mobile')) {
+                  setErrors(prev => ({
+                    ...prev,
+                    mobile: 'Mobile number is not available. Try a different number.',
+                    general: undefined,
+                  }));
+                } else if (normalized.includes('password')) {
+                  setErrors(prev => ({
+                    ...prev,
+                    password: 'Password must be at least 6 characters.',
+                    general: errorMsg,
+                  }));
                 } else {
                   setErrors(prev => ({ ...prev, general: errorMsg }));
                 }
@@ -408,7 +423,10 @@ export function Register() {
                         }`}
                      />
                      <div className="flex gap-2">
-                       <div className="h-12 px-4 bg-white/5 border border-white/10 rounded-xl flex items-center justify-center text-white text-lg font-black italic tracking-widest select-none min-w-[100px]">
+                       <div
+                         data-testid="captcha-display"
+                         className="h-12 px-4 bg-white/5 border border-white/10 rounded-xl flex items-center justify-center text-white text-lg font-black italic tracking-widest select-none min-w-[100px]"
+                       >
                            {captchaValue}
                        </div>
                        <button
@@ -482,6 +500,7 @@ export function Register() {
                 className="pt-2"
             >
                 <Button 
+                    data-testid="register-submit"
                     type="submit"
                     disabled={isLoading}
                     className="w-full h-12 bg-[#00bc7d] hover:bg-[#00a870] text-black font-black text-base rounded-xl shadow-[0_0_20px_-5px_rgba(16,185,129,0.6)] transition-all hover:scale-[1.02] hover:-translate-y-1 disabled:opacity-50 disabled:cursor-not-allowed"

@@ -9,7 +9,8 @@
     "generate-static": "node scripts/generate-static-simple.js",
     "generate-static-html": "node scripts/generate-static-html.js",
     "generate-static-standalone": "node scripts/generate-static-standalone.js",
-    "fix-static-paths": "node scripts/fix-static-paths.js"
+    "fix-static-paths": "node scripts/fix-static-paths.js",
+    "test:e2e:auth": "node scripts/e2e-register-login.js"
   },
   "dependencies": {
     "@emotion/react": "11.14.0",

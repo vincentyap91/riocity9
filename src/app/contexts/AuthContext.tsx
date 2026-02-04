@@ -7,17 +7,12 @@ import {
   updateProfile,
   setPersistence,
   browserLocalPersistence,
-  type User as FirebaseUser,
   type AuthError,
 } from 'firebase/auth';
 import { 
   doc, 
   setDoc, 
   getDoc, 
-  collection,
-  query,
-  where,
-  getDocs,
   serverTimestamp,
   type Timestamp 
 } from 'firebase/firestore';
@@ -129,7 +124,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       // User state will be updated by onAuthStateChanged listener
     } catch (err) {
       const firebaseError = err as AuthError;
-      const errorMessage = getErrorMessage(firebaseError.code);
+      const errorMessage =
+        firebaseError?.code
+          ? getErrorMessage(firebaseError.code)
+          : (err as Error)?.message || 'An error occurred. Please try again';
       setError(errorMessage);
       throw new Error(errorMessage);
     } finally {
@@ -163,30 +161,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         throw new Error('Password must be at least 6 characters');
       }
 
-      // Check if username already exists
-      const usernameQuery = query(
-        collection(db, 'users'),
-        where('username', '==', username.trim().toLowerCase())
-      );
-      const usernameSnapshot = await getDocs(usernameQuery);
-      if (!usernameSnapshot.empty) {
-        throw new Error('Username already registered');
-      }
-
-      // Check if mobile number already exists (if provided)
-      if (mobile && mobile.trim()) {
-        const mobileQuery = query(
-          collection(db, 'users'),
-          where('mobile', '==', mobile.trim())
-        );
-        const mobileSnapshot = await getDocs(mobileQuery);
-        if (!mobileSnapshot.empty) {
-          throw new Error('Mobile number already registered');
-        }
-      }
-
-      // Convert username to email format for Firebase
-      const email = username.includes('@') ? username : `${username}@riocity9.com`;
+      // Convert username to email format for Firebase.
+      // Use lowercase to avoid case-variant duplicates.
+      const normalizedUsername = username.trim().toLowerCase();
+      const email = normalizedUsername.includes('@')
+        ? normalizedUsername
+        : `${normalizedUsername}@riocity9.com`;
       const result = await createUserWithEmailAndPassword(auth, email, password);
       
       // Update profile with username as displayName
@@ -216,7 +196,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       // User state will be updated by onAuthStateChanged listener
     } catch (error) {
       const firebaseError = error as AuthError;
-      const errorMessage = getErrorMessage(firebaseError.code);
+      const errorMessage =
+        firebaseError?.code
+          ? getErrorMessage(firebaseError.code)
+          : (error as Error)?.message || 'An error occurred. Please try again';
       setError(errorMessage);
       throw new Error(errorMessage);
     } finally {
@@ -274,7 +257,11 @@ function getErrorMessage(errorCode: string): string {
     'auth/operation-not-allowed': 'Email/password sign-up is not enabled',
     'auth/too-many-requests': 'Too many login attempts. Try again later',
     'auth/network-request-failed': 'Network error. Check your connection',
+    'permission-denied': 'Permission denied while saving your account.',
+    'unavailable': 'Service temporarily unavailable. Please try again.',
+    'failed-precondition': 'Request failed due to a server precondition.',
+    'unauthenticated': 'You are not authenticated. Please log in again.',
   };
 
-  return errorMessages[errorCode] || 'An error occurred. Please try again';
+  return errorMessages[errorCode] || `An error occurred (${errorCode}). Please try again.`;
 }
