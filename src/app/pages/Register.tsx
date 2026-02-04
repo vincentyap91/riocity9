@@ -119,7 +119,7 @@ export function Register() {
   };
 
   return (
-    <div className="flex items-center justify-center py-[4%] font-sans text-white relative overflow-hidden bg-[#0a0f19]">
+    <div className="flex items-center justify-center lg:py-[4%] p-4 font-sans text-white relative overflow-hidden bg-[#0a0f19]">
       {/* Background Ambience (matched to design) */}
       <div className="absolute inset-0 z-0">
           {/* Top Left Green/Purple mix */}
@@ -142,7 +142,7 @@ export function Register() {
         </Link>
 
         {/* Left Side - Promo (Design from RiocityNewTemplate) */}
-        <div className="w-full md:w-[45%] bg-gradient-to-b from-[#062d1b] to-[#026d2f] relative overflow-hidden flex flex-col p-8 md:p-12">
+        <div className="hidden md:flex md:w-[45%] bg-gradient-to-b from-[#062d1b] to-[#026d2f] relative overflow-hidden flex-col p-8 md:p-12">
             {/* Background Image/Gradient Layers */}
             <div className="absolute inset-0 bg-gradient-to-b from-black/20 to-transparent pointer-events-none"></div>
             

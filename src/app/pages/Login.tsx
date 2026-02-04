@@ -88,7 +88,7 @@ export function Login() {
   };
 
   return (
-    <div className="flex items-center justify-center py-[4%] font-sans text-white relative overflow-hidden bg-[#0a0f19]">
+    <div className="flex items-center justify-center lg:py-[4%] p-4  font-sans text-white relative overflow-hidden bg-[#0a0f19]">
       {/* Background Ambience */}
       <div className="absolute inset-0 z-0">
           <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-[rgba(89,22,139,0.2)] rounded-full blur-[150px]"></div>
@@ -109,7 +109,7 @@ export function Login() {
         </Link>
 
         {/* Left Side - Promo (Image from design) */}
-        <div className="w-full md:w-[50%] bg-[#4f46e5] relative overflow-hidden flex flex-col items-center justify-center p-8">
+        <div className="hidden md:flex md:w-[50%] bg-[#4f46e5] relative overflow-hidden flex-col items-center justify-center p-8">
             <div className="absolute inset-0 z-0">
  
                  {/* Decorative background circle */}
