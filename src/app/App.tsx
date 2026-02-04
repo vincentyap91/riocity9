@@ -17,6 +17,7 @@ import { MobileBottomNav } from './components/home/MobileBottomNav';
 import { SidebarMenu } from './components/shared/SidebarMenu';
 import { Home } from './pages/Home';
 import { Slots } from './pages/Slots';
+import { GameDetailPage } from './pages/GameDetailPage';
 import { LiveCasino } from './pages/LiveCasino';
 import { Sports } from './pages/Sports';
 import { Fishing } from './pages/Fishing';
@@ -759,6 +760,7 @@ function AppContent() {
               <Routes location={location} key={location.pathname}>
                 <Route path="/" element={<Home />} />
                 <Route path="/slots" element={<Slots />} />
+                <Route path="/slots/:slug" element={<GameDetailPage />} />
                 <Route path="/live-casino" element={<LiveCasino />} />
                 <Route path="/sports" element={<Sports />} />
                 <Route path="/fishing" element={<Fishing />} />

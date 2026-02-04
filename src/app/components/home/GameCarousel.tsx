@@ -36,6 +36,9 @@ export function GameCarousel({ title, icon, items, className, slidesToShow = 4, 
     slidesToShow: slidesToShow,
     slidesToScroll: 1,
     arrows: false, // We use custom arrows
+    swipeToSlide: true,
+    adaptiveHeight: true,
+    focusOnSelect: true,
     responsive: [
       {
         breakpoint: 1024,
@@ -54,7 +57,7 @@ export function GameCarousel({ title, icon, items, className, slidesToShow = 4, 
         settings: {
           slidesToShow: 1,
           centerMode: true,
-          centerPX: 40
+          centerPadding: "36px",
         }
       }
     ]
@@ -69,7 +72,7 @@ export function GameCarousel({ title, icon, items, className, slidesToShow = 4, 
   };
 
   return (
-    <div className={`w-full ${className}`}>
+    <div className={`relative w-full overflow-hidden ${className}`}>
       {/* Header */}
       <SectionHeader 
         title={title}
@@ -102,7 +105,7 @@ export function GameCarousel({ title, icon, items, className, slidesToShow = 4, 
       />
 
       {/* Slider */}
-      <div className="-mx-2">
+      <div className="overflow-hidden px-0 sm:px-2">
         <Slider ref={sliderRef} {...settings}>
           {items.map((item) => (
             <div key={item.id} className="px-2 pb-4">
