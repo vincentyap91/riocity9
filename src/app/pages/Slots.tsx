@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 import { InsidePageHero } from '../components/shared/InsidePageHero';
 import { Grid, ArrowRight, Search, RefreshCw, DollarSign } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useLanguage } from '../contexts/LanguageContext';
+import { useAuth } from '../contexts/AuthContext';
 import { sanitizeTextInput } from '../utils/security';
 import { PAGE_ACCENT, SECTION_HEADER_TITLE_CLASS } from '../config/themeTokens';
+import { Dialog, DialogContent } from '../components/ui/dialog';
+import { Button } from '../components/ui/button';
 
 // --- Assets from RiocitySlots.tsx & Mn.tsx ---
 // Hero
@@ -79,9 +82,13 @@ const games = [
 
 export function Slots() {
   const { t } = useLanguage();
+  const { isAuthenticated } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
   const [searchQuery, setSearchQuery] = useState('');
   const [walletBalance] = useState('966.24');
   const [guaranteedRebate] = useState('5.00%');
+  const [showLoginModal, setShowLoginModal] = useState(false);
 
   return (
     <div className="flex flex-col flex-1 bg-[#02040a] min-h-screen overflow-x-hidden">
@@ -215,7 +222,19 @@ export function Slots() {
                         const Wrapper: any = game.slug ? Link : 'div';
                         const wrapperProps = game.slug ? { to: `/slots/${game.slug}` } : {};
                         return (
-                        <Wrapper key={game.id} {...wrapperProps} className="flex flex-col items-start gap-2 md:gap-3 group cursor-pointer w-full max-w-[214px]">
+                        <Wrapper
+                            key={game.id}
+                            {...wrapperProps}
+                            className="flex flex-col items-start gap-2 md:gap-3 group cursor-pointer w-full max-w-[214px]"
+                            onClick={(event: React.MouseEvent) => {
+                                if (isAuthenticated) {
+                                    return;
+                                }
+                                event.preventDefault();
+                                sessionStorage.setItem('redirectAfterLogin', `${location.pathname}${location.search}`);
+                                setShowLoginModal(true);
+                            }}
+                        >
                             <div 
                                 className="relative w-full aspect-square rounded-2xl overflow-hidden ring-1 ring-white/10 transition-all duration-500 bg-[#1a2536] group-hover:ring-emerald-500/30 group-hover:shadow-[0_0_30px_-5px_rgba(16,185,129,0.2)]"
                             >
@@ -259,6 +278,30 @@ export function Slots() {
             </div>
 
         </div>
+        <Dialog open={showLoginModal} onOpenChange={setShowLoginModal}>
+            <DialogContent className="bg-[#131b29] border border-white/10 rounded-2xl p-6 max-w-[380px] flex flex-col items-center text-center text-white">
+                <div className="text-base font-semibold">You are not logged in. Please login to continue.</div>
+                <div className="mt-6 flex items-center gap-3">
+                    <Button
+                        onClick={() => {
+                            sessionStorage.setItem('redirectAfterLogin', `${location.pathname}${location.search}`);
+                            setShowLoginModal(false);
+                            navigate('/login');
+                        }}
+                        className="h-10 px-4 bg-[#00bc7d] hover:bg-[#00a870] text-black font-bold rounded-xl"
+                    >
+                        Login
+                    </Button>
+                    <Button
+                        variant="outline"
+                        onClick={() => setShowLoginModal(false)}
+                        className="h-10 px-4 border-white/10 text-gray-300 hover:text-white hover:bg-white/5 rounded-xl"
+                    >
+                        Cancel
+                    </Button>
+                </div>
+            </DialogContent>
+        </Dialog>
     </div>
   );
 }

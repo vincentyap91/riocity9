@@ -1,8 +1,9 @@
-import React, { useRef, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import React, { useEffect, useRef, useState } from 'react';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { InsidePageHero } from '../components/shared/InsidePageHero';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '../components/ui/breadcrumb';
 import { useLanguage } from '../contexts/LanguageContext';
+import { useAuth } from '../contexts/AuthContext';
 import { NotFound } from './NotFound';
 import imgImagePromo from "@/assets/dba5dfffa741345e0ad70e36cafba5ab8b533760.png";
 import imgImageAdventuresOfCaramelo from "@/assets/Adventures-Of-Caramelo.jpg";
@@ -27,14 +28,25 @@ const gameDetailConfig = [
 
 export function GameDetailPage() {
   const { t } = useLanguage();
+  const { isAuthenticated } = useAuth();
+  const navigate = useNavigate();
   const { slug } = useParams();
   const game = gameDetailConfig.find((item) => item.slug === slug);
   const [activeTab, setActiveTab] = useState<'ranking' | 'description'>('ranking');
   const iframeContainerRef = useRef<HTMLDivElement | null>(null);
+  const requestedPlayRef = useRef(false);
 
   if (!game) {
     return <NotFound />;
   }
+
+  useEffect(() => {
+    const pending = sessionStorage.getItem('pendingGamePlay');
+    if (isAuthenticated && pending === '1') {
+      sessionStorage.removeItem('pendingGamePlay');
+      window.location.reload();
+    }
+  }, [isAuthenticated]);
 
   const rankingRows = [
     { rank: 1, username: '*********3', date: '19-Jan-2026', bet: '3.50', payout: '35.70', win: '32.20' },
@@ -135,6 +147,22 @@ export function GameDetailPage() {
                       src={game.iframeSrc}
                       allowFullScreen>
                     </iframe>
+                    {!isAuthenticated && (
+                      <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-black/70 text-white text-sm px-4 text-center">
+                        <div className="font-semibold">{t('login')}</div>
+                        <button
+                          type="button"
+                          className="px-3 py-2 rounded-lg bg-emerald-500 text-black font-semibold hover:bg-emerald-400 transition-colors"
+                          onClick={() => {
+                            requestedPlayRef.current = true;
+                            sessionStorage.setItem('pendingGamePlay', '1');
+                            navigate('/login');
+                          }}
+                        >
+                          {t('login')}
+                        </button>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
