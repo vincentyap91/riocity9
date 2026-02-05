@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route, Link, useLocation, useNavigate } from 're
 import { AnimatePresence, motion } from 'motion/react';
 import { Button } from './components/ui/button';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from './components/ui/sheet';
-import { Search, Menu, MessageCircle, X, Languages, CircleHelp, ChevronDown, Home as HomeIcon, Gamepad2, Dices, Trophy, Fish, Ticket, Star, Smartphone, Gift, Map, User, Eye, EyeOff, Target, Trash2, Info, RefreshCw, Wallet } from 'lucide-react';
+import { Search, Menu, MessageCircle, X, Languages, CircleHelp, ChevronDown, Home as HomeIcon, Gamepad2, Dices, Trophy, Fish, Ticket, Star, Smartphone, Gift, User, Eye, EyeOff, Target, Trash2, Info, RefreshCw, Wallet } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -45,6 +45,7 @@ import { NotFound } from './pages/NotFound';
 import { Promotions } from './pages/Promotions';
 import { PromotionDetail } from './pages/PromotionDetail';
 import { Downlines } from './pages/Downlines';
+import { InformationCenter } from './pages/InformationCenter';
 import { FloatingRewardWidget } from './components/shared/FloatingRewardWidget';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { SessionProvider } from './contexts/SessionContext';
@@ -331,25 +332,25 @@ function AppContent() {
     <>
       {isInitialLoading && (
         <div className="fixed inset-0 z-[9999] bg-[#02040a] flex flex-col items-center justify-center">
-            {/* Logo in Loader */}
-            <div className="relative mb-8 animate-pulse">
-                <img src={logoSrc} alt="RioCity9 Logo" className="h-16 w-auto relative z-10" />
-                <div className="absolute inset-0 bg-emerald-500/30 blur-2xl rounded-full"></div>
-            </div>
-            
-            {/* Spinning Loader */}
-            <div className="w-12 h-12 border-4 border-white/5 border-t-emerald-500 rounded-full animate-spin mb-4"></div>
-            
-            {/* Loading Text */}
-            <div className="text-[#00bc7d] font-black tracking-[0.2em] text-sm uppercase animate-pulse">
-                {t("loading")}
-            </div>
-            
-            {/* Optional: Progress Bar Style */}
-            <div className="w-48 h-1 bg-white/5 rounded-full mt-8 overflow-hidden">
-                <div className="h-full bg-emerald-500 animate-[loading_2s_ease-in-out_infinite]"></div>
-            </div>
-            <style>{`
+          {/* Logo in Loader */}
+          <div className="relative mb-8 animate-pulse">
+            <img src={logoSrc} alt="RioCity9 Logo" className="h-16 w-auto relative z-10" />
+            <div className="absolute inset-0 bg-emerald-500/30 blur-2xl rounded-full"></div>
+          </div>
+
+          {/* Spinning Loader */}
+          <div className="w-12 h-12 border-4 border-white/5 border-t-emerald-500 rounded-full animate-spin mb-4"></div>
+
+          {/* Loading Text */}
+          <div className="text-[#00bc7d] font-black tracking-[0.2em] text-sm uppercase animate-pulse">
+            {t("loading")}
+          </div>
+
+          {/* Optional: Progress Bar Style */}
+          <div className="w-48 h-1 bg-white/5 rounded-full mt-8 overflow-hidden">
+            <div className="h-full bg-emerald-500 animate-[loading_2s_ease-in-out_infinite]"></div>
+          </div>
+          <style>{`
                 @keyframes loading {
                     0% { width: 0%; transform: translateX(-100%); }
                     50% { width: 100%; transform: translateX(0%); }
@@ -361,299 +362,298 @@ function AppContent() {
       <div className="min-h-screen text-foreground font-sans selection:bg-[#00bc7d]/30 selection:text-[#00bc7d] flex flex-col">
         {/* Background Ambience */}
         <div className="fixed inset-0 pointer-events-none z-0">
-            {/* Primary Top Glow - More Intensity */}
-            <div className="absolute top-[-20%] left-1/2 -translate-x-1/2 w-[80%] h-[60%] bg-emerald-600/15 rounded-[100%] blur-[100px]"></div>
-            
-            {/* Secondary Accent Glows for depth */}
-            <div className="absolute top-[10%] left-[10%] w-[30%] h-[30%] bg-emerald-900/20 rounded-full blur-[80px] opacity-60"></div>
-            <div className="absolute top-[10%] right-[10%] w-[30%] h-[30%] bg-emerald-800/20 rounded-full blur-[80px] opacity-60"></div>
+          {/* Primary Top Glow - More Intensity */}
+          <div className="absolute top-[-20%] left-1/2 -translate-x-1/2 w-[80%] h-[60%] bg-emerald-600/15 rounded-[100%] blur-[100px]"></div>
+
+          {/* Secondary Accent Glows for depth */}
+          <div className="absolute top-[10%] left-[10%] w-[30%] h-[30%] bg-emerald-900/20 rounded-full blur-[80px] opacity-60"></div>
+          <div className="absolute top-[10%] right-[10%] w-[30%] h-[30%] bg-emerald-800/20 rounded-full blur-[80px] opacity-60"></div>
         </div>
 
         {/* Navbar */}
-        <header 
-            className={`sticky top-0 z-50 w-full border-b transition-all duration-300 shadow-lg ${
-                isScrolled 
-                ? 'bg-[#02040a]/95 backdrop-blur-xl border-white/10' 
-                : 'bg-[#02040a]/60 backdrop-blur-md border-white/5'
+        <header
+          className={`sticky top-0 z-50 w-full border-b transition-all duration-300 shadow-lg ${isScrolled
+            ? 'bg-[#02040a]/95 backdrop-blur-xl border-white/10'
+            : 'bg-[#02040a]/60 backdrop-blur-md border-white/5'
             }`}
         >
           <div className={`container mx-auto ${HOME_PAGE.maxWidth} px-4 h-20 flex items-center justify-between`}>
             <div className="flex items-center gap-2 xl:gap-3">
               {/* Desktop Menu Trigger */}
-              <button 
+              <button
                 onClick={() => setIsMenuOpen(true)}
                 className="h-8 w-8 sm:h-10 sm:w-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-[#00bc7d] hover:text-[#00bc7d] hover:bg-white/10 hover:border-[#00bc7d]/50 transition-all duration-300 group"
               >
-                  <Menu className="w-5 h-5 group-hover:scale-110 transition-transform" />
+                <Menu className="w-5 h-5 group-hover:scale-110 transition-transform" />
               </button>
-              
+
               {/* Logo */}
               <Link to="/" className="flex items-center gap-2 group shrink-0">
                 <div className="relative flex items-center justify-center">
                   {/* Subtle centered glow behind icon */}
                   <div className="absolute w-8 h-8 bg-emerald-500/30 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                  
-                  <img 
-                    src={logoSrc} 
-                    alt="RioCity9 Logo" 
-                    className="h-10 w-auto relative z-10 transition-transform duration-300 group-hover:scale-110" 
+
+                  <img
+                    src={logoSrc}
+                    alt="RioCity9 Logo"
+                    className="h-10 w-auto relative z-10 transition-transform duration-300 group-hover:scale-110"
                   />
                 </div>
                 <span className="text-2xl font-black tracking-tight text-white hidden xl:block">
                   Rio<span className="text-emerald-400 transition-colors duration-300 group-hover:text-emerald-400">City9</span>
                 </span>
               </Link>
-              
+
               {/* Spacer */}
               <div className="flex-1"></div>
             </div>
 
             {/* Right Side Actions */}
             <div className="flex items-center gap-2 sm:gap-4">
-              
+
               {/* Auth Section - Conditional rendering based on auth state */}
               <div className="flex items-center gap-2 sm:gap-3">
-                  {isAuthenticated ? (
-                      <div className="flex items-center gap-2 sm:gap-3">
-                          {/* Combined Balance & Deposit Pill */}
-                          <div className="hidden sm:flex items-center bg-[#131b29]/60 border border-white/10 rounded-[10px] pl-4 pr-1 h-11 transition-all hover:border-[#00bc7d]/30 shadow-lg">
-                              {/* Balance Section with dropdown */}
-                              <div className="flex items-center gap-2.5 mr-2" data-wallet-dropdown>
-                                  <button 
-                                    onClick={() => setShowBalance(!showBalance)}
-                                    className="text-gray-500 hover:text-white transition-colors shrink-0"
-                                    aria-label={showBalance ? "Hide balance" : "Show balance"}
-                                  >
-                                    {showBalance ? <Eye size={16} /> : <EyeOff size={16} />}
-                                  </button>
-                                  <div className="relative flex items-center gap-1.5 min-w-0">
-                                    <span className="text-[13px] font-black text-white tracking-wide shrink-0">MYR</span>
-                                    <span className="text-[14px] font-black text-white tracking-tight tabular-nums truncate">{showBalance ? "980.96" : "******"}</span>
-                                    <button
-                                      type="button"
-                                      onClick={(e) => { e.stopPropagation(); setIsWalletDropdownOpen((o) => !o); }}
-                                      className="shrink-0 ml-2 w-8 h-8 rounded-[10px] bg-white/5 border border-white/10 flex items-center justify-center text-white hover:bg-white/10 hover:border-white/20 transition-all"
-                                      aria-label="Toggle wallet details"
-                                      aria-expanded={isWalletDropdownOpen}
-                                    >
-                                      <ChevronDown size={16} className={`transition-transform duration-200 ${isWalletDropdownOpen ? "rotate-180" : ""}`} />
-                                    </button>
-                                    {/* Wallet details dropdown - same design as rollover status dropdown */}
-                                    <AnimatePresence>
-                                      {isWalletDropdownOpen && (
-                                        <motion.div
-                                          initial={{ opacity: 0, y: -4 }}
-                                          animate={{ opacity: 1, y: 0 }}
-                                          exit={{ opacity: 0, y: -4 }}
-                                          transition={{ duration: 0.2 }}
-                                          className="absolute right-0 top-full mt-2.5 w-[320px] min-w-[320px] z-50 bg-[#1a2230] rounded-2xl shadow-2xl border border-white/5 overflow-hidden animate-in slide-in-from-top-2 fade-in duration-300"
-                                        >
-                                          {/* Header Section - same as rollover */}
-                                          <div className="flex items-center gap-3 p-4 border-b border-white/5">
-                                            <div className="h-10 w-10 rounded-xl bg-black/25 border border-white/10 flex items-center justify-center shrink-0">
-                                              <Wallet className="w-5 h-5 text-[#00bc7d]" strokeWidth={2.5} />
-                                            </div>
-                                            <div className="flex flex-col">
-                                              <span className="text-white font-bold text-base leading-tight">{t("totalBalance")}</span>
-                                              <span className="text-amber-400 text-[10px] font-black uppercase tracking-wider tabular-nums">{showBalance ? "980.96 MYR" : "******"}</span>
-                                            </div>
-                                          </div>
-                                          {/* Content Section - same structure as rollover */}
-                                          <div className="p-4">
-                                            <div className="bg-[#0f151f] rounded-xl p-4 border border-white/5 space-y-3">
-                                              <div className="flex items-center justify-between gap-2">
-                                                <span className="text-gray-400 text-xs font-bold">Main Wallet</span>
-                                                <span className="text-amber-400 text-xs font-black tabular-nums shrink-0">{showBalance ? "960.96" : "******"}</span>
-                                              </div>
-                                              <div className="flex items-center justify-between gap-2">
-                                                <div className="flex items-center gap-1.5 min-w-0">
-                                                  <Info className="w-3.5 h-3.5 text-gray-400 shrink-0" aria-hidden />
-                                                  <span className="text-gray-400 text-xs font-bold">Game Wallet</span>
-                                                </div>
-                                                <div className="flex items-center gap-2 shrink-0">
-                                                  <span className="text-amber-400 text-xs font-black tabular-nums">{showBalance ? "20.00" : "******"}</span>
-                                                  <button type="button" className="text-white hover:text-[#00bc7d] transition-colors p-1 rounded" aria-label="Refresh balances">
-                                                    <RefreshCw size={14} />
-                                                  </button>
-                                                </div>
-                                              </div>
-                                            </div>
-                                          </div>
-                                        </motion.div>
-                                      )}
-                                    </AnimatePresence>
-                                  </div>
-                              </div>
-
-                              {/* Deposit Button - Pill Style inside (compact) */}
-                              <Button
-                                asChild
-                                className="inline-flex items-center justify-center gap-2 whitespace-nowrap py-2 px-4 h-[34px] rounded-[10px] text-[13px] bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 hover:brightness-110 text-black font-black transition-all border-none"
+                {isAuthenticated ? (
+                  <div className="flex items-center gap-2 sm:gap-3">
+                    {/* Combined Balance & Deposit Pill */}
+                    <div className="hidden sm:flex items-center bg-[#131b29]/60 border border-white/10 rounded-[10px] pl-4 pr-1 h-11 transition-all hover:border-[#00bc7d]/30 shadow-lg">
+                      {/* Balance Section with dropdown */}
+                      <div className="flex items-center gap-2.5 mr-2" data-wallet-dropdown>
+                        <button
+                          onClick={() => setShowBalance(!showBalance)}
+                          className="text-gray-500 hover:text-white transition-colors shrink-0"
+                          aria-label={showBalance ? "Hide balance" : "Show balance"}
+                        >
+                          {showBalance ? <Eye size={16} /> : <EyeOff size={16} />}
+                        </button>
+                        <div className="relative flex items-center gap-1.5 min-w-0">
+                          <span className="text-[13px] font-black text-white tracking-wide shrink-0">MYR</span>
+                          <span className="text-[14px] font-black text-white tracking-tight tabular-nums truncate">{showBalance ? "980.96" : "******"}</span>
+                          <button
+                            type="button"
+                            onClick={(e) => { e.stopPropagation(); setIsWalletDropdownOpen((o) => !o); }}
+                            className="shrink-0 ml-2 w-8 h-8 rounded-[10px] bg-white/5 border border-white/10 flex items-center justify-center text-white hover:bg-white/10 hover:border-white/20 transition-all"
+                            aria-label="Toggle wallet details"
+                            aria-expanded={isWalletDropdownOpen}
+                          >
+                            <ChevronDown size={16} className={`transition-transform duration-200 ${isWalletDropdownOpen ? "rotate-180" : ""}`} />
+                          </button>
+                          {/* Wallet details dropdown - same design as rollover status dropdown */}
+                          <AnimatePresence>
+                            {isWalletDropdownOpen && (
+                              <motion.div
+                                initial={{ opacity: 0, y: -4 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -4 }}
+                                transition={{ duration: 0.2 }}
+                                className="absolute right-0 top-full mt-2.5 w-[320px] min-w-[320px] z-50 bg-[#1a2230] rounded-2xl shadow-2xl border border-white/5 overflow-hidden animate-in slide-in-from-top-2 fade-in duration-300"
                               >
-                                <Link to="/deposit">{t("deposit")}</Link>
-                              </Button>
-                          </div>
-
-                          {/* Rollover Target Button */}
-                          <div className="relative" data-rollover-dropdown>
-                            <button
-                              onClick={() => setIsRolloverOpen(!isRolloverOpen)}
-                              className="w-10 h-10 rounded-xl bg-[#e65c00] hover:bg-[#cc5200] flex items-center justify-center text-white transition-all hover:scale-105"
-                            >
-                              <Target size={20} />
-                            </button>
-
-                            {/* Rollover Dropdown - centered on mobile, right-aligned on desktop */}
-                            {isRolloverOpen && (
-                              <div className="fixed left-1/2 -translate-x-1/2 top-20 w-[min(320px,calc(100vw-2rem))] md:absolute md:left-auto md:right-0 md:top-14 md:translate-x-0 md:w-[320px] bg-[#1a2230] rounded-2xl shadow-2xl border border-white/5 overflow-hidden animate-in slide-in-from-top-2 fade-in duration-300 z-50">
-                                {/* Header Section – same as wallet dropdown: icon + title + subtitle */}
+                                {/* Header Section - same as rollover */}
                                 <div className="flex items-center gap-3 p-4 border-b border-white/5">
                                   <div className="h-10 w-10 rounded-xl bg-black/25 border border-white/10 flex items-center justify-center shrink-0">
-                                    <Target className="w-5 h-5 text-[#00bc7d]" strokeWidth={2.5} />
+                                    <Wallet className="w-5 h-5 text-[#00bc7d]" strokeWidth={2.5} />
                                   </div>
-                                  <div className="flex flex-col min-w-0">
-                                    <span className="text-white font-bold text-base leading-tight">{t("rolloverStatus")}</span>
-                                    <span className="text-[#00bc7d] text-[10px] font-black uppercase tracking-wider truncate mt-0.5">
-                                      {activePromo ? activePromo.name : t("completed")}
+                                  <div className="flex flex-col">
+                                    <span className="text-white font-bold text-base leading-tight">{t("totalBalance")}</span>
+                                    <span className="text-amber-400 text-[10px] font-black uppercase tracking-wider tabular-nums">{showBalance ? "980.96 MYR" : "******"}</span>
+                                  </div>
+                                </div>
+                                {/* Content Section - same structure as rollover */}
+                                <div className="p-4">
+                                  <div className="bg-[#0f151f] rounded-xl p-4 border border-white/5 space-y-3">
+                                    <div className="flex items-center justify-between gap-2">
+                                      <span className="text-gray-400 text-xs font-bold">Main Wallet</span>
+                                      <span className="text-amber-400 text-xs font-black tabular-nums shrink-0">{showBalance ? "960.96" : "******"}</span>
+                                    </div>
+                                    <div className="flex items-center justify-between gap-2">
+                                      <div className="flex items-center gap-1.5 min-w-0">
+                                        <Info className="w-3.5 h-3.5 text-gray-400 shrink-0" aria-hidden />
+                                        <span className="text-gray-400 text-xs font-bold">Game Wallet</span>
+                                      </div>
+                                      <div className="flex items-center gap-2 shrink-0">
+                                        <span className="text-amber-400 text-xs font-black tabular-nums">{showBalance ? "20.00" : "******"}</span>
+                                        <button type="button" className="text-white hover:text-[#00bc7d] transition-colors p-1 rounded" aria-label="Refresh balances">
+                                          <RefreshCw size={14} />
+                                        </button>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </motion.div>
+                            )}
+                          </AnimatePresence>
+                        </div>
+                      </div>
+
+                      {/* Deposit Button - Pill Style inside (compact) */}
+                      <Button
+                        asChild
+                        className="inline-flex items-center justify-center gap-2 whitespace-nowrap py-2 px-4 h-[34px] rounded-[10px] text-[13px] bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 hover:brightness-110 text-black font-black transition-all border-none"
+                      >
+                        <Link to="/deposit">{t("deposit")}</Link>
+                      </Button>
+                    </div>
+
+                    {/* Rollover Target Button */}
+                    <div className="relative" data-rollover-dropdown>
+                      <button
+                        onClick={() => setIsRolloverOpen(!isRolloverOpen)}
+                        className="w-10 h-10 rounded-xl bg-[#e65c00] hover:bg-[#cc5200] flex items-center justify-center text-white transition-all hover:scale-105"
+                      >
+                        <Target size={20} />
+                      </button>
+
+                      {/* Rollover Dropdown - centered on mobile, right-aligned on desktop */}
+                      {isRolloverOpen && (
+                        <div className="fixed left-1/2 -translate-x-1/2 top-20 w-[min(320px,calc(100vw-2rem))] md:absolute md:left-auto md:right-0 md:top-14 md:translate-x-0 md:w-[320px] bg-[#1a2230] rounded-2xl shadow-2xl border border-white/5 overflow-hidden animate-in slide-in-from-top-2 fade-in duration-300 z-50">
+                          {/* Header Section – same as wallet dropdown: icon + title + subtitle */}
+                          <div className="flex items-center gap-3 p-4 border-b border-white/5">
+                            <div className="h-10 w-10 rounded-xl bg-black/25 border border-white/10 flex items-center justify-center shrink-0">
+                              <Target className="w-5 h-5 text-[#00bc7d]" strokeWidth={2.5} />
+                            </div>
+                            <div className="flex flex-col min-w-0">
+                              <span className="text-white font-bold text-base leading-tight">{t("rolloverStatus")}</span>
+                              <span className="text-[#00bc7d] text-[10px] font-black uppercase tracking-wider truncate mt-0.5">
+                                {activePromo ? activePromo.name : t("completed")}
+                              </span>
+                            </div>
+                          </div>
+
+                          {/* Content – same structure as wallet / deposit rollover: single card */}
+                          {activePromo ? (
+                            <div className="p-4">
+                              <div className="bg-[#0f151f] rounded-xl p-4 border border-white/5 space-y-3">
+                                {/* Promo Rollover row – same label/value style as deposit rollover */}
+                                <div className="space-y-2">
+                                  <div className="flex items-center justify-between">
+                                    <span className="text-gray-400 text-xs font-bold">{t("promoRollover")}</span>
+                                    <span className="text-amber-400 font-black text-xs tabular-nums">
+                                      {activePromo.promoRolloverCurrent.toFixed(2)} / {activePromo.promoRolloverTarget.toFixed(2)}
+                                    </span>
+                                  </div>
+                                  <div className="flex items-center gap-2">
+                                    <div className="flex-1 h-2 bg-black/40 rounded-full overflow-hidden border border-white/5 p-[0.5px]">
+                                      <div
+                                        className="h-full bg-[#00bc7d] rounded-full transition-all"
+                                        style={{ width: `${Math.min(100, (activePromo.promoRolloverCurrent / activePromo.promoRolloverTarget) * 100)}%` }}
+                                      />
+                                    </div>
+                                    <span className="text-white font-black text-[10px] tabular-nums shrink-0">
+                                      {activePromo.promoRolloverTarget > 0
+                                        ? ((activePromo.promoRolloverCurrent / activePromo.promoRolloverTarget) * 100).toFixed(1)
+                                        : 0}%
                                     </span>
                                   </div>
                                 </div>
-                                
-                                {/* Content – same structure as wallet / deposit rollover: single card */}
-                                {activePromo ? (
-                                  <div className="p-4">
-                                    <div className="bg-[#0f151f] rounded-xl p-4 border border-white/5 space-y-3">
-                                      {/* Promo Rollover row – same label/value style as deposit rollover */}
-                                      <div className="space-y-2">
-                                        <div className="flex items-center justify-between">
-                                          <span className="text-gray-400 text-xs font-bold">{t("promoRollover")}</span>
-                                          <span className="text-amber-400 font-black text-xs tabular-nums">
-                                            {activePromo.promoRolloverCurrent.toFixed(2)} / {activePromo.promoRolloverTarget.toFixed(2)}
-                                          </span>
-                                        </div>
-                                        <div className="flex items-center gap-2">
-                                          <div className="flex-1 h-2 bg-black/40 rounded-full overflow-hidden border border-white/5 p-[0.5px]">
-                                            <div
-                                              className="h-full bg-[#00bc7d] rounded-full transition-all"
-                                              style={{ width: `${Math.min(100, (activePromo.promoRolloverCurrent / activePromo.promoRolloverTarget) * 100)}%` }}
-                                            />
-                                          </div>
-                                          <span className="text-white font-black text-[10px] tabular-nums shrink-0">
-                                            {activePromo.promoRolloverTarget > 0
-                                              ? ((activePromo.promoRolloverCurrent / activePromo.promoRolloverTarget) * 100).toFixed(1)
-                                              : 0}%
-                                          </span>
-                                        </div>
-                                      </div>
-                                      {/* Target row */}
-                                      <div className="space-y-2">
-                                        <div className="flex items-center justify-between">
-                                          <span className="text-gray-400 text-xs font-bold">{t("target")}</span>
-                                          <span className="text-amber-400 font-black text-xs tabular-nums">
-                                            {activePromo.targetCurrent.toFixed(2)} / {activePromo.targetTarget.toFixed(2)}
-                                          </span>
-                                        </div>
-                                        <div className="flex items-center gap-2">
-                                          <div className="flex-1 h-2 bg-black/40 rounded-full overflow-hidden border border-white/5 p-[0.5px]">
-                                            <div
-                                              className="h-full bg-[#00bc7d] rounded-full transition-all"
-                                              style={{ width: `${activePromo.targetTarget > 0 ? Math.min(100, (activePromo.targetCurrent / activePromo.targetTarget) * 100) : 0}%` }}
-                                            />
-                                          </div>
-                                          <span className="text-white font-black text-[10px] tabular-nums shrink-0">
-                                            {activePromo.targetTarget > 0
-                                              ? ((activePromo.targetCurrent / activePromo.targetTarget) * 100).toFixed(0)
-                                              : 0}%
-                                          </span>
-                                        </div>
-                                      </div>
-                                      {/* Info row – same pattern as wallet Game Wallet row */}
-                                      <div className="flex items-start gap-2 pt-1 border-t border-white/5">
-                                        <div className="w-5 h-5 rounded-full bg-white/10 flex items-center justify-center shrink-0 mt-0.5">
-                                          <Info className="w-3 h-3 text-gray-400" />
-                                        </div>
-                                        <p className="text-gray-400 text-[11px] leading-relaxed">{t("gameWalletPromoInfo")}</p>
-                                      </div>
+                                {/* Target row */}
+                                <div className="space-y-2">
+                                  <div className="flex items-center justify-between">
+                                    <span className="text-gray-400 text-xs font-bold">{t("target")}</span>
+                                    <span className="text-amber-400 font-black text-xs tabular-nums">
+                                      {activePromo.targetCurrent.toFixed(2)} / {activePromo.targetTarget.toFixed(2)}
+                                    </span>
+                                  </div>
+                                  <div className="flex items-center gap-2">
+                                    <div className="flex-1 h-2 bg-black/40 rounded-full overflow-hidden border border-white/5 p-[0.5px]">
+                                      <div
+                                        className="h-full bg-[#00bc7d] rounded-full transition-all"
+                                        style={{ width: `${activePromo.targetTarget > 0 ? Math.min(100, (activePromo.targetCurrent / activePromo.targetTarget) * 100) : 0}%` }}
+                                      />
+                                    </div>
+                                    <span className="text-white font-black text-[10px] tabular-nums shrink-0">
+                                      {activePromo.targetTarget > 0
+                                        ? ((activePromo.targetCurrent / activePromo.targetTarget) * 100).toFixed(0)
+                                        : 0}%
+                                    </span>
+                                  </div>
+                                </div>
+                                {/* Info row – same pattern as wallet Game Wallet row */}
+                                <div className="flex items-start gap-2 pt-1 border-t border-white/5">
+                                  <div className="w-5 h-5 rounded-full bg-white/10 flex items-center justify-center shrink-0 mt-0.5">
+                                    <Info className="w-3 h-3 text-gray-400" />
+                                  </div>
+                                  <p className="text-gray-400 text-[11px] leading-relaxed">{t("gameWalletPromoInfo")}</p>
+                                </div>
+                              </div>
+                            </div>
+                          ) : (
+                            /* No active promo: show Deposit Rollover (completed) */
+                            <div className="p-4">
+                              <div className="bg-[#0f151f] rounded-xl p-4 border border-white/5 space-y-3">
+                                <div className="space-y-2">
+                                  <div className="flex items-center justify-between">
+                                    <span className="text-gray-400 text-xs font-bold">{t("depositRollover")}</span>
+                                    <div className="flex items-center gap-1.5">
+                                      <span className="text-white font-black text-xs">436</span>
+                                      <span className="text-gray-600 text-[10px]">/</span>
+                                      <span className="text-[#00bc7d] font-black text-xs">436</span>
                                     </div>
                                   </div>
-                                ) : (
-                                  /* No active promo: show Deposit Rollover (completed) */
-                                  <div className="p-4">
-                                    <div className="bg-[#0f151f] rounded-xl p-4 border border-white/5 space-y-3">
-                                      <div className="space-y-2">
-                                        <div className="flex items-center justify-between">
-                                          <span className="text-gray-400 text-xs font-bold">{t("depositRollover")}</span>
-                                          <div className="flex items-center gap-1.5">
-                                            <span className="text-white font-black text-xs">436</span>
-                                            <span className="text-gray-600 text-[10px]">/</span>
-                                            <span className="text-[#00bc7d] font-black text-xs">436</span>
-                                          </div>
-                                        </div>
-                                        <div className="h-2 w-full bg-black/40 rounded-full overflow-hidden border border-white/5 p-[0.5px]">
-                                          <div className="h-full w-full bg-[#00bc7d] rounded-full relative">
-                                            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-[shimmer_2s_infinite]"></div>
-                                          </div>
-                                        </div>
-                                        <div className="flex justify-between items-center pt-1">
-                                          <span className="text-[#00bc7d] text-[10px] font-black uppercase tracking-widest flex items-center gap-1.5">
-                                            <div className="w-1.5 h-1.5 rounded-full bg-[#00bc7d] shadow-[0_0_8px_rgba(0,188,125,0.8)] animate-pulse"></div>
-                                            Verified
-                                          </span>
-                                          <span className="text-white font-black text-[10px] tracking-tighter bg-[#00bc7d]/10 px-2 py-0.5 rounded">100% DONE</span>
-                                        </div>
-                                      </div>
+                                  <div className="h-2 w-full bg-black/40 rounded-full overflow-hidden border border-white/5 p-[0.5px]">
+                                    <div className="h-full w-full bg-[#00bc7d] rounded-full relative">
+                                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-[shimmer_2s_infinite]"></div>
                                     </div>
-                                    <p className="text-gray-500 text-[11px] leading-relaxed mt-3 px-1 text-center font-medium">
-                                      Your requirement is completed. <br />You can now proceed with your withdrawal.
-                                    </p>
                                   </div>
-                                )}
-                                <style>{`
+                                  <div className="flex justify-between items-center pt-1">
+                                    <span className="text-[#00bc7d] text-[10px] font-black uppercase tracking-widest flex items-center gap-1.5">
+                                      <div className="w-1.5 h-1.5 rounded-full bg-[#00bc7d] shadow-[0_0_8px_rgba(0,188,125,0.8)] animate-pulse"></div>
+                                      Verified
+                                    </span>
+                                    <span className="text-white font-black text-[10px] tracking-tighter bg-[#00bc7d]/10 px-2 py-0.5 rounded">100% DONE</span>
+                                  </div>
+                                </div>
+                              </div>
+                              <p className="text-gray-500 text-[11px] leading-relaxed mt-3 px-1 text-center font-medium">
+                                Your requirement is completed. <br />You can now proceed with your withdrawal.
+                              </p>
+                            </div>
+                          )}
+                          <style>{`
                                   @keyframes shimmer {
                                     0% { transform: translateX(-100%); }
                                     100% { transform: translateX(100%); }
                                   }
                                 `}</style>
-                              </div>
-                            )}
-                          </div>
+                        </div>
+                      )}
+                    </div>
 
-                          {/* Account Utilities */}
-                          <div className="flex items-center gap-2">
-                             {/* Search Icon */}
-                             <button 
-                                className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:text-white hover:border-white/20 transition-all"
-                                onClick={handleOpenSearch}
-                             >
-                                <Search size={18} />
-                             </button>
+                    {/* Account Utilities */}
+                    <div className="flex items-center gap-2">
+                      {/* Search Icon */}
+                      <button
+                        className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:text-white hover:border-white/20 transition-all"
+                        onClick={handleOpenSearch}
+                      >
+                        <Search size={18} />
+                      </button>
 
-                             {/* Profile Icon */}
-                             <Link
-                                to="/settings"
-                                className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:text-white hover:border-white/20 transition-all"
-                             >
-                                <User size={18} />
-                             </Link>
-                          </div>
-                      </div>
-                  ) : (
-                      <>
-                          <Button
-                            asChild
-                            variant="ghost"
-                            className="text-gray-300 hover:text-white font-bold text-xs sm:text-sm tracking-wide hover:bg-transparent px-2 sm:px-4"
-                          >
-                            <Link to="/login">{t("login")}</Link>
-                          </Button>
-                          <Button
-                            asChild
-                            className="bg-[#00ff88] hover:bg-[#00dd76] text-black font-extrabold rounded-full px-4 sm:px-6 py-2 h-8 sm:h-9 text-[10px] sm:text-sm tracking-wider transition-all hover:scale-105"
-                          >
-                            <Link to="/register">{t("joinNow")}</Link>
-                          </Button>
-                      </>
-                  )}
+                      {/* Profile Icon */}
+                      <Link
+                        to="/settings"
+                        className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:text-white hover:border-white/20 transition-all"
+                      >
+                        <User size={18} />
+                      </Link>
+                    </div>
+                  </div>
+                ) : (
+                  <>
+                    <Button
+                      asChild
+                      variant="ghost"
+                      className="text-gray-300 hover:text-white font-bold text-xs sm:text-sm tracking-wide hover:bg-transparent px-2 sm:px-4"
+                    >
+                      <Link to="/login">{t("login")}</Link>
+                    </Button>
+                    <Button
+                      asChild
+                      className="bg-[#00ff88] hover:bg-[#00dd76] text-black font-extrabold rounded-full px-4 sm:px-6 py-2 h-8 sm:h-9 text-[10px] sm:text-sm tracking-wider transition-all hover:scale-105"
+                    >
+                      <Link to="/register">{t("joinNow")}</Link>
+                    </Button>
+                  </>
+                )}
               </div>
 
               {/* Vertical Divider - Only show when NOT authenticated and on desktop */}
@@ -673,74 +673,72 @@ function AppContent() {
                       <ChevronDown className="w-3 h-3 text-gray-500 group-hover:text-white transition-colors" />
                     </button>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent 
+                  <DropdownMenuContent
                     align="end"
                     data-language-dropdown-content
                     className="w-56 bg-[#1a2230]/98 backdrop-blur-2xl border border-white/10 text-white rounded-[20px] shadow-[0_25px_70px_rgba(0,0,0,0.7),0_0_30px_rgba(0,255,136,0.03)] p-2 animate-in fade-in zoom-in-95 duration-300 z-[101]"
                   >
-                  <div className="flex flex-col gap-1">
-                    {languages.map((lang) => (
-                      <DropdownMenuItem 
-                        key={lang.id}
-                        onClick={() => setCurrentLang(lang)}
-                        className={`group flex items-center gap-3.5 px-4 py-3.5 rounded-[14px] cursor-pointer transition-all duration-300 outline-none ${
-                          currentLang.id === lang.id 
-                          ? 'bg-gradient-to-r from-[#00bc7d]/10 to-transparent text-[#00ff88] shadow-[inset_0_0_20px_rgba(0,255,136,0.02)]' 
-                          : 'text-white/60 hover:text-white hover:bg-white/5'
-                        }`}
-                      >
-                        <div className={`w-8 h-8 flex items-center justify-center shrink-0 overflow-hidden rounded-full border transition-all duration-500 ${
-                          currentLang.id === lang.id ? 'border-[#00ff88]/40 scale-110 shadow-[0_0_15px_rgba(0,255,136,0.2)]' : 'border-white/10 group-hover:border-white/20'
-                        }`}>
-                          <lang.icon className="w-full h-full object-cover object-center" />
-                        </div>
-                        
-                        <span className={`font-bold text-[15px] tracking-tight transition-colors duration-300 ${currentLang.id === lang.id ? 'text-[#00ff88]' : 'group-hover:text-white'}`}>
-                          {lang.label}
-                        </span>
-
-                        {currentLang.id === lang.id && (
-                          <div className="ml-auto relative flex items-center justify-center w-1.5 h-6">
-                            {/* Glowing Background for the line */}
-                            <div className="absolute inset-0 bg-[#00ff88] blur-[6px] opacity-40 animate-pulse"></div>
-                            {/* Main vertical line with rounded ends (pill shape) */}
-                            <div className="relative w-1 h-full bg-[#00ff88] rounded-full shadow-[0_0_15px_rgba(0,255,136,0.8)]"></div>
+                    <div className="flex flex-col gap-1">
+                      {languages.map((lang) => (
+                        <DropdownMenuItem
+                          key={lang.id}
+                          onClick={() => setCurrentLang(lang)}
+                          className={`group flex items-center gap-3.5 px-4 py-3.5 rounded-[14px] cursor-pointer transition-all duration-300 outline-none ${currentLang.id === lang.id
+                            ? 'bg-gradient-to-r from-[#00bc7d]/10 to-transparent text-[#00ff88] shadow-[inset_0_0_20px_rgba(0,255,136,0.02)]'
+                            : 'text-white/60 hover:text-white hover:bg-white/5'
+                            }`}
+                        >
+                          <div className={`w-8 h-8 flex items-center justify-center shrink-0 overflow-hidden rounded-full border transition-all duration-500 ${currentLang.id === lang.id ? 'border-[#00ff88]/40 scale-110 shadow-[0_0_15px_rgba(0,255,136,0.2)]' : 'border-white/10 group-hover:border-white/20'
+                            }`}>
+                            <lang.icon className="w-full h-full object-cover object-center" />
                           </div>
-                        )}
-                      </DropdownMenuItem>
-                    ))}
-                  </div>
-                </DropdownMenuContent>
+
+                          <span className={`font-bold text-[15px] tracking-tight transition-colors duration-300 ${currentLang.id === lang.id ? 'text-[#00ff88]' : 'group-hover:text-white'}`}>
+                            {lang.label}
+                          </span>
+
+                          {currentLang.id === lang.id && (
+                            <div className="ml-auto relative flex items-center justify-center w-1.5 h-6">
+                              {/* Glowing Background for the line */}
+                              <div className="absolute inset-0 bg-[#00ff88] blur-[6px] opacity-40 animate-pulse"></div>
+                              {/* Main vertical line with rounded ends (pill shape) */}
+                              <div className="relative w-1 h-full bg-[#00ff88] rounded-full shadow-[0_0_15px_rgba(0,255,136,0.8)]"></div>
+                            </div>
+                          )}
+                        </DropdownMenuItem>
+                      ))}
+                    </div>
+                  </DropdownMenuContent>
                 </DropdownMenu>
               </div>
 
-              </div>
-
-              {/* Mobile Menu Sheet - Controlled State */}
-              <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
-                <SheetContent side="left" className="w-[320px] bg-[#02040a] border-none p-0 overflow-hidden flex flex-col">
-                    <SheetHeader className="p-6 pb-4 border-none shrink-0 bg-transparent relative text-left items-start flex flex-col">
-                         <div className="flex items-center gap-2">
-                             <div className="relative">
-                                 <img src={logoSrc} alt="RioCity9 Logo" className="h-10 w-auto relative z-10" />
-                             </div>
-                             <SheetTitle className="text-xl font-black tracking-tight text-white flex items-center">
-                                Rio<span className="text-[#00ff88] ml-0.5">City9</span>
-                            </SheetTitle>
-                         </div>
-                         <SheetDescription className="text-xs text-white/40 text-left mt-2">
-                            Your Premium Gaming Destination.
-                         </SheetDescription>
-                    </SheetHeader>
-                    
-                    {/* Updated Menu Component */}
-                    <div className="flex-1 overflow-hidden">
-                        <SidebarMenu onItemClick={() => setIsMenuOpen(false)} />
-                    </div>
-
-                </SheetContent>
-              </Sheet>
             </div>
+
+            {/* Mobile Menu Sheet - Controlled State */}
+            <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
+              <SheetContent side="left" className="w-[320px] bg-[#02040a] border-none p-0 overflow-hidden flex flex-col">
+                <SheetHeader className="p-6 pb-4 border-none shrink-0 bg-transparent relative text-left items-start flex flex-col">
+                  <div className="flex items-center gap-2">
+                    <div className="relative">
+                      <img src={logoSrc} alt="RioCity9 Logo" className="h-10 w-auto relative z-10" />
+                    </div>
+                    <SheetTitle className="text-xl font-black tracking-tight text-white flex items-center">
+                      Rio<span className="text-[#00ff88] ml-0.5">City9</span>
+                    </SheetTitle>
+                  </div>
+                  <SheetDescription className="text-xs text-white/40 text-left mt-2">
+                    Your Premium Gaming Destination.
+                  </SheetDescription>
+                </SheetHeader>
+
+                {/* Updated Menu Component */}
+                <div className="flex-1 overflow-hidden">
+                  <SidebarMenu onItemClick={() => setIsMenuOpen(false)} />
+                </div>
+
+              </SheetContent>
+            </Sheet>
+          </div>
         </header>
 
         {/* Navigation */}
@@ -787,6 +785,7 @@ function AppContent() {
                 <Route path="/history" element={<HistoryRecord />} />
                 <Route path="/deposit" element={<Deposit />} />
                 <Route path="/withdraw" element={<Withdraw />} />
+                <Route path="/information-center" element={<InformationCenter />} />
                 {/* Fallback for other routes using Home temporarily or a placeholder */}
                 <Route path="*" element={<NotFound />} />
               </Routes>
@@ -868,11 +867,10 @@ function AppContent() {
                         role="tab"
                         aria-selected={selectedSearchCategory === item.value}
                         onClick={() => setSelectedSearchCategory(item.value)}
-                        className={`shrink-0 px-6 h-10 rounded-xl text-sm font-bold transition-all border ${
-                          selectedSearchCategory === item.value
-                            ? "border-[#00bc7d] bg-[#00bc7d]/10 text-[#00bc7d] shadow-[0_0_15px_rgba(0,188,125,0.2)]"
-                            : "border-white/5 bg-[#0f151f] text-gray-400 hover:text-white hover:bg-white/5"
-                        }`}
+                        className={`shrink-0 px-6 h-10 rounded-xl text-sm font-bold transition-all border ${selectedSearchCategory === item.value
+                          ? "border-[#00bc7d] bg-[#00bc7d]/10 text-[#00bc7d] shadow-[0_0_15px_rgba(0,188,125,0.2)]"
+                          : "border-white/5 bg-[#0f151f] text-gray-400 hover:text-white hover:bg-white/5"
+                          }`}
                       >
                         {t(item.labelKey as any)}
                       </button>
@@ -976,7 +974,7 @@ function AppContent() {
               className="absolute inset-0 bg-black/10 backdrop-blur-xs transition-opacity duration-300"
               onClick={handleCloseLanguage}
             />
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: -20, scale: 0.95 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -20, scale: 0.95 }}
@@ -1007,18 +1005,16 @@ function AppContent() {
                         setCurrentLang(lang);
                         handleCloseLanguage();
                       }}
-                      className={`w-full flex items-center gap-3.5 px-4 py-3.5 rounded-[14px] cursor-pointer transition-all duration-300 outline-none ${
-                        currentLang.id === lang.id 
-                          ? 'bg-gradient-to-r from-[#00bc7d]/10 to-transparent text-[#00ff88] shadow-[inset_0_0_20px_rgba(0,255,136,0.02)] border border-[#00bc7d]/30' 
-                          : 'text-white/60 hover:text-white hover:bg-white/5 border border-transparent'
-                      }`}
+                      className={`w-full flex items-center gap-3.5 px-4 py-3.5 rounded-[14px] cursor-pointer transition-all duration-300 outline-none ${currentLang.id === lang.id
+                        ? 'bg-gradient-to-r from-[#00bc7d]/10 to-transparent text-[#00ff88] shadow-[inset_0_0_20px_rgba(0,255,136,0.02)] border border-[#00bc7d]/30'
+                        : 'text-white/60 hover:text-white hover:bg-white/5 border border-transparent'
+                        }`}
                     >
-                      <div className={`w-8 h-8 flex items-center justify-center shrink-0 overflow-hidden rounded-full border transition-all duration-500 ${
-                        currentLang.id === lang.id ? 'border-[#00ff88]/40 scale-110 shadow-[0_0_15px_rgba(0,255,136,0.2)]' : 'border-white/10'
-                      }`}>
+                      <div className={`w-8 h-8 flex items-center justify-center shrink-0 overflow-hidden rounded-full border transition-all duration-500 ${currentLang.id === lang.id ? 'border-[#00ff88]/40 scale-110 shadow-[0_0_15px_rgba(0,255,136,0.2)]' : 'border-white/10'
+                        }`}>
                         <lang.icon className="w-full h-full object-cover object-center" />
                       </div>
-                      
+
                       <span className={`font-bold text-[15px] tracking-tight transition-colors duration-300 ${currentLang.id === lang.id ? 'text-[#00ff88]' : ''}`}>
                         {lang.label}
                       </span>
@@ -1036,9 +1032,9 @@ function AppContent() {
             </motion.div>
           </div>
         )}
-        
+
         <MobileBottomNav onMenuClick={() => setIsMenuOpen(true)} />
-        
+
         {/* Footer */}
         <Footer />
 
@@ -1047,7 +1043,7 @@ function AppContent() {
 
         {/* Floating Live Chat Button - on mobile above bottom nav, stays right so gift widget can sit left */}
         <div className="fixed bottom-24 md:bottom-6 right-6 z-50 flex flex-col items-end gap-4">
-          
+
           {/* Sitemap Navigation FAB - Temporarily Hidden */}
           {/* <div className="relative">
              {isNavMenuOpen && (
@@ -1106,89 +1102,89 @@ function AppContent() {
 
           {/* Live Chat FAB */}
           <div className="relative">
-            <Button 
-                onClick={() => setIsLiveChatOpen(!isLiveChatOpen)}
-                className={`h-14 w-14 rounded-full transition-all duration-300 ${isLiveChatOpen ? 'bg-red-500 hover:bg-red-600 rotate-90' : 'bg-[#00bc7d] hover:bg-[#00a870] hover:scale-110 animate-bounce'}`}
+            <Button
+              onClick={() => setIsLiveChatOpen(!isLiveChatOpen)}
+              className={`h-14 w-14 rounded-full transition-all duration-300 ${isLiveChatOpen ? 'bg-red-500 hover:bg-red-600 rotate-90' : 'bg-[#00bc7d] hover:bg-[#00a870] hover:scale-110 animate-bounce'}`}
             >
-                {isLiveChatOpen ? <X className="h-6 w-6" /> : <MessageCircle className="h-7 w-7" />}
+              {isLiveChatOpen ? <X className="h-6 w-6" /> : <MessageCircle className="h-7 w-7" />}
             </Button>
-            
+
             {/* Chat Window (Mockup) */}
             {isLiveChatOpen && (
-                <div className="absolute bottom-20 right-0 w-[350px] h-[500px] bg-[#0f1923] border border-[#00bc7d]/30 rounded-2xl shadow-2xl flex flex-col overflow-hidden animate-in slide-in-from-bottom-10 fade-in duration-300 z-50">
-                    <div className="bg-emerald-600 p-4 flex items-center justify-between">
-                        <div className="flex items-center gap-3">
-                            <div className="relative">
-                                <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
-                                    <CircleHelp className="text-white w-6 h-6" />
-                                </div>
-                                <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-400 rounded-full border-2 border-[#00bc7d]"></div>
-                            </div>
-                            <div>
-                                <div className="font-bold text-white">RioCity9 Support</div>
-                                <div className="text-xs text-white/90">Typically replies in 2m</div>
-                            </div>
-                        </div>
+              <div className="absolute bottom-20 right-0 w-[350px] h-[500px] bg-[#0f1923] border border-[#00bc7d]/30 rounded-2xl shadow-2xl flex flex-col overflow-hidden animate-in slide-in-from-bottom-10 fade-in duration-300 z-50">
+                <div className="bg-emerald-600 p-4 flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="relative">
+                      <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
+                        <CircleHelp className="text-white w-6 h-6" />
+                      </div>
+                      <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-400 rounded-full border-2 border-[#00bc7d]"></div>
                     </div>
-                    <div className="flex-1 bg-[#0a0f19] p-4 flex flex-col gap-4 overflow-y-auto">
-                        <div className="bg-[#1a2536] p-3 rounded-xl rounded-tl-none self-start max-w-[80%] text-sm text-gray-300">
-                            Hello! Welcome to RioCity9. How can we help you today?
-                        </div>
-                        <div className="text-center text-xs text-gray-600 my-2">Today 10:23 AM</div>
-                        
-                        {/* User message if sent */}
-                        {chatMessage && (
-                            <div className="bg-emerald-600 p-3 rounded-xl rounded-tr-none self-end max-w-[80%] text-sm text-white">
-                                {chatMessage}
-                            </div>
-                        )}
+                    <div>
+                      <div className="font-bold text-white">RioCity9 Support</div>
+                      <div className="text-xs text-white/90">Typically replies in 2m</div>
                     </div>
-                    
-                    {/* Suggested Messages Section */}
-                    {showSuggestedMessages && (
-                        <div className="px-3 py-2 border-t border-white/10 bg-[#0f1923]">
-                            <div className="text-xs font-bold text-[#d4a520] mb-2">Suggested Messages</div>
-                            <div className="flex flex-wrap gap-2">
-                                {suggestedMessages.map((msg, idx) => (
-                                    <button
-                                        key={idx}
-                                        onClick={() => {
-                                            setChatMessage(sanitizeTextInput(msg).slice(0, 500));
-                                            setShowSuggestedMessages(false);
-                                        }}
-                                        className="px-3 py-1.5 bg-white text-[#0f1923] text-xs font-medium rounded-full hover:bg-gray-100 transition-colors border border-gray-200"
-                                    >
-                                        {msg}
-                                    </button>
-                                ))}
-                            </div>
-                        </div>
-                    )}
-                    
-                    <div className="p-3 border-t border-white/10 bg-[#0f1923] flex items-center gap-2">
-                        <button className="text-gray-500 hover:text-white transition-colors">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
-                        </button>
-                        <input 
-                            type="text" 
-                            placeholder="Type a message..." 
-                            value={chatMessage}
-                            onChange={(e) => setChatMessage(sanitizeTextInput(e.target.value).slice(0, 500))}
-                            maxLength={500}
-                            onFocus={() => setShowSuggestedMessages(true)}
-                            className="flex-1 bg-[#1a2536] border border-white/10 rounded-full px-4 py-2 text-sm text-white focus:outline-none focus:border-[#00bc7d]/50"
-                        />
-                        <button className="text-gray-500 hover:text-white transition-colors">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/></svg>
-                        </button>
-                    </div>
+                  </div>
                 </div>
+                <div className="flex-1 bg-[#0a0f19] p-4 flex flex-col gap-4 overflow-y-auto">
+                  <div className="bg-[#1a2536] p-3 rounded-xl rounded-tl-none self-start max-w-[80%] text-sm text-gray-300">
+                    Hello! Welcome to RioCity9. How can we help you today?
+                  </div>
+                  <div className="text-center text-xs text-gray-600 my-2">Today 10:23 AM</div>
+
+                  {/* User message if sent */}
+                  {chatMessage && (
+                    <div className="bg-emerald-600 p-3 rounded-xl rounded-tr-none self-end max-w-[80%] text-sm text-white">
+                      {chatMessage}
+                    </div>
+                  )}
+                </div>
+
+                {/* Suggested Messages Section */}
+                {showSuggestedMessages && (
+                  <div className="px-3 py-2 border-t border-white/10 bg-[#0f1923]">
+                    <div className="text-xs font-bold text-[#d4a520] mb-2">Suggested Messages</div>
+                    <div className="flex flex-wrap gap-2">
+                      {suggestedMessages.map((msg, idx) => (
+                        <button
+                          key={idx}
+                          onClick={() => {
+                            setChatMessage(sanitizeTextInput(msg).slice(0, 500));
+                            setShowSuggestedMessages(false);
+                          }}
+                          className="px-3 py-1.5 bg-white text-[#0f1923] text-xs font-medium rounded-full hover:bg-gray-100 transition-colors border border-gray-200"
+                        >
+                          {msg}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                <div className="p-3 border-t border-white/10 bg-[#0f1923] flex items-center gap-2">
+                  <button className="text-gray-500 hover:text-white transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48" /></svg>
+                  </button>
+                  <input
+                    type="text"
+                    placeholder="Type a message..."
+                    value={chatMessage}
+                    onChange={(e) => setChatMessage(sanitizeTextInput(e.target.value).slice(0, 500))}
+                    maxLength={500}
+                    onFocus={() => setShowSuggestedMessages(true)}
+                    className="flex-1 bg-[#1a2536] border border-white/10 rounded-full px-4 py-2 text-sm text-white focus:outline-none focus:border-[#00bc7d]/50"
+                  />
+                  <button className="text-gray-500 hover:text-white transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z" /><path d="M19 10v2a7 7 0 0 1-14 0v-2" /><line x1="12" x2="12" y1="19" y2="22" /></svg>
+                  </button>
+                </div>
+              </div>
             )}
           </div>
         </div>
 
       </div>
-      </>
+    </>
   );
 }
 

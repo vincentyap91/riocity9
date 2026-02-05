@@ -1,41 +1,40 @@
-import React from "react";
-import { ArrowLeft } from "lucide-react";
-import { Link, useLocation } from "react-router-dom";
+import img404 from "@/assets/img_404.png";
+import { Link } from "react-router-dom";
 import { InnerPageLayout } from "../components/shared/InnerPageLayout";
 
 export function NotFound() {
-  const location = useLocation();
   return (
     <InnerPageLayout className="overflow-hidden">
-      <div className="container mx-auto px-4 py-10 max-w-[1024px]">
-        {/* Header with back button - gap below for inner pages */}
-        <div className="flex items-center gap-3 mb-8">
-          <Link
-            to="/"
-            className="h-10 w-10 rounded-full bg-black/20 border border-white/10 flex items-center justify-center hover:bg-white/10 transition-colors"
-            aria-label="Back to Home"
-          >
-            <ArrowLeft className="w-5 h-5 text-white" />
-          </Link>
-          <span className="text-white font-bold text-base">Home</span>
-        </div>
+      {/* Background Glow from Promotions Page */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[600px] bg-[radial-gradient(ellipse_at_top,_rgba(0,188,125,0.1)_0%,_rgba(0,188,125,0.05)_40%,_transparent_70%)] pointer-events-none" />
 
-        <div className="bg-[#1a2230] rounded-[16px] shadow-xl border border-white/5 p-8 md:p-10">
-          <div className="text-center space-y-3">
-            <h1 className="text-white font-black text-2xl md:text-3xl tracking-tight">
+      <div className="container mx-auto px-4 min-h-[70vh] flex flex-col items-center justify-center relative z-10">
+        <div className="max-w-2xl w-full flex flex-col items-center text-center space-y-6">
+          {/* 404 Image */}
+          <div className="w-full max-w-[500px]">
+            <img
+              src={img404}
+              alt="404 Page Not Found"
+              className="w-full h-auto object-contain drop-shadow-2xl"
+            />
+          </div>
+
+          <div className="space-y-4">
+            <h1 className="text-white font-black text-3xl md:text-4xl tracking-tight">
               Page Not Found
             </h1>
-            <p className="text-gray-400 text-sm md:text-base">
-              找不到页面：<span className="font-mono text-gray-300">{location.pathname}</span>
+            <p className="text-gray-400 text-sm md:text-base font-medium">
+              Sorry, the page you are looking for does not exist.
             </p>
-            <div className="pt-4">
-              <Link
-                to="/"
-                className="inline-flex h-12 px-8 items-center justify-center bg-[#00bc7d] hover:bg-[#00a870] text-black font-bold rounded-xl transition-colors"
-              >
-                Go Home
-              </Link>
-            </div>
+          </div>
+
+          <div className="pt-4">
+            <Link
+              to="/"
+              className="inline-flex h-[42px] px-8 items-center justify-center bg-[#00bc7d] hover:bg-[#00a870] hover:shadow-[0_0_20px_rgba(0,188,125,0.4)] text-black font-black text-sm rounded-[10px] transition-all transform hover:-translate-y-0.5 active:translate-y-0"
+            >
+              Back To Home
+            </Link>
           </div>
         </div>
       </div>

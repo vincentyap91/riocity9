@@ -11,7 +11,7 @@ const ACTIVITY_EVENTS = [
 ] as const;
 
 /** Default: show inactivity modal after 25 min; on Close we logout */
-const DEFAULT_WARNING_AFTER_MS = 25 * 60 * 1000;
+const DEFAULT_WARNING_AFTER_MS = 25 * 60 * 60 * 1000;
 
 export const SESSION_MESSAGES = {
   ANOTHER_DEVICE:
