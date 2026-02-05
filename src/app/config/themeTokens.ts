@@ -154,14 +154,12 @@ export const MOBILE = {
 
 /** Homepage: section spacing and container (consistent with Settings/Promotions) */
 export const HOME_PAGE = {
-  /** Horizontal padding for homepage sections */
-  containerPx: "px-4",
   /** Vertical + horizontal padding for top block (Hero area) */
   topBlockPadding: "px-4 pt-6 md:pt-8 pb-6 md:pb-8",
   /** Gap between homepage sections (e.g. Hero, Jackpot, Game sections); desktop: gap-12 */
   sectionGap: "gap-6 md:gap-12",
   /** Max width container (match Promotions/Referral) */
-  maxWidth: "max-w-[1200px] 2xl:max-w-[1536px]",
+  maxWidth: "max-w-[1200px] 2xl:max-w-[1480px]",
   /** Card style: bg, border, radius (match wallet/settings cards) */
   card: "bg-[#1a2230] border border-white/5 rounded-2xl overflow-hidden",
   /** Bottom padding for mobile nav clearance */

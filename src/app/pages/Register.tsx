@@ -204,14 +204,9 @@ export function Register() {
         {/* Right Side - Register Form */}
         <div className="w-full md:w-[55%] bg-[#1a2230] p-6 md:p-10 flex flex-col justify-center">
           
-          <motion.div 
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="mb-6 text-center md:text-left"
-          >
+          <div className="mb-6 text-center md:text-left">
               <h3 className="text-xl font-bold text-white">Sign up to RioCity9</h3>
-          </motion.div>
+          </div>
 
           <form 
             className="space-y-[10px]" 
@@ -261,22 +256,14 @@ export function Register() {
             
             {/* General Error Message */}
             {errors.general && (
-              <motion.div
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="bg-red-500/10 border border-red-500/30 rounded-xl p-3 flex items-center gap-2"
-              >
+              <div className="bg-red-500/10 border border-red-500/30 rounded-xl p-3 flex items-center gap-2">
                 <AlertCircle className="w-4 h-4 text-red-500 shrink-0" />
                 <span className="text-red-400 text-sm">{errors.general}</span>
-              </motion.div>
+              </div>
             )}
             
             {/* Username Field */}
-            <motion.div 
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3, delay: 0.3 }}
-            >
+            <div>
               <div className="space-y-1.5">
                 <Label htmlFor="username" className="text-sm font-medium text-gray-300">Username</Label>
                 <Input 
@@ -303,14 +290,10 @@ export function Register() {
                   </p>
                 )}
               </div>
-            </motion.div>
+            </div>
             
             {/* Mobile Number Field */}
-            <motion.div 
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3, delay: 0.4 }}
-            >
+            <div>
               <div className="space-y-1.5">
                 <Label htmlFor="mobile" className="text-sm font-medium text-gray-300">Mobile Number</Label>
                 <div className="flex gap-2">
@@ -348,14 +331,10 @@ export function Register() {
                   </p>
                 )}
               </div>
-            </motion.div>
+            </div>
             
             {/* Password Field */}
-            <motion.div 
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3, delay: 0.5 }}
-            >
+            <div>
               <div className="space-y-1.5">
                 <Label htmlFor="password" className="text-sm font-medium text-gray-300">Password</Label>
                 <div className="relative">
@@ -395,14 +374,10 @@ export function Register() {
                   </p>
                 )}
               </div>
-            </motion.div>
+            </div>
 
             {/* Captcha Field */}
-            <motion.div 
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3, delay: 0.6 }}
-            >
+            <div>
               <div className="space-y-1.5">
                 <Label htmlFor="captcha" className="text-sm font-medium text-gray-300">Captcha</Label>
                 <div className="grid grid-cols-[1fr_auto] gap-2">
@@ -447,15 +422,10 @@ export function Register() {
                   </p>
                 )}
               </div>
-            </motion.div>
+            </div>
 
             {/* Terms & Conditions Checkboxes */}
-            <motion.div 
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.3, delay: 0.8 }}
-                className="space-y-2 pt-1"
-            >
+            <div className="space-y-2 pt-1">
                 <label className={`flex items-start gap-2 cursor-pointer group ${errors.terms ? 'text-red-400' : ''}`}>
                     <input 
                       type="checkbox" 
@@ -490,15 +460,10 @@ export function Register() {
                         I want to receive free bonuses every week. 🔥💰
                     </span>
                 </label>
-            </motion.div>
+            </div>
 
             {/* Submit Button */}
-            <motion.div 
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3, delay: 0.7 }}
-                className="pt-2"
-            >
+            <div className="pt-2">
                 <Button 
                     data-testid="register-submit"
                     type="submit"
@@ -514,16 +479,11 @@ export function Register() {
                         'Sign Up'
                     )}
                 </Button>
-            </motion.div>
+            </div>
 
-            <motion.div 
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.3, delay: 0.8 }}
-                className="text-center text-xs text-gray-500 mt-4"
-            >
+            <div className="text-center text-xs text-gray-500 mt-4">
                 Already have an account? <Link to="/login" className="text-emerald-400 hover:text-emerald-300 font-bold hover:underline">Log In</Link>
-            </motion.div>
+            </div>
 
           </form>
         </div>

@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { InsidePageHero } from '../components/shared/InsidePageHero';
+import { Trophy } from 'lucide-react';
+import { GameCarousel } from '../components/home/GameCarousel';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '../components/ui/breadcrumb';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useAuth } from '../contexts/AuthContext';
@@ -13,6 +15,7 @@ import imgImageMoneyBooster from "@/assets/ce19eb21819d0b440f45198fa31d716e1e636
 import imgImageLeBandit from "@/assets/4edf617eacdcd51770b6d345d3b9d62c067fb39e.png";
 import imgImageSweetBonanza from "@/assets/b6552c9dab008f009bad47f48fa007ccef169c4a.png";
 import imgImageGates1000 from "@/assets/e7fb1cf0de54bfef4c5b040e789790c437112a46.png";
+import { PAGE_ACCENT } from '../config/themeTokens';
 
 const gameDetailConfig = [
   {
@@ -75,6 +78,13 @@ export function GameDetailPage() {
     { title: 'Treasure Mine', image: imgImageSweetBonanza },
     { title: "Thor's Vengeance", image: imgImageGates1000 },
   ];
+  const sportsAccent = PAGE_ACCENT.sports;
+  const recommendedItems = recommendedGames.map((rec, index) => ({
+    id: `${rec.title}-${index}`,
+    title: rec.title,
+    provider: game.provider,
+    image: rec.image,
+  }));
 
   return (
     <div className="flex flex-col flex-1 bg-[#02040a] min-h-screen overflow-x-hidden">
@@ -169,21 +179,29 @@ export function GameDetailPage() {
             </div>
           </div>
 
-          <div className="w-full rounded-xl bg-[#1a1f2a] border border-white/5 overflow-hidden">
+          <div className="w-full rounded-2xl bg-[#1a2230] border border-white/5 overflow-hidden">
             <div className="px-4 py-3 border-b border-white/10">
               <div className="text-white text-sm font-semibold">{game.title} by {game.provider}</div>
-              <div className="mt-3 flex items-center gap-2">
+              <div className="mt-3 flex flex-wrap gap-3">
                 <button
                   type="button"
                   onClick={() => setActiveTab('ranking')}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold ${activeTab === 'ranking' ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30' : 'bg-white/5 text-white/60 border border-white/10'}`}
+                  className={`px-6 h-10 rounded-xl text-sm font-bold transition-all border ${
+                    activeTab === 'ranking'
+                      ? 'border-[#00bc7d] bg-[#00bc7d]/10 text-[#00bc7d]'
+                      : 'border-white/5 bg-[#0f151f] text-gray-400 hover:text-white hover:bg-white/5'
+                  }`}
                 >
                   Ranking
                 </button>
                 <button
                   type="button"
                   onClick={() => setActiveTab('description')}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold ${activeTab === 'description' ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30' : 'bg-white/5 text-white/60 border border-white/10'}`}
+                  className={`px-6 h-10 rounded-xl text-sm font-bold transition-all border ${
+                    activeTab === 'description'
+                      ? 'border-[#00bc7d] bg-[#00bc7d]/10 text-[#00bc7d]'
+                      : 'border-white/5 bg-[#0f151f] text-gray-400 hover:text-white hover:bg-white/5'
+                  }`}
                 >
                   Game Description
                 </button>
@@ -191,73 +209,110 @@ export function GameDetailPage() {
             </div>
             <div className="p-4">
               {activeTab === 'ranking' ? (
-                <div className="w-full overflow-x-auto">
-                  <div className="min-w-[720px] rounded-lg border border-white/5 overflow-hidden">
-                    <div className="grid grid-cols-[120px_1.2fr_1fr_1fr_1fr_1fr] bg-[#222833] text-[11px] font-semibold text-white/70">
-                      <div className="px-4 py-2">Rank</div>
-                      <div className="px-4 py-2">Username</div>
-                      <div className="px-4 py-2">Date</div>
-                      <div className="px-4 py-2">Bet Amount</div>
-                      <div className="px-4 py-2">Payout</div>
-                      <div className="px-4 py-2 text-right">Win Amount</div>
-                    </div>
-                    {rankingRows.map((row) => (
-                      <div key={row.rank} className="grid grid-cols-[120px_1.2fr_1fr_1fr_1fr_1fr] bg-emerald-500/15 text-[11px] text-white/80 border-t border-white/5">
-                        <div className="px-4 py-2 font-semibold">#{row.rank}</div>
-                        <div className="px-4 py-2">{row.username}</div>
-                        <div className="px-4 py-2">{row.date}</div>
-                        <div className="px-4 py-2">{row.bet}</div>
-                        <div className="px-4 py-2">{row.payout}</div>
-                        <div className="px-4 py-2 text-right text-emerald-300 font-semibold">{row.win}</div>
-                      </div>
-                    ))}
+                <div className="flex-1 flex flex-col bg-[#0f151f] rounded-2xl border border-white/5 overflow-hidden shadow-inner">
+                  <div className="overflow-x-auto custom-scrollbar">
+                    <table className="w-full text-left border-collapse min-w-[600px]">
+                      <thead>
+                        <tr className="bg-[#1a2230]/80 border-b border-white/5">
+                          <th className="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest">Rank</th>
+                          <th className="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest">Username</th>
+                          <th className="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest">Date</th>
+                          <th className="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest text-center">Bet Amount</th>
+                          <th className="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest text-center">Payout</th>
+                          <th className="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest text-center">Win Amount</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-white/5">
+                        {rankingRows.map((row) => (
+                          <tr key={row.rank} className="hover:bg-white/5 transition-all group">
+                            <td className="px-6 py-5">
+                              <span className="text-sm font-bold text-white group-hover:text-emerald-400 transition-colors">#{row.rank}</span>
+                            </td>
+                            <td className="px-6 py-5">
+                              <span className="text-sm text-gray-300 font-medium">{row.username}</span>
+                            </td>
+                            <td className="px-6 py-5">
+                              <span className="text-sm text-white font-medium">{row.date}</span>
+                            </td>
+                            <td className="px-6 py-5 text-center">
+                              <span className="text-sm text-white font-medium">{row.bet}</span>
+                            </td>
+                            <td className="px-6 py-5 text-center">
+                              <span className="text-sm text-white font-medium">{row.payout}</span>
+                            </td>
+                            <td className="px-6 py-5 text-center">
+                              <span className="text-sm font-bold text-emerald-400">{row.win}</span>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
                   </div>
                 </div>
               ) : (
-                <div className="text-sm text-white/70 leading-relaxed">
+                <div className="flex-1 flex flex-col bg-[#0f151f] rounded-2xl border border-white/5 overflow-hidden shadow-inner">
+                  <div className="p-6 text-sm text-gray-400 leading-relaxed">
                   {game.description}
+                  </div>
                 </div>
               )}
             </div>
           </div>
 
-          <div className="w-full flex flex-col gap-3">
-            <div className="flex items-center justify-between">
-              <h3 className="text-white font-semibold text-sm">Recommended Games</h3>
-              <button className="text-xs font-semibold text-white/70 bg-white/5 border border-white/10 px-3 py-1.5 rounded-lg">More Games</button>
-            </div>
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-              {recommendedGames.map((rec) => (
-                <div key={rec.title} className="flex flex-col items-center gap-2">
-                  <div className="w-full aspect-square rounded-xl overflow-hidden ring-1 ring-white/10 bg-[#121a24]">
-                    <img src={rec.image} alt={rec.title} className="w-full h-full object-cover" />
-                  </div>
-                  <div className="text-[11px] text-white/70 text-center">{rec.title}</div>
+          <section>
+            <GameCarousel
+              title={
+                <span>
+                  Recommended <span className={sportsAccent.sectionHeaderAccentClass}>Games</span>
+                </span>
+              }
+              icon={
+                <div className={sportsAccent.sectionHeaderIconBoxClass}>
+                  <Trophy className={sportsAccent.sectionHeaderIconClass} />
                 </div>
-              ))}
-            </div>
-          </div>
+              }
+              slidesToShow={5}
+              aspectRatio="aspect-square"
+              items={recommendedItems}
+            />
+          </section>
 
-          <div className="w-full rounded-xl bg-[#1a1f2a] border border-white/5 overflow-hidden">
+          <div className="w-full rounded-2xl bg-[#1a2230] border border-white/5 overflow-hidden">
             <div className="px-4 py-3 border-b border-white/10 text-white text-sm font-semibold">Latest Bets</div>
-            <div className="max-h-[320px] overflow-y-auto">
-              <div className="grid grid-cols-[120px_1.2fr_1.5fr_1fr] bg-[#222833] text-[11px] font-semibold text-white/70">
-                <div className="px-4 py-2">Bet ID</div>
-                <div className="px-4 py-2">Username</div>
-                <div className="px-4 py-2">Date/Time</div>
-                <div className="px-4 py-2 text-right">Bet Amount</div>
+            <div className="flex-1 flex flex-col bg-[#0f151f] border border-white/5 overflow-hidden shadow-inner">
+              <div className="overflow-x-auto custom-scrollbar max-h-[320px]">
+                <table className="w-full text-left border-collapse min-w-[600px]">
+                  <thead>
+                    <tr className="bg-[#1a2230]/80 border-b border-white/5">
+                      <th className="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest">Bet ID</th>
+                      <th className="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest">Username</th>
+                      <th className="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest">Date/Time</th>
+                      <th className="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest text-right">Bet Amount</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-white/5">
+                    {latestBets.map((bet) => (
+                      <tr key={bet.id} className="hover:bg-white/5 transition-all group">
+                        <td className="px-6 py-5">
+                          <span className="text-sm text-white font-medium">{bet.id}</span>
+                        </td>
+                        <td className="px-6 py-5">
+                          <span className="text-sm text-white font-medium">{bet.username}</span>
+                        </td>
+                        <td className="px-6 py-5">
+                          <span className="text-sm text-gray-400 font-medium">{bet.date}</span>
+                        </td>
+                        <td className="px-6 py-5 text-right">
+                          <span className="text-sm font-bold text-emerald-400">{bet.amount}</span>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
               </div>
-              {latestBets.map((bet) => (
-                <div key={bet.id} className="grid grid-cols-[120px_1.2fr_1.5fr_1fr] bg-emerald-500/15 text-[11px] text-white/80 border-t border-white/5">
-                  <div className="px-4 py-2">{bet.id}</div>
-                  <div className="px-4 py-2">{bet.username}</div>
-                  <div className="px-4 py-2">{bet.date}</div>
-                  <div className="px-4 py-2 text-right text-emerald-300 font-semibold">{bet.amount}</div>
-                </div>
-              ))}
-            </div>
-            <div className="px-4 py-3 border-t border-white/10 flex justify-center">
-              <button className="text-xs font-semibold text-white/70 bg-white/5 border border-white/10 px-3 py-1.5 rounded-lg">Show More</button>
+              <div className="p-4 border-t border-white/5 flex justify-center">
+                <button className="px-3 py-1 rounded-lg bg-white/5 text-gray-500 text-xs font-bold">Show More</button>
+              </div>
             </div>
           </div>
         </div>

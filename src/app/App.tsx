@@ -51,7 +51,7 @@ import { SessionProvider } from './contexts/SessionContext';
 import { LanguageProvider, useLanguage } from './contexts/LanguageContext';
 import { ActivePromoProvider, useActivePromo } from './contexts/ActivePromoContext';
 import { sanitizeTextInput } from './utils/security';
-import { MOBILE, PRIMARY_CTA_CLASS } from './config/themeTokens';
+import { HOME_PAGE, MOBILE, PRIMARY_CTA_CLASS } from './config/themeTokens';
 
 const categories = [
   { id: 'lobby', labelKey: 'home', icon: HomeIcon, path: '/' },
@@ -377,7 +377,7 @@ function AppContent() {
                 : 'bg-[#02040a]/60 backdrop-blur-md border-white/5'
             }`}
         >
-          <div className="container mx-auto max-w-[1200px] 2xl:max-w-[1536px] px-4 h-20 flex items-center justify-between">
+          <div className={`container mx-auto ${HOME_PAGE.maxWidth} px-4 h-20 flex items-center justify-between`}>
             <div className="flex items-center gap-2 xl:gap-3">
               {/* Desktop Menu Trigger */}
               <button 

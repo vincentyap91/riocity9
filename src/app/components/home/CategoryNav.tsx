@@ -62,7 +62,7 @@ export function CategoryNav() {
             : 'bg-[#02040a]/60 backdrop-blur-md border-white/5'
         }`}
     >
-      <div className="container mx-auto max-w-[1200px] 2xl:max-w-[1536px] px-4">
+      <div className="container mx-auto max-w-[1200px] 2xl:max-w-[1480px] px-4">
         <div className="flex items-center justify-between h-16 gap-4">
             
             {/* Scrollable Categories */}

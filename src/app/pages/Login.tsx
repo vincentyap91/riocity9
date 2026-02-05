@@ -148,14 +148,9 @@ export function Login() {
         {/* Right Side - Login Form */}
         <div className="w-full md:w-[50%] bg-[#1a2230] p-8 md:p-12 flex flex-col justify-center">
           
-          <motion.div 
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="mb-8 text-center md:text-left"
-          >
+          <div className="mb-8 text-center md:text-left">
               <h3 className="text-2xl font-black text-white">Log in</h3>
-          </motion.div>
+          </div>
 
           <form 
             className="space-y-[10px]" 
@@ -183,23 +178,14 @@ export function Login() {
             
             {/* General Error Message */}
             {errors.general && (
-              <motion.div
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="bg-red-500/10 border border-red-500/30 rounded-xl p-3 flex items-center gap-2"
-              >
+              <div className="bg-red-500/10 border border-red-500/30 rounded-xl p-3 flex items-center gap-2">
                 <AlertCircle className="w-4 h-4 text-red-500 shrink-0" />
                 <span className="text-red-400 text-sm">{errors.general}</span>
-              </motion.div>
+              </div>
             )}
             
             {/* Username */}
-            <motion.div 
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3, delay: 0.3 }}
-                className="space-y-1.5"
-            >
+            <div className="space-y-1.5">
               <Label htmlFor="username" className="text-sm font-medium text-gray-300">Username</Label>
               <Input 
                 id="username" 
@@ -221,15 +207,10 @@ export function Login() {
                   {errors.username}
                 </p>
               )}
-            </motion.div>
+            </div>
 
             {/* Password */}
-            <motion.div 
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3, delay: 0.4 }}
-                className="space-y-1.5"
-            >
+            <div className="space-y-1.5">
               <Label htmlFor="password" className="text-sm font-medium text-gray-300">Password</Label>
               <div className="relative">
                 <Input 
@@ -261,15 +242,10 @@ export function Login() {
                   {errors.password}
                 </p>
               )}
-            </motion.div>
+            </div>
 
             {/* Remember Me */}
-            <motion.div 
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.3, delay: 0.5 }}
-                className="flex items-center space-x-2"
-            >
+            <div className="flex items-center space-x-2">
                 <label className="flex items-start gap-2 cursor-pointer group">
                     <input 
                       type="checkbox" 
@@ -282,15 +258,10 @@ export function Login() {
                         Remember Me
                     </span>
                 </label>
-            </motion.div>
+            </div>
 
             {/* Buttons Row */}
-            <motion.div 
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3, delay: 0.6 }}
-                className="grid grid-cols-2 gap-4 pt-2"
-            >
+            <div className="grid grid-cols-2 gap-4 pt-2">
                 <Button 
                     type="submit"
                     disabled={isLoading}
@@ -314,20 +285,15 @@ export function Login() {
                 >
                     Forgot Password
                 </Button>
-            </motion.div>
+            </div>
 
             {/* Footer Link */}
-            <motion.div 
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.3, delay: 0.7 }}
-                className="text-center pt-4"
-            >
+            <div className="text-center pt-4">
                 <span className="text-white text-sm md:text-sm mr-2">Do not have an account yet?</span>
                 <Link to="/register" className="text-[#FDC700] hover:text-yellow-300 font-bold text-sm md:text-sm underline decoration-solid decoration-2 underline-offset-4 transition-colors">
                     Register Now!
                 </Link>
-            </motion.div>
+            </div>
 
 
           </form>

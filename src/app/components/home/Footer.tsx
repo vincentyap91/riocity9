@@ -4,12 +4,13 @@ import { Button } from '../ui/button';
 import { FooterLogos } from './FooterLogos';
 import footerImg from '@/assets/ab51aaf74198704deed553b4c904f3b833b221cb.png';
 import { useLanguage } from '../../contexts/LanguageContext';
+import { HOME_PAGE } from '../../config/themeTokens';
 
 export function Footer() {
   const { t } = useLanguage();
   return (
     <footer className="bg-[#02040a] border-t border-white/10 pt-8 pb-24 md:pb-8 text-sm">
-      <div className="container mx-auto max-w-[1200px] 2xl:max-w-[1536px] px-4">
+      <div className={`container mx-auto ${HOME_PAGE.maxWidth} px-4`}>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8 mb-16">
           
           {/* Column 1: Terms */}

@@ -86,7 +86,7 @@ export function Membership() {
     <InnerPageLayout className="overflow-hidden">
       <div className="flex flex-col min-h-screen text-white relative overflow-hidden pb-20 md:pb-0">
         {/* Main Content */}
-        <div className="container mx-auto max-w-[1200px] 2xl:max-w-[1536px] px-4 py-6 md:py-12">
+        <div className="container mx-auto max-w-[1200px] 2xl:max-w-[1480px] px-4 py-6 md:py-12">
         
         {/* Title Section */}
         <div className="mb-8">

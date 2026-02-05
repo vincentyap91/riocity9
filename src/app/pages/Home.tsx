@@ -84,7 +84,7 @@ export function Home() {
 
       {/* Dark Section: Game sections – design system gap-6/gap-8, single container */}
       <div className={`bg-[#02040a] flex-1 w-full pt-6 md:pt-8 flex flex-col ${HOME_PAGE.sectionGap} ${HOME_PAGE.bottomPadding}`}>
-        <div className={`container mx-auto ${HOME_PAGE.maxWidth} ${HOME_PAGE.containerPx} flex flex-col ${HOME_PAGE.sectionGap}`}>
+        <div className={`container mx-auto ${HOME_PAGE.maxWidth} px-4 flex flex-col ${HOME_PAGE.sectionGap}`}>
           <section>
             <GameCategoryWithRTP />
           </section>

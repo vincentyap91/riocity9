@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { 
-  ArrowLeft, UsersRound, Calendar, Search, 
+import {
+  ArrowLeft, Users, Calendar, Search,
   ChevronUp, ChevronDown, X, UserCheck, UserX, BarChart3
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
@@ -11,9 +11,10 @@ import { InnerPageLayout } from "../components/shared/InnerPageLayout";
 import { PageSidebar, type PageSidebarItem } from '../components/shared/PageSidebar';
 import { MOBILE } from '../config/themeTokens';
 import { sanitizeTextInput } from '../utils/security';
+import { UsersThree } from '../components/icons/UsersThree';
 
 const DOWNLINE_SIDEBAR_ITEMS: PageSidebarItem[] = [
-  { id: 'summary', label: 'Downline Summary', icon: UsersRound },
+  { id: 'summary', label: 'Downline Summary', icon: UsersThree },
   { id: 'kpis', label: 'Downlines KPIs', icon: BarChart3 },
 ];
 
@@ -77,7 +78,7 @@ export function Downlines() {
   return (
     <InnerPageLayout className="overflow-hidden">
       <div className={`container mx-auto max-w-[1024px] ${MOBILE.settingsPageContainer}`}>
-        
+
         {/* Navigation Header – same gap below as on all inner pages */}
         <div className={`relative flex items-center justify-between ${MOBILE.headerMb}`}>
           <div className={`flex items-center ${MOBILE.gapSm}`}>
@@ -111,7 +112,7 @@ export function Downlines() {
               <div className={`flex items-center ${MOBILE.gapSm}`}>
                 <div className="h-10 w-10 rounded-xl bg-black/25 border border-white/10 flex items-center justify-center">
                   {(() => {
-                    const TitleIcon = DOWNLINE_SIDEBAR_ITEMS.find((i) => i.id === activeTab)?.icon ?? UsersRound;
+                    const TitleIcon = DOWNLINE_SIDEBAR_ITEMS.find((i) => i.id === activeTab)?.icon ?? UsersThree;
                     return <TitleIcon className="w-5 h-5 text-white" />;
                   })()}
                 </div>
@@ -158,11 +159,10 @@ export function Downlines() {
                       <button
                         key={filter.id}
                         onClick={() => setActiveDateFilter(filter.id)}
-                      className={`px-6 h-10 rounded-xl text-sm font-bold transition-all border ${
-                          isActive
-                            ? 'border-[#00bc7d] bg-[#00bc7d]/10 text-[#00bc7d]'
-                            : 'border-white/5 bg-[#0f151f] text-gray-400 hover:text-white hover:bg-white/5'
-                        }`}
+                        className={`px-6 h-10 rounded-xl text-sm font-bold transition-all border ${isActive
+                          ? 'border-[#00bc7d] bg-[#00bc7d]/10 text-[#00bc7d]'
+                          : 'border-white/5 bg-[#0f151f] text-gray-400 hover:text-white hover:bg-white/5'
+                          }`}
                       >
                         {filter.label}
                       </button>
@@ -218,17 +218,16 @@ export function Downlines() {
                 {/* Downline L1 KPIs Section */}
                 <div className="mb-6">
                   <h3 className="text-white font-bold text-base mb-4">Downline L1 KPIs</h3>
-                  
+
                   {/* Status Tabs */}
                   <div className="flex justify-start mb-4 px-1">
                     <div className="flex flex-nowrap bg-[#0f151f] p-1 rounded-lg md:rounded-xl border border-white/5 w-full max-w-[400px]">
                       <button
                         onClick={() => setActiveStatusTab('active')}
-                        className={`flex-1 min-w-0 px-3 py-2 md:px-6 md:py-3 rounded-md md:rounded-lg text-xs md:text-sm font-bold transition-all whitespace-nowrap ${
-                          activeStatusTab === 'active'
-                            ? 'bg-[#00bc7d] hover:bg-[#00a870] text-black'
-                            : 'text-gray-400 hover:text-white'
-                        }`}
+                        className={`flex-1 min-w-0 px-3 py-2 md:px-6 md:py-3 rounded-md md:rounded-lg text-xs md:text-sm font-bold transition-all whitespace-nowrap ${activeStatusTab === 'active'
+                          ? 'bg-[#00bc7d] hover:bg-[#00a870] text-black'
+                          : 'text-gray-400 hover:text-white'
+                          }`}
                       >
                         <span className="flex items-center justify-center gap-1.5 md:gap-2">
                           <UserCheck className="w-3.5 h-3.5 md:w-4 md:h-4 shrink-0" />
@@ -237,11 +236,10 @@ export function Downlines() {
                       </button>
                       <button
                         onClick={() => setActiveStatusTab('inactive')}
-                        className={`flex-1 min-w-0 px-3 py-2 md:px-6 md:py-3 rounded-md md:rounded-lg text-xs md:text-sm font-bold transition-all whitespace-nowrap ${
-                          activeStatusTab === 'inactive'
-                            ? 'bg-[#00bc7d] hover:bg-[#00a870] text-black'
-                            : 'text-gray-400 hover:text-white'
-                        }`}
+                        className={`flex-1 min-w-0 px-3 py-2 md:px-6 md:py-3 rounded-md md:rounded-lg text-xs md:text-sm font-bold transition-all whitespace-nowrap ${activeStatusTab === 'inactive'
+                          ? 'bg-[#00bc7d] hover:bg-[#00a870] text-black'
+                          : 'text-gray-400 hover:text-white'
+                          }`}
                       >
                         <span className="flex items-center justify-center gap-1.5 md:gap-2">
                           <UserX className="w-3.5 h-3.5 md:w-4 md:h-4 shrink-0" />
