@@ -7,7 +7,7 @@ import { useLanguage } from '../../contexts/LanguageContext';
 
 export function LiveSports() {
   const { t } = useLanguage();
-  
+
   const matches = [
     {
       id: 1,
@@ -55,7 +55,7 @@ export function LiveSports() {
       return [];
     }
 
-    const normalized = [...matches];
+    const normalized: any[] = [...matches];
     let index = 0;
     while (normalized.length < 4) {
       const source = matches[index % matches.length];
@@ -75,32 +75,32 @@ export function LiveSports() {
       <SectionHeader
         title={
           <span>
-            {t("liveSports").split(" ").map((word, idx) => 
+            {t("liveSports").split(" ").map((word, idx) =>
               idx === 0 ? word + " " : <span key={idx} className="text-[#ff6900]">{word}</span>
             )}
           </span>
         }
         icon={
-            <div className="p-1.5 bg-orange-500/10 rounded-lg border border-orange-500/20">
-                <Trophy className="text-orange-500 w-5 h-5" />
-            </div>
+          <div className="p-1.5 bg-orange-500/10 rounded-lg border border-orange-500/20">
+            <Trophy className="text-orange-500 w-5 h-5" />
+          </div>
         }
         action={
-            <Button
-              variant="ghost"
-              size="sm"
-              className="h-8 text-[11px] uppercase font-bold text-[rgb(148,163,184)] hover:text-[#00bc7d] hover:bg-[#00bc7d]/10 border border-[rgb(148,163,184,0.3)] rounded-full transition-all"
-            >
-              {t("viewAll")}
-            </Button>
+          <Button
+            variant="ghost"
+            size="sm"
+            className="h-8 text-[11px] uppercase font-bold text-[rgb(148,163,184)] hover:text-[#00bc7d] hover:bg-[#00bc7d]/10 border border-[rgb(148,163,184,0.3)] rounded-full transition-all"
+          >
+            {t("viewAll")}
+          </Button>
         }
       />
 
       <div className="grid grid-cols-2 max-[360px]:grid-cols-1 gap-3 sm:gap-4 lg:grid-cols-3">
-        {displayMatches.map((match) => (
+        {displayMatches.map((match, index) => (
           <div
             key={match.id}
-            className="group relative flex flex-col rounded-xl overflow-hidden border border-white/5 bg-[#0f1923] shadow-lg hover:shadow-[0_0_20px_-10px_rgba(249,115,22,0.5)] transition-all duration-300"
+            className={`group relative flex flex-col rounded-xl overflow-hidden border border-white/5 bg-[#0f1923] shadow-lg hover:shadow-[0_0_20px_-10px_rgba(249,115,22,0.5)] transition-all duration-300 ${index === 3 ? 'lg:hidden' : ''}`}
           >
             <div className="absolute inset-0 z-0">
               <img
