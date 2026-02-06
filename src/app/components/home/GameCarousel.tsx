@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import Slider, { Settings } from 'react-slick';
 import { Button } from '../ui/button';
 import { ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react';
-import "slick-carousel/slick/slick.css"; 
+import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
 import { SectionHeader } from './SectionHeader';
@@ -74,7 +74,7 @@ export function GameCarousel({ title, icon, items, className, slidesToShow = 4, 
   return (
     <div className={`relative w-full overflow-hidden ${className}`}>
       {/* Header */}
-      <SectionHeader 
+      <SectionHeader
         title={title}
         icon={icon}
         action={
@@ -83,18 +83,18 @@ export function GameCarousel({ title, icon, items, className, slidesToShow = 4, 
               {t("viewAll")}
             </Button>
             <div className="flex gap-1">
-              <Button 
+              <Button
                 onClick={previous}
-                variant="secondary" 
-                size="icon" 
+                variant="secondary"
+                size="icon"
                 className="h-8 w-8 rounded-full bg-secondary/50 hover:bg-secondary text-white border border-white/10"
               >
                 <ChevronLeft className="h-4 w-4" />
               </Button>
-              <Button 
+              <Button
                 onClick={next}
-                variant="secondary" 
-                size="icon" 
+                variant="secondary"
+                size="icon"
                 className="h-8 w-8 rounded-full bg-secondary/50 hover:bg-secondary text-white border border-white/10"
               >
                 <ChevronRight className="h-4 w-4" />
@@ -111,20 +111,16 @@ export function GameCarousel({ title, icon, items, className, slidesToShow = 4, 
             <div key={item.id} className="px-2 pb-4">
               <div className="group relative flex flex-col gap-3 cursor-pointer">
                 {/* Image Container */}
-                <div className={`relative ${aspectRatio} overflow-hidden rounded-2xl ring-1 ring-white/10 bg-[#1a2536] transition-all duration-300 group-hover:ring-emerald-500/30 group-hover:shadow-[0_0_30px_-5px_rgba(16,185,129,0.2)]`}>
-                  <img 
-                    src={item.image} 
-                    alt={item.title} 
-                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" 
+                <div className={`relative ${aspectRatio} overflow-hidden rounded-xl border border-white/5 bg-[#0f1923] transition-all duration-300 hover:border-white/10`}>
+                  <img
+                    src={item.image}
+                    alt={item.title}
+                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
                   />
-                  
+
                   {/* Overlay on Hover */}
-                  <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                    <div className="w-12 h-12 rounded-full bg-[#00bc7d] flex items-center justify-center transform scale-50 group-hover:scale-100 transition-transform duration-300">
-                      <ArrowRight className="w-6 h-6 text-black stroke-[3]" />
-                    </div>
-                  </div>
-                  
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
                   {/* Provider Logo / Tag Overlay (Optional) */}
                   {item.tag && (
                     <div className="absolute top-2 right-2 bg-black/60 backdrop-blur-md px-2 py-1 rounded text-[11px] font-bold uppercase tracking-wider text-white border border-white/10">
@@ -135,7 +131,7 @@ export function GameCarousel({ title, icon, items, className, slidesToShow = 4, 
 
                 {/* Text Content */}
                 <div className="flex flex-col gap-0.5">
-                  <h3 className="text-sm font-bold text-white group-hover:text-emerald-500 transition-colors truncate">
+                  <h3 className="text-sm font-bold text-white transition-colors truncate">
                     {item.title}
                   </h3>
                   <span className="text-[11px] text-gray-500 font-bold uppercase tracking-wider truncate">

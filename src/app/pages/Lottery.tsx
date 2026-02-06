@@ -60,119 +60,119 @@ export function Lottery() {
 
   return (
     <div className="flex flex-col flex-1 bg-[#02040a] min-h-screen overflow-x-hidden">
-        
-        {/* Hero Section */}
-        <InsidePageHero image={imgLotteryBanner} />
 
-        {/* Simple Title Section – color from provider / banner */}
-        <div className="mt-[-20px] relative z-20 w-full flex flex-col items-center gap-6 py-6">
-            <h2 className={PAGE_ACCENT.lottery.pageTitleClass}>
-                {t('lotteryKenoTitle')}
-            </h2>
-        </div>
+      {/* Hero Section */}
+      <InsidePageHero image={imgLotteryBanner} />
 
-        {/* Main Content Area */}
-        <div className="container mx-auto max-w-[1200px] px-4 relative z-10 pb-20 flex flex-col items-center">
+      {/* Simple Title Section – color from provider / banner */}
+      <div className="mt-[-20px] relative z-20 w-full flex flex-col items-center gap-6 py-6">
+        <h2 className={PAGE_ACCENT.lottery.pageTitleClass}>
+          {t('lotteryKenoTitle')}
+        </h2>
+      </div>
 
-            {/* Provider Navigation */}
-            {uniqueProviders.length > 0 && (
-              <div className="w-full max-w-5xl bg-[#0f1923]/80 backdrop-blur-md border border-white/5 rounded-xl p-2.5 mb-6">
-                <div className="flex items-center gap-2 overflow-x-auto no-scrollbar">
-                    <div
-                      onClick={() => setSelectedProvider(null)}
-                      className={`
+      {/* Main Content Area */}
+      <div className="container mx-auto max-w-[1200px] px-4 relative z-10 pb-20 flex flex-col items-center">
+
+        {/* Provider Navigation */}
+        {uniqueProviders.length > 0 && (
+          <div className="w-full max-w-5xl bg-[#0f1923]/80 backdrop-blur-md border border-white/5 rounded-xl p-2.5 mb-6">
+            <div className="flex items-center gap-2 overflow-x-auto no-scrollbar">
+              <div
+                onClick={() => setSelectedProvider(null)}
+                className={`
                         relative shrink-0 h-[60px] w-[140px] rounded-lg flex items-center justify-center cursor-pointer transition-all duration-300
                         ${!selectedProvider
-                            ? 'bg-purple-500/5 border border-purple-500'
-                            : 'bg-[#16202c] border border-transparent hover:bg-[#1e2a38]'
-                        }
+                    ? 'bg-purple-500/5 border border-purple-500'
+                    : 'bg-[#16202c] border border-transparent hover:bg-[#1e2a38]'
+                  }
                       `}
-                    >
-                      <span className="text-white font-bold text-sm">All</span>
-                    </div>
-                    {uniqueProviders.map((p) => (
-                        <div
-                            key={p.id}
-                            onClick={() => setSelectedProvider(p.name === selectedProvider ? null : p.name)}
-                            className={`
+              >
+                <span className="text-white font-bold text-sm">All</span>
+              </div>
+              {uniqueProviders.map((p) => (
+                <div
+                  key={p.id}
+                  onClick={() => setSelectedProvider(p.name === selectedProvider ? null : p.name)}
+                  className={`
                             relative shrink-0 h-[60px] w-[140px] rounded-lg flex items-center justify-center cursor-pointer transition-all duration-300
                             ${p.active
-                                    ? 'bg-purple-500/5 border border-purple-500'
-                                    : 'bg-[#16202c] border border-transparent hover:bg-[#1e2a38]'
-                                }
+                      ? 'bg-purple-500/5 border border-purple-500'
+                      : 'bg-[#16202c] border border-transparent hover:bg-[#1e2a38]'
+                    }
                         `}
-                        >
-                            {p.image ? (
-                              <img src={p.image} alt={p.name} className="h-8 w-auto object-contain max-w-[80%]" />
-                            ) : (
-                              <span className="text-white font-bold text-xs">{p.name}</span>
-                            )}
-                        </div>
-                    ))}
+                >
+                  {p.image ? (
+                    <img src={p.image} alt={p.name} className="h-8 w-auto object-contain max-w-[80%]" />
+                  ) : (
+                    <span className="text-white font-bold text-xs">{p.name}</span>
+                  )}
                 </div>
-              </div>
-            )}
-
-            {/* Search Bar */}
-            <div className="w-full max-w-5xl mb-12">
-                <div className="relative">
-                    <input 
-                        type="text"
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(sanitizeTextInput(e.target.value).slice(0, 50))}
-                        maxLength={50}
-                        className="w-full h-14 bg-[#16202c] border border-transparent hover:border-white/10 focus:border-purple-500/50 rounded-full pl-6 pr-14 text-white placeholder:text-gray-500 transition-all outline-none"
-                        placeholder={t("searchPlaceholder")}
-                    />
-                    <div className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-purple-600/20 rounded-full text-purple-400">
-                        <Search className="w-5 h-5" />
-                    </div>
-                </div>
+              ))}
             </div>
+          </div>
+        )}
 
-            {/* Game Grid – same layout as Fishing page */}
-            {filteredGames.length > 0 ? (
-              <div className="w-full">
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-4 lg:gap-6 justify-items-center">
-                    {filteredGames.map((game) => (
-                        <div key={game.id} className="flex flex-col items-start gap-2 md:gap-3 group cursor-pointer w-full max-w-[214px]">
-                            <div 
-                                className="relative w-full aspect-square rounded-2xl overflow-hidden ring-1 ring-white/10 transition-all duration-500 bg-[#1a2536] group-hover:ring-emerald-500/30 group-hover:shadow-[0_0_30px_-5px_rgba(16,185,129,0.2)]"
-                            >
-                                <img 
-                                    src={game.image} 
-                                    alt={game.title} 
-                                    className="w-full h-full object-cover transform transition-transform duration-500 group-hover:scale-110" 
-                                />
-
-                                {/* Hover Overlay – same as Fishing */}
-                                <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                                    <div className="w-12 h-12 rounded-full bg-[#00bc7d] flex items-center justify-center shadow-[0_0_20px_rgba(0,188,125,0.4)] transform scale-50 group-hover:scale-100 transition-transform duration-300">
-                                        <ArrowRight className="w-6 h-6 text-black stroke-[3]" />
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* Content – same as Fishing: title + provider line */}
-                            <div className="flex flex-col gap-1.5 md:gap-2 mt-1 md:mt-2 w-full">
-                                <h3 className="text-white group-hover:text-emerald-500 font-bold text-xs md:text-sm lg:text-base transition-colors w-full px-0.5">
-                                    {game.title}
-                                </h3>
-                                {game.provider && (
-                                  <span className="text-[10px] md:text-[11px] text-gray-500 font-bold uppercase tracking-wider">{game.provider}</span>
-                                )}
-                            </div>
-                        </div>
-                    ))}
-                </div>
-              </div>
-            ) : (
-              <div className="w-full flex flex-col items-center justify-center py-20">
-                <EmptyState message="No games found" />
-              </div>
-            )}
-
+        {/* Search Bar */}
+        <div className="w-full max-w-5xl mb-12">
+          <div className="relative">
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(sanitizeTextInput(e.target.value).slice(0, 50))}
+              maxLength={50}
+              className="w-full h-14 bg-[#16202c] border border-transparent hover:border-white/10 focus:border-purple-500/50 rounded-full pl-6 pr-14 text-white placeholder:text-gray-500 transition-all outline-none"
+              placeholder={t("searchPlaceholder")}
+            />
+            <div className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-purple-600/20 rounded-full text-purple-400">
+              <Search className="w-5 h-5" />
+            </div>
+          </div>
         </div>
+
+        {/* Game Grid – same layout as Fishing page */}
+        {filteredGames.length > 0 ? (
+          <div className="w-full">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-4 lg:gap-6 justify-items-center">
+              {filteredGames.map((game) => (
+                <div key={game.id} className="flex flex-col items-start gap-2 md:gap-3 group cursor-pointer w-full max-w-[214px]">
+                  <div
+                    className="relative w-full aspect-square rounded-2xl overflow-hidden ring-1 ring-white/10 transition-all duration-500 bg-[#1a2536] group-hover:ring-emerald-500/30 group-hover:shadow-[0_0_30px_-5px_rgba(16,185,129,0.2)]"
+                  >
+                    <img
+                      src={game.image}
+                      alt={game.title}
+                      className="w-full h-full object-cover transform transition-transform duration-500 group-hover:scale-110"
+                    />
+
+                    {/* Hover Overlay – same as Fishing */}
+                    <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                      <div className="w-12 h-12 rounded-full bg-[#00bc7d] flex items-center justify-center shadow-[0_0_20px_rgba(0,188,125,0.4)] transform scale-50 group-hover:scale-100 transition-transform duration-300">
+                        <ArrowRight className="w-6 h-6 text-black stroke-[3]" />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Content – same as Fishing: title + provider line */}
+                  <div className="flex flex-col gap-1 mt-1 md:mt-2 w-full">
+                    <h3 className="text-white group-hover:text-emerald-500 font-bold text-xs md:text-sm lg:text-base transition-colors w-full px-0.5">
+                      {game.title}
+                    </h3>
+                    {game.provider && (
+                      <span className="text-[10px] md:text-[11px] text-gray-500 font-bold uppercase tracking-wider">{game.provider}</span>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        ) : (
+          <div className="w-full flex flex-col items-center justify-center py-20">
+            <EmptyState message="No games found" />
+          </div>
+        )}
+
+      </div>
     </div>
   );
 }

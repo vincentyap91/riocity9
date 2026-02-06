@@ -96,20 +96,16 @@ export function AllGame() {
                 key={game.id}
                 className="flex flex-col items-start gap-2 md:gap-3 group cursor-pointer w-full max-w-[214px]"
               >
-                <div className="relative w-full aspect-square rounded-2xl overflow-hidden ring-1 ring-white/10 transition-all duration-300 bg-[#1a2536] group-hover:ring-emerald-500/30 group-hover:shadow-[0_0_30px_-5px_rgba(16,185,129,0.2)]">
+                <div className="relative w-full aspect-square rounded-xl overflow-hidden border border-white/5 transition-all duration-300 bg-[#0f1923] hover:border-white/10">
                   <img
                     src={game.img}
                     alt={game.name}
                     className="w-full h-full object-cover transform transition-transform duration-500 group-hover:scale-110"
                   />
-                  <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                    <div className="w-12 h-12 rounded-full bg-[#00bc7d] flex items-center justify-center shadow-[0_0_20px_rgba(0,188,125,0.4)] transform scale-50 group-hover:scale-100 transition-transform duration-300">
-                      <ArrowRight className="w-6 h-6 text-black stroke-[3]" />
-                    </div>
-                  </div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 </div>
                 <div className="flex flex-col gap-1">
-                  <span className="text-xs md:text-sm font-bold text-white group-hover:text-emerald-500 transition-colors">
+                  <span className="text-xs md:text-sm font-bold text-white transition-colors">
                     {game.name}
                   </span>
                   <span className="text-[10px] md:text-[11px] text-gray-500 font-bold uppercase tracking-wider">

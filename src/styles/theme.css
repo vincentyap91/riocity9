@@ -289,7 +289,6 @@
 @utility touch-scroll-x {
   -webkit-overflow-scrolling: touch;
   touch-action: pan-x;
-  scroll-behavior: smooth;
   overscroll-behavior-x: contain;
 }
 

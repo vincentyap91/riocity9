@@ -10,15 +10,15 @@ function MobileBottomNavAfterLogin({ onMenuClick }: { onMenuClick?: () => void }
   return (
     <div className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#0a0f19]/95 backdrop-blur-xl border-t border-white/10 pb-safe">
       <div className="flex items-center justify-around h-16 px-2">
-        
+
         <NavButton icon={Menu} label={t("menu")} onClick={onMenuClick} />
         <NavButton icon={Search} label={t("search")} />
-        
+
         {/* Center CTA - Wallet/Deposit */}
         <div className="relative -top-5">
-            <Link to="/deposit" className="w-14 h-14 rounded-full bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 hover:brightness-110 hover:shadow-[0_4px_20px_rgba(16,185,129,0.4)] flex items-center justify-center shadow-[0_2px_10px_rgba(16,185,129,0.3)] border-4 border-[#0a0f19] transition-all">
-                <Wallet className="w-6 h-6 text-black fill-black/20" />
-            </Link>
+          <Link to="/deposit" className="w-14 h-14 rounded-full bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 hover:brightness-110 hover:shadow-[0_4px_20px_rgba(16,185,129,0.4)] flex items-center justify-center shadow-[0_2px_10px_rgba(16,185,129,0.3)] border-4 border-[#0a0f19] transition-all">
+            <Wallet className="w-6 h-6 text-black fill-black/20" />
+          </Link>
         </div>
 
         <NavButton icon={Gift} label={t("promo")} />
@@ -30,12 +30,12 @@ function MobileBottomNavAfterLogin({ onMenuClick }: { onMenuClick?: () => void }
 }
 
 function NavButton({ icon: Icon, label, active, onClick }: any) {
-    return (
-        <button onClick={onClick} className={`flex flex-col items-center justify-center gap-1 w-14 h-full ${active ? 'text-emerald-400' : 'text-gray-400 hover:text-white'}`}>
-            <Icon className={`w-5 h-5 ${active ? 'fill-current' : ''}`} />
-            <span className="text-[10px] font-medium">{label}</span>
-        </button>
-    )
+  return (
+    <button onClick={onClick} className={`flex flex-col items-center justify-center gap-1 w-14 h-full ${active ? 'text-emerald-400' : 'text-gray-400 hover:text-white'}`}>
+      <Icon className={`w-5 h-5 ${active ? 'fill-current' : ''}`} />
+      <span className="text-[10px] font-medium">{label}</span>
+    </button>
+  )
 }
 
 // --- Before Login Component ---
@@ -111,32 +111,32 @@ function IconProfile() {
 }
 
 function NavButtonBefore({ icon: Icon, label, onClick, to }: { icon: any, label: string, onClick?: () => void, to?: string }) {
-    const content = (
-        <>
-            <div className="text-white">
-                <Icon />
-            </div>
-            <div className="h-[15.005px] relative shrink-0 w-auto mt-[4px]">
-                <p className="font-['Arial',sans-serif] leading-[15px] not-italic text-[10px] text-center text-white">
-                    {label}
-                </p>
-            </div>
-        </>
-    );
+  const content = (
+    <>
+      <div className="text-white">
+        <Icon />
+      </div>
+      <div className="h-[15.005px] relative shrink-0 w-auto mt-[4px]">
+        <p className="font-['Arial',sans-serif] leading-[15px] not-italic text-[10px] text-center text-white">
+          {label}
+        </p>
+      </div>
+    </>
+  );
 
-    if (to) {
-        return (
-            <Link to={to} className="flex flex-col items-center justify-center w-full h-full pb-[0.017px]">
-                {content}
-            </Link>
-        );
-    }
-
+  if (to) {
     return (
-        <button onClick={onClick} className="flex flex-col items-center justify-center w-full h-full pb-[0.017px]">
-            {content}
-        </button>
+      <Link to={to} className="flex flex-col items-center justify-center w-full h-full pb-[0.017px]">
+        {content}
+      </Link>
     );
+  }
+
+  return (
+    <button onClick={onClick} className="flex flex-col items-center justify-center w-full h-full pb-[0.017px]">
+      {content}
+    </button>
+  );
 }
 
 function MobileBottomNavBeforeLogin({ onMenuClick }: { onMenuClick?: () => void }) {
