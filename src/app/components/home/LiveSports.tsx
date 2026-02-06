@@ -100,13 +100,13 @@ export function LiveSports() {
         {displayMatches.map((match, index) => (
           <div
             key={match.id}
-            className={`group relative flex flex-col rounded-xl overflow-hidden border border-white/5 bg-[#0f1923] shadow-lg hover:shadow-[0_0_20px_-10px_rgba(249,115,22,0.5)] transition-all duration-300 ${index === 3 ? 'lg:hidden' : ''}`}
+            className={`group relative flex flex-col rounded-xl overflow-hidden border border-white/5 bg-[#0f1923] shadow-lg hover:border-[#39ff88]/30 hover:shadow-[0_0_20px_-10px_rgba(57,255,136,0.35)] transition-all duration-300 ${index === 3 ? 'lg:hidden' : ''}`}
           >
             <div className="absolute inset-0 z-0">
               <img
                 src={match.background}
                 alt="stadium"
-                className="w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-700 mix-blend-overlay"
+                className="w-full h-full object-cover opacity-60 group-hover:scale-110 transition-transform duration-700 mix-blend-overlay"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[#0f1923] via-[#0f1923]/80 to-[#0f1923]/40"></div>
             </div>
@@ -126,7 +126,7 @@ export function LiveSports() {
                       {match.homeTeam.substring(0, 2).toUpperCase()}
                     </span>
                   </div>
-                  <span className="text-xs font-semibold text-white truncate">
+                  <span className="text-xs font-semibold text-white truncate transition-colors group-hover:text-[#39ff88]">
                     {match.homeTeam}
                   </span>
                 </div>
@@ -137,7 +137,7 @@ export function LiveSports() {
                       {match.awayTeam.substring(0, 2).toUpperCase()}
                     </span>
                   </div>
-                  <span className="text-xs font-semibold text-white truncate">
+                  <span className="text-xs font-semibold text-white truncate transition-colors group-hover:text-[#39ff88]">
                     {match.awayTeam}
                   </span>
                 </div>
@@ -165,13 +165,13 @@ export function LiveSports() {
                 <div className="flex items-center justify-between mt-1 mb-4 sm:mb-6 gap-3 sm:gap-4">
                   <div className="flex flex-col items-center gap-2 sm:gap-3 w-1/3 min-w-0">
                     <div
-                      className={`w-9 h-9 sm:w-10 sm:h-10 md:w-16 md:h-16 rounded-full ${match.homeColor} flex items-center justify-center border-2 border-white/20 shadow-[0_0_15px_-5px_rgba(255,255,255,0.3)] ring-2 ring-transparent group-hover:ring-orange-500/30 transition-all`}
+                      className={`w-9 h-9 sm:w-10 sm:h-10 md:w-16 md:h-16 rounded-full ${match.homeColor} flex items-center justify-center border-2 border-white/20 shadow-[0_0_15px_-5px_rgba(255,255,255,0.3)] ring-2 ring-transparent group-hover:ring-[#39ff88]/30 transition-all`}
                     >
                       <span className="text-xs sm:text-sm md:text-xl font-black text-white">
                         {match.homeTeam.substring(0, 2).toUpperCase()}
                       </span>
                     </div>
-                    <span className="text-[10px] sm:text-xs md:text-sm font-bold text-white text-center leading-tight tracking-wide truncate w-full">
+                    <span className="text-[10px] sm:text-xs md:text-sm font-bold text-white text-center leading-tight tracking-wide truncate w-full transition-colors group-hover:text-[#39ff88]">
                       {match.homeTeam}
                     </span>
                   </div>
@@ -190,13 +190,13 @@ export function LiveSports() {
 
                   <div className="flex flex-col items-center gap-2 sm:gap-3 w-1/3 min-w-0">
                     <div
-                      className={`w-9 h-9 sm:w-10 sm:h-10 md:w-16 md:h-16 rounded-full ${match.awayColor} flex items-center justify-center border-2 border-white/20 shadow-[0_0_15px_-5px_rgba(255,255,255,0.3)] ring-2 ring-transparent group-hover:ring-orange-500/30 transition-all`}
+                      className={`w-9 h-9 sm:w-10 sm:h-10 md:w-16 md:h-16 rounded-full ${match.awayColor} flex items-center justify-center border-2 border-white/20 shadow-[0_0_15px_-5px_rgba(255,255,255,0.3)] ring-2 ring-transparent group-hover:ring-[#39ff88]/30 transition-all`}
                     >
                       <span className="text-xs sm:text-sm md:text-xl font-black text-white">
                         {match.awayTeam.substring(0, 2).toUpperCase()}
                       </span>
                     </div>
-                    <span className="text-[10px] sm:text-xs md:text-sm font-bold text-white text-center leading-tight tracking-wide truncate w-full">
+                    <span className="text-[10px] sm:text-xs md:text-sm font-bold text-white text-center leading-tight tracking-wide truncate w-full transition-colors group-hover:text-[#39ff88]">
                       {match.awayTeam}
                     </span>
                   </div>

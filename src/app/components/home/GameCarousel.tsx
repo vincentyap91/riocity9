@@ -111,7 +111,7 @@ export function GameCarousel({ title, icon, items, className, slidesToShow = 4, 
             <div key={item.id} className="px-2 pb-4">
               <div className="group relative flex flex-col gap-3 cursor-pointer">
                 {/* Image Container */}
-                <div className={`relative ${aspectRatio} overflow-hidden rounded-xl border border-white/5 bg-[#0f1923] transition-all duration-300 hover:border-white/10`}>
+                <div className={`relative ${aspectRatio} overflow-hidden rounded-xl border border-white/5 bg-[#0f1923] transition-all duration-300 hover:border-[#39ff88]/30`}>
                   <img
                     src={item.image}
                     alt={item.title}
@@ -131,7 +131,7 @@ export function GameCarousel({ title, icon, items, className, slidesToShow = 4, 
 
                 {/* Text Content */}
                 <div className="flex flex-col gap-0.5">
-                  <h3 className="text-sm font-bold text-white transition-colors truncate">
+                  <h3 className="text-sm font-bold text-white transition-colors truncate group-hover:text-[#39ff88]">
                     {item.title}
                   </h3>
                   <span className="text-[11px] text-gray-500 font-bold uppercase tracking-wider truncate">

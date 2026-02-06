@@ -14,6 +14,8 @@ export function GameCategoryWithRTP() {
   const [activeCategory, setActiveCategory] = useState('slots');
   const [gamesData, setGamesData] = useState<any[]>(INITIAL_SLOTS);
   const [isLoading, setIsLoading] = useState(false);
+  const isSlotsCardLayout = activeCategory === 'slots' || activeCategory === 'allGames' || activeCategory === 'hotGames';
+  const activeCategoryLabel = t((GAME_CATEGORIES.find((cat) => cat.id === activeCategory)?.nameKey || 'allGames') as any);
 
   useEffect(() => {
     const fetchCategoryData = async () => {
@@ -130,55 +132,78 @@ export function GameCategoryWithRTP() {
 
           <div className="grid grid-cols-1 min-[400px]:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 2xl:grid-cols-6 gap-3">
             {gamesData.map((game, i) => (
-              <div
-                key={i}
-                className="group bg-[#0f1923] rounded-xl overflow-hidden border border-white/5 hover:border-[#39ff88]/30 transition-all duration-500 cursor-pointer flex flex-col"
-              >
-                {/* Top Section: Provider Header */}
-                <div className={`relative overflow-hidden flex items-center justify-center ${game.color || 'bg-blue-600'}`}>
-                  <img
-                    src={game.image}
-                    alt=""
-                    className="absolute inset-0 w-full h-full object-cover opacity-30 grayscale blur-[1px]"
-                  />
-                  <div className="absolute inset-0 bg-black/10" />
+              isSlotsCardLayout ? (
+                <div
+                  key={i}
+                  className="group bg-[#0f1923] rounded-xl overflow-hidden border border-white/5 hover:border-[#39ff88]/30 transition-all duration-500 cursor-pointer flex flex-col"
+                >
+                  {/* Top Section: Provider Header */}
+                  <div className={`relative overflow-hidden flex items-center justify-center ${game.color || 'bg-blue-600'}`}>
+                    <div className="absolute inset-0 bg-black/10" />
 
-                  {game.providerLogo ? (
-                    <img
-                      src={game.providerLogo}
-                      alt={game.provider || 'Provider logo'}
-                      className="relative z-10 h-full w-full object-contain"
-                    />
-                  ) : (
-                    <span className="relative z-10 text-white font-black text-[10px] md:text-[11px] uppercase tracking-widest text-center px-2 drop-shadow-md">
-                      {game.provider || 'PROVIDER'}
-                    </span>
-                  )}
+                    {game.providerLogo ? (
+                      <img
+                        src={game.providerLogo}
+                        alt={game.provider || 'Provider logo'}
+                        className="relative z-10 h-full w-full object-contain transition-transform duration-700 group-hover:scale-110"
+                      />
+                    ) : (
+                      <span className="relative z-10 text-white font-black text-[10px] md:text-[11px] uppercase tracking-widest text-center px-2 drop-shadow-md">
+                        {game.provider || 'PROVIDER'}
+                      </span>
+                    )}
+                  </div>
+
+                  {/* Bottom Section: Game Info */}
+                  <div className="p-2 sm:p-2.5 flex items-center gap-2 bg-[#121b28]">
+                    <div className="relative shrink-0 w-9 h-9 md:w-10 md:h-10 rounded-lg overflow-hidden border border-white/10 shadow-lg">
+                      <img
+                        src={game.image}
+                        alt={game.title || game.name}
+                        className="w-full h-full object-cover"
+                      />
+                      <div className="absolute top-0.5 left-0.5 w-3 h-3 bg-yellow-400 rounded-[2px] flex items-center justify-center shadow-sm">
+                        <Star className="w-2 h-2 text-black fill-current" />
+                      </div>
+                    </div>
+
+                    <div className="flex flex-col min-w-0">
+                      <h3 className="text-white text-sm md:text-sm font-extrabold truncate leading-tight transition-colors group-hover:text-[#39ff88]">
+                        {game.title || game.name}
+                      </h3>
+                      <span className="text-[#ffbb33] text-xs md:text-xs font-black uppercase tracking-tight mt-0.5">
+                        RTP {game.rtp || '95.00%'}
+                      </span>
+                    </div>
+                  </div>
                 </div>
-
-                {/* Bottom Section: Game Info */}
-                <div className="p-2 sm:p-2.5 flex items-center gap-2 bg-[#121b28]">
-                  <div className="relative shrink-0 w-9 h-9 md:w-10 md:h-10 rounded-lg overflow-hidden border border-white/10 shadow-lg">
+              ) : (
+                <div
+                  key={i}
+                  className="group bg-[#0f1923] rounded-xl overflow-hidden border border-white/5 hover:border-[#39ff88]/30 transition-all duration-500 cursor-pointer flex flex-col"
+                >
+                  <div className="relative aspect-[16/10] overflow-hidden">
                     <img
                       src={game.image}
                       alt={game.title || game.name}
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                     />
-                    <div className="absolute top-0.5 left-0.5 w-3 h-3 bg-yellow-400 rounded-[2px] flex items-center justify-center shadow-sm">
-                      <Star className="w-2 h-2 text-black fill-current" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/30 to-transparent" />
+                    <div className="absolute top-2 left-2 rounded-md bg-black/65 border border-white/10 px-2 py-1 text-[10px] font-bold uppercase tracking-wide text-[#39ff88]">
+                      {activeCategoryLabel}
                     </div>
                   </div>
 
-                  <div className="flex flex-col min-w-0">
-                    <h3 className="text-white text-[10px] md:text-[11px] font-extrabold truncate leading-tight">
+                  <div className="p-2.5 bg-[#121b28] flex flex-col gap-0.5 min-h-[64px]">
+                    <h3 className="text-white text-sm font-extrabold truncate leading-tight transition-colors group-hover:text-[#39ff88]">
                       {game.title || game.name}
                     </h3>
-                    <span className="text-[#ffbb33] text-[9px] md:text-[10px] font-black uppercase tracking-tight mt-0.5">
-                      RTP {game.rtp || '95.00%'}
+                    <span className="text-[11px] text-gray-400 font-semibold truncate uppercase tracking-wide">
+                      {game.provider || activeCategoryLabel}
                     </span>
                   </div>
                 </div>
-              </div>
+              )
             ))}
           </div>
         </div>

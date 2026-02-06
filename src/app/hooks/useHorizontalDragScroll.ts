@@ -46,6 +46,10 @@ export function useHorizontalDragScroll() {
   };
 
   const handlePointerDownCapture = (e: React.PointerEvent<HTMLDivElement>) => {
+    const target = e.target as Element | null;
+    if (target?.closest('button, a, input, textarea, select, [role="button"], [data-no-drag]')) {
+      return;
+    }
     // Left mouse button, touch, or pen
     if (e.pointerType === 'mouse' && e.button !== 0) return;
     if (!scrollRef.current) return;
