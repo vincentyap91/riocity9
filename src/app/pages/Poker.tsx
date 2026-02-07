@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { InsidePageHero } from "../components/shared/InsidePageHero";
 import { useLanguage } from "../contexts/LanguageContext";
-import { ArrowRight, Search } from "lucide-react";
-import { sanitizeTextInput } from "../utils/security";
+import { ArrowRight } from "lucide-react";
 import { PAGE_ACCENT } from "../config/themeTokens";
+import { GameSearchBar } from "../components/shared/GameSearchBar";
 
 const pokerBanner = "https://pksoftcdn.azureedge.net/media/poker%27-202502241408444412.jpg";
 
@@ -33,6 +33,10 @@ const pokerProviders = [
 export function Poker() {
   const { t } = useLanguage();
   const [searchQuery, setSearchQuery] = useState('');
+  const normalizedSearch = searchQuery.trim().toLowerCase();
+  const filteredProviders = pokerProviders.filter((provider) =>
+    provider.name.toLowerCase().includes(normalizedSearch)
+  );
 
   return (
     <div className="flex flex-col gap-8 pb-24 md:pb-0 flex-1 overflow-x-hidden animate-in fade-in duration-500 bg-[#02040a]">
@@ -49,26 +53,12 @@ export function Poker() {
       <div className="container mx-auto max-w-[1200px] px-4 relative z-10 pb-20 flex flex-col items-center">
         
         {/* Search Bar */}
-        <div className="w-full max-w-5xl mb-12">
-            <div className="relative">
-                <input 
-                    type="text"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(sanitizeTextInput(e.target.value).slice(0, 50))}
-                    maxLength={50}
-                    className="w-full h-14 bg-[#16202c] border border-transparent hover:border-white/10 focus:border-[#00bc7d]/50 rounded-full pl-6 pr-14 text-white placeholder:text-gray-500 transition-all outline-none"
-                    placeholder={t("searchPlaceholder")}
-                />
-                <div className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-emerald-600/20 rounded-full text-emerald-400">
-                    <Search className="w-5 h-5" />
-                </div>
-            </div>
-        </div>
+        <GameSearchBar value={searchQuery} onChange={setSearchQuery} className="mb-12" />
 
         {/* Providers Grid */}
         <div className="w-full">
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-4 lg:gap-6 justify-items-center">
-          {pokerProviders.map((provider) => (
+          {filteredProviders.map((provider) => (
             <div key={provider.id} className="flex flex-col items-start gap-2 md:gap-3 group cursor-pointer w-full max-w-[214px]">
               <div className="relative w-full aspect-square rounded-2xl overflow-hidden ring-1 ring-white/10 transition-all duration-300 bg-[#1a2536] group-hover:ring-emerald-500/30 group-hover:shadow-[0_0_30px_-5px_rgba(16,185,129,0.2)]">
                 <img

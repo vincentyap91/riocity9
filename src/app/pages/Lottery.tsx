@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { InsidePageHero } from '../components/shared/InsidePageHero';
-import { ArrowRight, Search } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
-import { sanitizeTextInput } from '../utils/security';
 import { PAGE_ACCENT } from '../config/themeTokens';
 import { EmptyState } from '../components/shared/EmptyState';
+import { GameSearchBar } from '../components/shared/GameSearchBar';
 
 // Banner
 import imgLotteryBanner from "@/assets/b18479f8e5e33aa224b895a9f36e7daacafa6f8b.png";
@@ -40,10 +40,14 @@ export function Lottery() {
   const { t } = useLanguage();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedProvider, setSelectedProvider] = useState<string | null>(null);
+  const normalizedSearch = searchQuery.trim().toLowerCase();
 
   // Filter games by search and provider
   const filteredGames = lotteryGames.filter((game) => {
-    const matchesSearch = game.title.toLowerCase().includes(searchQuery.toLowerCase());
+    const providerName = game.provider?.toLowerCase() ?? '';
+    const matchesSearch =
+      game.title.toLowerCase().includes(normalizedSearch) ||
+      providerName.includes(normalizedSearch);
     const matchesProvider = !selectedProvider || game.provider === selectedProvider;
     return matchesSearch && matchesProvider;
   });
@@ -114,21 +118,7 @@ export function Lottery() {
         )}
 
         {/* Search Bar */}
-        <div className="w-full max-w-5xl mb-12">
-          <div className="relative">
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(sanitizeTextInput(e.target.value).slice(0, 50))}
-              maxLength={50}
-              className="w-full h-14 bg-[#16202c] border border-transparent hover:border-white/10 focus:border-purple-500/50 rounded-full pl-6 pr-14 text-white placeholder:text-gray-500 transition-all outline-none"
-              placeholder={t("searchPlaceholder")}
-            />
-            <div className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-purple-600/20 rounded-full text-purple-400">
-              <Search className="w-5 h-5" />
-            </div>
-          </div>
-        </div>
+        <GameSearchBar value={searchQuery} onChange={setSearchQuery} accent="purple" className="mb-12" />
 
         {/* Game Grid – same layout as Fishing page */}
         {filteredGames.length > 0 ? (

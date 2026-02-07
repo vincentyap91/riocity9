@@ -1,37 +1,36 @@
 import React, { useState } from "react";
 import { useLanguage } from "../contexts/LanguageContext";
-import { ArrowRight, Search } from "lucide-react";
 import { useAuth } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { InsidePageHero } from "../components/shared/InsidePageHero";
-import { sanitizeTextInput } from "../utils/security";
 import { PAGE_ACCENT } from "../config/themeTokens";
+import { GameSearchBar } from "../components/shared/GameSearchBar";
 
 const HOT_GAMES_BANNER =
   "https://pksoftcdn.azureedge.net/media/cat_hotgames-202504100909086875.jpg";
 
 // Hot games list (same structure as AllGame; replace with real hot games data)
 const hotGamesList = [
-  { id: "hot1", name: "Hot Game 1", img: "https://pksoftcdn.azureedge.net/media/v8poker_poker-202601191517288267.png", category: "Slots" },
-  { id: "hot2", name: "Hot Game 2", img: "https://pksoftcdn.azureedge.net/media/kaiyuan-202504210825061750.png", category: "Live Casino" },
-  { id: "hot3", name: "Hot Game 3", img: "https://pksoftcdn.azureedge.net/media/1g%20poker-202502191628300100.png", category: "Poker" },
-  { id: "hot4", name: "Hot Game 4", img: "https://pksoftcdn.azureedge.net/media/mpoker-202503111448116128.png", category: "Sports" },
-  { id: "hot5", name: "Hot Game 5", img: "https://pksoftcdn.azureedge.net/media/v8poker_poker-202601191517288267.png", category: "Fishing" },
-  { id: "hot6", name: "Hot Game 6", img: "https://pksoftcdn.azureedge.net/media/kaiyuan-202504210825061750.png", category: "Slots" },
-  { id: "hot7", name: "Hot Game 7", img: "https://pksoftcdn.azureedge.net/media/1g%20poker-202502191628300100.png", category: "Live Casino" },
-  { id: "hot8", name: "Hot Game 8", img: "https://pksoftcdn.azureedge.net/media/mpoker-202503111448116128.png", category: "Poker" },
-  { id: "hot9", name: "Hot Game 9", img: "https://pksoftcdn.azureedge.net/media/v8poker_poker-202601191517288267.png", category: "Sports" },
-  { id: "hot10", name: "Hot Game 10", img: "https://pksoftcdn.azureedge.net/media/kaiyuan-202504210825061750.png", category: "Fishing" },
-  { id: "hot11", name: "Hot Game 11", img: "https://pksoftcdn.azureedge.net/media/1g%20poker-202502191628300100.png", category: "Slots" },
-  { id: "hot12", name: "Hot Game 12", img: "https://pksoftcdn.azureedge.net/media/mpoker-202503111448116128.png", category: "Live Casino" },
-  { id: "hot13", name: "Hot Game 13", img: "https://pksoftcdn.azureedge.net/media/v8poker_poker-202601191517288267.png", category: "Poker" },
-  { id: "hot14", name: "Hot Game 14", img: "https://pksoftcdn.azureedge.net/media/kaiyuan-202504210825061750.png", category: "Sports" },
-  { id: "hot15", name: "Hot Game 15", img: "https://pksoftcdn.azureedge.net/media/1g%20poker-202502191628300100.png", category: "Fishing" },
-  { id: "hot16", name: "Hot Game 16", img: "https://pksoftcdn.azureedge.net/media/mpoker-202503111448116128.png", category: "Slots" },
-  { id: "hot17", name: "Hot Game 17", img: "https://pksoftcdn.azureedge.net/media/v8poker_poker-202601191517288267.png", category: "Live Casino" },
-  { id: "hot18", name: "Hot Game 18", img: "https://pksoftcdn.azureedge.net/media/kaiyuan-202504210825061750.png", category: "Poker" },
-  { id: "hot19", name: "Hot Game 19", img: "https://pksoftcdn.azureedge.net/media/1g%20poker-202502191628300100.png", category: "Sports" },
-  { id: "hot20", name: "Hot Game 20", img: "https://pksoftcdn.azureedge.net/media/mpoker-202503111448116128.png", category: "Fishing" },
+  { id: "hot1", name: "Hot Game 1", img: "https://pksoftcdn.azureedge.net/media/v8poker_poker-202601191517288267.png", category: "Slots", provider: "Slots" },
+  { id: "hot2", name: "Hot Game 2", img: "https://pksoftcdn.azureedge.net/media/kaiyuan-202504210825061750.png", category: "Live Casino", provider: "Live Casino" },
+  { id: "hot3", name: "Hot Game 3", img: "https://pksoftcdn.azureedge.net/media/1g%20poker-202502191628300100.png", category: "Poker", provider: "Poker" },
+  { id: "hot4", name: "Hot Game 4", img: "https://pksoftcdn.azureedge.net/media/mpoker-202503111448116128.png", category: "Sports", provider: "Sports" },
+  { id: "hot5", name: "Hot Game 5", img: "https://pksoftcdn.azureedge.net/media/v8poker_poker-202601191517288267.png", category: "Fishing", provider: "Fishing" },
+  { id: "hot6", name: "Hot Game 6", img: "https://pksoftcdn.azureedge.net/media/kaiyuan-202504210825061750.png", category: "Slots", provider: "Slots" },
+  { id: "hot7", name: "Hot Game 7", img: "https://pksoftcdn.azureedge.net/media/1g%20poker-202502191628300100.png", category: "Live Casino", provider: "Live Casino" },
+  { id: "hot8", name: "Hot Game 8", img: "https://pksoftcdn.azureedge.net/media/mpoker-202503111448116128.png", category: "Poker", provider: "Poker" },
+  { id: "hot9", name: "Hot Game 9", img: "https://pksoftcdn.azureedge.net/media/v8poker_poker-202601191517288267.png", category: "Sports", provider: "Sports" },
+  { id: "hot10", name: "Hot Game 10", img: "https://pksoftcdn.azureedge.net/media/kaiyuan-202504210825061750.png", category: "Fishing", provider: "Fishing" },
+  { id: "hot11", name: "Hot Game 11", img: "https://pksoftcdn.azureedge.net/media/1g%20poker-202502191628300100.png", category: "Slots", provider: "Slots" },
+  { id: "hot12", name: "Hot Game 12", img: "https://pksoftcdn.azureedge.net/media/mpoker-202503111448116128.png", category: "Live Casino", provider: "Live Casino" },
+  { id: "hot13", name: "Hot Game 13", img: "https://pksoftcdn.azureedge.net/media/v8poker_poker-202601191517288267.png", category: "Poker", provider: "Poker" },
+  { id: "hot14", name: "Hot Game 14", img: "https://pksoftcdn.azureedge.net/media/kaiyuan-202504210825061750.png", category: "Sports", provider: "Sports" },
+  { id: "hot15", name: "Hot Game 15", img: "https://pksoftcdn.azureedge.net/media/1g%20poker-202502191628300100.png", category: "Fishing", provider: "Fishing" },
+  { id: "hot16", name: "Hot Game 16", img: "https://pksoftcdn.azureedge.net/media/mpoker-202503111448116128.png", category: "Slots", provider: "Slots" },
+  { id: "hot17", name: "Hot Game 17", img: "https://pksoftcdn.azureedge.net/media/v8poker_poker-202601191517288267.png", category: "Live Casino", provider: "Live Casino" },
+  { id: "hot18", name: "Hot Game 18", img: "https://pksoftcdn.azureedge.net/media/kaiyuan-202504210825061750.png", category: "Poker", provider: "Poker" },
+  { id: "hot19", name: "Hot Game 19", img: "https://pksoftcdn.azureedge.net/media/1g%20poker-202502191628300100.png", category: "Sports", provider: "Sports" },
+  { id: "hot20", name: "Hot Game 20", img: "https://pksoftcdn.azureedge.net/media/mpoker-202503111448116128.png", category: "Fishing", provider: "Fishing" },
 ];
 
 export function HotGame() {
@@ -50,10 +49,11 @@ export function HotGame() {
     return null;
   }
 
+  const normalizedSearch = searchQuery.trim().toLowerCase();
   const filteredGames = hotGamesList.filter(
     (game) =>
-      game.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      game.category.toLowerCase().includes(searchQuery.toLowerCase())
+      game.name.toLowerCase().includes(normalizedSearch) ||
+      game.provider.toLowerCase().includes(normalizedSearch)
   );
 
   return (
@@ -67,23 +67,7 @@ export function HotGame() {
       </div>
 
       <div className="container mx-auto max-w-[1200px] px-4 relative z-10 pb-20 flex flex-col items-center">
-        <div className="w-full max-w-5xl mb-12">
-          <div className="relative">
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) =>
-                setSearchQuery(sanitizeTextInput(e.target.value).slice(0, 50))
-              }
-              maxLength={50}
-              className="w-full h-14 bg-[#16202c] border border-transparent hover:border-white/10 focus:border-[#00bc7d]/50 rounded-full pl-6 pr-14 text-white placeholder:text-gray-500 transition-all outline-none"
-              placeholder={t("searchPlaceholder")}
-            />
-            <div className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-emerald-600/20 rounded-full text-emerald-400">
-              <Search className="w-5 h-5" />
-            </div>
-          </div>
-        </div>
+        <GameSearchBar value={searchQuery} onChange={setSearchQuery} className="mb-12" />
 
         <div className="w-full">
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-4 lg:gap-6 justify-items-center">

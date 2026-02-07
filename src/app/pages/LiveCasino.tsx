@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { InsidePageHero } from '../components/shared/InsidePageHero';
-import { ArrowRight, Search } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
-import { sanitizeTextInput } from '../utils/security';
 import { PAGE_ACCENT } from '../config/themeTokens';
 import { GameModal } from '../components/shared/GameModal';
+import { GameSearchBar } from '../components/shared/GameSearchBar';
 
 // Asset Imports
 import imgKh168Marbula2Providericon200X200Px2025101310310355541 from "@/assets/f6a50bd7817f3011aaeb196648cadbe4a3ae53b3.png";
@@ -63,9 +63,10 @@ export function LiveCasino() {
     const { t } = useLanguage();
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedProvider, setSelectedProvider] = useState<typeof providers[0] | null>(null);
+    const normalizedSearch = searchQuery.trim().toLowerCase();
 
     const filteredProviders = providers.filter(p =>
-        p.name.toLowerCase().includes(searchQuery.toLowerCase())
+        p.name.toLowerCase().includes(normalizedSearch)
     );
 
     return (
@@ -85,21 +86,7 @@ export function LiveCasino() {
             <div className="container mx-auto max-w-[1200px] px-4 relative z-10 pb-20 flex flex-col items-center">
 
                 {/* Search Bar */}
-                <div className="w-full max-w-5xl mb-12">
-                    <div className="relative">
-                        <input
-                            type="text"
-                            value={searchQuery}
-                            onChange={(e) => setSearchQuery(sanitizeTextInput(e.target.value).slice(0, 50))}
-                            maxLength={50}
-                            className="w-full h-14 bg-[#16202c] border border-transparent hover:border-white/10 focus:border-blue-500/50 rounded-full pl-6 pr-14 text-white placeholder:text-gray-500 transition-all outline-none"
-                            placeholder={t("searchPlaceholder")}
-                        />
-                        <div className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-blue-600/20 rounded-full text-blue-400">
-                            <Search className="w-5 h-5" />
-                        </div>
-                    </div>
-                </div>
+                <GameSearchBar value={searchQuery} onChange={setSearchQuery} accent="blue" className="mb-12" />
 
                 {/* Providers Grid */}
                 <div className="w-full">

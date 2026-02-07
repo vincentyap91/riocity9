@@ -1,0 +1,23 @@
+{
+  "scale": {
+    "none": { "value": "0" },
+    "sm": { "value": "0.25rem", "px": "4" },
+    "md": { "value": "0.375rem", "px": "6" },
+    "lg": { "value": "0.5rem", "px": "8" },
+    "xl": { "value": "0.75rem", "px": "12" },
+    "2xl": { "value": "1rem", "px": "16" },
+    "3xl": { "value": "1.5rem", "px": "24" },
+    "full": { "value": "9999px" }
+  },
+  "custom": {
+    "button": { "value": "0.625rem", "px": "10", "description": "rounded-[10px] buttons, inputs" },
+    "card": { "value": "0.875rem", "px": "14", "description": "rounded-[14px] list items" },
+    "panel": { "value": "1rem", "px": "16", "description": "rounded-[16px] membership" },
+    "popover": { "value": "1.25rem", "px": "20", "description": "rounded-[20px] language dropdown" },
+    "modal": { "value": "1.5rem", "px": "24", "description": "rounded-[24px] modals" }
+  },
+  "base": {
+    "value": "0.625rem",
+    "description": "CSS --radius (10px); used for sm/md/lg/xl derivation"
+  }
+}

@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { InsidePageHero } from '../components/shared/InsidePageHero';
-import { Search, RefreshCw, DollarSign, Zap, Play } from 'lucide-react';
+import { RefreshCw, DollarSign, Zap, Play } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
-import { sanitizeTextInput } from '../utils/security';
 import { PAGE_ACCENT, SECTION_HEADER_TITLE_CLASS } from '../config/themeTokens';
+import { GameSearchBar } from '../components/shared/GameSearchBar';
 
 const CRASH_BANNER = 'https://pksoftcdn.azureedge.net/media/crash-202502241407547974.jpg';
 
@@ -51,6 +51,12 @@ export function Crash() {
   const [searchQuery, setSearchQuery] = useState('');
   const [walletBalance] = useState('966.24');
   const [guaranteedRebate] = useState('5.00%');
+  const normalizedSearch = searchQuery.trim().toLowerCase();
+  const activeProviderName = providers.find((provider) => provider.active)?.name ?? '';
+  const filteredCrashGames = crashGames.filter((game) =>
+    game.title.toLowerCase().includes(normalizedSearch) ||
+    activeProviderName.toLowerCase().includes(normalizedSearch)
+  );
 
   return (
     <div className="flex flex-col flex-1 bg-[#02040a] min-h-screen overflow-x-hidden">
@@ -114,21 +120,7 @@ export function Crash() {
         </div>
 
         {/* Search Bar - below wallet + rebate */}
-        <div className="w-full max-w-5xl mb-12">
-          <div className="relative">
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(sanitizeTextInput(e.target.value).slice(0, 50))}
-              maxLength={50}
-              className="w-full h-14 bg-[#16202c] border border-transparent hover:border-white/10 focus:border-amber-500/50 rounded-full pl-6 pr-14 text-white placeholder:text-gray-500 transition-all outline-none"
-              placeholder={t('searchPlaceholder')}
-            />
-            <div className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-amber-500/20 rounded-full text-amber-400">
-              <Search className="w-5 h-5" />
-            </div>
-          </div>
-        </div>
+        <GameSearchBar value={searchQuery} onChange={setSearchQuery} accent="amber" className="mb-12" />
 
         {/* 5. Section Header + 6. Game Grid */}
         <div className="w-full flex flex-col gap-6">
@@ -142,9 +134,7 @@ export function Crash() {
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-4 lg:gap-6 justify-items-center">
-            {crashGames
-              .filter((g) => !searchQuery || g.title.toLowerCase().includes(searchQuery.toLowerCase()))
-              .map((game) => (
+            {filteredCrashGames.map((game) => (
                 <div key={game.id} className="flex flex-col items-start gap-2 md:gap-3 group cursor-pointer w-full max-w-[214px]">
                   <div className="relative w-full aspect-square rounded-2xl overflow-hidden ring-1 ring-white/10 transition-all duration-500 bg-[#1a2536] group-hover:ring-emerald-500/30 group-hover:shadow-[0_0_30px_-5px_rgba(16,185,129,0.2)]">
                     <img

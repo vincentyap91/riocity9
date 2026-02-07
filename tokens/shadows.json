@@ -1,0 +1,27 @@
+{
+  "elevation": {
+    "sm": { "value": "0 1px 2px 0 rgb(0 0 0 / 0.05)" },
+    "md": { "value": "0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)" },
+    "lg": { "value": "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)" },
+    "xl": { "value": "0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)" },
+    "2xl": { "value": "0 25px 50px -12px rgb(0 0 0 / 0.25)" }
+  },
+  "brand": {
+    "modal": { "value": "0 32px 64px -12px rgba(0, 0, 0, 0.6)", "description": "Session/language modal" },
+    "dropdown": { "value": "0 25px 70px rgba(0, 0, 0, 0.7), 0 0 30px rgba(0, 255, 136, 0.03)", "description": "Language dropdown" },
+    "primaryGlow": { "value": "0 0 8px rgba(0, 188, 125, 0.8)", "description": "Primary dot pulse" },
+    "primaryGlowSoft": { "value": "0 0 15px rgba(0, 188, 125, 0.2)", "description": "Primary focus/active" },
+    "primaryGlowBright": { "value": "0 0 15px rgba(0, 255, 136, 0.2)", "description": "Bright primary focus" },
+    "primaryGlowStrong": { "value": "0 0 15px rgba(0, 255, 136, 0.8)", "description": "Language indicator" },
+    "primaryInset": { "value": "inset 0 0 20px rgba(0, 255, 136, 0.02)", "description": "Selected language bg" },
+    "primaryProgress": { "value": "0 0 10px rgba(0, 188, 125, 0.55)", "description": "Settings progress" },
+    "emeraldHover": { "value": "0 4px 16px rgba(16, 185, 129, 0.4)", "description": "CTA hover" },
+    "emeraldButton": { "value": "0 2px 10px rgba(16, 185, 129, 0.3)", "description": "Primary button" },
+    "emeraldCard": { "value": "0 0 12px rgba(16, 185, 129, 0.12)", "description": "Selected card" },
+    "emeraldRing": { "value": "0 0 30px -5px rgba(16, 185, 129, 0.2)", "description": "Game card hover" },
+    "gold": { "value": "0 0 15px -3px rgba(255, 170, 0, 0.4)", "description": "Jackpot icon" },
+    "goldBorder": { "value": "0 0 15px -3px rgba(212, 175, 55, 0.3)", "description": "VIP avatar" },
+    "rebate": { "value": "0 0 15px -3px rgba(230, 194, 82, 0.4)", "description": "Rebate button" },
+    "redCard": { "value": "0 0 12px rgba(239, 68, 68, 0.12)", "description": "Destructive/hot card" }
+  }
+}

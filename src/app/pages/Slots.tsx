@@ -1,15 +1,15 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { InsidePageHero } from '../components/shared/InsidePageHero';
-import { Grid, ArrowRight, Search, RefreshCw, DollarSign } from 'lucide-react';
+import { Grid, ArrowRight, RefreshCw, DollarSign } from 'lucide-react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useAuth } from '../contexts/AuthContext';
-import { sanitizeTextInput } from '../utils/security';
 import { PAGE_ACCENT, SECTION_HEADER_TITLE_CLASS } from '../config/themeTokens';
 import { Dialog, DialogContent } from '../components/ui/dialog';
 import { Button } from '../components/ui/button';
 import { useHorizontalDragScroll } from '../hooks/useHorizontalDragScroll';
 import { DraggableScrollbar } from '../components/shared/DraggableScrollbar';
+import { GameSearchBar } from '../components/shared/GameSearchBar';
 
 // --- Assets ---
 import imgImagePromo from "@/assets/dba5dfffa741345e0ad70e36cafba5ab8b533760.png";
@@ -87,6 +87,12 @@ export function Slots() {
     const [walletBalance] = useState('966.24');
     const [guaranteedRebate] = useState('5.00%');
     const [showLoginModal, setShowLoginModal] = useState(false);
+    const normalizedSearch = searchQuery.trim().toLowerCase();
+    const activeProviderName = providers.find((provider) => provider.active)?.name ?? '';
+    const filteredGames = games.filter((game) =>
+        game.title.toLowerCase().includes(normalizedSearch) ||
+        activeProviderName.toLowerCase().includes(normalizedSearch)
+    );
 
     // Scrollbar Handlers
     const { scrollRef: scrollContainerRef, handlers: dragScrollHandlers, suppressClickIfDragged } = useHorizontalDragScroll();
@@ -208,21 +214,7 @@ export function Slots() {
                 </div>
 
                 {/* Search Bar - below wallet + rebate */}
-                <div className="w-full max-w-5xl mb-12">
-                    <div className="relative">
-                        <input
-                            type="text"
-                            value={searchQuery}
-                            onChange={(e) => setSearchQuery(sanitizeTextInput(e.target.value).slice(0, 50))}
-                            maxLength={50}
-                            className="w-full h-14 bg-[#16202c] border border-transparent hover:border-white/10 focus:border-pink-500/50 rounded-full pl-6 pr-14 text-white placeholder:text-gray-500 transition-all outline-none"
-                            placeholder={t('searchPlaceholder')}
-                        />
-                        <div className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-pink-600/20 rounded-full text-pink-400">
-                            <Search className="w-5 h-5" />
-                        </div>
-                    </div>
-                </div>
+                <GameSearchBar value={searchQuery} onChange={setSearchQuery} accent="pink" className="mb-12" />
 
                 {/* 5. Section Header + 6. Game Grid */}
                 <div className="w-full flex flex-col gap-6">
@@ -238,7 +230,7 @@ export function Slots() {
 
                     {/* Game Grid */}
                     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-4 lg:gap-6 justify-items-center">
-                        {games.map((game) => {
+                        {filteredGames.map((game) => {
                             const Wrapper: any = game.slug ? Link : 'div';
                             const wrapperProps = game.slug ? { to: `/slots/${game.slug}` } : {};
                             return (

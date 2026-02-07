@@ -1,0 +1,61 @@
+{
+  "semantic": {
+    "background": { "value": "#02040a", "description": "Page background (deep navy)" },
+    "foreground": { "value": "#ffffff", "description": "Primary text" },
+    "card": { "value": "#0b1121", "description": "Card/surface" },
+    "cardForeground": { "value": "#ffffff", "description": "Text on cards" },
+    "primary": { "value": "#00e588", "description": "Brand primary (theme.css)" },
+    "primaryBright": { "value": "#00ff88", "description": "Bright primary (CTAs, highlights)" },
+    "primaryBrand": { "value": "#00bc7d", "description": "Logo/brand green (used in components)" },
+    "primaryHover": { "value": "#00dd76", "description": "Primary button hover" },
+    "primaryHoverDark": { "value": "#00a870", "description": "Primary dark hover" },
+    "primaryForeground": { "value": "#020412", "description": "Text on primary" },
+    "secondary": { "value": "#1e293b", "description": "Secondary surface" },
+    "muted": { "value": "#1e293b", "description": "Muted surface" },
+    "mutedForeground": { "value": "#94a3b8", "description": "Muted text" },
+    "destructive": { "value": "#ef4444", "description": "Error/destructive" },
+    "border": { "value": "#1f2937", "description": "Default border" },
+    "input": { "value": "#1f2937", "description": "Input border" },
+    "inputBackground": { "value": "#111827", "description": "Input fill" },
+    "ring": { "value": "#00e588", "description": "Focus ring" }
+  },
+  "surfaces": {
+    "surfaceDeepest": { "value": "#02040a", "description": "Background" },
+    "surfaceDarker": { "value": "#0a0a0a", "description": "Avatar/overlay" },
+    "surfaceDark": { "value": "#0a0f19", "description": "Chat area" },
+    "surfaceCard": { "value": "#0b1121", "description": "Card (theme)" },
+    "surfacePanel": { "value": "#0b1218", "description": "Promo/card panel" },
+    "surfaceInput": { "value": "#0f151f", "description": "Input/surface (scrollbar)" },
+    "surfaceModal": { "value": "#0f1923", "description": "Modal/dialog" },
+    "surfaceNav": { "value": "#131b29", "description": "Nav/card tint" },
+    "surfaceElevated": { "value": "#1a2230", "description": "Cards/panels/dropdowns" },
+    "surfaceChat": { "value": "#1a2536", "description": "Chat bubbles" },
+    "surfaceHover": { "value": "#252f40", "description": "Button hover" },
+    "surfaceHoverAlt": { "value": "#141b29", "description": "Card hover" }
+  },
+  "brand": {
+    "orange": { "value": "#e65c00", "description": "Withdraw/CTA orange" },
+    "orangeHover": { "value": "#cc5200", "description": "Orange hover" },
+    "gold": { "value": "#FFAA00", "description": "All Game / jackpot" },
+    "goldAccent": { "value": "#d4a520", "description": "Suggested messages" },
+    "goldBorder": { "value": "#D4AF37", "description": "VIP/settings border" },
+    "rebate": { "value": "#e6c252", "description": "Rebate button" },
+    "rebateHover": { "value": "#ffd65c", "description": "Rebate hover" },
+    "rebateText": { "value": "#3c1100", "description": "Text on rebate" },
+    "hotCoral": { "value": "#FF6B6B", "description": "Hot Game accent" },
+    "exchangeGreen": { "value": "#00bc7d", "description": "Exchange/Poker/Recent (same as primaryBrand)" }
+  },
+  "payment": {
+    "yellow": { "value": "#ffc800", "description": "Payment method" },
+    "red": { "value": "#ed2327", "description": "Payment method" },
+    "blue": { "value": "#2b6cb0", "description": "Payment method" },
+    "green": { "value": "#26a17b", "description": "Payment method" }
+  },
+  "opacity": {
+    "white5": { "value": "rgba(255,255,255,0.05)", "description": "Border/surface tint" },
+    "white10": { "value": "rgba(255,255,255,0.1)", "description": "Border/default" },
+    "white20": { "value": "rgba(255,255,255,0.2)", "description": "Border strong" },
+    "black25": { "value": "rgba(0,0,0,0.25)", "description": "Icon box" },
+    "black40": { "value": "rgba(0,0,0,0.4)", "description": "Progress track" }
+  }
+}

@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { useLanguage } from "../contexts/LanguageContext";
-import { ArrowRight, Search } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { useAuth } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { InnerPageLayout } from "../components/shared/InnerPageLayout";
-import { sanitizeTextInput } from "../utils/security";
 import { PAGE_ACCENT } from "../config/themeTokens";
+import { GameSearchBar } from "../components/shared/GameSearchBar";
 
 // Placeholder data - you can replace this with actual recent games data
 const recentGames = [
@@ -14,30 +14,35 @@ const recentGames = [
     name: "Game 1",
     img: "https://pksoftcdn.azureedge.net/media/v8poker_poker-202601191517288267.png",
     category: "Slots",
+    provider: "Slots",
   },
   {
     id: "game2",
     name: "Game 2",
     img: "https://pksoftcdn.azureedge.net/media/kaiyuan-202504210825061750.png",
     category: "Live Casino",
+    provider: "Live Casino",
   },
   {
     id: "game3",
     name: "Game 3",
     img: "https://pksoftcdn.azureedge.net/media/1g%20poker-202502191628300100.png",
     category: "Poker",
+    provider: "Poker",
   },
   {
     id: "game4",
     name: "Game 4",
     img: "https://pksoftcdn.azureedge.net/media/mpoker-202503111448116128.png",
     category: "Sports",
+    provider: "Sports",
   },
   {
     id: "game5",
     name: "Game 5",
     img: "https://pksoftcdn.azureedge.net/media/v8poker_poker-202601191517288267.png",
     category: "Fishing",
+    provider: "Fishing",
   },
 ];
 
@@ -58,10 +63,11 @@ export function RecentGame() {
     return null;
   }
 
+  const normalizedSearch = searchQuery.trim().toLowerCase();
   // Filter games based on search query
   const filteredGames = recentGames.filter(game =>
-    game.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    game.category.toLowerCase().includes(searchQuery.toLowerCase())
+    game.name.toLowerCase().includes(normalizedSearch) ||
+    game.provider.toLowerCase().includes(normalizedSearch)
   );
 
   return (
@@ -84,21 +90,7 @@ export function RecentGame() {
         {/* Main Content Area */}
         <div className="container mx-auto max-w-[1200px] px-4 relative z-10 pb-20 flex flex-col items-center">
           {/* Search Bar */}
-          <div className="w-full max-w-5xl mb-12">
-            <div className="relative">
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(sanitizeTextInput(e.target.value).slice(0, 50))}
-                maxLength={50}
-                className="w-full h-14 bg-[#16202c] border border-transparent hover:border-white/10 focus:border-[#00bc7d]/50 rounded-full pl-6 pr-14 text-white placeholder:text-gray-500 transition-all outline-none"
-                placeholder={t("searchPlaceholder")}
-              />
-              <div className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-emerald-600/20 rounded-full text-emerald-400">
-                <Search className="w-5 h-5" />
-              </div>
-            </div>
-          </div>
+          <GameSearchBar value={searchQuery} onChange={setSearchQuery} className="mb-12" />
 
           {/* Games Grid - same grid and spacing as Slots / LiveCasino */}
           <div className="w-full">

@@ -1,11 +1,11 @@
 import React, { useState, useRef } from 'react';
 import { InsidePageHero } from '../components/shared/InsidePageHero';
-import { Grid, ArrowRight, Search } from 'lucide-react';
+import { Grid, ArrowRight } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
-import { sanitizeTextInput } from '../utils/security';
 import { PAGE_ACCENT, SECTION_HEADER_TITLE_CLASS } from '../config/themeTokens';
 import { useHorizontalDragScroll } from '../hooks/useHorizontalDragScroll';
 import { DraggableScrollbar } from '../components/shared/DraggableScrollbar';
+import { GameSearchBar } from '../components/shared/GameSearchBar';
 
 // New Banner
 import imgFishingBanner from "@/assets/71667b097dc0233c71967c40c7e2dc37f4fa9f8c.png";
@@ -63,6 +63,11 @@ const fishingGames = [
 export function Fishing() {
     const { t } = useLanguage();
     const [searchQuery, setSearchQuery] = useState('');
+    const normalizedSearch = searchQuery.trim().toLowerCase();
+    const filteredFishingGames = fishingGames.filter((game) =>
+        game.title.toLowerCase().includes(normalizedSearch) ||
+        game.provider.toLowerCase().includes(normalizedSearch)
+    );
     // Scrollbar Handlers
     const { scrollRef: scrollContainerRef, handlers: dragScrollHandlers, suppressClickIfDragged } = useHorizontalDragScroll();
 
@@ -121,21 +126,7 @@ export function Fishing() {
                 </div>
 
                 {/* Search Bar */}
-                <div className="w-full max-w-5xl mb-12">
-                    <div className="relative">
-                        <input
-                            type="text"
-                            value={searchQuery}
-                            onChange={(e) => setSearchQuery(sanitizeTextInput(e.target.value).slice(0, 50))}
-                            maxLength={50}
-                            className="w-full h-14 bg-[#16202c] border border-transparent hover:border-white/10 focus:border-cyan-500/50 rounded-full pl-6 pr-14 text-white placeholder:text-gray-500 transition-all outline-none"
-                            placeholder={t("searchPlaceholder")}
-                        />
-                        <div className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-cyan-600/20 rounded-full text-cyan-400">
-                            <Search className="w-5 h-5" />
-                        </div>
-                    </div>
-                </div>
+                <GameSearchBar value={searchQuery} onChange={setSearchQuery} accent="cyan" className="mb-12" />
 
                 {/* Section: FISHING GAME */}
                 <div className="w-full flex flex-col gap-6">
@@ -152,7 +143,7 @@ export function Fishing() {
 
                     {/* Game Grid */}
                     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-4 lg:gap-6 justify-items-center">
-                        {fishingGames.map((game) => (
+                        {filteredFishingGames.map((game) => (
                             <div key={game.id} className="flex flex-col items-start gap-2 md:gap-3 group cursor-pointer w-full max-w-[214px]">
                                 <div
                                     className="relative w-full aspect-square rounded-2xl overflow-hidden ring-1 ring-white/10 transition-all duration-500 bg-[#1a2536] group-hover:ring-emerald-500/30 group-hover:shadow-[0_0_30px_-5px_rgba(16,185,129,0.2)]"

@@ -1,0 +1,45 @@
+{
+  "fontFamily": {
+    "sans": { "value": "-apple-system, BlinkMacSystemFont, \"SF Pro Display\", \"SF Pro Text\", \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif" },
+    "display": { "value": "-apple-system, BlinkMacSystemFont, \"SF Pro Display\", \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif" },
+    "text": { "value": "-apple-system, BlinkMacSystemFont, \"SF Pro Text\", \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif" }
+  },
+  "fontSize": {
+    "xs": { "value": "0.75rem", "px": "12", "lineHeight": "1rem" },
+    "sm": { "value": "0.875rem", "px": "14", "lineHeight": "1.25rem" },
+    "base": { "value": "1rem", "px": "16", "lineHeight": "1.5rem" },
+    "lg": { "value": "1.125rem", "px": "18", "lineHeight": "1.75rem" },
+    "xl": { "value": "1.25rem", "px": "20", "lineHeight": "1.75rem" },
+    "2xl": { "value": "1.5rem", "px": "24", "lineHeight": "2rem" },
+    "3xl": { "value": "1.875rem", "px": "30", "lineHeight": "2.25rem" },
+    "4xl": { "value": "2.25rem", "px": "36", "lineHeight": "2.5rem" },
+    "custom10": { "value": "0.625rem", "px": "10", "description": "Labels, badges" },
+    "custom11": { "value": "0.6875rem", "px": "11", "description": "Caption" },
+    "custom13": { "value": "0.8125rem", "px": "13", "description": "Nav/CTA" },
+    "custom14": { "value": "0.875rem", "px": "14", "description": "Balance" },
+    "custom15": { "value": "0.9375rem", "px": "15", "description": "Language label" }
+  },
+  "fontWeight": {
+    "normal": { "value": "400" },
+    "medium": { "value": "500" },
+    "semibold": { "value": "600" },
+    "bold": { "value": "700" },
+    "extrabold": { "value": "800" },
+    "black": { "value": "900" }
+  },
+  "lineHeight": {
+    "tight": { "value": "1.35" },
+    "normal": { "value": "1.5" },
+    "relaxed": { "value": "1.6" },
+    "loose": { "value": "1.7" },
+    "none": { "value": "1" }
+  },
+  "letterSpacing": {
+    "tighter": { "value": "-0.05em" },
+    "tight": { "value": "-0.01em" },
+    "normal": { "value": "0.01em" },
+    "wide": { "value": "0.02em" },
+    "wider": { "value": "0.05em" },
+    "widest": { "value": "0.2em" }
+  }
+}
