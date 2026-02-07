@@ -12,6 +12,7 @@ import { PageSidebar, type PageSidebarItem } from '../components/shared/PageSide
 import { MOBILE } from '../config/themeTokens';
 import { sanitizeTextInput } from '../utils/security';
 import { UsersThree } from '../components/icons/UsersThree';
+import { FilterTabs } from '../components/shared/FilterTabs';
 
 const DOWNLINE_SIDEBAR_ITEMS: PageSidebarItem[] = [
   { id: 'summary', label: 'Downline Summary', icon: UsersThree },
@@ -152,22 +153,13 @@ export function Downlines() {
                 </div>
 
                 {/* Quick Date Filters (Today / Last 7/30/60 Days) */}
-                <div className="flex flex-wrap gap-3 mb-6">
-                  {QUICK_DATE_FILTERS.map((filter) => {
-                    const isActive = activeDateFilter === filter.id;
-                    return (
-                      <button
-                        key={filter.id}
-                        onClick={() => setActiveDateFilter(filter.id)}
-                        className={`px-6 h-10 rounded-xl text-sm font-bold transition-all border ${isActive
-                          ? 'border-[#00bc7d] bg-[#00bc7d]/10 text-[#00bc7d]'
-                          : 'border-white/5 bg-[#0f151f] text-gray-400 hover:text-white hover:bg-white/5'
-                          }`}
-                      >
-                        {filter.label}
-                      </button>
-                    );
-                  })}
+                <div className="mb-6">
+                  <FilterTabs
+                    items={QUICK_DATE_FILTERS}
+                    activeId={activeDateFilter}
+                    onSelect={setActiveDateFilter}
+                    scrollable
+                  />
                 </div>
 
                 {/* Summary Stats Cards */}

@@ -94,17 +94,10 @@ export function HotProviders() {
     prevArrow: <CustomPrevArrow />,
     responsive: [
       {
-        breakpoint: 1280,
+        breakpoint: 480,
         settings: {
-          slidesToShow: 5,
-          slidesToScroll: 2,
-        }
-      },
-      {
-        breakpoint: 1024,
-        settings: {
-          slidesToShow: 4,
-          slidesToScroll: 2,
+          slidesToShow: 2,
+          slidesToScroll: 1,
         }
       },
       {
@@ -115,10 +108,17 @@ export function HotProviders() {
         }
       },
       {
-        breakpoint: 480,
+        breakpoint: 1024,
         settings: {
-          slidesToShow: 2,
-          slidesToScroll: 1,
+          slidesToShow: 4,
+          slidesToScroll: 2,
+        }
+      },
+      {
+        breakpoint: 1280,
+        settings: {
+          slidesToShow: 5,
+          slidesToScroll: 2,
         }
       }
     ]

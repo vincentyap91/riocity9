@@ -25,6 +25,7 @@ import {
   MOBILE,
 } from '../config/themeTokens';
 import { EmptyState } from '../components/shared/EmptyState';
+import { FilterTabs } from '../components/shared/FilterTabs';
 
 const SIDEBAR_ITEMS: PageSidebarItem[] = [
   { id: 'transaction', label: 'Transaction History', icon: Wallet },
@@ -224,20 +225,13 @@ export function HistoryRecord() {
             </div>
 
             {/* Quick Filters */}
-            <div className="flex flex-wrap gap-3 mb-6">
-              {QUICK_FILTERS.map((filter) => (
-                <button
-                  key={filter.id}
-                  onClick={() => setActiveFilter(filter.id)}
-                  className={`px-6 h-10 rounded-xl text-sm font-bold transition-all border ${
-                    activeFilter === filter.id
-                      ? 'border-[#00bc7d] bg-[#00bc7d]/10 text-[#00bc7d]'
-                      : 'border-white/5 bg-[#0f151f] text-gray-400 hover:text-white hover:bg-white/5'
-                  }`}
-                >
-                  {filter.label}
-                </button>
-              ))}
+            <div className="mb-6">
+              <FilterTabs
+                items={QUICK_FILTERS}
+                activeId={activeFilter}
+                onSelect={setActiveFilter}
+                scrollable
+              />
             </div>
 
             {/* Table Container */}

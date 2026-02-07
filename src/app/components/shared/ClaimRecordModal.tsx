@@ -12,8 +12,7 @@ import {
   Dialog,
   DialogContent,
 } from '../ui/dialog';
-import { useHorizontalDragScroll } from '../../hooks/useHorizontalDragScroll';
-import { DraggableScrollbar } from './DraggableScrollbar';
+import { FilterTabs } from './FilterTabs';
 
 export type ClaimRecordType = 'spinwheel' | 'scratch' | 'prize';
 
@@ -70,7 +69,6 @@ export function ClaimRecordModal({
   const [startDate, setStartDate] = useState('01-12-2025');
   const [endDate, setEndDate] = useState('31-12-2025');
   const [activeDatePreset, setActiveDatePreset] = useState('lastMonth');
-  const { scrollRef: presetsScrollRef, handlers: presetsDragHandlers } = useHorizontalDragScroll();
 
   // When modal opens, set Type to the page that opened it (Spin Wheel / Voucher Scratch / Prize Box)
   useEffect(() => {
@@ -84,15 +82,6 @@ export function ClaimRecordModal({
   const getStatusClass = (status: RecordStatus) => {
     if (status === 'Completed' || status === 'Available') return 'text-emerald-500 font-bold';
     return 'text-red-400 font-bold';
-  };
-
-  const scrollPresets = (direction: 'left' | 'right') => {
-    if (!presetsScrollRef.current) return;
-    const scrollAmount = 240;
-    presetsScrollRef.current.scrollBy({
-      left: direction === 'left' ? -scrollAmount : scrollAmount,
-      behavior: 'smooth'
-    });
   };
 
   return (
@@ -195,56 +184,13 @@ export function ClaimRecordModal({
 
           {/* Quick Filters (scrollable "tabs") */}
           <div className="mb-6">
-            <div
-              ref={presetsScrollRef}
-              className="flex items-center gap-3 overflow-x-auto overflow-y-hidden pb-2 no-scrollbar select-none cursor-grab active:cursor-grabbing"
-              style={{
-                WebkitOverflowScrolling: 'touch',
-                touchAction: 'pan-x',
-                scrollbarWidth: 'none',
-                msOverflowStyle: 'none',
-                willChange: 'scroll-position',
-                transform: 'translateZ(0)',
-                backfaceVisibility: 'hidden' as const
-              }}
-              {...presetsDragHandlers}
-            >
-              {QUICK_DATE_OPTIONS.map((preset) => {
-                const isActive = activeDatePreset === preset.id;
-                return (
-                  <button
-                    key={preset.id}
-                    onClick={() => setActiveDatePreset(preset.id)}
-                    className={`shrink-0 px-6 h-10 rounded-xl text-sm font-bold transition-all border ${
-                      isActive
-                        ? 'border-[#00bc7d] bg-[#00bc7d]/10 text-[#00bc7d] shadow-[0_0_15px_rgba(0,188,125,0.2)]'
-                        : 'border-white/5 bg-[#0f151f] text-gray-400 hover:text-white hover:bg-white/5'
-                    }`}
-                  >
-                    {preset.label}
-                  </button>
-                );
-              })}
-            </div>
-
-            <DraggableScrollbar containerRef={presetsScrollRef} className="mt-[-6px]">
-              <button
-                onClick={() => scrollPresets('left')}
-                className="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-white transition-colors active:scale-90"
-                aria-label="Scroll presets left"
-                type="button"
-              >
-                <div className="w-0 h-0 border-t-[5px] border-t-transparent border-r-[7px] border-r-current border-b-[5px] border-b-transparent" />
-              </button>
-              <button
-                onClick={() => scrollPresets('right')}
-                className="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-white transition-colors active:scale-90"
-                aria-label="Scroll presets right"
-                type="button"
-              >
-                <div className="w-0 h-0 border-t-[5px] border-t-transparent border-l-[7px] border-l-current border-b-[5px] border-b-transparent" />
-              </button>
-            </DraggableScrollbar>
+            <FilterTabs
+              items={QUICK_DATE_OPTIONS}
+              activeId={activeDatePreset}
+              onSelect={setActiveDatePreset}
+              scrollable
+              activeClassName="border-[#00bc7d] bg-[#00bc7d]/10 text-[#00bc7d] shadow-[0_0_15px_rgba(0,188,125,0.2)]"
+            />
           </div>
 
           {/* Table Container (Bet Record style) */}

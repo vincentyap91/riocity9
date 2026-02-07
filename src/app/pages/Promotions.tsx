@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ThumbsUp, DollarSign, Fish, Dices, Gift, Spade, Gamepad2, Trophy } from "lucide-react";
 import { MOBILE } from "../config/themeTokens";
+import { FilterTabs } from "../components/shared/FilterTabs";
 
 // import girl1 from "@/assets/girl-1.png";
 // import girl2 from "@/assets/girl-2.png";
@@ -230,24 +231,13 @@ export function Promotions() {
         </h1>
 
         {/* Category Filters */}
-        <div className="mb-8 flex flex-wrap gap-3">
-          {categories.map((category) => {
-            const Icon = category.icon;
-            const isActive = activeCategory === category.id;
-            return (
-              <button
-                key={category.id}
-                onClick={() => setActiveCategory(category.id)}
-                className={`px-6 h-10 rounded-xl text-sm font-bold transition-all border ${
-                  isActive
-                    ? "border-[#00bc7d] bg-[#00bc7d]/10 text-[#00bc7d]"
-                    : "border-white/5 bg-[#0f151f] text-gray-400 hover:text-white hover:bg-white/5"
-                }`}
-              >
-                {category.label}
-              </button>
-            );
-          })}
+        <div className="mb-8">
+          <FilterTabs
+            items={categories.map((category) => ({ id: category.id, label: category.label }))}
+            activeId={activeCategory}
+            onSelect={setActiveCategory}
+            scrollable
+          />
         </div>
 
         {/* Promotion Cards Grid */}

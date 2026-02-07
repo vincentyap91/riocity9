@@ -16,6 +16,7 @@ import imgImageLeBandit from "@/assets/4edf617eacdcd51770b6d345d3b9d62c067fb39e.
 import imgImageSweetBonanza from "@/assets/b6552c9dab008f009bad47f48fa007ccef169c4a.png";
 import imgImageGates1000 from "@/assets/e7fb1cf0de54bfef4c5b040e789790c437112a46.png";
 import { PAGE_ACCENT } from '../config/themeTokens';
+import { FilterTabs } from '../components/shared/FilterTabs';
 
 const gameDetailConfig = [
   {
@@ -182,29 +183,16 @@ export function GameDetailPage() {
           <div className="w-full rounded-2xl bg-[#1a2230] border border-white/5 overflow-hidden">
             <div className="px-4 py-3 border-b border-white/10">
               <div className="text-white text-sm font-semibold">{game.title} by {game.provider}</div>
-              <div className="mt-3 flex flex-wrap gap-3">
-                <button
-                  type="button"
-                  onClick={() => setActiveTab('ranking')}
-                  className={`px-6 h-10 rounded-xl text-sm font-bold transition-all border ${
-                    activeTab === 'ranking'
-                      ? 'border-[#00bc7d] bg-[#00bc7d]/10 text-[#00bc7d]'
-                      : 'border-white/5 bg-[#0f151f] text-gray-400 hover:text-white hover:bg-white/5'
-                  }`}
-                >
-                  Ranking
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setActiveTab('description')}
-                  className={`px-6 h-10 rounded-xl text-sm font-bold transition-all border ${
-                    activeTab === 'description'
-                      ? 'border-[#00bc7d] bg-[#00bc7d]/10 text-[#00bc7d]'
-                      : 'border-white/5 bg-[#0f151f] text-gray-400 hover:text-white hover:bg-white/5'
-                  }`}
-                >
-                  Game Description
-                </button>
+              <div className="mt-3">
+                <FilterTabs
+                  items={[
+                    { id: 'ranking', label: 'Ranking' },
+                    { id: 'description', label: 'Game Description' },
+                  ]}
+                  activeId={activeTab}
+                  onSelect={(id) => setActiveTab(id as 'ranking' | 'description')}
+                  scrollable
+                />
               </div>
             </div>
             <div className="p-4">

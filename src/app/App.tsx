@@ -47,6 +47,7 @@ import { PromotionDetail } from './pages/PromotionDetail';
 import { Downlines } from './pages/Downlines';
 import { InformationCenter } from './pages/InformationCenter';
 import { FloatingRewardWidget } from './components/shared/FloatingRewardWidget';
+import { FilterTabs } from './components/shared/FilterTabs';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { SessionProvider } from './contexts/SessionContext';
 import { LanguageProvider, useLanguage } from './contexts/LanguageContext';
@@ -887,22 +888,19 @@ function AppContent() {
                   </div>
 
                   {/* Category Tabs - match History Record Quick Filters (gap-3 mb-6) */}
-                  <div className={`flex flex-wrap gap-3 ${MOBILE.sectionMb}`}>
-                    {searchCategories.map((item) => (
-                      <button
-                        key={item.value}
-                        type="button"
-                        role="tab"
-                        aria-selected={selectedSearchCategory === item.value}
-                        onClick={() => setSelectedSearchCategory(item.value)}
-                        className={`shrink-0 px-6 h-10 rounded-xl text-sm font-bold transition-all border ${selectedSearchCategory === item.value
-                          ? "border-[#00bc7d] bg-[#00bc7d]/10 text-[#00bc7d] shadow-[0_0_15px_rgba(0,188,125,0.2)]"
-                          : "border-white/5 bg-[#0f151f] text-gray-400 hover:text-white hover:bg-white/5"
-                          }`}
-                      >
-                        {t(item.labelKey as any)}
-                      </button>
-                    ))}
+                  <div className={MOBILE.sectionMb}>
+                    <FilterTabs
+                      items={searchCategories.map((item) => ({
+                        id: item.value,
+                        label: t(item.labelKey as any),
+                      }))}
+                      activeId={selectedSearchCategory}
+                      onSelect={setSelectedSearchCategory}
+                      scrollable
+                      buttonRole="tab"
+                      useAriaSelected
+                      activeClassName="border-[#00bc7d] bg-[#00bc7d]/10 text-[#00bc7d] shadow-[0_0_15px_rgba(0,188,125,0.2)]"
+                    />
                   </div>
 
                   {/* Recent Searches */}
