@@ -85,7 +85,7 @@ export function HotProviders() {
     dots: false,
     infinite: true,
     speed: 500,
-    slidesToShow: 6,
+    slidesToShow: 8,
     slidesToScroll: 2,
     autoplay: true,
     autoplaySpeed: 3000,
@@ -94,31 +94,31 @@ export function HotProviders() {
     prevArrow: <CustomPrevArrow />,
     responsive: [
       {
-        breakpoint: 480,
+        breakpoint: 1280,
         settings: {
-          slidesToShow: 2,
-          slidesToScroll: 1,
-        }
-      },
-      {
-        breakpoint: 768,
-        settings: {
-          slidesToShow: 3,
-          slidesToScroll: 1,
+          slidesToShow: 7,
+          slidesToScroll: 2,
         }
       },
       {
         breakpoint: 1024,
         settings: {
-          slidesToShow: 4,
+          slidesToShow: 6,
           slidesToScroll: 2,
         }
       },
       {
-        breakpoint: 1280,
+        breakpoint: 768,
         settings: {
           slidesToShow: 5,
-          slidesToScroll: 2,
+          slidesToScroll: 1,
+        }
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 1,
         }
       }
     ]
@@ -145,13 +145,13 @@ export function HotProviders() {
       <div className="overflow-hidden px-2 sm:px-0">
         <Slider {...settings}>
           {providers.map((provider) => (
-            <div key={provider.id} className="px-2">
-              <div className="h-24 bg-[#0f1923] border border-white/5 hover:border-emerald-500/50 rounded-xl flex items-center justify-center group cursor-pointer transition-all hover:bg-white/5 hover:shadow-[0_0_15px_-5px_rgba(16,185,129,0.2)]">
-                <div className="w-full h-full p-4 flex items-center justify-center opacity-100 group-hover:opacity-100 transition-all duration-300 group-hover:brightness-100 group-hover:invert-0">
+            <div key={provider.id} className="px-1 sm:px-2">
+              <div className="h-20 bg-[#0f1923] border border-white/5 hover:border-emerald-500/50 rounded-xl flex items-center justify-center group cursor-pointer transition-all hover:bg-white/5 hover:shadow-[0_0_15px_-5px_rgba(16,185,129,0.2)]">
+                <div className="w-full h-full p-2 sm:p-4 flex items-center justify-center opacity-100 group-hover:opacity-100 transition-all duration-300 group-hover:brightness-100 group-hover:invert-0">
                   <img 
                     src={provider.logo} 
                     alt={`Provider ${provider.id}`} 
-                    className="max-h-full max-w-full object-contain" 
+                    className="w-full h-full object-contain" 
                   />
                 </div>
               </div>
