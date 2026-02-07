@@ -707,9 +707,9 @@ function AppContent() {
                       {languages.map((lang) => (
                         <DropdownMenuItem
                           key={lang.id}
-                          onSelect={(event) => {
-                            event.preventDefault();
+                          onClick={() => {
                             setCurrentLang(lang);
+                            updateLanguageDropdownOpen(false);
                           }}
                           className={`group flex items-center gap-3.5 px-4 py-3.5 rounded-[14px] cursor-pointer transition-all duration-300 outline-none ${currentLang.id === lang.id
                             ? 'bg-gradient-to-r from-[#00bc7d]/10 to-transparent text-[#00ff88] shadow-[inset_0_0_20px_rgba(0,255,136,0.02)]'
