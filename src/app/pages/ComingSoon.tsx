@@ -5,7 +5,7 @@ import { InnerPageLayout } from "../components/shared/InnerPageLayout";
 
 export function ComingSoon({
   title,
-  description = "此功能正在制作中，敬请期待。",
+  description = "Something great is on the way. This feature is being carefully crafted and will launch soon.",
   backTo = "/",
   backLabel = "Back",
 }: {

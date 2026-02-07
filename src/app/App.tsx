@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { BrowserRouter, Routes, Route, Link, useLocation, useNavigate } from 'react-router-dom';
 import { AnimatePresence, motion } from 'motion/react';
 import { Button } from './components/ui/button';
@@ -108,6 +108,11 @@ function AppContent() {
   const wasAuthenticatedRef = useRef<boolean | null>(null);
 
   const inputRef = useRef<HTMLInputElement | null>(null);
+  const languageDropdownTriggerRef = useRef<HTMLDivElement | null>(null);
+  const languageDropdownContentRef = useRef<HTMLElement | null>(null);
+  const updateLanguageDropdownOpen = useCallback((open: boolean) => {
+    setIsLanguageDropdownOpen((prev) => (prev === open ? prev : open));
+  }, []);
   const searchCategories = [
     { value: "All", labelKey: "all" },
     { value: "Sports", labelKey: "sports" },
@@ -292,16 +297,16 @@ function AppContent() {
   useEffect(() => {
     if (isWalletDropdownOpen) {
       setIsRolloverOpen(false);
-      setIsLanguageDropdownOpen(false);
+      updateLanguageDropdownOpen(false);
     }
-  }, [isWalletDropdownOpen]);
+  }, [isWalletDropdownOpen, updateLanguageDropdownOpen]);
 
   useEffect(() => {
     if (isRolloverOpen) {
       setIsWalletDropdownOpen(false);
-      setIsLanguageDropdownOpen(false);
+      updateLanguageDropdownOpen(false);
     }
-  }, [isRolloverOpen]);
+  }, [isRolloverOpen, updateLanguageDropdownOpen]);
 
   useEffect(() => {
     if (isLanguageDropdownOpen) {
@@ -310,23 +315,40 @@ function AppContent() {
     }
   }, [isLanguageDropdownOpen]);
 
-  // Close all header dropdowns when clicking outside (wallet, rollover, or language trigger/content)
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      const target = event.target as HTMLElement;
+    if (!isLanguageDropdownOpen) {
+      languageDropdownContentRef.current = null;
+      return;
+    }
+
+    const raf = window.requestAnimationFrame(() => {
+      languageDropdownContentRef.current = document.querySelector<HTMLElement>('[data-language-dropdown-content]');
+    });
+
+    return () => window.cancelAnimationFrame(raf);
+  }, [isLanguageDropdownOpen]);
+
+  // Use one pointerdown listener + ref containment so trigger clicks don't immediately close the menu.
+  useEffect(() => {
+    const handleClickOutside = (event: PointerEvent) => {
+      const target = event.target;
+      if (!(target instanceof Element)) return;
       const insideWallet = target.closest('[data-wallet-dropdown]');
       const insideRollover = target.closest('[data-rollover-dropdown]');
-      const insideLanguage = target.closest('[data-language-dropdown]') || target.closest('[data-language-dropdown-content]');
-      if (!insideWallet && !insideRollover && !insideLanguage) {
+      const insideLanguageTrigger =
+        !!languageDropdownTriggerRef.current && languageDropdownTriggerRef.current.contains(target);
+      const insideLanguageContent =
+        !!languageDropdownContentRef.current && languageDropdownContentRef.current.contains(target);
+      if (!insideWallet && !insideRollover && !insideLanguageTrigger && !insideLanguageContent) {
         setIsWalletDropdownOpen(false);
         setIsRolloverOpen(false);
-        setIsLanguageDropdownOpen(false);
+        updateLanguageDropdownOpen(false);
       }
     };
 
-    document.addEventListener('click', handleClickOutside);
-    return () => document.removeEventListener('click', handleClickOutside);
-  }, []);
+    document.addEventListener('pointerdown', handleClickOutside);
+    return () => document.removeEventListener('pointerdown', handleClickOutside);
+  }, [updateLanguageDropdownOpen]);
 
   return (
     <>
@@ -662,10 +684,13 @@ function AppContent() {
               )}
 
               {/* Language: Pill Glass Selector with Dropdown (controlled - only one header dropdown open at a time) */}
-              <div data-language-dropdown>
-                <DropdownMenu open={isLanguageDropdownOpen} onOpenChange={setIsLanguageDropdownOpen}>
+              <div data-language-dropdown ref={languageDropdownTriggerRef}>
+                <DropdownMenu open={isLanguageDropdownOpen} onOpenChange={updateLanguageDropdownOpen}>
                   <DropdownMenuTrigger asChild>
-                    <button className="h-10 px-2 sm:px-2.5 rounded-[10px] bg-white/5 border border-white/10 flex items-center justify-center gap-1.5 text-gray-300 hover:text-white hover:bg-white/10 hover:border-[#00bc7d]/50 transition-all duration-300 group outline-none">
+                    <button
+                      data-language-dropdown-trigger
+                      className="h-10 px-2 sm:px-2.5 rounded-[10px] bg-white/5 border border-white/10 flex items-center justify-center gap-1.5 text-gray-300 hover:text-white hover:bg-white/10 hover:border-[#00bc7d]/50 transition-all duration-300 group outline-none"
+                    >
                       <div className="w-6 h-6 sm:w-7 sm:h-7 flex items-center justify-center shrink-0 overflow-hidden rounded-full border border-white/10 bg-[#0a0a0a] shadow-lg relative">
                         <currentLang.icon className="w-full h-full object-cover object-center" />
                         <div className="absolute inset-0 ring-1 ring-inset ring-white/5 rounded-full pointer-events-none"></div>
@@ -676,13 +701,16 @@ function AppContent() {
                   <DropdownMenuContent
                     align="end"
                     data-language-dropdown-content
-                    className="w-56 bg-[#1a2230]/98 backdrop-blur-2xl border border-white/10 text-white rounded-[20px] shadow-[0_25px_70px_rgba(0,0,0,0.7),0_0_30px_rgba(0,255,136,0.03)] p-2 animate-in fade-in zoom-in-95 duration-300 z-[101]"
+                    className="w-56 bg-[#1a2230]/98 backdrop-blur-2xl border border-white/10 text-white rounded-[20px] shadow-[0_25px_70px_rgba(0,0,0,0.7),0_0_30px_rgba(0,255,136,0.03)] p-2 z-[101]"
                   >
                     <div className="flex flex-col gap-1">
                       {languages.map((lang) => (
                         <DropdownMenuItem
                           key={lang.id}
-                          onClick={() => setCurrentLang(lang)}
+                          onSelect={(event) => {
+                            event.preventDefault();
+                            setCurrentLang(lang);
+                          }}
                           className={`group flex items-center gap-3.5 px-4 py-3.5 rounded-[14px] cursor-pointer transition-all duration-300 outline-none ${currentLang.id === lang.id
                             ? 'bg-gradient-to-r from-[#00bc7d]/10 to-transparent text-[#00ff88] shadow-[inset_0_0_20px_rgba(0,255,136,0.02)]'
                             : 'text-white/60 hover:text-white hover:bg-white/5'
