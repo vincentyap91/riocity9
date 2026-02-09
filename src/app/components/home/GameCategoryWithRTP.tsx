@@ -6,9 +6,11 @@ import { useLanguage } from '../../contexts/LanguageContext';
 import { useHorizontalDragScroll } from '../../hooks/useHorizontalDragScroll';
 import { INITIAL_SLOTS, MOCK_CATEGORIES, GAME_CATEGORIES } from '../../config/gameData';
 import { DraggableScrollbar } from '../shared/DraggableScrollbar';
+import { useNavigate } from 'react-router-dom';
 
 export function GameCategoryWithRTP() {
   const { t } = useLanguage();
+  const navigate = useNavigate();
   const { scrollRef: scrollContainerRef, handlers: dragScrollHandlers } = useHorizontalDragScroll();
 
   const [activeCategory, setActiveCategory] = useState('slots');
@@ -16,6 +18,22 @@ export function GameCategoryWithRTP() {
   const [isLoading, setIsLoading] = useState(false);
   const isSlotsCardLayout = activeCategory === 'slots' || activeCategory === 'allGames' || activeCategory === 'hotGames';
   const activeCategoryLabel = t((GAME_CATEGORIES.find((cat) => cat.id === activeCategory)?.nameKey || 'allGames') as any);
+
+  const normalizeProviderName = (value: unknown) => String(value || '').trim().toLowerCase();
+  const PROVIDER_ROUTE_MAP: Record<string, string> = {
+    naga: '/providers/naga-game-slots',
+    'naga game slots': '/providers/naga-game-slots',
+    'royal slot gaming': '/providers/royal-slot-gaming',
+    playtech: '/providers/playtech-slot',
+    'playtech slot': '/providers/playtech-slot',
+    'playtech slots': '/providers/playtech-slot',
+  };
+
+  const getGameRoute = (game: any) => {
+    const providerName = normalizeProviderName(game?.provider);
+    return PROVIDER_ROUTE_MAP[providerName] ?? null;
+  };
+  const isUnderMaintenance = (game: any) => normalizeProviderName(game?.provider) === 'pragmatic play';
 
   useEffect(() => {
     const fetchCategoryData = async () => {
@@ -135,7 +153,12 @@ export function GameCategoryWithRTP() {
               isSlotsCardLayout ? (
                 <div
                   key={i}
-                  className="group bg-[#0f1923] rounded-xl overflow-hidden border border-white/5 hover:border-[#39ff88]/30 transition-all duration-500 cursor-pointer flex flex-col"
+                  className={`group relative bg-[#0f1923] rounded-xl overflow-hidden border border-white/5 transition-all duration-500 flex flex-col ${isUnderMaintenance(game) ? 'cursor-not-allowed' : 'cursor-pointer hover:border-[#39ff88]/30'}`}
+                  onClick={() => {
+                    if (isUnderMaintenance(game)) return;
+                    const route = getGameRoute(game);
+                    if (route) navigate(route);
+                  }}
                 >
                   {/* Top Section: Provider Header */}
                   <div className={`relative overflow-hidden flex items-center justify-center ${game.color || 'bg-blue-600'}`}>
@@ -151,6 +174,23 @@ export function GameCategoryWithRTP() {
                       <span className="relative z-10 text-white font-black text-[10px] md:text-[11px] uppercase tracking-widest text-center px-2 drop-shadow-md">
                         {game.provider || 'PROVIDER'}
                       </span>
+                    )}
+
+                    {isUnderMaintenance(game) && (
+                      <div className="absolute inset-0 bg-black/55 z-20 flex flex-col items-center justify-center gap-2 pointer-events-none">
+                        <svg className="h-10 w-10 fill-emerald-400 drop-shadow" viewBox="0 0 150 150" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+                          <g clipPath="url(#clip0_1031_6568)">
+                            <path d="M148.878 18.7427C148.334 16.9377 146.058 16.3699 144.73 17.6977L136.061 26.3672H123.633V13.9389L132.303 5.26523C133.637 3.93047 133.058 1.6626 131.267 1.11797C128.813 0.372363 126.267 0.0541992 123.658 0.0541992C116.59 0.0541992 109.964 2.73779 104.99 7.72471C98.896 13.8144 96.1667 22.522 97.6772 31.0233L98.0806 33.2763L33.276 98.0807C30.6583 97.6128 29.0818 97.2694 26.4009 97.2694C19.4399 97.2694 12.6293 100.085 7.7197 104.99C0.790989 111.923 -1.65091 122.075 1.11648 131.257C1.66199 133.066 3.93367 133.633 5.26433 132.302L13.9344 123.633H26.4258V136.066L17.6953 144.737C16.362 146.069 16.9371 148.341 18.7333 148.886C21.1816 149.626 23.7243 150 26.3282 150C42.7409 150 55.2035 135.192 52.3221 118.976L51.9187 116.723L116.719 51.919C119.293 52.379 120.936 52.7332 123.594 52.7259C130.568 52.7259 137.374 49.9148 142.275 45.0097C149.209 38.0798 151.647 27.9305 148.878 18.7427Z"></path>
+                            <path d="M143.576 112.489L112.755 81.9729C110.699 79.9204 108.143 78.3135 105.343 77.1926L76.9005 105.635C78.0211 108.436 79.6295 110.994 81.6841 113.052L112.501 143.564C121.066 152.13 134.97 152.161 143.576 143.564C152.142 134.994 152.142 121.055 143.576 112.489ZM131.049 131.037C129.332 132.754 126.551 132.754 124.835 131.037L103.241 109.748C101.524 108.031 101.524 105.25 103.241 103.534C104.957 101.817 107.738 101.817 109.455 103.534L131.049 124.823C132.765 126.54 132.765 129.32 131.049 131.037Z"></path>
+                            <path d="M37.5822 25.1538L37.5757 25.1558L41.539 21.1925C42.6877 20.0426 42.4463 18.1251 41.0583 17.2925L14.2299 0.62641C12.5011 -0.410992 10.2878 -0.138531 8.86246 1.28735L1.28746 8.86235C-0.139008 10.2888 -0.410883 12.5031 0.627692 14.2322L17.3052 41.0476C18.1408 42.4374 20.0632 42.6692 21.2046 41.5266L25.1518 37.58L53.2507 65.6789L65.6791 53.2506L37.5822 25.1538Z"></path>
+                          </g>
+                          <defs>
+                            <clipPath id="clip0_1031_6568">
+                              <rect width="150" height="150" fill="white"></rect>
+                            </clipPath>
+                          </defs>
+                        </svg>
+                      </div>
                     )}
                   </div>
 
@@ -180,7 +220,12 @@ export function GameCategoryWithRTP() {
               ) : (
                 <div
                   key={i}
-                  className="group bg-[#0f1923] rounded-xl overflow-hidden border border-white/5 hover:border-[#39ff88]/30 transition-all duration-500 cursor-pointer flex flex-col"
+                  className={`group relative bg-[#0f1923] rounded-xl overflow-hidden border border-white/5 transition-all duration-500 flex flex-col ${isUnderMaintenance(game) ? 'cursor-not-allowed' : 'cursor-pointer hover:border-[#39ff88]/30'}`}
+                  onClick={() => {
+                    if (isUnderMaintenance(game)) return;
+                    const route = getGameRoute(game);
+                    if (route) navigate(route);
+                  }}
                 >
                   <div className="relative aspect-[16/10] overflow-hidden">
                     <img
@@ -202,6 +247,22 @@ export function GameCategoryWithRTP() {
                       {game.provider || activeCategoryLabel}
                     </span>
                   </div>
+                  {isUnderMaintenance(game) && (
+                    <div className="absolute inset-0 bg-black/55 z-20 flex flex-col items-center justify-center gap-2 pointer-events-none">
+                      <svg className="h-10 w-10 fill-emerald-400 drop-shadow" viewBox="0 0 150 150" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+                        <g clipPath="url(#clip0_1031_6568_b)">
+                          <path d="M148.878 18.7427C148.334 16.9377 146.058 16.3699 144.73 17.6977L136.061 26.3672H123.633V13.9389L132.303 5.26523C133.637 3.93047 133.058 1.6626 131.267 1.11797C128.813 0.372363 126.267 0.0541992 123.658 0.0541992C116.59 0.0541992 109.964 2.73779 104.99 7.72471C98.896 13.8144 96.1667 22.522 97.6772 31.0233L98.0806 33.2763L33.276 98.0807C30.6583 97.6128 29.0818 97.2694 26.4009 97.2694C19.4399 97.2694 12.6293 100.085 7.7197 104.99C0.790989 111.923 -1.65091 122.075 1.11648 131.257C1.66199 133.066 3.93367 133.633 5.26433 132.302L13.9344 123.633H26.4258V136.066L17.6953 144.737C16.362 146.069 16.9371 148.341 18.7333 148.886C21.1816 149.626 23.7243 150 26.3282 150C42.7409 150 55.2035 135.192 52.3221 118.976L51.9187 116.723L116.719 51.919C119.293 52.379 120.936 52.7332 123.594 52.7259C130.568 52.7259 137.374 49.9148 142.275 45.0097C149.209 38.0798 151.647 27.9305 148.878 18.7427Z"></path>
+                          <path d="M143.576 112.489L112.755 81.9729C110.699 79.9204 108.143 78.3135 105.343 77.1926L76.9005 105.635C78.0211 108.436 79.6295 110.994 81.6841 113.052L112.501 143.564C121.066 152.13 134.97 152.161 143.576 143.564C152.142 134.994 152.142 121.055 143.576 112.489ZM131.049 131.037C129.332 132.754 126.551 132.754 124.835 131.037L103.241 109.748C101.524 108.031 101.524 105.25 103.241 103.534C104.957 101.817 107.738 101.817 109.455 103.534L131.049 124.823C132.765 126.54 132.765 129.32 131.049 131.037Z"></path>
+                          <path d="M37.5822 25.1538L37.5757 25.1558L41.539 21.1925C42.6877 20.0426 42.4463 18.1251 41.0583 17.2925L14.2299 0.62641C12.5011 -0.410992 10.2878 -0.138531 8.86246 1.28735L1.28746 8.86235C-0.139008 10.2888 -0.410883 12.5031 0.627692 14.2322L17.3052 41.0476C18.1408 42.4374 20.0632 42.6692 21.2046 41.5266L25.1518 37.58L53.2507 65.6789L65.6791 53.2506L37.5822 25.1538Z"></path>
+                        </g>
+                        <defs>
+                          <clipPath id="clip0_1031_6568_b">
+                            <rect width="150" height="150" fill="white"></rect>
+                          </clipPath>
+                        </defs>
+                      </svg>
+                    </div>
+                  )}
                 </div>
               )
             ))}

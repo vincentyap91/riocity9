@@ -35,7 +35,8 @@ const providers = [
         id: 'gameplay',
         name: 'GamePlay Casino',
         img: imgGameplayLiveCasino2025120510392605481,
-        banner: 'https://pksoftcdn.azureedge.net/media/gameplay_cam88_providerbanner_1029pxx420px-202512051039282501.jpg'
+        banner: 'https://pksoftcdn.azureedge.net/media/gameplay_cam88_providerbanner_1029pxx420px-202512051039282501.jpg',
+        startGamePath: '/live-casino/gameplay-casino'
     },
     {
         id: 'marbula',
@@ -134,6 +135,7 @@ export function LiveCasino() {
                 onClose={() => setSelectedProvider(null)}
                 title={selectedProvider?.name || ''}
                 bannerImage={selectedProvider?.banner || ''}
+                startGamePath={selectedProvider?.startGamePath}
             />
 
         </div>

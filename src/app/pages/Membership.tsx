@@ -1,6 +1,8 @@
 import React from 'react';
 import { InnerPageLayout } from '../components/shared/InnerPageLayout';
 import { Button } from '../components/ui/button';
+import { useHorizontalDragScroll } from '../hooks/useHorizontalDragScroll';
+import { DraggableScrollbar } from '../components/shared/DraggableScrollbar';
 
 const membershipLevels = [
   {
@@ -82,6 +84,8 @@ const memberRebates = [
 ];
 
 export function Membership() {
+  const { scrollRef: badgeScrollRef, handlers: badgeDragHandlers, suppressClickIfDragged } = useHorizontalDragScroll();
+
   return (
     <InnerPageLayout className="overflow-hidden">
       <div className="flex flex-col min-h-screen text-white relative overflow-hidden pb-20 md:pb-0">
@@ -95,14 +99,52 @@ export function Membership() {
 
         {/* Membership Levels */}
         <div className="mb-12">
-          <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-8 gap-2 md:gap-3">
+          <div
+            ref={badgeScrollRef}
+            {...badgeDragHandlers}
+            className="flex md:hidden items-stretch gap-2 overflow-x-auto no-scrollbar select-none cursor-grab active:cursor-grabbing"
+          >
+            {membershipLevels.map((level) => (
+              <div
+                key={level.id}
+                onClickCapture={suppressClickIfDragged}
+                className={`relative shrink-0 w-[112px] bg-[#1a2230] border border-white/5 rounded-[16px] p-2 shadow-xl flex flex-col items-center ${
+                  level.active ? 'border-2 border-[#00bc7d] bg-[#00bc7d]/12 shadow-[0_0_0_1px_rgba(0,188,125,0.45),0_0_18px_rgba(0,188,125,0.2)]' : ''
+                }`}
+              >
+                {level.active && (
+                  <div className="pointer-events-none absolute inset-0 rounded-[16px] border-2 border-[#00bc7d] ring-2 ring-[#00bc7d]/35" />
+                )}
+                <div className="w-full min-h-[40px] mb-2 flex items-center justify-center">
+                  <img
+                    src={level.image}
+                    alt={`lvl-${level.name}`}
+                    className="w-full h-auto object-contain max-h-[40px] select-none pointer-events-none"
+                    draggable={false}
+                  />
+                </div>
+                <h4 className={`font-bold text-xs mb-1 ${level.active ? 'text-[#39ff88]' : 'text-white'}`}>{level.name}</h4>
+                {level.claimable && (
+                  <Button className="w-full bg-[#FFD700] text-[#1a1a00] font-black h-9 rounded-xl hover:brightness-110 transition-all disabled:opacity-50 disabled:cursor-not-allowed text-xs">
+                    Claim
+                  </Button>
+                )}
+              </div>
+            ))}
+          </div>
+          <DraggableScrollbar containerRef={badgeScrollRef} className="mt-2" />
+
+          <div className="hidden md:grid grid-cols-4 lg:grid-cols-8 gap-2 md:gap-3">
             {membershipLevels.map((level) => (
               <div
                 key={level.id}
                 className={`relative bg-[#1a2230] border border-white/5 rounded-[16px] p-2 md:p-3 shadow-xl flex flex-col items-center ${
-                  level.active ? 'ring-2 ring-[#00bc7d] bg-[#00bc7d]/10' : ''
+                  level.active ? 'border-2 border-[#00bc7d] bg-[#00bc7d]/12 shadow-[0_0_0_1px_rgba(0,188,125,0.45),0_0_18px_rgba(0,188,125,0.2)]' : ''
                 }`}
               >
+                {level.active && (
+                  <div className="pointer-events-none absolute inset-0 rounded-[16px] border-2 border-[#00bc7d] ring-2 ring-[#00bc7d]/35" />
+                )}
                 <div className="w-full min-h-[40px] md:min-h-[50px] mb-2 flex items-center justify-center">
                   <img
                     src={level.image}
@@ -110,7 +152,7 @@ export function Membership() {
                     className="w-full h-auto object-contain max-h-[40px] md:max-h-[50px]"
                   />
                 </div>
-                <h4 className="text-white font-bold text-xs md:text-sm mb-1 md:mb-2">{level.name}</h4>
+                <h4 className={`font-bold text-xs md:text-sm mb-1 md:mb-2 ${level.active ? 'text-[#39ff88]' : 'text-white'}`}>{level.name}</h4>
                 {level.claimable && (
                   <Button className="w-full bg-[#FFD700] text-[#1a1a00] font-black h-9 md:h-10 rounded-xl hover:brightness-110 transition-all disabled:opacity-50 disabled:cursor-not-allowed text-xs md:text-sm">
                     Claim

@@ -108,6 +108,8 @@ export function Home() {
                   <Dices className={liveCasinoAccent.sectionHeaderIconClass} />
                 </div>
               }
+              slidesToShow={4}
+              mobileSlidesToShow={2}
               items={liveCasinoGames}
             />
           </section>
@@ -135,6 +137,7 @@ export function Home() {
                 </span>
               }
               slidesToShow={5}
+              mobileSlidesToShow={2}
               aspectRatio="aspect-square"
               icon={
                 <div className={sportsAccent.sectionHeaderIconBoxClass}>
@@ -175,6 +178,7 @@ export function Home() {
                   <Gamepad2 className={slotsAccent.sectionHeaderIconClass} />
                 </div>
               }
+              mobileSlidesToShow={2}
               items={slotGames}
             />
           </section>

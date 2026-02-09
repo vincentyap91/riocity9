@@ -5,9 +5,11 @@ import { useRef, useEffect } from 'react';
  * Uses direct DOM manipulation for instant 1:1 response and zero latency.
  */
 export function useHorizontalDragScroll() {
+  const DRAG_THRESHOLD_PX = 6;
   const scrollRef = useRef<HTMLDivElement>(null);
   const didDragRef = useRef(false);
   const isDraggingRef = useRef(false);
+  const dragStartXRef = useRef(0);
   const startRef = useRef({ x: 0, scrollLeft: 0, time: 0 });
   const velocityRef = useRef(0);
   const momentumAnimationRef = useRef<number | null>(null);
@@ -65,10 +67,9 @@ export function useHorizontalDragScroll() {
       scrollLeft: scrollRef.current.scrollLeft,
       time: Date.now(),
     };
+    dragStartXRef.current = e.clientX;
 
-    scrollRef.current.setPointerCapture(e.pointerId);
-    document.body.style.cursor = 'grabbing';
-    document.body.style.userSelect = 'none';
+    // Delay pointer capture until user moves beyond drag threshold.
   };
 
   const handlePointerMoveCapture = (e: React.PointerEvent<HTMLDivElement>) => {
@@ -77,10 +78,24 @@ export function useHorizontalDragScroll() {
     const now = Date.now();
     const deltaX = e.clientX - startRef.current.x;
     const deltaTime = now - startRef.current.time;
+    const totalDeltaX = e.clientX - dragStartXRef.current;
 
-    // Zero threshold for absolute instant feedback
-    if (Math.abs(deltaX) > 0.5) {
+    // Keep normal click behavior until intentional horizontal movement starts.
+    if (!didDragRef.current) {
+      if (Math.abs(totalDeltaX) <= DRAG_THRESHOLD_PX) return;
       didDragRef.current = true;
+      if (scrollRef.current && !scrollRef.current.hasPointerCapture(e.pointerId)) {
+        scrollRef.current.setPointerCapture(e.pointerId);
+      }
+      document.body.style.cursor = 'grabbing';
+      document.body.style.userSelect = 'none';
+      startRef.current = {
+        x: e.clientX,
+        scrollLeft: scrollRef.current.scrollLeft,
+        time: now,
+      };
+      lastMoveTimeRef.current = now;
+      return;
     }
 
     if (didDragRef.current) {
@@ -104,7 +119,7 @@ export function useHorizontalDragScroll() {
     if (!isDraggingRef.current) return;
     isDraggingRef.current = false;
 
-    if (scrollRef.current) {
+    if (scrollRef.current && scrollRef.current.hasPointerCapture(e.pointerId)) {
       scrollRef.current.releasePointerCapture(e.pointerId);
     }
 

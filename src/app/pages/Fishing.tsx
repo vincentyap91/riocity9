@@ -12,7 +12,7 @@ import imgFishingBanner from "@/assets/71667b097dc0233c71967c40c7e2dc37f4fa9f8c.
 
 const fishingProviders = [
     { id: 1, name: "FaChai", image: "https://pksoftcdn.azureedge.net/media/fachai (1)-202411061132582635.png", active: true },
-    { id: 2, name: "Provider 2", image: "https://pksoftcdn.azureedge.net/media/41-202408011552398054.png" },
+    { id: 2, name: "KA Gaming", image: "https://pksoftcdn.azureedge.net/media/41-202408011552398054.png" },
     { id: 3, name: "FastSpin", image: "https://pksoftcdn.azureedge.net/media/fastspin-202411061313315880.png" },
     { id: 4, name: "Provider 4", image: "https://pksoftcdn.azureedge.net/media/59-202408260942492741.png" },
     { id: 5, name: "Provider 5", image: "https://pksoftcdn.azureedge.net/media/download-202410181407480566.png" },
@@ -58,15 +58,63 @@ const fishingGames = [
         image: "https://agent-icon.fcg1688.net/icon/21009_200x200_en.png",
         tag: "Hot"
     },
+    {
+        id: 6,
+        title: "Abyss Dimension",
+        provider: "KA Gaming",
+        image: "https://rmpseaiconcdn.kaga88.com/kaga/gameIcon?game=AbyssDimension&lang=en&type=square",
+        tag: "Hot"
+    },
+    {
+        id: 7,
+        title: "Air Combat 1942",
+        provider: "KA Gaming",
+        image: "https://rmpseaiconcdn.kaga88.com/kaga/gameIcon?game=AirCombat1942&lang=en&type=square",
+        tag: "New"
+    },
+    {
+        id: 8,
+        title: "Alter World",
+        provider: "KA Gaming",
+        image: "https://rmpseaiconcdn.kaga88.com/kaga/gameIcon?game=AlterWorld&lang=en&type=square",
+        tag: "Hot"
+    },
+    {
+        id: 9,
+        title: "Animal Fishing",
+        provider: "KA Gaming",
+        image: "https://rmpseaiconcdn.kaga88.com/kaga/gameIcon?game=AnimalFishing&lang=en&type=square",
+        tag: "New"
+    },
+    {
+        id: 10,
+        title: "Aqua Dominion",
+        provider: "KA Gaming",
+        image: "https://rmpseaiconcdn.kaga88.com/kaga/gameIcon?game=AquaDominion&lang=en&type=square",
+        tag: "Hot"
+    },
+    {
+        id: 11,
+        title: "Attak on Crabs",
+        provider: "KA Gaming",
+        image: "https://rmpseaiconcdn.kaga88.com/kaga/gameIcon?game=AttackOnCrabs&lang=en&type=square",
+        tag: "New"
+    },
 ];
 
 export function Fishing() {
     const { t } = useLanguage();
     const [searchQuery, setSearchQuery] = useState('');
+    const [selectedProvider, setSelectedProvider] = useState(
+        fishingProviders.find((provider) => provider.active)?.name ?? fishingProviders[0]?.name ?? ''
+    );
     const normalizedSearch = searchQuery.trim().toLowerCase();
     const filteredFishingGames = fishingGames.filter((game) =>
-        game.title.toLowerCase().includes(normalizedSearch) ||
-        game.provider.toLowerCase().includes(normalizedSearch)
+        game.provider === selectedProvider &&
+        (
+            game.title.toLowerCase().includes(normalizedSearch) ||
+            game.provider.toLowerCase().includes(normalizedSearch)
+        )
     );
     // Scrollbar Handlers
     const { scrollRef: scrollContainerRef, handlers: dragScrollHandlers, suppressClickIfDragged } = useHorizontalDragScroll();
@@ -107,9 +155,10 @@ export function Fishing() {
                                 <div
                                     key={p.id}
                                     onClickCapture={suppressClickIfDragged}
+                                    onClick={() => setSelectedProvider(p.name)}
                                     className={`
                                 relative shrink-0 h-[60px] w-[140px] rounded-lg flex items-center justify-center cursor-pointer transition-all duration-300
-                                ${p.active
+                                ${selectedProvider === p.name
                                             ? 'bg-[#06b6d4]/5 border border-[#06b6d4]'
                                             : 'bg-[#16202c] border border-transparent hover:bg-[#1e2a38]'
                                         }
@@ -137,7 +186,7 @@ export function Fishing() {
                             <Grid className={PAGE_ACCENT.fishing.sectionHeaderIconClass} />
                         </div>
                         <h2 className={SECTION_HEADER_TITLE_CLASS}>
-                            Fa <span className={PAGE_ACCENT.fishing.sectionHeaderAccentClass}>CHAI</span>
+                            {selectedProvider}
                         </h2>
                     </div>
 

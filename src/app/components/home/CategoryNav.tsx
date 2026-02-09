@@ -32,7 +32,7 @@ export function CategoryNav() {
         path: '#',
         color: 'text-yellow-400',
         subItems: [
-            { labelKey: "spinWheelBonus", path: "/bonus/wheel", icon: Dices },
+            { labelKey: "spinWheelBonus", path: "/bonus", icon: Dices },
             { labelKey: "voucherScratchBonus", path: "/bonus/scratch", icon: Ticket },
             { labelKey: "prizeBoxBonus", path: "/bonus/prize", icon: Box },
         ]

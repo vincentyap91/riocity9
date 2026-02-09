@@ -18,7 +18,7 @@ import { useLanguage } from "../../contexts/LanguageContext";
 
 // --- Configuration ---
 const rewardItems = [
-    { labelKey: "spinWheelBonus", icon: Dices, path: "/bonus/wheel", color: "text-yellow-400" },
+    { labelKey: "spinWheelBonus", icon: Dices, path: "/bonus", color: "text-yellow-400" },
     { labelKey: "voucherScratchBonus", icon: Ticket, path: "/bonus/scratch", color: "text-pink-400" },
     { labelKey: "prizeBoxBonus", icon: Box, path: "/bonus/prize", color: "text-orange-400" },
 ];
@@ -39,7 +39,7 @@ const menuItems = [
     { labelKey: "promotions", icon: Megaphone, path: "/promotions" },
     { labelKey: "referral", icon: Users, path: "/referral" },
     { labelKey: "rebate", icon: HandCoins, path: "/rebate" },
-    { labelKey: "vipClub", icon: Crown, path: "/vip" },
+    { labelKey: "vipClub", icon: Crown, path: "/membership" },
 ];
 
 interface SidebarMenuProps {

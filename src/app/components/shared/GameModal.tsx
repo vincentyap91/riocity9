@@ -1,6 +1,7 @@
 import React from 'react';
 import { createPortal } from 'react-dom';
 import { X, RefreshCcw, Lock } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { PRIMARY_CTA_CLASS } from '../../config/themeTokens';
 
 interface GameModalProps {
@@ -8,9 +9,11 @@ interface GameModalProps {
     onClose: () => void;
     title: string;
     bannerImage: string;
+    startGamePath?: string;
 }
 
-export function GameModal({ isOpen, onClose, title, bannerImage }: GameModalProps) {
+export function GameModal({ isOpen, onClose, title, bannerImage, startGamePath }: GameModalProps) {
+    const navigate = useNavigate();
     if (!isOpen) return null;
 
     if (typeof document === 'undefined') return null;
@@ -35,7 +38,7 @@ export function GameModal({ isOpen, onClose, title, bannerImage }: GameModalProp
                         onClick={onClose}
                         className="p-2 bg-white/5 hover:bg-white/10 rounded-full text-gray-400 hover:text-white transition-all group"
                     >
-                        <X className="w-5 h-5 group-hover:rotate-90 transition-transform duration-300" />
+                        <X className="w-5 h-5" />
                     </button>
                 </div>
 
@@ -47,7 +50,7 @@ export function GameModal({ isOpen, onClose, title, bannerImage }: GameModalProp
                         <img
                             src={bannerImage}
                             alt={title}
-                            className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"
+                            className="w-full h-full object-cover"
                         />
                     </div>
 
@@ -79,7 +82,14 @@ export function GameModal({ isOpen, onClose, title, bannerImage }: GameModalProp
 
                     {/* Action Button - Using System Primary CTA */}
                     <div className="pt-2">
-                        <button className={`${PRIMARY_CTA_CLASS} w-full py-4 md:py-5 rounded-2xl shadow-[0_10px_25px_-5px_rgba(16,185,129,0.3)] hover:shadow-[0_15px_30px_-5px_rgba(16,185,129,0.4)] hover:-translate-y-1 transition-all active:scale-[0.98] active:translate-y-0 text-lg md:text-xl tracking-widest uppercase italic`}>
+                        <button
+                            onClick={() => {
+                                if (!startGamePath) return;
+                                onClose();
+                                navigate(startGamePath);
+                            }}
+                            className={`${PRIMARY_CTA_CLASS} w-full py-4 md:py-5 rounded-2xl shadow-[0_10px_25px_-5px_rgba(16,185,129,0.3)] hover:shadow-[0_15px_30px_-5px_rgba(16,185,129,0.4)] hover:-translate-y-1 transition-all active:scale-[0.98] active:translate-y-0 text-lg md:text-xl tracking-widest uppercase italic ${!startGamePath ? 'opacity-50 cursor-not-allowed' : ''}`}
+                        >
                             Start Game
                         </button>
                     </div>

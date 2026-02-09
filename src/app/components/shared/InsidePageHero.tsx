@@ -33,7 +33,7 @@ export function InsidePageHero({
         
 
         {/* Right Content (Image) */}
-        <div className="relative w-full max-w-[500px] md:max-w-[100%] flex justify-center md:justify-end">
+        <div className="relative w-full max-h-[500px] max-w-[500px] md:max-w-[100%] flex justify-center md:justify-end">
              <img 
                 src={image} 
                 alt="Promo" 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -81,47 +81,35 @@ function CustomNextArrow(props: any) {
 
 export function HotProviders() {
   const { t } = useLanguage();
+  const [viewportWidth, setViewportWidth] = useState(
+    typeof window !== 'undefined' ? window.innerWidth : 1280
+  );
+
+  useEffect(() => {
+    const onResize = () => setViewportWidth(window.innerWidth);
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+  }, []);
+
+  const resolvedSlidesToShow =
+    viewportWidth < 480 ? 3 :
+    viewportWidth < 768 ? 5 :
+    viewportWidth < 1024 ? 6 :
+    viewportWidth < 1280 ? 7 : 8;
+
+  const resolvedSlidesToScroll = viewportWidth < 1024 ? 1 : 2;
+
   const settings = {
     dots: false,
     infinite: true,
     speed: 500,
-    slidesToShow: 8,
-    slidesToScroll: 2,
+    slidesToShow: resolvedSlidesToShow,
+    slidesToScroll: resolvedSlidesToScroll,
     autoplay: true,
     autoplaySpeed: 3000,
     pauseOnHover: true,
     nextArrow: <CustomNextArrow />,
     prevArrow: <CustomPrevArrow />,
-    responsive: [
-      {
-        breakpoint: 1280,
-        settings: {
-          slidesToShow: 7,
-          slidesToScroll: 2,
-        }
-      },
-      {
-        breakpoint: 1024,
-        settings: {
-          slidesToShow: 6,
-          slidesToScroll: 2,
-        }
-      },
-      {
-        breakpoint: 768,
-        settings: {
-          slidesToShow: 5,
-          slidesToScroll: 1,
-        }
-      },
-      {
-        breakpoint: 480,
-        settings: {
-          slidesToShow: 3,
-          slidesToScroll: 1,
-        }
-      }
-    ]
   };
 
   return (

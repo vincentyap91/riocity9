@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Slider, { Settings } from 'react-slick';
 import { Button } from '../ui/button';
 import { ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react';
@@ -23,44 +23,41 @@ interface GameCarouselProps {
   className?: string;
   slidesToShow?: number;
   aspectRatio?: string;
+  mobileSlidesToShow?: number;
 }
 
-export function GameCarousel({ title, icon, items, className, slidesToShow = 4, aspectRatio = "aspect-[16/10]" }: GameCarouselProps) {
+export function GameCarousel({ title, icon, items, className, slidesToShow = 4, aspectRatio = "aspect-[16/10]", mobileSlidesToShow = 1 }: GameCarouselProps) {
   const { t } = useLanguage();
   const sliderRef = useRef<Slider>(null);
+  const [viewportWidth, setViewportWidth] = useState(
+    typeof window !== 'undefined' ? window.innerWidth : 1280
+  );
+
+  useEffect(() => {
+    const onResize = () => setViewportWidth(window.innerWidth);
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+  }, []);
+
+  const resolvedSlidesToShow =
+    viewportWidth < 768
+      ? mobileSlidesToShow
+      : viewportWidth < 1024
+        ? Math.min(slidesToShow, 3)
+        : viewportWidth < 1280
+          ? Math.min(slidesToShow, 4)
+          : slidesToShow;
 
   const settings: Settings = {
     dots: false,
     infinite: true,
     speed: 500,
-    slidesToShow: slidesToShow,
+    slidesToShow: resolvedSlidesToShow,
     slidesToScroll: 1,
     arrows: false, // We use custom arrows
     swipeToSlide: true,
     adaptiveHeight: true,
-    focusOnSelect: true,
-    responsive: [
-      {
-        breakpoint: 1024,
-        settings: {
-          slidesToShow: Math.min(slidesToShow, 3),
-        }
-      },
-      {
-        breakpoint: 768,
-        settings: {
-          slidesToShow: 2,
-        }
-      },
-      {
-        breakpoint: 640,
-        settings: {
-          slidesToShow: 1,
-          centerMode: true,
-          centerPadding: "36px",
-        }
-      }
-    ]
+    focusOnSelect: false,
   };
 
   const next = () => {

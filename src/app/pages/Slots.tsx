@@ -21,6 +21,7 @@ import imgPussy888 from "@/assets/0d7ab7156e0f52e104b06b57351033f6537c5b3d.png";
 import imgMega888 from "@/assets/4472637a8ced7a5731b4801ea990f3d576719b63.png";
 import imgGameplay from "@/assets/109b7e624aae662fe8221a8a065db2d742b0f77e.png";
 import imgProviderMore from "@/assets/eb03145494843462f9d63197b64c7b0a60455691.png";
+import imgRoyalSlot from "@/assets/royal-slot.png";
 
 import imgImageAdventuresOfCaramelo from "@/assets/Adventures-Of-Caramelo.jpg";
 import imgImageFortuneOx from "@/assets/8e1075cfac0bd1d05382c5095edcd2f1a5bd507a.png";
@@ -45,7 +46,8 @@ import imgImageGates1000 from "@/assets/e7fb1cf0de54bfef4c5b040e789790c437112a46
 
 // Constants
 const providers = [
-    { id: 1, name: "NAGA", image: imgNaga, active: true },
+    { id: 1, name: "NAGA", image: imgNaga },
+    { id: 9, name: "Royal Slot Gaming", image: imgRoyalSlot },
     { id: 2, name: "PG Soft", image: imgPgsoft },
     { id: 3, name: "918Kaya", image: img918Kaya },
     { id: 4, name: "918Kiss", image: img918Kiss, maintenance: true },
@@ -56,29 +58,77 @@ const providers = [
 ];
 
 const games = [
-    { id: 1, title: "Adventures Of Caramelo", rtp: "96.95%", image: imgImageAdventuresOfCaramelo, trend: 'up', slug: 'adventures-of-caramelo' },
-    { id: 2, title: "Fortune Ox", rtp: "96.75%", image: imgImageFortuneOx, trend: 'down' },
-    { id: 3, title: "Wealth Coins", rtp: "95.00%", image: imgImageWealthCoins, trend: 'up' },
-    { id: 4, title: "Money Sage", rtp: "96.00%", image: imgImageMoneySage, trend: 'up' },
-    { id: 5, title: "Chicken Pirate", rtp: "94.89%", image: imgImageChickenPirate, trend: 'down' },
-    { id: 6, title: "Gods of Plinko", rtp: "94.20%", image: imgImageGodsOfPlinko, trend: 'up' },
-    { id: 7, title: "Tropicana", rtp: "94.00%", image: imgImageTropicana, trend: 'down' },
-    { id: 8, title: "Crime Empire", rtp: "94.89%", image: imgImageCrimeEmpire, trend: 'up' },
-    { id: 9, title: "Serengeti Sunrise", rtp: "94.89%", image: imgImageSerengetiSunrise, trend: 'up' },
-    { id: 10, title: "Coin Craze", rtp: "94.20%", image: imgImageCoinCraze, trend: 'down' },
-    { id: 11, title: "Caishen Gold", rtp: "94.00%", image: imgImageCaishenGold, trend: 'up' },
-    { id: 12, title: "Money Booster", rtp: "94.89%", image: imgImageMoneyBooster, trend: 'down' },
-    { id: 13, title: "Le Bandit", rtp: "94.89%", image: imgImageLeBandit, trend: 'up' },
-    { id: 14, title: "Transformers", rtp: "94.20%", image: imgImageTransformers, trend: 'up' },
-    { id: 15, title: "Mine Slot", rtp: "94.00%", image: imgImageMineSlot, trend: 'down' },
-    { id: 16, title: "The Luxe", rtp: "94.89%", image: imgImageTheLuxe, trend: 'up' },
-    { id: 17, title: "Gates of Olympus", rtp: "94.89%", image: imgImageGatesOfOlympus, trend: 'up' },
-    { id: 18, title: "Sugar Rush 1000", rtp: "94.20%", image: imgImageSugarRush1000, trend: 'down' },
-    { id: 19, title: "Sweet Bonanza", rtp: "94.00%", image: imgImageSweetBonanza, trend: 'up' },
-    { id: 20, title: "Gates 1000", rtp: "94.89%", image: imgImageGates1000, trend: 'up' },
+    { id: 1, provider: "NAGA", title: "Adventures Of Caramelo", rtp: "96.95%", image: imgImageAdventuresOfCaramelo, trend: 'up', slug: 'adventures-of-caramelo' },
+    { id: 2, provider: "NAGA", title: "Fortune Ox", rtp: "96.75%", image: imgImageFortuneOx, trend: 'down' },
+    { id: 3, provider: "NAGA", title: "Wealth Coins", rtp: "95.00%", image: imgImageWealthCoins, trend: 'up' },
+    { id: 4, provider: "NAGA", title: "Money Sage", rtp: "96.00%", image: imgImageMoneySage, trend: 'up' },
+    { id: 5, provider: "NAGA", title: "Chicken Pirate", rtp: "94.89%", image: imgImageChickenPirate, trend: 'down' },
+    { id: 6, provider: "NAGA", title: "Gods of Plinko", rtp: "94.20%", image: imgImageGodsOfPlinko, trend: 'up' },
+    { id: 7, provider: "NAGA", title: "Tropicana", rtp: "94.00%", image: imgImageTropicana, trend: 'down' },
+    { id: 8, provider: "NAGA", title: "Crime Empire", rtp: "94.89%", image: imgImageCrimeEmpire, trend: 'up' },
+    { id: 9, provider: "NAGA", title: "Serengeti Sunrise", rtp: "94.89%", image: imgImageSerengetiSunrise, trend: 'up' },
+    { id: 10, provider: "NAGA", title: "Coin Craze", rtp: "94.20%", image: imgImageCoinCraze, trend: 'down' },
+    { id: 11, provider: "NAGA", title: "Caishen Gold", rtp: "94.00%", image: imgImageCaishenGold, trend: 'up' },
+    { id: 12, provider: "NAGA", title: "Money Booster", rtp: "94.89%", image: imgImageMoneyBooster, trend: 'down' },
+    { id: 13, provider: "NAGA", title: "Le Bandit", rtp: "94.89%", image: imgImageLeBandit, trend: 'up' },
+    { id: 14, provider: "NAGA", title: "Transformers", rtp: "94.20%", image: imgImageTransformers, trend: 'up' },
+    { id: 15, provider: "NAGA", title: "Mine Slot", rtp: "94.00%", image: imgImageMineSlot, trend: 'down' },
+    { id: 16, provider: "NAGA", title: "The Luxe", rtp: "94.89%", image: imgImageTheLuxe, trend: 'up' },
+    { id: 17, provider: "NAGA", title: "Gates of Olympus", rtp: "94.89%", image: imgImageGatesOfOlympus, trend: 'up' },
+    { id: 18, provider: "NAGA", title: "Sugar Rush 1000", rtp: "94.20%", image: imgImageSugarRush1000, trend: 'down' },
+    { id: 19, provider: "NAGA", title: "Sweet Bonanza", rtp: "94.00%", image: imgImageSweetBonanza, trend: 'up' },
+    { id: 20, provider: "NAGA", title: "Gates 1000", rtp: "94.89%", image: imgImageGates1000, trend: 'up' },
+    { id: 21, provider: "Royal Slot Game", title: "Fortune Thai", rtp: "92.99%", image: "https://pksoftcdn.azureedge.net/games/RSG/FortuneThai.png", trend: 'down' },
+    { id: 22, provider: "Royal Slot Game", title: "Jungle", rtp: "91.73%", image: "https://pksoftcdn.azureedge.net/games/RSG/Jungle.png", trend: 'down' },
+    { id: 23, provider: "Royal Slot Game", title: "Roma", rtp: "76.26%", image: "https://pksoftcdn.azureedge.net/games/RSG/Roma.png", trend: 'down' },
+    { id: 24, provider: "Royal Slot Game", title: "Captain Hook", rtp: "91.25%", image: "https://pksoftcdn.azureedge.net/games/RSG/CaptainHook.png", trend: 'down' },
+    { id: 25, provider: "Royal Slot Game", title: "Happy Farm", rtp: "94.11%", image: "https://pksoftcdn.azureedge.net/games/RSG/HappyFarm.png", trend: 'up' },
+    { id: 26, provider: "Royal Slot Game", title: "Power of Thor", rtp: "90.60%", image: "https://pksoftcdn.azureedge.net/games/RSG/PowerofThor.png", trend: 'up' },
+    { id: 27, provider: "Royal Slot Game", title: "Chin Shi Huang", rtp: "93.22%", image: "https://pksoftcdn.azureedge.net/games/RSG/ChinShiHuang.png", trend: 'up' },
+    { id: 28, provider: "Royal Slot Game", title: "Caishen Fortunes", rtp: "94.11%", image: "https://pksoftcdn.azureedge.net/games/RSG/CaishenFortunes.png", trend: 'up' },
+    { id: 29, provider: "Royal Slot Game", title: "FortuneOfAztecs", rtp: "91.08%", image: "https://pksoftcdn.azureedge.net/games/RSG/FortuneOfAztecs.png", trend: 'down' },
+    { id: 30, provider: "Royal Slot Game", title: "Rich Mahjong", rtp: "92.19%", image: "https://pksoftcdn.azureedge.net/games/RSG/RichMahjong.png", trend: 'down' },
+    { id: 31, provider: "Royal Slot Game", title: "RichMahjong2", rtp: "93.74%", image: "https://pksoftcdn.azureedge.net/games/RSG/RichMahjong2.png", trend: 'up' },
+    { id: 32, provider: "Royal Slot Game", title: "Dragon Legend", rtp: "90.58%", image: "https://pksoftcdn.azureedge.net/games/RSG/DragonLegend.png", trend: 'up' },
+    { id: 33, provider: "PlayTech Slots", title: "Lockdown Loot TM", rtp: "90.40%", image: "https://pksoftcdn.azureedge.net/media/placeholder_riocity-202408050928489215.jpg", trend: 'down' },
+    { id: 34, provider: "PlayTech Slots", title: "3 Card Brag", rtp: "79.93%", image: "https://riocity-cdn.azureedge.net/riocity/playtech/3cb.jpg", trend: 'down' },
 ];
 
-export function Slots() {
+type SlotsProps = {
+    heroImage?: string;
+    pageTitle?: string;
+    defaultProviderName?: string;
+    lockedProviderName?: string;
+    hideProviderNav?: boolean;
+};
+
+const normalizeProviderName = (value: string) => value.trim().toLowerCase();
+const canonicalProviderName = (value: string) => {
+    const normalized = normalizeProviderName(value);
+    if (normalized === 'royal slot game') {
+        return 'royal slot gaming';
+    }
+    if (normalized === 'playtech' || normalized === 'playtech slot') {
+        return 'playtech slots';
+    }
+    return normalized;
+};
+
+const getProviderIdByName = (providerName?: string) => {
+    if (!providerName) {
+        return providers[0]?.id ?? 1;
+    }
+    const matchedProvider = providers.find((provider) => canonicalProviderName(provider.name) === canonicalProviderName(providerName));
+    return matchedProvider?.id ?? providers[0]?.id ?? 1;
+};
+
+export function Slots({
+    heroImage = imgImagePromo,
+    pageTitle,
+    defaultProviderName,
+    lockedProviderName,
+    hideProviderNav = false,
+}: SlotsProps = {}) {
     const { t } = useLanguage();
     const { isAuthenticated } = useAuth();
     const navigate = useNavigate();
@@ -87,12 +137,25 @@ export function Slots() {
     const [walletBalance] = useState('966.24');
     const [guaranteedRebate] = useState('5.00%');
     const [showLoginModal, setShowLoginModal] = useState(false);
+    const [activeProviderId, setActiveProviderId] = useState(getProviderIdByName(defaultProviderName ?? lockedProviderName));
     const normalizedSearch = searchQuery.trim().toLowerCase();
-    const activeProviderName = providers.find((provider) => provider.active)?.name ?? '';
+    const lockedProviderId = lockedProviderName ? getProviderIdByName(lockedProviderName) : null;
+    const activeProviderName = providers.find((provider) => provider.id === activeProviderId)?.name ?? '';
+    const selectedProviderName = lockedProviderName ?? (lockedProviderId
+        ? (providers.find((provider) => provider.id === lockedProviderId)?.name ?? '')
+        : activeProviderName);
     const filteredGames = games.filter((game) =>
-        game.title.toLowerCase().includes(normalizedSearch) ||
-        activeProviderName.toLowerCase().includes(normalizedSearch)
+        canonicalProviderName(game.provider) === canonicalProviderName(selectedProviderName) &&
+        (
+            game.title.toLowerCase().includes(normalizedSearch) ||
+            game.provider.toLowerCase().includes(normalizedSearch)
+        )
     );
+
+    useEffect(() => {
+        const nextProviderId = getProviderIdByName(defaultProviderName ?? lockedProviderName);
+        setActiveProviderId(nextProviderId);
+    }, [defaultProviderName, lockedProviderName]);
 
     // Scrollbar Handlers
     const { scrollRef: scrollContainerRef, handlers: dragScrollHandlers, suppressClickIfDragged } = useHorizontalDragScroll();
@@ -101,12 +164,12 @@ export function Slots() {
         <div className="flex flex-col flex-1 bg-[#02040a] min-h-screen overflow-x-hidden">
 
             {/* Hero Section */}
-            <InsidePageHero image={imgImagePromo} />
+            <InsidePageHero image={heroImage} />
 
             {/* Simple Title Section – color from provider nav */}
             <div className="mt-[-20px] relative z-20 w-full flex flex-col items-center gap-6 py-6 font-bold">
                 <h2 className={PAGE_ACCENT.slots.pageTitleClass}>
-                    {t('slots')}
+                    {pageTitle ?? t('slots')}
                 </h2>
             </div>
 
@@ -114,6 +177,7 @@ export function Slots() {
             <div className="container mx-auto max-w-[1200px] px-4 relative z-10 pb-20 flex flex-col items-center">
 
                 {/* 3. Provider Navigation */}
+                {!hideProviderNav && (
                 <div className="w-full max-w-5xl mb-12">
                     <div className="bg-[#0f1923]/80 backdrop-blur-md border border-white/5 rounded-xl p-2.5 mb-2">
                         <div
@@ -131,25 +195,30 @@ export function Slots() {
                         >
                             {providers.map((p) => {
                                 const isMaintenance = !!p.maintenance;
+                                const isActiveProvider = p.id === (lockedProviderId ?? activeProviderId);
                                 return (
                                     <div
                                         key={p.id}
                                         onClickCapture={suppressClickIfDragged}
                                         className={`
                                     relative shrink-0 h-[60px] w-[140px] rounded-lg flex items-center justify-center transition-all duration-300
-                                    ${p.active
+                                    ${isActiveProvider
                                                 ? 'bg-[#e60076]/5 border border-[#e60076]'
                                                 : 'bg-[#16202c] border border-transparent hover:bg-[#1e2a38]'
                                             }
-                                    ${isMaintenance ? 'bg-[#0b111b] border border-emerald-500/30 cursor-not-allowed' : 'cursor-pointer'}
+                                    ${isMaintenance || !!lockedProviderId ? 'bg-[#0b111b] border border-emerald-500/30 cursor-not-allowed' : 'cursor-pointer'}
                                 `}
                                         title={isMaintenance ? 'Maintenance' : p.name}
+                                        onClick={() => {
+                                            if (!isMaintenance && !lockedProviderId) setActiveProviderId(p.id);
+                                        }}
                                     >
                                         <img
                                             src={p.image}
                                             alt={p.name}
                                             draggable="false"
-                                            className={`h-8 w-auto object-contain max-w-[80%] select-none pointer-events-none ${isMaintenance ? 'opacity-30 grayscale' : ''}`}
+                                            onDragStart={(e) => e.preventDefault()}
+                                            className={`h-8 w-auto object-contain max-w-[80%] select-none pointer-events-none [-webkit-user-drag:none] ${isMaintenance ? 'opacity-30 grayscale' : ''}`}
                                         />
                                         {isMaintenance && (
                                             <div className="absolute inset-0 rounded-lg bg-black/50 flex items-center justify-center">
@@ -182,6 +251,7 @@ export function Slots() {
                     {/* Mobile Scrollbar */}
                     <DraggableScrollbar containerRef={scrollContainerRef} />
                 </div>
+                )}
 
                 {/* 4. Wallet + Guaranteed Rebate */}
                 <div className="w-full max-w-5xl mb-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -224,7 +294,7 @@ export function Slots() {
                             <Grid className={PAGE_ACCENT.slots.sectionHeaderIconClass} />
                         </div>
                         <h2 className={SECTION_HEADER_TITLE_CLASS}>
-                            NAGA <span className={PAGE_ACCENT.slots.sectionHeaderAccentClass}>GAME</span>
+                            {(selectedProviderName || 'NAGA').toUpperCase()} <span className={PAGE_ACCENT.slots.sectionHeaderAccentClass}>GAME</span>
                         </h2>
                     </div>
 

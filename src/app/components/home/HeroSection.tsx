@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -15,6 +16,8 @@ import imgLive from "@/assets/f470efce5aa86066c1a4369e61fdae1d4ff30b86.png"; // 
 
 export function HeroSection() {
   const { t } = useLanguage();
+  const navigate = useNavigate();
+  const goToPromotion = (id: string) => navigate(`/promotions/${id}`);
   const settings = {
     dots: true,
     infinite: true,
@@ -43,21 +46,24 @@ export function HeroSection() {
         image: imgLive, 
         alt: "RioCity9 Is Now Live",
         action: t("playNow"),
-        showButton: false // The image has "RioCity9" text, button might obscure it.
+        showButton: false, // The image has "RioCity9" text, button might obscure it.
+        promotionId: "weekly-fix"
     },
     { 
         id: 2, 
         image: img50Bonus, 
         alt: "50% Welcome Bonus",
         action: t("claim50Bonus"),
-        showButton: true
+        showButton: true,
+        promotionId: "deposit-bonus"
     },
     { 
         id: 3, 
         image: img30Bonus, 
         alt: "30% Welcome Bonus",
         action: t("claim30Bonus"),
-        showButton: true
+        showButton: true,
+        promotionId: "welcome-bonus"
     }
   ];
 
@@ -70,7 +76,11 @@ export function HeroSection() {
         <div className="lg:col-span-8 relative rounded-3xl overflow-hidden group border border-white/10 shadow-2xl leading-[0]">
              <Slider {...settings} className="h-full w-full hero-slider">
                 {slides.map((slide) => (
-                    <div key={slide.id} className="relative w-full h-[200px] md:h-[380px] lg:h-full outline-none">
+                    <div
+                        key={slide.id}
+                        className="relative w-full h-[200px] md:h-[380px] lg:h-full outline-none cursor-pointer"
+                        onClick={() => goToPromotion(slide.promotionId)}
+                    >
                         <img 
                             src={slide.image} 
                             alt={slide.alt} 
@@ -96,7 +106,7 @@ export function HeroSection() {
             {/* Desktop: Stacked Layout */}
             <div className="hidden lg:flex flex-col gap-4 h-full">
                 {/* Top Side Banner: Deposit Now */}
-                <div className="relative flex-1 rounded-3xl overflow-hidden group cursor-pointer border border-white/10 shadow-xl bg-[#02040a]">
+                <div className="relative flex-1 rounded-3xl overflow-hidden group cursor-pointer border border-white/10 shadow-xl bg-[#02040a]" onClick={() => goToPromotion('deposit-bonus')}>
                     <img 
                         src={imgDeposit} 
                         alt="Deposit BRL8 Get BRL1" 
@@ -106,7 +116,7 @@ export function HeroSection() {
                 </div>
 
                 {/* Bottom Side Banner: 5% Unlimited Bonus */}
-                <div className="relative flex-1 rounded-3xl overflow-hidden group cursor-pointer border border-white/10 shadow-xl bg-[#02040a]">
+                <div className="relative flex-1 rounded-3xl overflow-hidden group cursor-pointer border border-white/10 shadow-xl bg-[#02040a]" onClick={() => goToPromotion('welcome-bonus')}>
                      <img 
                         src={imgUnlimitedBonus} 
                         alt="5% Unlimited Bonus" 
@@ -121,7 +131,7 @@ export function HeroSection() {
                 <Slider {...settings} slidesToShow={1} slidesToScroll={1} arrows={false} autoplay={true} autoplaySpeed={3000} dots={true} className="h-full w-full side-banner-slider">
                     {/* Slide 1: Deposit */}
                     <div className="h-[220px] px-1">
-                        <div className="relative w-full h-full rounded-3xl overflow-hidden group cursor-pointer border border-white/10 shadow-xl bg-[#02040a]">
+                        <div className="relative w-full h-full rounded-3xl overflow-hidden group cursor-pointer border border-white/10 shadow-xl bg-[#02040a]" onClick={() => goToPromotion('deposit-bonus')}>
                             <img 
                                 src={imgDeposit} 
                                 alt="Deposit" 
@@ -131,7 +141,7 @@ export function HeroSection() {
                     </div>
                     {/* Slide 2: Bonus */}
                     <div className="h-[220px] px-1">
-                        <div className="relative w-full h-full rounded-3xl overflow-hidden group cursor-pointer border border-white/10 shadow-xl bg-[#02040a]">
+                        <div className="relative w-full h-full rounded-3xl overflow-hidden group cursor-pointer border border-white/10 shadow-xl bg-[#02040a]" onClick={() => goToPromotion('welcome-bonus')}>
                             <img 
                                 src={imgUnlimitedBonus} 
                                 alt="Bonus" 

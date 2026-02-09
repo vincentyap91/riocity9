@@ -54,13 +54,13 @@ export function Footer() {
               <h3 className="text-white font-bold text-lg mb-4">{t("footerPaymentMethods")}</h3>
               <div className="flex flex-wrap gap-3">
                 <div className="bg-white/5 border border-white/10 rounded px-2 py-1 flex items-center gap-1 text-white text-xs font-bold">
-                  <CreditCard className="w-4 h-4" /> surePAY
+                  <CreditCard className="w-4 h-4" /> Online Banking
                 </div>
                 <div className="bg-white/5 border border-white/10 rounded px-2 py-1 flex items-center gap-1 text-white text-xs font-bold">
-                  <CreditCard className="w-4 h-4" /> Touch
+                  <CreditCard className="w-4 h-4" /> Touch n Go
                 </div>
                 <div className="bg-white/5 border border-white/10 rounded px-2 py-1 flex items-center gap-1 text-white text-xs font-bold">
-                  <CreditCard className="w-4 h-4" /> CultNow
+                  <CreditCard className="w-4 h-4" /> DuitNow
                 </div>
               </div>
             </div>

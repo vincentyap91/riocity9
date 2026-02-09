@@ -189,7 +189,7 @@ export function Rebate() {
                   <div className="text-white font-bold text-sm md:text-base p-3 text-center bg-[#0f151f]">Diamond II</div>
                 </div>
                 {/* Table Body */}
-                <div className="space-y-0 max-h-[500px] overflow-y-auto">
+                <div className="space-y-0 max-h-[500px] overflow-y-auto custom-scrollbar">
                   {membershipRebateData.map((row, idx) => {
                     const renderCell = (value: string, isHighlight = false) => {
                       const isZero = value === "0";

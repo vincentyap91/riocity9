@@ -17,6 +17,7 @@ import { MobileBottomNav } from './components/home/MobileBottomNav';
 import { SidebarMenu } from './components/shared/SidebarMenu';
 import { Home } from './pages/Home';
 import { Slots } from './pages/Slots';
+import { ProviderPage } from './pages/ProviderPage';
 import { GameDetailPage } from './pages/GameDetailPage';
 import { LiveCasino } from './pages/LiveCasino';
 import { Sports } from './pages/Sports';
@@ -62,7 +63,7 @@ const categories = [
   { id: 'sports', labelKey: 'sports', icon: Trophy, path: '/sports' },
   { id: 'fish', labelKey: 'fishing', icon: Fish, path: '/fishing' },
   { id: 'lottery', labelKey: 'lottery', icon: Ticket, path: '/lottery' },
-  { id: 'vip', labelKey: 'vipClub', icon: Star, path: '/vip', color: 'text-yellow-400' },
+  { id: 'vip', labelKey: 'vipClub', icon: Star, path: '/membership', color: 'text-yellow-400' },
   { id: 'promotions', labelKey: 'promotions', icon: Gift, path: '/promotions', color: 'text-pink-400' },
   { id: 'app', labelKey: 'app', icon: Smartphone, path: '/app', color: 'text-[#00bc7d]' },
 ];
@@ -787,8 +788,10 @@ function AppContent() {
               <Routes location={location} key={location.pathname}>
                 <Route path="/" element={<Home />} />
                 <Route path="/slots" element={<Slots />} />
+                <Route path="/providers/:providerId" element={<ProviderPage />} />
                 <Route path="/slots/:slug" element={<GameDetailPage />} />
                 <Route path="/live-casino" element={<LiveCasino />} />
+                <Route path="/live-casino/:slug" element={<GameDetailPage />} />
                 <Route path="/sports" element={<Sports />} />
                 <Route path="/fishing" element={<Fishing />} />
                 <Route path="/lottery" element={<Lottery />} />
@@ -799,12 +802,13 @@ function AppContent() {
                 <Route path="/all" element={<AllGame />} />
                 <Route path="/exchange" element={<Exchange />} />
                 <Route path="/rebate" element={<Rebate />} />
-                <Route path="/vip" element={<Membership />} />
+                <Route path="/membership" element={<Membership />} />
                 <Route path="/promotions" element={<Promotions />} />
                 <Route path="/promotions/:id" element={<PromotionDetail />} />
                 <Route path="/app" element={<ComingSoon title="App" backTo="/" backLabel="Home" />} />
                 <Route path="/downlines" element={<Downlines />} />
                 <Route path="/security" element={<ChangePassword />} />
+                <Route path="/bonus" element={<Bonus />} />
                 <Route path="/bonus/:bonusType" element={<Bonus />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/referral" element={<Referral />} />
@@ -858,7 +862,7 @@ function AppContent() {
                   </button>
                 </div>
 
-                <div className={`${MOBILE.cardPadding} flex flex-col max-h-[70vh] overflow-y-auto`}>
+                <div className={`${MOBILE.cardPadding} flex flex-col max-h-[70vh] overflow-y-auto custom-scrollbar`}>
                   {/* Search Input - match History Record (sectionMb like Bet Record) */}
                   <div className={`relative group ${MOBILE.sectionMb}`}>
                     <input
@@ -1152,7 +1156,7 @@ function AppContent() {
                     </div>
                   </div>
                 </div>
-                <div className="flex-1 bg-[#0a0f19] p-4 flex flex-col gap-4 overflow-y-auto">
+                <div className="flex-1 bg-[#0a0f19] p-4 flex flex-col gap-4 overflow-y-auto custom-scrollbar">
                   <div className="bg-[#1a2536] p-3 rounded-xl rounded-tl-none self-start max-w-[80%] text-sm text-gray-300">
                     Hello! Welcome to RioCity9. How can we help you today?
                   </div>

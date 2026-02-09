@@ -56,14 +56,13 @@ export function Bonus() {
     if (id === "wheel" || id === "scratch" || id === "prize") {
       setActiveTab(id);
     } else if (bonusType !== undefined) {
-      navigate("/bonus/wheel", { replace: true });
+      navigate("/bonus", { replace: true });
     }
   }, [bonusType, navigate]);
 
   const handleTabSelect = (id: string) => {
     const tabId = id as BonusTabId;
     setActiveTab(tabId);
-    navigate(`/bonus/${tabId}`, { replace: true });
   };
 
   const config = TAB_CONFIG[activeTab];
