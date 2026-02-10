@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { 
-  ArrowLeft, History, Calendar, Wallet, Dices, 
+  ArrowLeft, History, Wallet, Dices, 
   Users, HandCoins, Megaphone,
   X
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { Input } from '../components/ui/input';
+import { DatePicker } from '../components/ui/DatePicker';
 import { useLanguage } from '../contexts/LanguageContext';
 import { InnerPageLayout } from "../components/shared/InnerPageLayout";
 import { PageSidebar, type PageSidebarItem } from '../components/shared/PageSidebar';
@@ -17,7 +17,6 @@ import {
   SelectValue,
 } from '../components/ui/select';
 import { Sheet, SheetContent } from '../components/ui/sheet';
-import { sanitizeTextInput } from '../utils/security';
 import {
   RECORD_PAGE_ICON_BOX_CLASS,
   RECORD_PAGE_ICON_CLASS,
@@ -179,35 +178,29 @@ export function HistoryRecord() {
         <div className="space-y-2">
           <label className="text-white font-bold text-sm">Start Date</label>
           <div className="relative group">
-            <Input
-              type="text"
+            <DatePicker
               value={currentStartDate}
-              onChange={(e) => {
-                const v = sanitizeTextInput(e.target.value);
+              onChange={(nextValue) => {
+                const v = String(nextValue);
                 if (activeSidebarTab === 'bet') setBetStartDate(v);
                 else if (activeSidebarTab === 'commission') setCommissionStartDate(v);
                 else if (activeSidebarTab === 'rebate') setRebateStartDate(v);
               }}
-              className="bg-[#0f151f] border-white/10 text-white h-12 rounded-xl px-4 focus:border-[#00bc7d] focus-visible:ring-[#00bc7d]/20 pr-10"
             />
-            <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
           </div>
         </div>
         <div className="space-y-2">
           <label className="text-white font-bold text-sm">End Date</label>
           <div className="relative group">
-            <Input
-              type="text"
+            <DatePicker
               value={currentEndDate}
-              onChange={(e) => {
-                const v = sanitizeTextInput(e.target.value);
+              onChange={(nextValue) => {
+                const v = String(nextValue);
                 if (activeSidebarTab === 'bet') setBetEndDate(v);
                 else if (activeSidebarTab === 'commission') setCommissionEndDate(v);
                 else if (activeSidebarTab === 'rebate') setRebateEndDate(v);
               }}
-              className="bg-[#0f151f] border-white/10 text-white h-12 rounded-xl px-4 focus:border-[#00bc7d] focus-visible:ring-[#00bc7d]/20 pr-10"
             />
-            <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
           </div>
         </div>
       </div>

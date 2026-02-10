@@ -11,6 +11,7 @@ import { SegmentTabs, type SegmentTabsItem } from "../components/shared/SegmentT
 import { MOBILE } from "../config/themeTokens";
 import { sanitizeTextInput, sanitizeMobileNumber, sanitizeEmail, sanitizeUsername } from '../utils/security';
 import { CountryCodeSelector } from '../components/shared/CountryCodeSelector';
+import { DatePicker } from '../components/ui/DatePicker';
 import {
   Dialog,
   DialogContent,
@@ -294,12 +295,9 @@ export function Profile() {
                   <Label htmlFor="registrationDate" className={`text-white ${MOBILE.label}`}>
                     Registration Date
                   </Label>
-                  <Input
-                    id="registrationDate"
-                    type="text"
+                  <DatePicker
                     value={formData.registrationDate}
-                    onChange={(e) => handleInputChange('registrationDate', e.target.value)}
-                    className="bg-[#0f151f] border-white/10 text-white h-12 rounded-xl px-4 focus:border-[#00bc7d] focus-visible:ring-[#00bc7d]/20"
+                    onChange={(nextValue) => handleInputChange('registrationDate', String(nextValue))}
                   />
                 </div>
 
@@ -307,12 +305,9 @@ export function Profile() {
                   <Label htmlFor="dateOfBirth" className={`text-white ${MOBILE.label}`}>
                     Date of Birth
                   </Label>
-                  <Input
-                    id="dateOfBirth"
-                    type="text"
+                  <DatePicker
                     value={formData.dateOfBirth}
-                    onChange={(e) => handleInputChange('dateOfBirth', e.target.value)}
-                    className="bg-[#0f151f] border-white/10 text-white h-12 rounded-xl px-4 focus:border-[#00bc7d] focus-visible:ring-[#00bc7d]/20"
+                    onChange={(nextValue) => handleInputChange('dateOfBirth', String(nextValue))}
                   />
                 </div>
 

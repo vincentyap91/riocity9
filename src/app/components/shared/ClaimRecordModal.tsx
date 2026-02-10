@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Wallet, ChevronLeft, Calendar } from 'lucide-react';
-import { Input } from '../ui/input';
+import { Wallet, ChevronLeft } from 'lucide-react';
+import { DatePicker } from '../ui/DatePicker';
 import {
   Select,
   SelectContent,
@@ -169,25 +169,19 @@ export function ClaimRecordModal({
         <div className="space-y-2">
           <label className="text-white font-bold text-sm">Start Date</label>
           <div className="relative group">
-            <Input
-              type="text"
+            <DatePicker
               value={startDate}
-              onChange={(event) => setStartDate(event.target.value)}
-              className="bg-[#0f151f] border-white/10 text-white h-12 rounded-xl px-4 focus:border-[#00bc7d] focus-visible:ring-[#00bc7d]/20 pr-10"
+              onChange={(nextValue) => setStartDate(String(nextValue))}
             />
-            <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" />
           </div>
         </div>
         <div className="space-y-2">
           <label className="text-white font-bold text-sm">End Date</label>
           <div className="relative group">
-            <Input
-              type="text"
+            <DatePicker
               value={endDate}
-              onChange={(event) => setEndDate(event.target.value)}
-              className="bg-[#0f151f] border-white/10 text-white h-12 rounded-xl px-4 focus:border-[#00bc7d] focus-visible:ring-[#00bc7d]/20 pr-10"
+              onChange={(nextValue) => setEndDate(String(nextValue))}
             />
-            <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" />
           </div>
         </div>
       </div>

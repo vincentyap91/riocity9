@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
-  ArrowLeft, Users, Calendar, Search,
+  ArrowLeft, Users, Search,
   ChevronUp, ChevronDown, X, UserCheck, UserX, BarChart3
 } from 'lucide-react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
@@ -13,6 +13,7 @@ import { MOBILE } from '../config/themeTokens';
 import { sanitizeTextInput } from '../utils/security';
 import { UsersThree } from '../components/icons/UsersThree';
 import { FilterTabs } from '../components/shared/FilterTabs';
+import { DatePicker } from '../components/ui/DatePicker';
 
 const DOWNLINE_SIDEBAR_ITEMS: PageSidebarItem[] = [
   { id: 'summary', label: 'Downline Summary', icon: UsersThree },
@@ -81,6 +82,8 @@ export function Downlines() {
   const [activeTab, setActiveTab] = useState<'summary' | 'kpis'>(() => normalizeDownlineTab(searchParams.get('tab')));
   const [activeDateFilter, setActiveDateFilter] = useState(() => normalizeDateTab(searchParams.get('dateTab')));
   const [activeStatusTab, setActiveStatusTab] = useState<'active' | 'inactive'>(() => normalizeStatusTab(searchParams.get('statusTab')));
+  const [downlineStartDate, setDownlineStartDate] = useState('19-01-2026');
+  const [downlineEndDate, setDownlineEndDate] = useState('23-01-2026');
   const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState<'deposit' | null>(null);
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
@@ -185,23 +188,19 @@ export function Downlines() {
                   <div className={MOBILE.spaceY}>
                     <label className={`text-white ${MOBILE.label}`}>Start Date</label>
                     <div className="relative group">
-                      <Input
-                        type="text"
-                        defaultValue="19-01-2026"
-                        className="bg-[#0f151f] border-white/10 text-white h-12 rounded-xl px-4 focus:border-[#00bc7d] focus-visible:ring-[#00bc7d]/20 pr-10"
+                      <DatePicker
+                        value={downlineStartDate}
+                        onChange={(nextValue) => setDownlineStartDate(String(nextValue))}
                       />
-                      <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                     </div>
                   </div>
                   <div className={MOBILE.spaceY}>
                     <label className={`text-white ${MOBILE.label}`}>End Date</label>
                     <div className="relative group">
-                      <Input
-                        type="text"
-                        defaultValue="23-01-2026"
-                        className="bg-[#0f151f] border-white/10 text-white h-12 rounded-xl px-4 focus:border-[#00bc7d] focus-visible:ring-[#00bc7d]/20 pr-10"
+                      <DatePicker
+                        value={downlineEndDate}
+                        onChange={(nextValue) => setDownlineEndDate(String(nextValue))}
                       />
-                      <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                     </div>
                   </div>
                 </div>
