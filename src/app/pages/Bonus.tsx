@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 import { ArrowLeft, Dices, Ticket, Box, X, Wallet, RefreshCw, Clock } from "lucide-react";
 import { Button } from "../components/ui/button";
 import { useLanguage } from "../contexts/LanguageContext";
@@ -29,6 +29,12 @@ const REWARDS = [
 ];
 
 type BonusTabId = "wheel" | "scratch" | "prize";
+const BONUS_TABS: readonly BonusTabId[] = ["wheel", "scratch", "prize"];
+
+function normalizeBonusTab(value: string | null | undefined): BonusTabId {
+  const normalized = (value || "").trim().toLowerCase();
+  return (BONUS_TABS as readonly string[]).includes(normalized) ? (normalized as BonusTabId) : "wheel";
+}
 
 const TAB_CONFIG: Record<
   BonusTabId,
@@ -42,27 +48,40 @@ const TAB_CONFIG: Record<
 export function Bonus() {
   const { bonusType } = useParams<{ bonusType?: string }>();
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
   const { t } = useLanguage();
-  const [activeTab, setActiveTab] = useState<BonusTabId>(() => {
-    const id = bonusType as BonusTabId | undefined;
-    return id === "wheel" || id === "scratch" || id === "prize" ? id : "wheel";
-  });
+  const [activeTab, setActiveTab] = useState<BonusTabId>(() => normalizeBonusTab(searchParams.get('tab') || bonusType));
   const [walletBalance] = useState("990.69");
   const [recordModalOpen, setRecordModalOpen] = useState(false);
 
-  // Sync state from URL on mount / when navigating back; redirect invalid param
+  // Normalize legacy /bonus/:bonusType route to /bonus?tab=...
   useEffect(() => {
-    const id = bonusType as BonusTabId | undefined;
-    if (id === "wheel" || id === "scratch" || id === "prize") {
-      setActiveTab(id);
-    } else if (bonusType !== undefined) {
-      navigate("/bonus", { replace: true });
+    const id = normalizeBonusTab(bonusType);
+    if (bonusType !== undefined) {
+      const next = new URLSearchParams(searchParams);
+      next.set('tab', id);
+      navigate({ pathname: '/bonus', search: `?${next.toString()}` }, { replace: true });
+      return;
     }
-  }, [bonusType, navigate]);
+  }, [bonusType, navigate, searchParams]);
+
+  // Sync active tab from ?tab= with default fallback
+  useEffect(() => {
+    const tab = normalizeBonusTab(searchParams.get('tab'));
+    const next = new URLSearchParams(searchParams);
+    if (searchParams.get('tab') !== tab) {
+      next.set('tab', tab);
+      setSearchParams(next, { replace: true });
+    }
+    setActiveTab(tab);
+  }, [searchParams, setSearchParams]);
 
   const handleTabSelect = (id: string) => {
-    const tabId = id as BonusTabId;
+    const tabId = normalizeBonusTab(id);
     setActiveTab(tabId);
+    const next = new URLSearchParams(searchParams);
+    next.set('tab', tabId);
+    setSearchParams(next);
   };
 
   const config = TAB_CONFIG[activeTab];

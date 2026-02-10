@@ -22,7 +22,7 @@ import {
   DollarSign
 } from 'lucide-react';
 import { Button } from '../components/ui/button';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useLanguage } from '../contexts/LanguageContext';
 import { MOBILE, PRIMARY_CTA_CLASS } from '../config/themeTokens';
 import { SegmentTabs, type SegmentTabsItem } from '../components/shared/SegmentTabs';
@@ -126,9 +126,17 @@ const FILTERS = [
 ];
 
 const DEPOSIT_APPROVAL_COUNTDOWN_SECONDS = 8 * 60 + 6;
+const DEPOSIT_TAB_VALUES = ['deposit', 'withdrawal'] as const;
+type DepositTabValue = (typeof DEPOSIT_TAB_VALUES)[number];
+
+function normalizeDepositTab(value: string | null | undefined): DepositTabValue {
+  const normalized = (value || '').trim().toLowerCase();
+  return DEPOSIT_TAB_VALUES.includes(normalized as DepositTabValue) ? (normalized as DepositTabValue) : 'deposit';
+}
 
 export function Deposit() {
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
   const { t } = useLanguage();
   const [step, setStep] = useState<1 | 2 | 3>(1); // 1=Select, 2=Amount, 3=Transfer
   const [selectedMethodId, setSelectedMethodId] = useState<string | null>(null);
@@ -146,8 +154,12 @@ export function Deposit() {
   const handleTabChange = (tab: 'deposit' | 'withdrawal') => {
     setActiveTab(tab);
     if (tab === 'withdrawal') {
-      navigate('/withdraw');
+      navigate('/withdraw?tab=withdrawal');
+      return;
     }
+    const next = new URLSearchParams(searchParams);
+    next.set('tab', 'deposit');
+    setSearchParams(next);
   };
 
   const handleMethodSelect = (id: string) => {
@@ -221,6 +233,21 @@ export function Deposit() {
     setReceiptError('');
     setApprovalSecondsLeft(DEPOSIT_APPROVAL_COUNTDOWN_SECONDS);
   };
+
+  useEffect(() => {
+    const tab = normalizeDepositTab(searchParams.get('tab'));
+    if (tab === 'withdrawal') {
+      navigate('/withdraw?tab=withdrawal', { replace: true });
+      return;
+    }
+    const normalizedTab: 'deposit' = 'deposit';
+    if (searchParams.get('tab') !== normalizedTab) {
+      const next = new URLSearchParams(searchParams);
+      next.set('tab', normalizedTab);
+      setSearchParams(next, { replace: true });
+    }
+    setActiveTab(normalizedTab);
+  }, [navigate, searchParams, setSearchParams]);
 
   useEffect(() => {
     if (approvalSecondsLeft === null || approvalSecondsLeft <= 0) {

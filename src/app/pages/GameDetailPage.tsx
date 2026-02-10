@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { InsidePageHero } from '../components/shared/InsidePageHero';
 import { Trophy } from 'lucide-react';
 import { GameCarousel } from '../components/home/GameCarousel';
@@ -25,6 +25,13 @@ import { RegistrationFailedModal } from '../components/shared/RegistrationFailed
 const DEFAULT_REGISTRATION_FAILED_MESSAGE = 'Registration Failed';
 const SERVICE_UNAVAILABLE_MESSAGE = 'Please contact Customer Service, Thank you.';
 const IFRAME_FAILURE_KEYWORDS = ['error', 'unavailable', '503', 'nginx', 'service temporarily unavailable'];
+const GAME_DETAIL_TABS = ['ranking', 'description'] as const;
+type GameDetailTab = (typeof GAME_DETAIL_TABS)[number];
+
+function normalizeGameDetailTab(value: string | null | undefined): GameDetailTab {
+  const normalized = (value || '').trim().toLowerCase();
+  return GAME_DETAIL_TABS.includes(normalized as GameDetailTab) ? (normalized as GameDetailTab) : 'ranking';
+}
 
 function normalizeUrlForComparison(url: string) {
   try {
@@ -94,9 +101,10 @@ export function GameDetailPage() {
   const { t } = useLanguage();
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
   const { slug } = useParams();
   const game = gameDetailConfig.find((item) => item.slug === slug);
-  const [activeTab, setActiveTab] = useState<'ranking' | 'description'>('ranking');
+  const [activeTab, setActiveTab] = useState<'ranking' | 'description'>(() => normalizeGameDetailTab(searchParams.get('tab')));
   const iframeContainerRef = useRef<HTMLDivElement | null>(null);
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
   const requestedPlayRef = useRef(false);
@@ -107,6 +115,17 @@ export function GameDetailPage() {
   if (!game) {
     return <NotFound />;
   }
+
+  useEffect(() => {
+    const tab = searchParams.get('tab');
+    const normalizedTab = normalizeGameDetailTab(tab);
+    setActiveTab(normalizedTab);
+    if (tab !== normalizedTab) {
+      const next = new URLSearchParams(searchParams);
+      next.set('tab', normalizedTab);
+      setSearchParams(next, { replace: true });
+    }
+  }, [searchParams, setSearchParams]);
 
   useEffect(() => {
     const pending = sessionStorage.getItem('pendingGamePlay');
@@ -328,7 +347,13 @@ export function GameDetailPage() {
                     { id: 'description', label: 'Game Description' },
                   ]}
                   activeId={activeTab}
-                  onSelect={(id) => setActiveTab(id as 'ranking' | 'description')}
+                  onSelect={(id) => {
+                    const tabId = normalizeGameDetailTab(id);
+                    setActiveTab(tabId);
+                    const next = new URLSearchParams(searchParams);
+                    next.set('tab', tabId);
+                    setSearchParams(next);
+                  }}
                   scrollable
                 />
               </div>

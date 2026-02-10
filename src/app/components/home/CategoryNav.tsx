@@ -33,9 +33,9 @@ export function CategoryNav() {
         path: '#',
         color: 'text-yellow-400',
         subItems: [
-            { labelKey: "spinWheelBonus", path: "/bonus", icon: Dices },
-            { labelKey: "voucherScratchBonus", path: "/bonus/scratch", icon: Ticket },
-            { labelKey: "prizeBoxBonus", path: "/bonus/prize", icon: Box },
+            { labelKey: "spinWheelBonus", path: "/bonus?tab=wheel", icon: Dices },
+            { labelKey: "voucherScratchBonus", path: "/bonus?tab=scratch", icon: Ticket },
+            { labelKey: "prizeBoxBonus", path: "/bonus?tab=prize", icon: Box },
         ]
     },
     { id: 'promotions', labelKey: 'promotions', icon: Gift, path: '/promotions', color: 'text-pink-400' },

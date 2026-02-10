@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ArrowLeft, User, Smartphone, Building2, Plus, CheckCircle2, Clock, Trash2, ShieldCheck, CreditCard, Loader2 } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { useLanguage } from '../contexts/LanguageContext';
 import { Button } from '../components/ui/button';
@@ -25,11 +25,20 @@ import {
   SelectValue,
 } from '../components/ui/select';
 
+const PROFILE_TABS = ['personal', 'address'] as const;
+type ProfileTab = (typeof PROFILE_TABS)[number];
+
+function normalizeProfileTab(value: string | null | undefined): ProfileTab {
+  const normalized = (value || '').trim().toLowerCase();
+  return PROFILE_TABS.includes(normalized as ProfileTab) ? (normalized as ProfileTab) : 'personal';
+}
+
 export function Profile() {
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
   const { user } = useAuth();
   const { t } = useLanguage();
-  const [activeTab, setActiveTab] = useState<'personal' | 'address'>('personal');
+  const [activeTab, setActiveTab] = useState<'personal' | 'address'>(() => normalizeProfileTab(searchParams.get('tab')));
   const [eWalletAccounts, setEWalletAccounts] = useState([
     { id: 'ewallet-1', number: '60121344124', holder: 'Elon Musk', verified: true, provider: 'Touch n Go' },
     { id: 'ewallet-2', number: '60198765432', holder: 'Elon Musk', verified: false, provider: 'GrabPay' },
@@ -62,6 +71,17 @@ export function Profile() {
   });
 
   // Sync contact number with user mobile when user data changes
+  useEffect(() => {
+    const tab = searchParams.get('tab');
+    const normalizedTab = normalizeProfileTab(tab);
+    setActiveTab(normalizedTab);
+    if (tab !== normalizedTab) {
+      const next = new URLSearchParams(searchParams);
+      next.set('tab', normalizedTab);
+      setSearchParams(next, { replace: true });
+    }
+  }, [searchParams, setSearchParams]);
+
   useEffect(() => {
     if (user?.mobile) {
       setFormData(prev => ({
@@ -196,7 +216,13 @@ export function Profile() {
               { id: 'address', label: 'Bank / E-wallet', icon: CreditCard },
             ] as SegmentTabsItem[]}
             activeId={activeTab}
-            onSelect={(id) => setActiveTab(id as 'personal' | 'address')}
+            onSelect={(id) => {
+              const tabId = normalizeProfileTab(id);
+              setActiveTab(tabId);
+              const next = new URLSearchParams(searchParams);
+              next.set('tab', tabId);
+              setSearchParams(next);
+            }}
           />
 
           <div className={`${MOBILE.cardPadding} pt-4`}>

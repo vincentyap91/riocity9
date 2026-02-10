@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   ArrowLeft, Users, Calendar, Search,
   ChevronUp, ChevronDown, X, UserCheck, UserX, BarChart3
 } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { useLanguage } from '../contexts/LanguageContext';
@@ -25,6 +25,27 @@ const QUICK_DATE_FILTERS = [
   { id: '30days', label: 'Last 30 Days' },
   { id: '60days', label: 'Last 60 Days' },
 ];
+
+const DOWNLINE_TABS = ['summary', 'kpis'] as const;
+type DownlineTab = (typeof DOWNLINE_TABS)[number];
+const STATUS_TABS = ['active', 'inactive'] as const;
+type StatusTab = (typeof STATUS_TABS)[number];
+const DATE_TABS = QUICK_DATE_FILTERS.map((item) => item.id);
+
+function normalizeDownlineTab(value: string | null | undefined): DownlineTab {
+  const normalized = (value || '').trim().toLowerCase();
+  return DOWNLINE_TABS.includes(normalized as DownlineTab) ? (normalized as DownlineTab) : 'summary';
+}
+
+function normalizeStatusTab(value: string | null | undefined): StatusTab {
+  const normalized = (value || '').trim().toLowerCase();
+  return STATUS_TABS.includes(normalized as StatusTab) ? (normalized as StatusTab) : 'active';
+}
+
+function normalizeDateTab(value: string | null | undefined): string {
+  const normalized = (value || '').trim().toLowerCase();
+  return DATE_TABS.includes(normalized) ? normalized : 'today';
+}
 
 // Mock data for Downline Summary
 const summaryData = {
@@ -55,13 +76,20 @@ const downlinesList = [
 
 export function Downlines() {
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
   const { t } = useLanguage();
-  const [activeTab, setActiveTab] = useState<'summary' | 'kpis'>('summary');
-  const [activeDateFilter, setActiveDateFilter] = useState('today');
-  const [activeStatusTab, setActiveStatusTab] = useState<'active' | 'inactive'>('active');
+  const [activeTab, setActiveTab] = useState<'summary' | 'kpis'>(() => normalizeDownlineTab(searchParams.get('tab')));
+  const [activeDateFilter, setActiveDateFilter] = useState(() => normalizeDateTab(searchParams.get('dateTab')));
+  const [activeStatusTab, setActiveStatusTab] = useState<'active' | 'inactive'>(() => normalizeStatusTab(searchParams.get('statusTab')));
   const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState<'deposit' | null>(null);
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
+
+  const updateQuery = (updates: Record<string, string>) => {
+    const next = new URLSearchParams(searchParams);
+    Object.entries(updates).forEach(([key, value]) => next.set(key, value));
+    setSearchParams(next);
+  };
 
   const handleSort = (field: 'deposit') => {
     if (sortBy === field) {
@@ -75,6 +103,28 @@ export function Downlines() {
   const filteredDownlines = downlinesList.filter(downline =>
     downline.username.toLowerCase().includes(searchQuery.toLowerCase())
   );
+
+  useEffect(() => {
+    const currentTab = searchParams.get('tab');
+    const currentDateTab = searchParams.get('dateTab');
+    const currentStatusTab = searchParams.get('statusTab');
+
+    const normalizedTab = normalizeDownlineTab(currentTab);
+    const normalizedDateTab = normalizeDateTab(currentDateTab);
+    const normalizedStatusTab = normalizeStatusTab(currentStatusTab);
+
+    setActiveTab(normalizedTab);
+    setActiveDateFilter(normalizedDateTab);
+    setActiveStatusTab(normalizedStatusTab);
+
+    if (currentTab !== normalizedTab || currentDateTab !== normalizedDateTab || currentStatusTab !== normalizedStatusTab) {
+      const next = new URLSearchParams(searchParams);
+      next.set('tab', normalizedTab);
+      next.set('dateTab', normalizedDateTab);
+      next.set('statusTab', normalizedStatusTab);
+      setSearchParams(next, { replace: true });
+    }
+  }, [searchParams, setSearchParams]);
 
   return (
     <InnerPageLayout className="overflow-hidden">
@@ -103,7 +153,11 @@ export function Downlines() {
           <PageSidebar
             items={DOWNLINE_SIDEBAR_ITEMS}
             activeId={activeTab}
-            onSelect={(id) => setActiveTab(id as 'summary' | 'kpis')}
+            onSelect={(id) => {
+              const tabId = normalizeDownlineTab(id);
+              setActiveTab(tabId);
+              updateQuery({ tab: tabId });
+            }}
           />
 
           {/* Main Content Area */}
@@ -157,7 +211,10 @@ export function Downlines() {
                   <FilterTabs
                     items={QUICK_DATE_FILTERS}
                     activeId={activeDateFilter}
-                    onSelect={setActiveDateFilter}
+                    onSelect={(id) => {
+                      setActiveDateFilter(id);
+                      updateQuery({ dateTab: id });
+                    }}
                     scrollable
                   />
                 </div>
@@ -215,7 +272,10 @@ export function Downlines() {
                   <div className="flex justify-start mb-4 px-1">
                     <div className="flex flex-nowrap bg-[#0f151f] p-1 rounded-lg md:rounded-xl border border-white/5 w-full max-w-[400px]">
                       <button
-                        onClick={() => setActiveStatusTab('active')}
+                        onClick={() => {
+                          setActiveStatusTab('active');
+                          updateQuery({ statusTab: 'active' });
+                        }}
                         className={`flex-1 min-w-0 px-3 py-2 md:px-6 md:py-3 rounded-md md:rounded-lg text-xs md:text-sm font-bold transition-all whitespace-nowrap ${activeStatusTab === 'active'
                           ? 'bg-[#00bc7d] hover:bg-[#00a870] text-black'
                           : 'text-gray-400 hover:text-white'
@@ -227,7 +287,10 @@ export function Downlines() {
                         </span>
                       </button>
                       <button
-                        onClick={() => setActiveStatusTab('inactive')}
+                        onClick={() => {
+                          setActiveStatusTab('inactive');
+                          updateQuery({ statusTab: 'inactive' });
+                        }}
                         className={`flex-1 min-w-0 px-3 py-2 md:px-6 md:py-3 rounded-md md:rounded-lg text-xs md:text-sm font-bold transition-all whitespace-nowrap ${activeStatusTab === 'inactive'
                           ? 'bg-[#00bc7d] hover:bg-[#00a870] text-black'
                           : 'text-gray-400 hover:text-white'

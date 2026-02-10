@@ -9,7 +9,7 @@ export function FloatingRewardWidget() {
   const navigate = useNavigate();
 
   const handleBonusClick = (bonusType: string) => {
-    navigate(bonusType === 'wheel' ? '/bonus' : `/bonus/${bonusType}`);
+    navigate(`/bonus?tab=${bonusType}`);
     setIsExpanded(false);
   };
 

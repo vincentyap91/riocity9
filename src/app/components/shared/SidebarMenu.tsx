@@ -19,9 +19,9 @@ import { useLanguage } from "../../contexts/LanguageContext";
 
 // --- Configuration ---
 const rewardItems = [
-    { labelKey: "spinWheelBonus", icon: Dices, path: "/bonus", color: "text-yellow-400" },
-    { labelKey: "voucherScratchBonus", icon: Ticket, path: "/bonus/scratch", color: "text-pink-400" },
-    { labelKey: "prizeBoxBonus", icon: Box, path: "/bonus/prize", color: "text-orange-400" },
+    { labelKey: "spinWheelBonus", icon: Dices, path: "/bonus?tab=wheel", color: "text-yellow-400" },
+    { labelKey: "voucherScratchBonus", icon: Ticket, path: "/bonus?tab=scratch", color: "text-pink-400" },
+    { labelKey: "prizeBoxBonus", icon: Box, path: "/bonus?tab=prize", color: "text-orange-400" },
 ];
 
 const menuItems = [

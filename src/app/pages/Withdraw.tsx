@@ -13,7 +13,7 @@ import {
   Info
 } from 'lucide-react';
 import { Button } from '../components/ui/button';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useLanguage } from '../contexts/LanguageContext';
 import { MOBILE, PRIMARY_CTA_CLASS } from '../config/themeTokens';
 import { SegmentTabs, type SegmentTabsItem } from '../components/shared/SegmentTabs';
@@ -107,9 +107,17 @@ const OTHER_METHODS = [
     icon: CheckCircle2
   }
 ];
+const WITHDRAW_TAB_VALUES = ['deposit', 'withdrawal'] as const;
+type WithdrawTabValue = (typeof WITHDRAW_TAB_VALUES)[number];
+
+function normalizeWithdrawTab(value: string | null | undefined): WithdrawTabValue {
+  const normalized = (value || '').trim().toLowerCase();
+  return WITHDRAW_TAB_VALUES.includes(normalized as WithdrawTabValue) ? (normalized as WithdrawTabValue) : 'withdrawal';
+}
 
 export function Withdraw() {
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
   const { t } = useLanguage();
   const [step, setStep] = useState<1 | 2>(1);
   const [selectedMethodId, setSelectedMethodId] = useState<string | null>(null);
@@ -126,8 +134,12 @@ export function Withdraw() {
   const handleTabChange = (tab: 'deposit' | 'withdrawal') => {
     setActiveTab(tab);
     if (tab === 'deposit') {
-      navigate('/deposit');
+      navigate('/deposit?tab=deposit');
+      return;
     }
+    const next = new URLSearchParams(searchParams);
+    next.set('tab', 'withdrawal');
+    setSearchParams(next);
   };
 
   const handleMethodSelect = (id: string) => {
@@ -150,6 +162,21 @@ export function Withdraw() {
   };
 
   const selectedMethod = getSelectedMethod();
+
+  React.useEffect(() => {
+    const tab = normalizeWithdrawTab(searchParams.get('tab'));
+    if (tab === 'deposit') {
+      navigate('/deposit?tab=deposit', { replace: true });
+      return;
+    }
+    const normalizedTab: 'withdrawal' = 'withdrawal';
+    if (searchParams.get('tab') !== normalizedTab) {
+      const next = new URLSearchParams(searchParams);
+      next.set('tab', normalizedTab);
+      setSearchParams(next, { replace: true });
+    }
+    setActiveTab(normalizedTab);
+  }, [navigate, searchParams, setSearchParams]);
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4 font-sans text-white relative bg-[#0a0f19] overflow-x-hidden">

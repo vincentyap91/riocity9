@@ -1,3 +1,4 @@
+import React from 'react';
 import { InnerPageLayout } from "../components/shared/InnerPageLayout";
 import { HelpCenterSidebar } from '../components/shared/HelpCenterSidebar';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../components/ui/accordion';
@@ -85,22 +86,44 @@ const INFORMATION_SECTIONS = [
 
 const DEFAULT_SECTION = 'rules';
 
+function normalizeSectionTab(value: string | null | undefined): string {
+    const normalized = (value || '').trim().toLowerCase();
+    return INFORMATION_SECTIONS.some((section) => section.id === normalized) ? normalized : DEFAULT_SECTION;
+}
+
+function normalizeSubtab(value: string | null | undefined, sectionId: string): string {
+    const normalized = (value || '').trim().toLowerCase();
+    const section = INFORMATION_SECTIONS.find((item) => item.id === sectionId) || INFORMATION_SECTIONS[0];
+    return section.tabs.some((tab) => tab.id === normalized) ? normalized : section.tabs[0].id;
+}
+
 export function InformationCenter() {
     const location = useLocation();
     const navigate = useNavigate();
     const params = new URLSearchParams(location.search);
-    const sectionParam = params.get('tab') || DEFAULT_SECTION;
+    const sectionParam = normalizeSectionTab(params.get('tab'));
     const activeSection =
         INFORMATION_SECTIONS.find((section) => section.id === sectionParam) || INFORMATION_SECTIONS[0];
-    const defaultSubtab = activeSection.tabs[0].id;
-    const subtabParam = params.get('subtab') || defaultSubtab;
+    const subtabParam = normalizeSubtab(params.get('subtab'), activeSection.id);
     const activeInnerTab =
         activeSection.tabs.find((tab) => tab.id === subtabParam) || activeSection.tabs[0];
+
+    React.useEffect(() => {
+        const nextParams = new URLSearchParams(location.search);
+        const normalizedTab = normalizeSectionTab(nextParams.get('tab'));
+        const normalizedSubtab = normalizeSubtab(nextParams.get('subtab'), normalizedTab);
+
+        if (nextParams.get('tab') !== normalizedTab || nextParams.get('subtab') !== normalizedSubtab) {
+            nextParams.set('tab', normalizedTab);
+            nextParams.set('subtab', normalizedSubtab);
+            navigate({ pathname: location.pathname, search: `?${nextParams.toString()}` }, { replace: true });
+        }
+    }, [location.pathname, location.search, navigate]);
 
     const handleSubtabChange = (tabId: string) => {
         const nextParams = new URLSearchParams(location.search);
         nextParams.set('tab', activeSection.id);
-        nextParams.set('subtab', tabId);
+        nextParams.set('subtab', normalizeSubtab(tabId, activeSection.id));
         navigate({ pathname: location.pathname, search: `?${nextParams.toString()}` });
     };
 

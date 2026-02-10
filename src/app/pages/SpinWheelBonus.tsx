@@ -63,7 +63,7 @@ export function SpinWheelBonus() {
           <PageSidebar
             items={BONUS_SIDEBAR_ITEMS}
             activeId={activeId}
-            onSelect={(id) => navigate(`/bonus/${id}`)}
+            onSelect={(id) => navigate(`/bonus?tab=${id}`)}
           />
 
           {/* Main Content Area - mobile friendly padding */}
@@ -133,3 +133,4 @@ export function SpinWheelBonus() {
     </InnerPageLayout>
   );
 }
+

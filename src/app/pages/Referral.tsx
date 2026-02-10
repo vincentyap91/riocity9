@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Copy, ChevronRight, Info, Users, Gift, HandCoins, Wallet } from 'lucide-react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../components/ui/accordion';
 import { useAuth } from '../contexts/AuthContext';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Button } from '../components/ui/button';
 import { useLanguage } from '../contexts/LanguageContext';
 import { MOBILE } from '../config/themeTokens';
@@ -18,6 +18,26 @@ import earnBonusIcon from '@/assets/earn-bonus.svg';
 import imgHeroBg from '@/assets/referral-bg.jpg';
 import tierBg from '@/assets/tier-bg.jpg';
 import tierImg from '@/assets/tier.png';
+
+const FAQ_TABS = ['faq', 'terms'] as const;
+type FaqTab = (typeof FAQ_TABS)[number];
+const HISTORY_TABS = ['commission', 'deposit'] as const;
+type HistoryTab = (typeof HISTORY_TABS)[number];
+
+function normalizeReferralTab(value: string | null | undefined): 'referral' | 'myRewards' {
+  const normalized = (value || '').trim().toLowerCase();
+  return normalized === 'myrewards' ? 'myRewards' : 'referral';
+}
+
+function normalizeFaqTab(value: string | null | undefined): FaqTab {
+  const normalized = (value || '').trim().toLowerCase();
+  return FAQ_TABS.includes(normalized as FaqTab) ? (normalized as FaqTab) : 'faq';
+}
+
+function normalizeHistoryTab(value: string | null | undefined): HistoryTab {
+  const normalized = (value || '').trim().toLowerCase();
+  return HISTORY_TABS.includes(normalized as HistoryTab) ? (normalized as HistoryTab) : 'deposit';
+}
 
 const commissionRates = [
   {
@@ -52,13 +72,40 @@ const faqs = [
 export function Referral() {
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
   const { t } = useLanguage();
-  const [activeTab, setActiveTab] = useState<'referral' | 'myRewards'>('referral');
-  const [faqTab, setFaqTab] = useState<'faq' | 'terms'>('faq');
-  const [activeHistoryTab, setActiveHistoryTab] = useState<'commission' | 'deposit'>('deposit');
+  const [activeTab, setActiveTab] = useState<'referral' | 'myRewards'>(() => normalizeReferralTab(searchParams.get('tab')));
+  const [faqTab, setFaqTab] = useState<'faq' | 'terms'>(() => normalizeFaqTab(searchParams.get('faqTab')));
+  const [activeHistoryTab, setActiveHistoryTab] = useState<'commission' | 'deposit'>(() => normalizeHistoryTab(searchParams.get('historyTab')));
+
+  React.useEffect(() => {
+    const tab = searchParams.get('tab');
+    const faq = searchParams.get('faqTab');
+    const history = searchParams.get('historyTab');
+
+    const normalizedTab = normalizeReferralTab(tab);
+    const normalizedFaq = normalizeFaqTab(faq);
+    const normalizedHistory = normalizeHistoryTab(history);
+
+    setActiveTab(normalizedTab);
+    setFaqTab(normalizedFaq);
+    setActiveHistoryTab(normalizedHistory);
+
+    if (tab !== normalizedTab || faq !== normalizedFaq || history !== normalizedHistory) {
+      const next = new URLSearchParams(searchParams);
+      next.set('tab', normalizedTab);
+      next.set('faqTab', normalizedFaq);
+      next.set('historyTab', normalizedHistory);
+      setSearchParams(next, { replace: true });
+    }
+  }, [searchParams, setSearchParams]);
 
   const handleTabChange = (tab: 'referral' | 'myRewards') => {
-    setActiveTab(tab);
+    const normalizedTab = normalizeReferralTab(tab);
+    setActiveTab(normalizedTab);
+    const next = new URLSearchParams(searchParams);
+    next.set('tab', normalizedTab);
+    setSearchParams(next);
   };
 
   // Mock data for My Rewards
@@ -387,9 +434,9 @@ export function Referral() {
               <div className="bg-[#1a2230] border border-white/5 rounded-xl p-6 shadow-xl">
                 {/* History Tabs - smaller on mobile */}
                 <div>
-                  <FilterTabs
-                    items={[
-                      {
+                <FilterTabs
+                  items={[
+                    {
                         id: 'commission',
                         label: (
                           <span className="inline-flex items-center justify-center gap-2">
@@ -405,11 +452,17 @@ export function Referral() {
                           </span>
                         ),
                       },
-                    ]}
-                    activeId={activeHistoryTab}
-                    onSelect={(id) => setActiveHistoryTab(id as 'commission' | 'deposit')}
-                    scrollable
-                  />
+                  ]}
+                  activeId={activeHistoryTab}
+                  onSelect={(id) => {
+                    const tabId = normalizeHistoryTab(id);
+                    setActiveHistoryTab(tabId);
+                    const next = new URLSearchParams(searchParams);
+                    next.set('historyTab', tabId);
+                    setSearchParams(next);
+                  }}
+                  scrollable
+                />
                 </div>
 
                 {/* Table */}
@@ -549,7 +602,13 @@ export function Referral() {
                     { id: 'terms', label: 'Terms & Conditions' },
                   ]}
                   activeId={faqTab}
-                  onSelect={(id) => setFaqTab(id as 'faq' | 'terms')}
+                  onSelect={(id) => {
+                    const tabId = normalizeFaqTab(id);
+                    setFaqTab(tabId);
+                    const next = new URLSearchParams(searchParams);
+                    next.set('faqTab', tabId);
+                    setSearchParams(next);
+                  }}
                   scrollable
                 />
               </div>

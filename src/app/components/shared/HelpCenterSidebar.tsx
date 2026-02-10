@@ -18,20 +18,26 @@ interface HelpCenterSidebarProps {
     onSelect?: (id: string) => void;
 }
 
+function normalizeHelpCenterTab(value: string | null | undefined): string {
+    const normalized = (value || '').trim().toLowerCase();
+    return HELP_CENTER_ITEMS.some((item) => item.id === normalized) ? normalized : 'rules';
+}
+
 export function HelpCenterSidebar({ activeId, onSelect }: HelpCenterSidebarProps) {
     const navigate = useNavigate();
     const location = useLocation();
 
     // Determine active ID from URL if not provided
-    const currentActiveId = activeId || new URLSearchParams(location.search).get('tab') || 'rules';
+    const currentActiveId = normalizeHelpCenterTab(activeId || new URLSearchParams(location.search).get('tab'));
 
     const handleSelect = (id: string) => {
-        const item = HELP_CENTER_ITEMS.find(i => i.id === id);
+        const normalizedId = normalizeHelpCenterTab(id);
+        const item = HELP_CENTER_ITEMS.find(i => i.id === normalizedId);
         if (item?.path) {
             navigate(item.path);
         }
         if (onSelect) {
-            onSelect(id);
+            onSelect(normalizedId);
         }
     };
 
