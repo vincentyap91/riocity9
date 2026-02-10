@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import { useLanguage } from "../contexts/LanguageContext";
 import { useAuth } from "../contexts/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { InsidePageHero } from "../components/shared/InsidePageHero";
 import { PAGE_ACCENT } from "../config/themeTokens";
 import { GameSearchBar } from "../components/shared/GameSearchBar";
+import { LoginRequiredModal } from "../components/shared/LoginRequiredModal";
 
 const ALL_GAMES_BANNER =
   "https://pksoftcdn.azureedge.net/media/all-202406141221396060-202412171030459189.jpg";
@@ -36,18 +37,9 @@ const allGames = [
 export function AllGame() {
   const { t } = useLanguage();
   const { isAuthenticated } = useAuth();
-  const navigate = useNavigate();
+  const location = useLocation();
   const [searchQuery, setSearchQuery] = useState("");
-
-  React.useEffect(() => {
-    if (!isAuthenticated) {
-      navigate("/login");
-    }
-  }, [isAuthenticated, navigate]);
-
-  if (!isAuthenticated) {
-    return null;
-  }
+  const [showLoginModal, setShowLoginModal] = useState(false);
 
   const normalizedSearch = searchQuery.trim().toLowerCase();
   const filteredGames = allGames.filter(
@@ -80,6 +72,11 @@ export function AllGame() {
                 <div
                   key={game.id}
                   className="flex flex-col items-start gap-2 md:gap-3 group cursor-pointer w-full max-w-[214px]"
+                  onClick={() => {
+                    if (isAuthenticated) return;
+                    sessionStorage.setItem('redirectAfterLogin', `${location.pathname}${location.search}`);
+                    setShowLoginModal(true);
+                  }}
                 >
                   <div className="relative w-full aspect-square rounded-xl overflow-hidden border border-white/5 transition-all duration-300 bg-[#0f1923] hover:border-white/10">
                     <img
@@ -105,6 +102,7 @@ export function AllGame() {
           )}
         </div>
       </div>
+      <LoginRequiredModal isOpen={showLoginModal} onOpenChange={setShowLoginModal} />
     </div>
   );
 }

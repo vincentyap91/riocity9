@@ -8,6 +8,7 @@ import { useLanguage } from '../contexts/LanguageContext';
 import { useAuth } from '../contexts/AuthContext';
 import { NotFound } from './NotFound';
 import imgImagePromo from "@/assets/dba5dfffa741345e0ad70e36cafba5ab8b533760.png";
+import imgImageEzugiCasino from "@/assets/ezugi_live casino-202601301129516752.png";
 import imgImageGameplayCasino from "@/assets/1b526547f23589a0effd96c6158392e2d6fb3935.png";
 import imgImageAdventuresOfCaramelo from "@/assets/Adventures-Of-Caramelo.jpg";
 import imgImageGatesOfOlympus from "@/assets/8fb99beace6c78475545798f7458eacaad6bea25.png";
@@ -19,6 +20,20 @@ import imgImageGates1000 from "@/assets/e7fb1cf0de54bfef4c5b040e789790c437112a46
 import { PAGE_ACCENT } from '../config/themeTokens';
 import { FilterTabs } from '../components/shared/FilterTabs';
 import { EmptyState } from '../components/shared/EmptyState';
+import { RegistrationFailedModal } from '../components/shared/RegistrationFailedModal';
+
+const DEFAULT_REGISTRATION_FAILED_MESSAGE = 'Registration Failed';
+const SERVICE_UNAVAILABLE_MESSAGE = 'Please contact Customer Service, Thank you.';
+const IFRAME_FAILURE_KEYWORDS = ['error', 'unavailable', '503', 'nginx', 'service temporarily unavailable'];
+
+function normalizeUrlForComparison(url: string) {
+  try {
+    const parsed = new URL(url);
+    return `${parsed.origin}${parsed.pathname}`;
+  } catch {
+    return url.split('?')[0];
+  }
+}
 
 const gameDetailConfig = [
   {
@@ -32,6 +47,20 @@ const gameDetailConfig = [
     categoryLabel: 'Slots',
     categoryPath: '/slots',
     providerPath: '/slots',
+    status: 'available',
+  },
+  {
+    slug: 'ezugi-casino',
+    title: 'Ezugi',
+    provider: 'Ezugi',
+    rtp: '95.00%',
+    image: imgImageEzugiCasino,
+    iframeSrc: 'https://staging-adventures-of-caramelo.topplatform.asia/?playerToken=7e0e88ad-0bd1-4d86-bfe7-0c1803647041&groupCode=oooo&brandCode=9teo&language=en',
+    description: 'Ezugi live casino experience with classic table action and real-time gameplay.',
+    categoryLabel: 'Live Casino',
+    categoryPath: '/live-casino',
+    providerPath: '/live-casino',
+    status: 'unavailable',
   },
   {
     slug: 'gameplay-casino',
@@ -44,6 +73,20 @@ const gameDetailConfig = [
     categoryLabel: 'Live Casino',
     categoryPath: '/live-casino',
     providerPath: '/live-casino',
+    status: 'unavailable',
+  },
+  {
+    slug: 'fb-sport',
+    title: 'FB Sport',
+    provider: 'FB Sport',
+    rtp: '95.00%',
+    image: 'https://pksoftcdn.azureedge.net/media/fbsports_sports-202601130904031723.png',
+    iframeSrc: 'https://staging-adventures-of-caramelo.topplatform.asia/?playerToken=7e0e88ad-0bd1-4d86-bfe7-0c1803647041&groupCode=oooo&brandCode=9teo&language=en',
+    description: 'FB Sport live sportsbook experience with real-time odds and event coverage.',
+    categoryLabel: 'Sports',
+    categoryPath: '/sports',
+    providerPath: '/sports',
+    status: 'unavailable',
   },
 ];
 
@@ -55,7 +98,11 @@ export function GameDetailPage() {
   const game = gameDetailConfig.find((item) => item.slug === slug);
   const [activeTab, setActiveTab] = useState<'ranking' | 'description'>('ranking');
   const iframeContainerRef = useRef<HTMLDivElement | null>(null);
+  const iframeRef = useRef<HTMLIFrameElement | null>(null);
   const requestedPlayRef = useRef(false);
+  const [showRegistrationFailedModal, setShowRegistrationFailedModal] = useState(game.status === 'unavailable');
+  const [registrationFailedMessage, setRegistrationFailedMessage] = useState(DEFAULT_REGISTRATION_FAILED_MESSAGE);
+  const gameIframeUrlRef = useRef(game.iframeSrc);
 
   if (!game) {
     return <NotFound />;
@@ -68,6 +115,18 @@ export function GameDetailPage() {
       window.location.reload();
     }
   }, [isAuthenticated]);
+
+  useEffect(() => {
+    setShowRegistrationFailedModal(game.status === 'unavailable');
+    setRegistrationFailedMessage(DEFAULT_REGISTRATION_FAILED_MESSAGE);
+    gameIframeUrlRef.current = game.iframeSrc;
+  }, [game.status, game.slug]);
+
+  const openRegistrationFailedModal = ({ is503 = false }: { is503?: boolean } = {}) => {
+    const showServiceMessage = game.slug === 'adventures-of-caramelo' && is503;
+    setRegistrationFailedMessage(showServiceMessage ? SERVICE_UNAVAILABLE_MESSAGE : DEFAULT_REGISTRATION_FAILED_MESSAGE);
+    setShowRegistrationFailedModal(true);
+  };
 
   const rankingRows = [
     { rank: 1, username: '*********3', date: '19-Jan-2026', bet: '3.50', payout: '35.70', win: '32.20' },
@@ -87,9 +146,9 @@ export function GameDetailPage() {
     { id: '160420', username: '*********3', date: '19-Jan-2026 04:01:08 PM', amount: '3.50' },
     { id: '160419', username: '*********3', date: '19-Jan-2026 04:01:07 PM', amount: '3.50' },
   ];
-  const isGameplayCasino = game.slug === 'gameplay-casino';
-  const rankingRowsData = isGameplayCasino ? [] : rankingRows;
-  const latestBetsData = isGameplayCasino ? [] : latestBets;
+  const isGameUnavailable = game.status === 'unavailable';
+  const rankingRowsData = isGameUnavailable ? [] : rankingRows;
+  const latestBetsData = isGameUnavailable ? [] : latestBets;
 
   const recommendedGames = [
     { title: 'Gates of Olympus', image: imgImageGatesOfOlympus },
@@ -146,7 +205,7 @@ export function GameDetailPage() {
               <button
                 type="button"
                 onClick={async () => {
-                  if (isGameplayCasino) {
+                  if (showRegistrationFailedModal || isGameUnavailable) {
                     return;
                   }
                   const el = iframeContainerRef.current;
@@ -176,34 +235,64 @@ export function GameDetailPage() {
                 <img src={game.image} alt={game.title} className="absolute inset-0 w-full h-full object-cover blur-sm scale-110 opacity-40 pointer-events-none" />
                 <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/20 to-black/60 pointer-events-none"></div>
                 <div className="relative z-10 w-full h-full flex items-center justify-center">
-                  {isGameplayCasino ? (
-                    <div className="w-full h-full bg-black flex items-center justify-center p-4">
-                      <div className="w-full max-w-[420px] rounded-2xl bg-[#232529] border border-white/10 p-5 md:p-6 flex flex-col items-center gap-4">
-                        <div className="text-white/90 text-sm md:text-base font-medium">Registration Failed</div>
-                        <div className="w-full grid grid-cols-2 gap-2">
-                          <button
-                            type="button"
-                            className="h-10 rounded-md bg-[#43ea8a] text-black text-sm font-bold hover:bg-[#58f29a] transition-colors"
-                            onClick={() => navigate('/')}
-                          >
-                            Back To Home
-                          </button>
-                          <button
-                            type="button"
-                            className="h-10 rounded-md bg-[#f2cc2f] text-black text-sm font-bold hover:bg-[#ffd74f] transition-colors"
-                            onClick={() => navigate('/live-casino')}
-                          >
-                            More Games
-                          </button>
-                        </div>
-                      </div>
-                    </div>
+                  {showRegistrationFailedModal ? (
+                    <RegistrationFailedModal
+                      isOpen={showRegistrationFailedModal}
+                      message={registrationFailedMessage}
+                      onBackHome={() => navigate('/')}
+                      onMoreGames={() => navigate(game.categoryPath || '/live-casino')}
+                    />
                   ) : (
                     <div className="h-full w-auto max-w-full aspect-[9/16] bg-[#0b111b] overflow-hidden shadow-[0_0_40px_-10px_rgba(0,0,0,0.6)] pointer-events-auto">
                       <iframe
                         id="game-iframe"
+                        ref={iframeRef}
                         className="game-iframe w-full h-full"
                         src={game.iframeSrc}
+                        onError={() => openRegistrationFailedModal()}
+                        onLoad={() => {
+                          const iframe = iframeRef.current;
+                          if (!iframe) {
+                            return;
+                          }
+
+                          const checkForFrameFailure = () => {
+                            try {
+                              const frameDoc = iframe.contentDocument || iframe.contentWindow?.document;
+                              const frameSignals = `${frameDoc?.title || ''} ${frameDoc?.body?.innerText || ''}`.toLowerCase();
+                              if (IFRAME_FAILURE_KEYWORDS.some((keyword) => frameSignals.includes(keyword))) {
+                                const is503FrameSignal =
+                                  frameSignals.includes('503') ||
+                                  frameSignals.includes('service temporarily unavailable') ||
+                                  frameSignals.includes('nginx');
+                                openRegistrationFailedModal({ is503: is503FrameSignal });
+                                return;
+                              }
+                            } catch {
+                              // Cross-origin iframe content may be blocked.
+                            }
+
+                            if (typeof window !== 'undefined' && typeof window.performance !== 'undefined') {
+                              const currentIframeUrl = normalizeUrlForComparison(gameIframeUrlRef.current);
+                              const resourceEntries = window.performance.getEntriesByType('resource') as PerformanceResourceTiming[];
+                              const latestIframeEntry = [...resourceEntries].reverse().find((entry) => {
+                                if (entry.initiatorType !== 'iframe') {
+                                  return false;
+                                }
+                                const entryUrl = normalizeUrlForComparison(entry.name);
+                                return entryUrl === currentIframeUrl || entryUrl.startsWith(currentIframeUrl);
+                              });
+                              const responseStatus = (latestIframeEntry as PerformanceResourceTiming & { responseStatus?: number } | undefined)?.responseStatus;
+                              if (typeof responseStatus === 'number' && responseStatus >= 400) {
+                                openRegistrationFailedModal({ is503: responseStatus === 503 });
+                              }
+                            }
+                          };
+
+                          checkForFrameFailure();
+                          window.setTimeout(checkForFrameFailure, 350);
+                          window.setTimeout(checkForFrameFailure, 1200);
+                        }}
                         allowFullScreen>
                       </iframe>
                       {!isAuthenticated && (

@@ -2,10 +2,11 @@ import React, { useState } from "react";
 import { useLanguage } from "../contexts/LanguageContext";
 import { ArrowRight } from "lucide-react";
 import { useAuth } from "../contexts/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { InnerPageLayout } from "../components/shared/InnerPageLayout";
 import { PAGE_ACCENT } from "../config/themeTokens";
 import { GameSearchBar } from "../components/shared/GameSearchBar";
+import { LoginRequiredModal } from "../components/shared/LoginRequiredModal";
 
 // Placeholder data - you can replace this with actual recent games data
 const recentGames = [
@@ -49,19 +50,9 @@ const recentGames = [
 export function RecentGame() {
   const { t } = useLanguage();
   const { isAuthenticated } = useAuth();
-  const navigate = useNavigate();
+  const location = useLocation();
   const [searchQuery, setSearchQuery] = useState('');
-
-  // Redirect to login if not authenticated
-  React.useEffect(() => {
-    if (!isAuthenticated) {
-      navigate('/login');
-    }
-  }, [isAuthenticated, navigate]);
-
-  if (!isAuthenticated) {
-    return null;
-  }
+  const [showLoginModal, setShowLoginModal] = useState(false);
 
   const normalizedSearch = searchQuery.trim().toLowerCase();
   // Filter games based on search query
@@ -96,7 +87,15 @@ export function RecentGame() {
           <div className="w-full">
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-4 lg:gap-6 justify-items-center">
               {filteredGames.map((game) => (
-                <div key={game.id} className="flex flex-col items-start gap-2 md:gap-3 group cursor-pointer w-full max-w-[214px]">
+                <div
+                  key={game.id}
+                  className="flex flex-col items-start gap-2 md:gap-3 group cursor-pointer w-full max-w-[214px]"
+                  onClick={() => {
+                    if (isAuthenticated) return;
+                    sessionStorage.setItem('redirectAfterLogin', `${location.pathname}${location.search}`);
+                    setShowLoginModal(true);
+                  }}
+                >
                   <div className="relative w-full aspect-square rounded-2xl overflow-hidden ring-1 ring-white/10 transition-all duration-300 bg-[#1a2536] group-hover:ring-emerald-500/30 group-hover:shadow-[0_0_30px_-5px_rgba(16,185,129,0.2)]">
                     <img
                       src={game.img}
@@ -124,6 +123,7 @@ export function RecentGame() {
           </div>
         </div>
       </div>
+      <LoginRequiredModal isOpen={showLoginModal} onOpenChange={setShowLoginModal} />
     </InnerPageLayout>
   );
 }

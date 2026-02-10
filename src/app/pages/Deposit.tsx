@@ -1,8 +1,9 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { 
   ArrowLeft, 
   ChevronRight, 
   Info, 
+  AlertCircle,
   Smartphone, 
   Banknote, 
   QrCode, 
@@ -15,6 +16,7 @@ import {
   Clock,
   Headphones,
   CheckCircle2,
+  Check,
   Lock,
   Zap,
   DollarSign
@@ -123,6 +125,8 @@ const FILTERS = [
   { id: 'others', label: 'Others', icon: null },
 ];
 
+const DEPOSIT_APPROVAL_COUNTDOWN_SECONDS = 8 * 60 + 6;
+
 export function Deposit() {
   const navigate = useNavigate();
   const { t } = useLanguage();
@@ -135,6 +139,9 @@ export function Deposit() {
   const receiptInputRef = useRef<HTMLInputElement | null>(null);
   const [receiptFileName, setReceiptFileName] = useState<string>('');
   const [receiptError, setReceiptError] = useState<string>('');
+  const [showDepositVerificationModal, setShowDepositVerificationModal] = useState(false);
+  const [approvalSecondsLeft, setApprovalSecondsLeft] = useState<number | null>(null);
+  const isDepositLocked = approvalSecondsLeft !== null && approvalSecondsLeft > 0;
 
   const handleTabChange = (tab: 'deposit' | 'withdrawal') => {
     setActiveTab(tab);
@@ -144,18 +151,27 @@ export function Deposit() {
   };
 
   const handleMethodSelect = (id: string) => {
+    if (isDepositLocked) {
+      return;
+    }
     setSelectedMethodId(id);
     // In the new design, selecting usually just highlights, then click 'Continue'
     // But for better UX flow we can auto-highlight
   };
 
   const handleContinue = () => {
+    if (isDepositLocked) {
+      return;
+    }
     if (selectedMethodId) {
       setStep(2);
     }
   };
 
   const handleAmountSubmit = () => {
+    if (isDepositLocked) {
+      return;
+    }
     if (!amount) return;
     setStep(3);
   };
@@ -188,8 +204,48 @@ export function Deposit() {
     }
   };
 
+  const handleSubmitDeposit = () => {
+    if (isDepositLocked) {
+      return;
+    }
+    setShowDepositVerificationModal(true);
+  };
+
+  const handleDepositVerificationConfirm = () => {
+    setShowDepositVerificationModal(false);
+    setStep(1);
+    setSelectedMethodId(null);
+    setAmount('');
+    setReferenceId('');
+    setReceiptFileName('');
+    setReceiptError('');
+    setApprovalSecondsLeft(DEPOSIT_APPROVAL_COUNTDOWN_SECONDS);
+  };
+
+  useEffect(() => {
+    if (approvalSecondsLeft === null || approvalSecondsLeft <= 0) {
+      return;
+    }
+    const timer = window.setInterval(() => {
+      setApprovalSecondsLeft((previous) => {
+        if (previous === null) {
+          return null;
+        }
+        return Math.max(previous - 1, 0);
+      });
+    }, 1000);
+
+    return () => window.clearInterval(timer);
+  }, [approvalSecondsLeft]);
+
+  const formatApprovalCountdown = (seconds: number) => {
+    const minutes = Math.floor(seconds / 60).toString().padStart(2, '0');
+    const remainingSeconds = (seconds % 60).toString().padStart(2, '0');
+    return `${minutes} minutes ${remainingSeconds} second(s)`;
+  };
+
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 font-sans text-white relative bg-[#0a0f19] overflow-x-hidden">
+    <div className="min-h-screen flex items-start justify-center p-4 font-sans text-white relative bg-[#0a0f19] overflow-x-hidden">
       {/* Background Ambience */}
       <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
         <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-[rgba(0,79,59,0.3)] rounded-full blur-[150px]"></div>
@@ -243,6 +299,16 @@ export function Deposit() {
           {/* STEP 1: SELECTION */}
           {step === 1 && (
             <div className="space-y-6">
+                {isDepositLocked && (
+                  <div className="rounded-xl border border-red-500/70 bg-[#331f23] px-4 py-3 flex items-center gap-3">
+                    <AlertCircle className="w-5 h-5 text-red-400 shrink-0" />
+                    <p className="text-sm font-bold text-red-400">
+                      Please wait {formatApprovalCountdown(approvalSecondsLeft ?? 0)} for deposit approval
+                    </p>
+                  </div>
+                )}
+
+                <div className={isDepositLocked ? 'hidden' : 'space-y-6'}>
                 <div className="text-gray-400 text-sm">{t("selectReloadOption")}</div>
 
                 {/* Search & Filters */}
@@ -258,37 +324,42 @@ export function Deposit() {
                         />
                     </div>
                     
-                    {/* <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-none">
-                        {FILTERS.map(filter => (
-                            <button key={filter.id} className="flex items-center gap-1.5 bg-[#0f151f] border border-white/10 hover:border-emerald-500/50 px-3 py-1.5 rounded-lg text-xs font-medium text-gray-300 whitespace-nowrap transition-colors">
-                                {filter.icon && <filter.icon className="w-3 h-3 text-emerald-500" />}
-                                {filter.label}
-                            </button>
-                        ))}
-                    </div> */}
                 </div>
 
                 {/* Popular Methods Grid */}
                 <div>
                     <h3 className="text-sm font-bold text-gray-300 mb-3">{t("popularRecentMethods")}</h3>
                     <div className="grid grid-cols-2 gap-3">
-                        {POPULAR_METHODS.map(method => (
-                            <button 
-                                key={method.id}
-                                onClick={() => handleMethodSelect(method.id)}
-                                className={`relative overflow-hidden rounded-xl p-3 text-left transition-all border ${selectedMethodId === method.id ? 'border-emerald-500/50 shadow-[0_0_12px_rgba(16,185,129,0.12)]' : 'border-transparent hover:border-emerald-500/50 hover:shadow-[0_0_12px_rgba(16,185,129,0.12)]'} ${method.bg}`}
-                            >
-                                <div className="relative z-10 flex flex-col h-full justify-between min-h-[80px]">
-                                    <div className={`flex items-start justify-between ${method.text}`}>
-                                        <method.icon className="w-6 h-6 opacity-80" />
-                                        <span className="font-bold text-sm">{method.name}</span>
+                        {POPULAR_METHODS.map((method) => {
+                            const isSelected = selectedMethodId === method.id;
+                            return (
+                                <button
+                                    key={method.id}
+                                    onClick={() => handleMethodSelect(method.id)}
+                                    aria-pressed={isSelected}
+                                    className={`relative overflow-hidden rounded-xl p-3 text-left border transform transition-all duration-200 ${
+                                      isSelected
+                                        ? 'border-white/90 ring-2 ring-emerald-400/90 shadow-[0_0_0_2px_rgba(16,185,129,0.35),0_18px_35px_-12px_rgba(16,185,129,0.75)] scale-[1.02]'
+                                        : 'border-transparent hover:border-emerald-500/50 hover:shadow-[0_0_12px_rgba(16,185,129,0.12)]'
+                                    } ${method.bg}`}
+                                >
+                                    {isSelected && (
+                                      <div className="absolute top-2 right-2 w-6 h-6 rounded-full bg-black/70 border border-white/40 flex items-center justify-center z-20">
+                                        <CheckCircle2 className="w-4 h-4 text-emerald-300" />
+                                      </div>
+                                    )}
+                                    <div className="relative z-10 flex flex-col h-full justify-between min-h-[80px]">
+                                        <div className={`flex items-start justify-between ${method.text}`}>
+                                            <method.icon className="w-6 h-6 opacity-80" />
+                                            <span className="font-bold text-sm">{method.name}</span>
+                                        </div>
+                                        <div className={`text-xs font-medium opacity-80 ${method.text} mt-2`}>
+                                            {method.limit}
+                                        </div>
                                     </div>
-                                    <div className={`text-xs font-medium opacity-80 ${method.text} mt-2`}>
-                                        {method.limit}
-                                    </div>
-                                </div>
-                            </button>
-                        ))}
+                                </button>
+                            );
+                        })}
                     </div>
                 </div>
 
@@ -366,6 +437,7 @@ export function Deposit() {
                         {t("continueToDeposit")} 
                         <ChevronRight className="w-4 h-4 ml-1" />
                     </Button>
+                </div>
                 </div>
             </div>
           )}
@@ -558,6 +630,7 @@ export function Deposit() {
                         {t("back")}
                     </Button>
                     <Button 
+                        onClick={handleSubmitDeposit}
                         className={`h-12 rounded-xl text-base transition-all ${PRIMARY_CTA_CLASS}`}
                     >
                         {t("submit")}
@@ -569,6 +642,33 @@ export function Deposit() {
           </div>
         </div>
       </div>
+
+      {showDepositVerificationModal && (
+        <div className="fixed inset-0 z-[120] flex items-center justify-center p-4">
+          <div
+            className="absolute inset-0 bg-black/60 backdrop-blur-[2px]"
+            onClick={handleDepositVerificationConfirm}
+            aria-hidden
+          />
+          <div className="relative w-full max-w-[520px] rounded-2xl bg-[#232529] border border-white/10 p-6 md:p-8 flex flex-col items-center gap-6">
+            <div className="w-[92px] h-[92px] rounded-full bg-[#2b3130] flex items-center justify-center shadow-[0_0_0_8px_rgba(35,37,41,0.8)]">
+              <div className="w-[74px] h-[74px] rounded-full bg-[#67d61f] flex items-center justify-center shadow-[0_10px_20px_rgba(103,214,31,0.35)]">
+                <Check className="w-10 h-10 text-white" strokeWidth={3.5} />
+              </div>
+            </div>
+            <p className="text-white text-center text-[22px] leading-tight max-w-[430px]">
+              We are verifying your payment. Once we received the money, your account balance will be updated
+            </p>
+            <button
+              type="button"
+              onClick={handleDepositVerificationConfirm}
+              className="w-full max-w-[185px] h-11 rounded-md bg-[#43ea8a] text-black text-base font-bold hover:bg-[#58f29a] transition-colors"
+            >
+              OK
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

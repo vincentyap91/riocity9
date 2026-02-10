@@ -1,15 +1,14 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { InsidePageHero } from '../components/shared/InsidePageHero';
 import { Grid, ArrowRight, RefreshCw, DollarSign } from 'lucide-react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useAuth } from '../contexts/AuthContext';
 import { PAGE_ACCENT, SECTION_HEADER_TITLE_CLASS } from '../config/themeTokens';
-import { Dialog, DialogContent } from '../components/ui/dialog';
-import { Button } from '../components/ui/button';
 import { useHorizontalDragScroll } from '../hooks/useHorizontalDragScroll';
 import { DraggableScrollbar } from '../components/shared/DraggableScrollbar';
 import { GameSearchBar } from '../components/shared/GameSearchBar';
+import { LoginRequiredModal } from '../components/shared/LoginRequiredModal';
 
 // --- Assets ---
 import imgImagePromo from "@/assets/dba5dfffa741345e0ad70e36cafba5ab8b533760.png";
@@ -131,7 +130,6 @@ export function Slots({
 }: SlotsProps = {}) {
     const { t } = useLanguage();
     const { isAuthenticated } = useAuth();
-    const navigate = useNavigate();
     const location = useLocation();
     const [searchQuery, setSearchQuery] = useState('');
     const [walletBalance] = useState('966.24');
@@ -178,7 +176,7 @@ export function Slots({
 
                 {/* 3. Provider Navigation */}
                 {!hideProviderNav && (
-                <div className="w-full max-w-5xl mb-12">
+                <div className="w-full max-w-5xl mb-6">
                     <div className="bg-[#0f1923]/80 backdrop-blur-md border border-white/5 rounded-xl p-2.5 mb-2">
                         <div
                             ref={scrollContainerRef}
@@ -218,7 +216,7 @@ export function Slots({
                                             alt={p.name}
                                             draggable="false"
                                             onDragStart={(e) => e.preventDefault()}
-                                            className={`h-8 w-auto object-contain max-w-[80%] select-none pointer-events-none [-webkit-user-drag:none] ${isMaintenance ? 'opacity-30 grayscale' : ''}`}
+                                            className={`h-8 w-auto object-contain max-w-[80%] select-none pointer-events-none [-webkit-user-drag:none] ${isMaintenance ? 'opacity-50 grayscale' : ''}`}
                                         />
                                         {isMaintenance && (
                                             <div className="absolute inset-0 rounded-lg bg-black/50 flex items-center justify-center">
@@ -356,30 +354,7 @@ export function Slots({
                 </div>
 
             </div>
-            <Dialog open={showLoginModal} onOpenChange={setShowLoginModal}>
-                <DialogContent className="bg-[#131b29] border border-white/10 rounded-2xl p-6 max-w-[380px] flex flex-col items-center text-center text-white">
-                    <div className="text-base font-semibold">You are not logged in. Please login to continue.</div>
-                    <div className="mt-6 flex items-center gap-3">
-                        <Button
-                            onClick={() => {
-                                sessionStorage.setItem('redirectAfterLogin', `${location.pathname}${location.search}`);
-                                setShowLoginModal(false);
-                                navigate('/login');
-                            }}
-                            className="h-10 px-4 bg-[#00bc7d] hover:bg-[#00a870] text-black font-bold rounded-xl"
-                        >
-                            Login
-                        </Button>
-                        <Button
-                            variant="outline"
-                            onClick={() => setShowLoginModal(false)}
-                            className="h-10 px-4 border-white/10 text-gray-300 hover:text-white hover:bg-white/5 rounded-xl"
-                        >
-                            Cancel
-                        </Button>
-                    </div>
-                </DialogContent>
-            </Dialog>
+            <LoginRequiredModal isOpen={showLoginModal} onOpenChange={setShowLoginModal} />
         </div>
     );
 }

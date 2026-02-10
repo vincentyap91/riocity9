@@ -12,8 +12,11 @@ import {
   Dialog,
   DialogContent,
 } from '../ui/dialog';
+import { Sheet, SheetContent } from '../ui/sheet';
 import { FilterTabs } from './FilterTabs';
 import { HistoryTableSection, type HistoryColumn } from './HistoryTableSection';
+import { MobileFilterBar } from './MobileFilterBar';
+import { MobileRecordCardList } from './MobileRecordCardList';
 
 export type ClaimRecordType = 'spinwheel' | 'scratch' | 'prize';
 
@@ -49,6 +52,13 @@ const QUICK_DATE_OPTIONS = [
   { id: 'lastMonth', label: 'Last Month' },
 ];
 
+const CLAIM_DEFAULTS = {
+  status: 'all',
+  startDate: '01-12-2025',
+  endDate: '31-12-2025',
+  preset: 'lastMonth',
+} as const;
+
 export interface ClaimRecordModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -62,10 +72,11 @@ export function ClaimRecordModal({
 }: ClaimRecordModalProps) {
   const [recordWalletBalance] = useState('966.24');
   const [recordType, setRecordType] = useState<ClaimRecordType>(initialType);
-  const [recordStatus, setRecordStatus] = useState('all');
-  const [startDate, setStartDate] = useState('01-12-2025');
-  const [endDate, setEndDate] = useState('31-12-2025');
-  const [activeDatePreset, setActiveDatePreset] = useState('lastMonth');
+  const [recordStatus, setRecordStatus] = useState(CLAIM_DEFAULTS.status);
+  const [startDate, setStartDate] = useState(CLAIM_DEFAULTS.startDate);
+  const [endDate, setEndDate] = useState(CLAIM_DEFAULTS.endDate);
+  const [activeDatePreset, setActiveDatePreset] = useState(CLAIM_DEFAULTS.preset);
+  const [isFilterSheetOpen, setIsFilterSheetOpen] = useState(false);
 
   useEffect(() => {
     if (open) {
@@ -75,10 +86,113 @@ export function ClaimRecordModal({
 
   const filteredRecords = ALL_CLAIM_RECORDS.filter((record) => record.type === recordType);
 
+  const typeLabelMap: Record<ClaimRecordType, string> = {
+    spinwheel: 'Spin Wheel',
+    scratch: 'Voucher Scratch',
+    prize: 'Prize Box',
+  };
+  const statusLabelMap: Record<string, string> = {
+    all: 'All',
+    completed: 'Completed',
+    expired: 'Expired',
+    available: 'Available',
+  };
+  const activeDatePresetLabel =
+    QUICK_DATE_OPTIONS.find((option) => option.id === activeDatePreset)?.label ?? '';
+  const activeFilterChips = [
+    `Type: ${typeLabelMap[recordType]}`,
+    `Status: ${statusLabelMap[recordStatus] ?? 'All'}`,
+    startDate ? `Start: ${startDate}` : '',
+    endDate ? `End: ${endDate}` : '',
+    activeDatePresetLabel ? `Range: ${activeDatePresetLabel}` : '',
+  ].filter(Boolean);
+  const activeFilterCount = [
+    recordType !== initialType,
+    recordStatus !== CLAIM_DEFAULTS.status,
+    startDate !== CLAIM_DEFAULTS.startDate,
+    endDate !== CLAIM_DEFAULTS.endDate,
+    activeDatePreset !== CLAIM_DEFAULTS.preset,
+  ].filter(Boolean).length;
+  const hasActiveFilters = activeFilterCount > 0;
+  const clearAllFilters = () => {
+    setRecordType(initialType);
+    setRecordStatus(CLAIM_DEFAULTS.status);
+    setStartDate(CLAIM_DEFAULTS.startDate);
+    setEndDate(CLAIM_DEFAULTS.endDate);
+    setActiveDatePreset(CLAIM_DEFAULTS.preset);
+  };
+
   const getStatusClass = (status: RecordStatus) => {
     if (status === 'Completed' || status === 'Available') return 'text-emerald-500 font-bold';
     return 'text-red-400 font-bold';
   };
+  const getStatusBadgeClass = (status: RecordStatus) => {
+    if (status === 'Completed' || status === 'Available') {
+      return 'bg-emerald-500/15 text-emerald-500 border-emerald-500/25';
+    }
+    return 'bg-red-500/15 text-red-400 border-red-500/25';
+  };
+
+  const filterInputs = (
+    <>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4 md:mb-6">
+        <div className="space-y-2">
+          <label className="text-white font-bold text-sm">Type</label>
+          <Select value={recordType} onValueChange={(value) => setRecordType(value as ClaimRecordType)}>
+            <SelectTrigger className="w-full bg-[#0f151f] border-white/10 text-white !h-12 rounded-xl px-4 py-0 data-[size=default]:!h-12 focus:border-[#00bc7d] focus-visible:ring-[#00bc7d]/20">
+              <SelectValue placeholder="Type" />
+            </SelectTrigger>
+            <SelectContent className="bg-[#1a2230] border-white/10">
+              <SelectItem value="spinwheel" className="text-white focus:bg-emerald-500/20">Spin Wheel</SelectItem>
+              <SelectItem value="scratch" className="text-white focus:bg-emerald-500/20">Voucher Scratch</SelectItem>
+              <SelectItem value="prize" className="text-white focus:bg-emerald-500/20">Prize Box</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+        <div className="space-y-2">
+          <label className="text-white font-bold text-sm">Status</label>
+          <Select value={recordStatus} onValueChange={setRecordStatus}>
+            <SelectTrigger className="w-full bg-[#0f151f] border-white/10 text-white !h-12 rounded-xl px-4 py-0 data-[size=default]:!h-12 focus:border-[#00bc7d] focus-visible:ring-[#00bc7d]/20">
+              <SelectValue placeholder="Status" />
+            </SelectTrigger>
+            <SelectContent className="bg-[#1a2230] border-white/10">
+              <SelectItem value="all" className="text-white focus:bg-emerald-500/20">All</SelectItem>
+              <SelectItem value="completed" className="text-white focus:bg-emerald-500/20">Completed</SelectItem>
+              <SelectItem value="expired" className="text-white focus:bg-emerald-500/20">Expired</SelectItem>
+              <SelectItem value="available" className="text-white focus:bg-emerald-500/20">Available</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4 md:mb-6">
+        <div className="space-y-2">
+          <label className="text-white font-bold text-sm">Start Date</label>
+          <div className="relative group">
+            <Input
+              type="text"
+              value={startDate}
+              onChange={(event) => setStartDate(event.target.value)}
+              className="bg-[#0f151f] border-white/10 text-white h-12 rounded-xl px-4 focus:border-[#00bc7d] focus-visible:ring-[#00bc7d]/20 pr-10"
+            />
+            <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" />
+          </div>
+        </div>
+        <div className="space-y-2">
+          <label className="text-white font-bold text-sm">End Date</label>
+          <div className="relative group">
+            <Input
+              type="text"
+              value={endDate}
+              onChange={(event) => setEndDate(event.target.value)}
+              className="bg-[#0f151f] border-white/10 text-white h-12 rounded-xl px-4 focus:border-[#00bc7d] focus-visible:ring-[#00bc7d]/20 pr-10"
+            />
+            <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" />
+          </div>
+        </div>
+      </div>
+    </>
+  );
 
   const historyColumns: HistoryColumn<ClaimRecordRow>[] = [
     {
@@ -154,62 +268,16 @@ export function ClaimRecordModal({
           <div className="flex items-center justify-start gap-3 pb-4">
             <span className="text-white font-bold text-base">Reward Record</span>
           </div>
+          <MobileFilterBar
+            onOpenFilters={() => setIsFilterSheetOpen(true)}
+            hasActiveFilters={hasActiveFilters}
+            activeFilterCount={activeFilterCount}
+            chips={activeFilterChips}
+            onClearAll={clearAllFilters}
+          />
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
-            <div className="space-y-2">
-              <label className="text-white font-bold text-sm">Type</label>
-              <Select value={recordType} onValueChange={(value) => setRecordType(value as ClaimRecordType)}>
-                <SelectTrigger className="w-full bg-[#0f151f] border-white/10 text-white !h-12 rounded-xl px-4 py-0 data-[size=default]:!h-12 focus:border-[#00bc7d] focus-visible:ring-[#00bc7d]/20">
-                  <SelectValue placeholder="Type" />
-                </SelectTrigger>
-                <SelectContent className="bg-[#1a2230] border-white/10">
-                  <SelectItem value="spinwheel" className="text-white focus:bg-emerald-500/20">Spin Wheel</SelectItem>
-                  <SelectItem value="scratch" className="text-white focus:bg-emerald-500/20">Voucher Scratch</SelectItem>
-                  <SelectItem value="prize" className="text-white focus:bg-emerald-500/20">Prize Box</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="space-y-2">
-              <label className="text-white font-bold text-sm">Status</label>
-              <Select value={recordStatus} onValueChange={setRecordStatus}>
-                <SelectTrigger className="w-full bg-[#0f151f] border-white/10 text-white !h-12 rounded-xl px-4 py-0 data-[size=default]:!h-12 focus:border-[#00bc7d] focus-visible:ring-[#00bc7d]/20">
-                  <SelectValue placeholder="Status" />
-                </SelectTrigger>
-                <SelectContent className="bg-[#1a2230] border-white/10">
-                  <SelectItem value="all" className="text-white focus:bg-emerald-500/20">All</SelectItem>
-                  <SelectItem value="completed" className="text-white focus:bg-emerald-500/20">Completed</SelectItem>
-                  <SelectItem value="expired" className="text-white focus:bg-emerald-500/20">Expired</SelectItem>
-                  <SelectItem value="available" className="text-white focus:bg-emerald-500/20">Available</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
-            <div className="space-y-2">
-              <label className="text-white font-bold text-sm">Start Date</label>
-              <div className="relative group">
-                <Input
-                  type="text"
-                  value={startDate}
-                  onChange={(event) => setStartDate(event.target.value)}
-                  className="bg-[#0f151f] border-white/10 text-white h-12 rounded-xl px-4 focus:border-[#00bc7d] focus-visible:ring-[#00bc7d]/20 pr-10"
-                />
-                <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" />
-              </div>
-            </div>
-            <div className="space-y-2">
-              <label className="text-white font-bold text-sm">End Date</label>
-              <div className="relative group">
-                <Input
-                  type="text"
-                  value={endDate}
-                  onChange={(event) => setEndDate(event.target.value)}
-                  className="bg-[#0f151f] border-white/10 text-white h-12 rounded-xl px-4 focus:border-[#00bc7d] focus-visible:ring-[#00bc7d]/20 pr-10"
-                />
-                <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" />
-              </div>
-            </div>
+          <div className="hidden md:block">
+            {filterInputs}
           </div>
 
           <div className="mb-6">
@@ -218,18 +286,64 @@ export function ClaimRecordModal({
               activeId={activeDatePreset}
               onSelect={setActiveDatePreset}
               scrollable
+              baseButtonClassName="shrink-0 px-4 h-10 rounded-xl text-sm font-bold transition-all border"
               activeClassName="border-[#00bc7d] bg-[#00bc7d]/10 text-[#00bc7d] shadow-[0_0_15px_rgba(0,188,125,0.2)]"
             />
           </div>
 
-          <HistoryTableSection
-            title=""
-            columns={historyColumns}
-            data={filteredRecords}
-            rowKey={(row) => `${row.type}-${row.id}`}
-          />
+          <div className="md:hidden">
+            <MobileRecordCardList
+              data={filteredRecords}
+              rowKey={(row) => `${row.type}-${row.id}`}
+              cardClassName="bg-[#0f151f] rounded-2xl border border-white/5 p-4 shadow-inner"
+              renderHeader={(row) => (
+                <div className="flex items-center justify-between">
+                  <span className="text-white font-bold text-sm">#{row.id}</span>
+                  <span className={`px-2.5 py-1 rounded-full border text-[11px] font-bold ${getStatusBadgeClass(row.status)}`}>
+                    {row.status}
+                  </span>
+                </div>
+              )}
+              fields={(row) => [
+                { label: 'Campaign', value: row.campaign, valueClassName: 'text-gray-200 font-medium' },
+                { label: 'Created Date', value: row.createdDate, valueClassName: 'text-orange-400 font-medium' },
+                { label: 'Claimed Date', value: row.claimedDate, valueClassName: 'text-white font-medium' },
+                { label: 'Reward', value: row.reward, valueClassName: 'text-[#00bc7d] font-bold' },
+              ]}
+            />
+          </div>
+
+          <div className="hidden md:block">
+            <HistoryTableSection
+              title=""
+              columns={historyColumns}
+              data={filteredRecords}
+              rowKey={(row) => `${row.type}-${row.id}`}
+            />
+          </div>
         </div>
       </DialogContent>
+
+      <Sheet open={isFilterSheetOpen} onOpenChange={setIsFilterSheetOpen}>
+        <SheetContent
+          side="bottom"
+          className="bg-[#1a2230] border-white/10 rounded-t-2xl p-0 h-auto max-h-[85vh]"
+        >
+          <div className="p-4 overflow-y-auto custom-scrollbar">
+            <div className="pb-3">
+              <span className="text-white font-bold text-base">Filter</span>
+            </div>
+            {filterInputs}
+            <button
+              type="button"
+              onClick={() => setIsFilterSheetOpen(false)}
+              className="w-full h-11 rounded-xl bg-[#00bc7d] hover:bg-[#00a870] text-black font-bold"
+            >
+              Apply
+            </button>
+          </div>
+        </SheetContent>
+      </Sheet>
     </Dialog>
   );
 }

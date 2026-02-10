@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Copy, ChevronRight, Info, Users, Gift, HandCoins, Wallet, HelpCircle, FileText } from 'lucide-react';
+import { Copy, ChevronRight, Info, Users, Gift, HandCoins, Wallet } from 'lucide-react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../components/ui/accordion';
 import { useAuth } from '../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
@@ -9,6 +9,7 @@ import { MOBILE } from '../config/themeTokens';
 import { SegmentTabs, type SegmentTabsItem } from '../components/shared/SegmentTabs';
 import { EmptyState } from '../components/shared/EmptyState';
 import { UsersThree } from '../components/icons/UsersThree';
+import { FilterTabs } from '../components/shared/FilterTabs';
 
 // Assets - using proper imports for local assets
 import shareYourLinkIcon from '@/assets/share-your-link.svg';
@@ -106,8 +107,10 @@ export function Referral() {
             alt="Referral Hero Background"
             className="w-full h-full object-cover object-top"
           />
-
-          <div className="absolute inset-0 bg-gradient-to-b from-[#0a1510]/40 via-transparent to-[#02040a]"></div>
+          <div className="absolute inset-0 bg-gradient-to-b from-[#0a1510]/40 via-transparent to-[#02040a]" />
+          <div className="absolute inset-0 md:hidden bg-[radial-gradient(circle_at_50%_8%,rgba(0,188,125,0.24),rgba(0,0,0,0)_48%)]" />
+          <div className="absolute inset-0 md:hidden bg-gradient-to-b from-[#041016]/70 via-[#061622]/45 to-[#02040a]/90" />
+          <div className="absolute inset-0 md:hidden bg-[linear-gradient(90deg,rgba(2,4,10,0.52)_0%,rgba(2,4,10,0.18)_22%,rgba(2,4,10,0.18)_78%,rgba(2,4,10,0.52)_100%)]" />
         </div>
         <div className="container mx-auto max-w-[1200px] 2xl:max-w-[1480px] px-4 relative z-10">
           <SegmentTabs
@@ -223,7 +226,7 @@ export function Referral() {
                 {/* Right: Total Earnings Card with Coins */}
                 <div className="relative lg:mt-8">
                   {/* Referral Bonus Card */}
-                  <div className="relative z-10 bg-[#1a2230] border border-white/5 rounded-xl p-5 shadow-xl">
+                  <div className="relative z-10 bg-[#1a2230] border border-white/5 rounded-xl p-4 md:p-5 shadow-xl">
                     {isAuthenticated ? (
                       <>
                         <h2 className="text-2xl font-black mb-4">Referral <span className="text-[#6fa85d]">Bonus</span></h2>
@@ -383,33 +386,30 @@ export function Referral() {
               {/* Bonus History Table */}
               <div className="bg-[#1a2230] border border-white/5 rounded-xl p-6 shadow-xl">
                 {/* History Tabs - smaller on mobile */}
-                <div className="flex justify-start mb-6 overflow-x-auto no-scrollbar touch-scroll-x px-1">
-                  <div className="flex flex-nowrap bg-[#0f151f] p-1 rounded-lg md:rounded-xl border border-white/5 w-full min-w-0 max-w-[600px]">
-                    <button
-                      onClick={() => setActiveHistoryTab('commission')}
-                      className={`flex-1 min-w-0 px-3 py-2 md:px-6 md:py-3 rounded-md md:rounded-lg text-xs md:text-sm font-bold transition-all whitespace-nowrap ${activeHistoryTab === 'commission'
-                        ? 'bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 hover:brightness-110 text-black'
-                        : 'text-gray-400 hover:text-white'
-                        }`}
-                    >
-                      <span className="flex items-center justify-center gap-1.5 md:gap-2">
-                        <HandCoins className="w-3.5 h-3.5 md:w-4 md:h-4 shrink-0" />
-                        Commission Bonus
-                      </span>
-                    </button>
-                    <button
-                      onClick={() => setActiveHistoryTab('deposit')}
-                      className={`flex-1 min-w-0 px-3 py-2 md:px-6 md:py-3 rounded-md md:rounded-lg text-xs md:text-sm font-bold transition-all whitespace-nowrap ${activeHistoryTab === 'deposit'
-                        ? 'bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 hover:brightness-110 text-black'
-                        : 'text-gray-400 hover:text-white'
-                        }`}
-                    >
-                      <span className="flex items-center justify-center gap-1.5 md:gap-2">
-                        <Wallet className="w-3.5 h-3.5 md:w-4 md:h-4 shrink-0" />
-                        Deposit Bonus
-                      </span>
-                    </button>
-                  </div>
+                <div>
+                  <FilterTabs
+                    items={[
+                      {
+                        id: 'commission',
+                        label: (
+                          <span className="inline-flex items-center justify-center gap-2">
+                            Commission Bonus
+                          </span>
+                        ),
+                      },
+                      {
+                        id: 'deposit',
+                        label: (
+                          <span className="inline-flex items-center justify-center gap-2">
+                            Deposit Bonus
+                          </span>
+                        ),
+                      },
+                    ]}
+                    activeId={activeHistoryTab}
+                    onSelect={(id) => setActiveHistoryTab(id as 'commission' | 'deposit')}
+                    scrollable
+                  />
                 </div>
 
                 {/* Table */}
@@ -495,7 +495,7 @@ export function Referral() {
 
           {/* Gaming Commission Rate */}
           <div className="container mx-auto max-w-[1200px] 2xl:max-w-[1480px] px-4 mb-12">
-            <div className="bg-[#1a2230] border border-white/5 rounded-xl p-8 shadow-xl">
+            <div className="bg-[#1a2230] border border-white/5 rounded-xl p-4 md:p-8 shadow-xl">
               <h2 className="text-2xl font-black mb-4 text-white">Gaming Commission Rate</h2>
               <p className="text-gray-400 mb-8 text-lg">Listing of commission rates you earn from your downlines' bets by game type and provider.</p>
 
@@ -539,40 +539,23 @@ export function Referral() {
 
           {/* FAQ Section */}
           <div className="container mx-auto max-w-[1200px] 2xl:max-w-[1480px] px-4 mb-12">
-            <div className="bg-[#1a2230] border border-white/5 rounded-xl p-6 md:p-8 shadow-xl">
+            <div className="bg-[#1a2230] border border-white/5 rounded-xl p-4 md:p-8 shadow-xl">
               {/* FAQ Header */}
               <h2 className="text-2xl font-black text-white mb-4">Frequently Asked Questions</h2>
-              <div className="flex justify-start mb-6 px-1">
-                <div className="flex flex-nowrap bg-[#0f151f] p-1 rounded-lg md:rounded-xl border border-white/5 w-full max-w-[380px]">
-                  <button
-                    onClick={() => setFaqTab('faq')}
-                    className={`flex-1 min-w-0 px-3 py-2 md:px-6 md:py-3 rounded-md md:rounded-lg text-xs md:text-sm font-bold transition-all whitespace-nowrap ${faqTab === 'faq'
-                      ? 'bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 hover:brightness-110 text-black'
-                      : 'text-gray-400 hover:text-white'
-                      }`}
-                  >
-                    <span className="flex items-center justify-center gap-1.5 md:gap-2">
-                      <HelpCircle className="w-3.5 h-3.5 md:w-4 md:h-4 shrink-0" />
-                      FAQ
-                    </span>
-                  </button>
-                  <button
-                    onClick={() => setFaqTab('terms')}
-                    className={`flex-1 min-w-0 px-3 py-2 md:px-6 md:py-3 rounded-md md:rounded-lg text-xs md:text-sm font-bold transition-all whitespace-nowrap ${faqTab === 'terms'
-                      ? 'bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 hover:brightness-110 text-black'
-                      : 'text-gray-400 hover:text-white'
-                      }`}
-                  >
-                    <span className="flex items-center justify-center gap-1.5 md:gap-2">
-                      <FileText className="w-3.5 h-3.5 md:w-4 md:h-4 shrink-0" />
-                      Terms & Conditions
-                    </span>
-                  </button>
-                </div>
+              <div className="mb-6">
+                <FilterTabs
+                  items={[
+                    { id: 'faq', label: 'FAQ' },
+                    { id: 'terms', label: 'Terms & Conditions' },
+                  ]}
+                  activeId={faqTab}
+                  onSelect={(id) => setFaqTab(id as 'faq' | 'terms')}
+                  scrollable
+                />
               </div>
 
               <div className="rounded-none overflow-hidden">
-                <Accordion type="single" collapsible className="w-full">
+                <Accordion type="single" collapsible defaultValue="item-0" className="w-full">
                   {faqs.map((faq, idx) => (
                     <AccordionItem key={idx} value={`item-${idx}`} className="border border-white/5 rounded-xl mb-4 last:mb-0">
                       <AccordionTrigger className="px-6 py-4 hover:no-underline hover:bg-white/5 transition-colors text-white bg-[#1d2d49] [&>svg]:text-[#FFD700]">

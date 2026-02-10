@@ -4,9 +4,11 @@ import { Trophy, Calendar, Clock } from "lucide-react";
 import { Badge } from "../ui/badge";
 import { SectionHeader } from "./SectionHeader";
 import { useLanguage } from '../../contexts/LanguageContext';
+import { useNavigate } from 'react-router-dom';
 
 export function LiveSports() {
   const { t } = useLanguage();
+  const navigate = useNavigate();
 
   const matches = [
     {
@@ -89,6 +91,7 @@ export function LiveSports() {
           <Button
             variant="ghost"
             size="sm"
+            onClick={() => navigate('/sports')}
             className="h-8 text-[11px] uppercase font-bold text-[rgb(148,163,184)] hover:text-[#00bc7d] hover:bg-[#00bc7d]/10 border border-[rgb(148,163,184,0.3)] rounded-full transition-all"
           >
             {t("viewAll")}

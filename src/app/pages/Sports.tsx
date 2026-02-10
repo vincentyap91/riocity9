@@ -4,12 +4,27 @@ import { ArrowRight } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { PAGE_ACCENT } from '../config/themeTokens';
 import { GameSearchBar } from '../components/shared/GameSearchBar';
+import { GameModal } from '../components/shared/GameModal';
 
 // New Banner
 import imgSportsBanner from "@/assets/e807beb4ab61c26c4afaecc32f24c795ff679981.png";
 
-const sportsProviders = [
-  { id: 1, name: "FB Sport", img: "https://pksoftcdn.azureedge.net/media/fbsports_sports-202601130904031723.png" },
+type SportsProvider = {
+  id: string | number;
+  name: string;
+  img: string;
+  banner?: string;
+  startGamePath?: string;
+};
+
+const sportsProviders: SportsProvider[] = [
+  {
+    id: 'fb-sport',
+    name: "FB Sport",
+    img: "https://pksoftcdn.azureedge.net/media/fbsports_sports-202601130904031723.png",
+    banner: "https://pksoftcdn.azureedge.net/media/fbsports_cam88_providerbanner_1029pxx420px-202601130904038494.jpg",
+    startGamePath: '/sports/fb-sport',
+  },
   { id: 2, name: "AFB1188 Sport", img: "https://pksoftcdn.azureedge.net/media/200x200_providerbanner_afbsport-202408191304551165.png" },
   { id: 3, name: "World Entertainment Sport", img: "https://pksoftcdn.azureedge.net/media/worldent_sports-202509081530460143.png" },
   { id: 4, name: "SBO Sports", img: "https://riocity-cdn.azureedge.net/riocity/10-202401241600164363.png" },
@@ -29,6 +44,7 @@ const sportsProviders = [
 export function Sports() {
   const { t } = useLanguage();
   const [searchQuery, setSearchQuery] = useState('');
+  const [selectedProvider, setSelectedProvider] = useState<SportsProvider | null>(null);
   const normalizedSearch = searchQuery.trim().toLowerCase();
   const filteredProviders = sportsProviders.filter((provider) =>
     provider.name.toLowerCase().includes(normalizedSearch)
@@ -54,9 +70,16 @@ export function Sports() {
 
             {/* Sports Providers Grid */}
             <div className="w-full">
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-4 lg:gap-6 justify-items-center">
-                    {filteredProviders.map((provider) => (
-                        <div key={provider.id} className="flex flex-col items-start gap-2 md:gap-3 group cursor-pointer w-full max-w-[214px]">
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-4 lg:gap-6 justify-items-center">
+                        {filteredProviders.map((provider) => (
+                        <div
+                            key={provider.id}
+                            onClick={() => {
+                                if (!provider.startGamePath) return;
+                                setSelectedProvider(provider);
+                            }}
+                            className={`flex flex-col items-start gap-2 md:gap-3 group w-full max-w-[214px] ${provider.startGamePath ? 'cursor-pointer' : 'cursor-default'}`}
+                        >
                             <div 
                                 className="relative w-full aspect-square rounded-2xl overflow-hidden ring-1 ring-white/10 transition-all duration-300 bg-[#1a2536] group-hover:ring-emerald-500/30 group-hover:shadow-[0_0_30px_-5px_rgba(16,185,129,0.2)]"
                             >
@@ -85,6 +108,14 @@ export function Sports() {
                 </div>
             </div>
         </div>
+
+        <GameModal
+            isOpen={!!selectedProvider}
+            onClose={() => setSelectedProvider(null)}
+            title={selectedProvider?.name || ''}
+            bannerImage={selectedProvider?.banner || ''}
+            startGamePath={selectedProvider?.startGamePath}
+        />
     </div>
   );
 }

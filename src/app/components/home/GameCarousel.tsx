@@ -2,11 +2,13 @@ import React, { useEffect, useRef, useState } from 'react';
 import Slider, { Settings } from 'react-slick';
 import { Button } from '../ui/button';
 import { ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
 import { SectionHeader } from './SectionHeader';
 import { useLanguage } from '../../contexts/LanguageContext';
+import { SmallOverlayTag } from '../shared/SmallOverlayTag';
 
 interface GameItem {
   id: string | number;
@@ -24,10 +26,12 @@ interface GameCarouselProps {
   slidesToShow?: number;
   aspectRatio?: string;
   mobileSlidesToShow?: number;
+  viewAllPath?: string;
 }
 
-export function GameCarousel({ title, icon, items, className, slidesToShow = 4, aspectRatio = "aspect-[16/10]", mobileSlidesToShow = 1 }: GameCarouselProps) {
+export function GameCarousel({ title, icon, items, className, slidesToShow = 4, aspectRatio = "aspect-[16/10]", mobileSlidesToShow = 1, viewAllPath }: GameCarouselProps) {
   const { t } = useLanguage();
+  const navigate = useNavigate();
   const sliderRef = useRef<Slider>(null);
   const [viewportWidth, setViewportWidth] = useState(
     typeof window !== 'undefined' ? window.innerWidth : 1280
@@ -76,7 +80,12 @@ export function GameCarousel({ title, icon, items, className, slidesToShow = 4, 
         icon={icon}
         action={
           <div className="flex items-center gap-2">
-            <Button variant="ghost" size="sm" className="hidden sm:flex h-9 text-xs font-bold uppercase text-gray-400 hover:text-[#00bc7d] hover:bg-[#00bc7d]/10 border border-white/10 rounded-xl transition-all mr-2">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => viewAllPath && navigate(viewAllPath)}
+              className="hidden sm:flex h-9 text-xs font-bold uppercase text-gray-400 hover:text-[#00bc7d] hover:bg-[#00bc7d]/10 border border-white/10 rounded-xl transition-all mr-2"
+            >
               {t("viewAll")}
             </Button>
             <div className="flex gap-1">
@@ -120,9 +129,7 @@ export function GameCarousel({ title, icon, items, className, slidesToShow = 4, 
 
                   {/* Provider Logo / Tag Overlay (Optional) */}
                   {item.tag && (
-                    <div className="absolute top-2 right-2 bg-black/60 backdrop-blur-md px-2 py-1 rounded text-[11px] font-bold uppercase tracking-wider text-white border border-white/10">
-                      {item.tag}
-                    </div>
+                    <SmallOverlayTag label={item.tag} />
                   )}
                 </div>
 

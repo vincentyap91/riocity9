@@ -2,10 +2,9 @@ import React, { useState } from 'react';
 import { 
   ArrowLeft, History, Calendar, Wallet, Dices, 
   Users, HandCoins, Megaphone,
-  Search, X
+  X
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { useLanguage } from '../contexts/LanguageContext';
 import { InnerPageLayout } from "../components/shared/InnerPageLayout";
@@ -17,6 +16,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '../components/ui/select';
+import { Sheet, SheetContent } from '../components/ui/sheet';
 import { sanitizeTextInput } from '../utils/security';
 import {
   RECORD_PAGE_ICON_BOX_CLASS,
@@ -26,6 +26,8 @@ import {
 } from '../config/themeTokens';
 import { EmptyState } from '../components/shared/EmptyState';
 import { FilterTabs } from '../components/shared/FilterTabs';
+import { MobileFilterBar } from '../components/shared/MobileFilterBar';
+import { MobileRecordCardList } from '../components/shared/MobileRecordCardList';
 
 const SIDEBAR_ITEMS: PageSidebarItem[] = [
   { id: 'transaction', label: 'Transaction History', icon: Wallet },
@@ -70,6 +72,7 @@ export function HistoryRecord() {
   const [activeSidebarTab, setActiveSidebarTab] = useState<'transaction' | 'bet' | 'commission' | 'rebate' | 'promotion'>('transaction');
   const [activeTypeTab, setActiveTypeTab] = useState<'deposits' | 'withdrawals'>('deposits');
   const [activeFilter, setActiveFilter] = useState('today');
+  const [isFilterSheetOpen, setIsFilterSheetOpen] = useState(false);
   
   // Bet Record state
   const [statistics, setStatistics] = useState('all');
@@ -83,6 +86,133 @@ export function HistoryRecord() {
   const [rebateEndDate, setRebateEndDate] = useState('31-01-2026');
 
   const currentData = activeTypeTab === 'deposits' ? depositData : withdrawalData;
+  const currentStartDate =
+    activeSidebarTab === 'bet' ? betStartDate :
+    activeSidebarTab === 'commission' ? commissionStartDate :
+    activeSidebarTab === 'rebate' ? rebateStartDate :
+    '01/14/2026';
+  const currentEndDate =
+    activeSidebarTab === 'bet' ? betEndDate :
+    activeSidebarTab === 'commission' ? commissionEndDate :
+    activeSidebarTab === 'rebate' ? rebateEndDate :
+    '01/14/2026';
+  const activeFilterLabel = QUICK_FILTERS.find((item) => item.id === activeFilter)?.label ?? '';
+  const activeFilterChips = [
+    activeSidebarTab === 'transaction' ? `Type: ${activeTypeTab === 'deposits' ? t("deposit") : t("withdrawals")}` : '',
+    activeSidebarTab === 'bet' ? `Statistics: ${statistics === 'all' ? 'All' : statistics}` : '',
+    currentStartDate ? `Start: ${currentStartDate}` : '',
+    currentEndDate ? `End: ${currentEndDate}` : '',
+    activeFilterLabel ? `Range: ${activeFilterLabel}` : '',
+  ].filter(Boolean);
+  const activeFilterCount = [
+    activeFilter !== 'today',
+    activeSidebarTab === 'transaction' && activeTypeTab !== 'deposits',
+    activeSidebarTab === 'bet' && statistics !== 'all',
+    activeSidebarTab === 'bet' && betStartDate !== '26-01-2026',
+    activeSidebarTab === 'bet' && betEndDate !== '27-01-2026',
+    activeSidebarTab === 'commission' && commissionStartDate !== '25-01-2026',
+    activeSidebarTab === 'commission' && commissionEndDate !== '31-01-2026',
+    activeSidebarTab === 'rebate' && rebateStartDate !== '25-01-2026',
+    activeSidebarTab === 'rebate' && rebateEndDate !== '31-01-2026',
+  ].filter(Boolean).length;
+  const hasActiveFilters = activeFilterCount > 0;
+  const clearAllFilters = () => {
+    setActiveFilter('today');
+    setActiveTypeTab('deposits');
+    setStatistics('all');
+    setBetStartDate('26-01-2026');
+    setBetEndDate('27-01-2026');
+    setCommissionStartDate('25-01-2026');
+    setCommissionEndDate('31-01-2026');
+    setRebateStartDate('25-01-2026');
+    setRebateEndDate('31-01-2026');
+  };
+
+  const renderStatusBadge = (status: string) => (
+    <span className={`px-2.5 py-1 rounded-full text-[11px] font-black uppercase tracking-widest border ${
+      status === 'Approved' ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-500' :
+      status === 'Pending' ? 'bg-yellow-500/10 border-yellow-500/20 text-yellow-500' :
+      status === 'Completed' ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-500' :
+      status === 'Rejected' ? 'bg-red-500/10 border-red-500/20 text-red-500' :
+      'bg-gray-500/10 border-gray-500/20 text-gray-300'
+    }`}>
+      {status}
+    </span>
+  );
+
+  const filterInputs = (
+    <>
+      {activeSidebarTab === 'transaction' && (
+        <div className={`${MOBILE.spaceY} ${MOBILE.sectionMb}`}>
+          <label className={`text-white ${MOBILE.label}`}>Type</label>
+          <Select value={activeTypeTab} onValueChange={(v) => setActiveTypeTab(v as 'deposits' | 'withdrawals')}>
+            <SelectTrigger className="w-full bg-[#0f151f] border-white/10 text-white !h-12 rounded-xl px-4 py-0 data-[size=default]:!h-12 focus:border-[#00bc7d] focus-visible:ring-[#00bc7d]/20">
+              <SelectValue placeholder="Select type" />
+            </SelectTrigger>
+            <SelectContent className="bg-[#1a2230] border-white/10">
+              <SelectItem value="deposits" className="text-white focus:bg-[#00bc7d]/20">
+                {t("deposit")}
+              </SelectItem>
+              <SelectItem value="withdrawals" className="text-white focus:bg-[#00bc7d]/20">
+                {t("withdrawals")}
+              </SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+      )}
+
+      {activeSidebarTab === 'bet' && (
+        <div className="space-y-2 mb-6">
+          <label className="text-white font-bold text-sm">Statistics</label>
+          <Select value={statistics} onValueChange={setStatistics}>
+            <SelectTrigger className="w-full bg-[#0f151f] border-white/10 text-white !h-12 rounded-xl px-4 py-0 data-[size=default]:!h-12 focus:border-[#00bc7d] focus-visible:ring-[#00bc7d]/20">
+              <SelectValue placeholder="Select statistics" />
+            </SelectTrigger>
+            <SelectContent className="bg-[#1a2230] border-white/10">
+              <SelectItem value="all" className="text-white focus:bg-[#00bc7d]/20">All</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+      )}
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+        <div className="space-y-2">
+          <label className="text-white font-bold text-sm">Start Date</label>
+          <div className="relative group">
+            <Input
+              type="text"
+              value={currentStartDate}
+              onChange={(e) => {
+                const v = sanitizeTextInput(e.target.value);
+                if (activeSidebarTab === 'bet') setBetStartDate(v);
+                else if (activeSidebarTab === 'commission') setCommissionStartDate(v);
+                else if (activeSidebarTab === 'rebate') setRebateStartDate(v);
+              }}
+              className="bg-[#0f151f] border-white/10 text-white h-12 rounded-xl px-4 focus:border-[#00bc7d] focus-visible:ring-[#00bc7d]/20 pr-10"
+            />
+            <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+          </div>
+        </div>
+        <div className="space-y-2">
+          <label className="text-white font-bold text-sm">End Date</label>
+          <div className="relative group">
+            <Input
+              type="text"
+              value={currentEndDate}
+              onChange={(e) => {
+                const v = sanitizeTextInput(e.target.value);
+                if (activeSidebarTab === 'bet') setBetEndDate(v);
+                else if (activeSidebarTab === 'commission') setCommissionEndDate(v);
+                else if (activeSidebarTab === 'rebate') setRebateEndDate(v);
+              }}
+              className="bg-[#0f151f] border-white/10 text-white h-12 rounded-xl px-4 focus:border-[#00bc7d] focus-visible:ring-[#00bc7d]/20 pr-10"
+            />
+            <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+          </div>
+        </div>
+      </div>
+    </>
+  );
   
   // Get title and icon based on active tab
   const getTitleConfig = () => {
@@ -140,88 +270,18 @@ export function HistoryRecord() {
               </div>
               <span className={RECORD_PAGE_TITLE_CLASS}>{title}</span>
             </div>
+
+            <MobileFilterBar
+              onOpenFilters={() => setIsFilterSheetOpen(true)}
+              hasActiveFilters={hasActiveFilters}
+              activeFilterCount={activeFilterCount}
+              chips={activeFilterChips}
+              onClearAll={clearAllFilters}
+            />
             
             {/* Transaction History: Type dropdown – same style as Bet Record Statistics */}
-            {activeSidebarTab === 'transaction' && (
-              <div className={`${MOBILE.spaceY} ${MOBILE.sectionMb}`}>
-                <label className={`text-white ${MOBILE.label}`}>Type</label>
-                <Select value={activeTypeTab} onValueChange={(v) => setActiveTypeTab(v as 'deposits' | 'withdrawals')}>
-                  <SelectTrigger className="w-full bg-[#0f151f] border-white/10 text-white !h-12 rounded-xl px-4 py-0 data-[size=default]:!h-12 focus:border-[#00bc7d] focus-visible:ring-[#00bc7d]/20">
-                    <SelectValue placeholder="Select type" />
-                  </SelectTrigger>
-                  <SelectContent className="bg-[#1a2230] border-white/10">
-                    <SelectItem value="deposits" className="text-white focus:bg-[#00bc7d]/20">
-                      {t("deposit")}
-                    </SelectItem>
-                    <SelectItem value="withdrawals" className="text-white focus:bg-[#00bc7d]/20">
-                      {t("withdrawals")}
-                    </SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-            )}
-
-            {/* Bet Record: Statistics Selection */}
-            {activeSidebarTab === 'bet' && (
-              <div className="space-y-2 mb-6">
-                <label className="text-white font-bold text-sm">Statistics</label>
-                <Select value={statistics} onValueChange={setStatistics}>
-                  <SelectTrigger className="w-full bg-[#0f151f] border-white/10 text-white !h-12 rounded-xl px-4 py-0 data-[size=default]:!h-12 focus:border-[#00bc7d] focus-visible:ring-[#00bc7d]/20">
-                    <SelectValue placeholder="Select statistics" />
-                  </SelectTrigger>
-                  <SelectContent className="bg-[#1a2230] border-white/10">
-                    <SelectItem value="all" className="text-white focus:bg-[#00bc7d]/20">All</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-            )}
-
-            {/* Date Selection */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
-              <div className="space-y-2">
-                <label className="text-white font-bold text-sm">Start Date</label>
-                <div className="relative group">
-                  <Input
-                    type="text"
-                    value={
-                      activeSidebarTab === 'bet' ? betStartDate :
-                      activeSidebarTab === 'commission' ? commissionStartDate :
-                      activeSidebarTab === 'rebate' ? rebateStartDate :
-                      '01/14/2026'
-                    }
-                    onChange={(e) => {
-                      const v = sanitizeTextInput(e.target.value);
-                      if (activeSidebarTab === 'bet') setBetStartDate(v);
-                      else if (activeSidebarTab === 'commission') setCommissionStartDate(v);
-                      else if (activeSidebarTab === 'rebate') setRebateStartDate(v);
-                    }}
-                    className="bg-[#0f151f] border-white/10 text-white h-12 rounded-xl px-4 focus:border-[#00bc7d] focus-visible:ring-[#00bc7d]/20 pr-10"
-                  />
-                  <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                </div>
-              </div>
-              <div className="space-y-2">
-                <label className="text-white font-bold text-sm">End Date</label>
-                <div className="relative group">
-                  <Input
-                    type="text"
-                    value={
-                      activeSidebarTab === 'bet' ? betEndDate :
-                      activeSidebarTab === 'commission' ? commissionEndDate :
-                      activeSidebarTab === 'rebate' ? rebateEndDate :
-                      '01/14/2026'
-                    }
-                    onChange={(e) => {
-                      const v = sanitizeTextInput(e.target.value);
-                      if (activeSidebarTab === 'bet') setBetEndDate(v);
-                      else if (activeSidebarTab === 'commission') setCommissionEndDate(v);
-                      else if (activeSidebarTab === 'rebate') setRebateEndDate(v);
-                    }}
-                    className="bg-[#0f151f] border-white/10 text-white h-12 rounded-xl px-4 focus:border-[#00bc7d] focus-visible:ring-[#00bc7d]/20 pr-10"
-                  />
-                  <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                </div>
-              </div>
+            <div className="hidden md:block">
+              {filterInputs}
             </div>
 
             {/* Quick Filters */}
@@ -236,7 +296,111 @@ export function HistoryRecord() {
 
             {/* Table Container */}
             <div className="flex-1 flex flex-col bg-[#0f151f] rounded-2xl border border-white/5 overflow-hidden shadow-inner">
-              <div className="overflow-x-auto custom-scrollbar">
+              <div className="md:hidden p-4">
+                {activeSidebarTab === 'transaction' && (
+                  <MobileRecordCardList
+                    data={currentData}
+                    rowKey={(row) => row.id}
+                    renderHeader={(row) => (
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm font-bold text-white">{row.date}</span>
+                        {renderStatusBadge(row.status)}
+                      </div>
+                    )}
+                    fieldGridClassName="grid grid-cols-[100px_1fr] gap-x-3 gap-y-2 text-xs"
+                    fields={(row) => [
+                      { label: 'ID', value: row.id, valueClassName: 'text-gray-200 font-mono' },
+                      { label: 'Description', value: row.description, valueClassName: 'text-gray-200 font-medium' },
+                      {
+                        label: 'Amount',
+                        value: `${activeTypeTab === 'deposits' ? '+' : '-'}${row.amount}`,
+                        valueClassName: `font-bold ${activeTypeTab === 'deposits' ? 'text-emerald-400' : 'text-orange-400'}`,
+                      },
+                    ]}
+                  />
+                )}
+
+                {activeSidebarTab === 'bet' && (
+                  <MobileRecordCardList
+                    data={betHistoryData}
+                    rowKey={(row) => row.id}
+                    renderHeader={(row) => <div className="text-sm font-bold text-white">{row.game}</div>}
+                    fieldGridClassName="grid grid-cols-[100px_1fr] gap-x-3 gap-y-2 text-xs"
+                    fields={(row) => [
+                      { label: 'Date', value: row.date, valueClassName: 'text-orange-400 font-medium' },
+                      { label: 'Bet Amount', value: row.betAmount, valueClassName: 'text-white font-medium' },
+                      {
+                        label: 'Net Profit',
+                        value: row.netProfit,
+                        valueClassName: `font-bold ${row.netProfit.startsWith('-') ? 'text-red-500' : 'text-emerald-400'}`,
+                      },
+                    ]}
+                  />
+                )}
+
+                {activeSidebarTab === 'commission' && (
+                  <MobileRecordCardList
+                    data={commissionData}
+                    rowKey={(_, index) => `commission-${index}`}
+                    fieldGridClassName="grid grid-cols-[100px_1fr] gap-x-3 gap-y-2 text-xs"
+                    fields={(row: any) => [
+                      { label: 'Date', value: row.date },
+                      { label: 'Rebate', value: row.rebate },
+                      { label: 'Sales', value: row.sales },
+                      { label: 'Remark', value: row.remark },
+                    ]}
+                    emptyState={
+                      <div className="py-8">
+                        <EmptyState message="No Data Found" compact />
+                      </div>
+                    }
+                  />
+                )}
+
+                {activeSidebarTab === 'rebate' && (
+                  <MobileRecordCardList
+                    data={rebateData}
+                    rowKey={(_, index) => `rebate-${index}`}
+                    fieldGridClassName="grid grid-cols-[100px_1fr] gap-x-3 gap-y-2 text-xs"
+                    fields={(row: any) => [
+                      { label: 'Date', value: row.date },
+                      { label: 'Rebate', value: row.rebate },
+                      { label: 'Sales', value: row.sales },
+                      { label: 'Remark', value: row.remark },
+                    ]}
+                    emptyState={
+                      <div className="py-8">
+                        <EmptyState message="No Data Found" compact />
+                      </div>
+                    }
+                  />
+                )}
+
+                {activeSidebarTab === 'promotion' && (
+                  <MobileRecordCardList
+                    data={promotionData}
+                    rowKey={(_, index) => `promotion-${index}`}
+                    renderHeader={(row: any) => (
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm font-bold text-white">{row.promotionTitle}</span>
+                        {renderStatusBadge(row.status)}
+                      </div>
+                    )}
+                    fields={(row: any) => [
+                      { label: 'Date', value: row.date },
+                      { label: 'Bonus Received', value: row.bonusReceived },
+                      { label: 'Completed Time', value: row.completedTime || '-', valueClassName: 'text-gray-400 font-medium' },
+                    ]}
+                    emptyState={
+                      <div className="py-8">
+                        <EmptyState message="No Data Found" compact />
+                      </div>
+                    }
+                  />
+                )}
+              </div>
+
+              <div className="hidden md:block overflow-x-auto custom-scrollbar">
                 {activeSidebarTab === 'transaction' && (
                   <table className="w-full text-left border-collapse min-w-[600px]">
                     <thead>
@@ -444,7 +608,7 @@ export function HistoryRecord() {
               
               {/* Pagination Placeholder */}
               {(activeSidebarTab === 'transaction' || activeSidebarTab === 'bet') && (
-                <div className="p-4 mt-auto border-t border-white/5 flex items-center justify-between">
+                <div className="hidden md:flex p-4 mt-auto border-t border-white/5 items-center justify-between">
                   <span className="text-xs text-gray-500">
                     {activeSidebarTab === 'transaction' 
                       ? 'Showing 1-2 of 2 records'
@@ -464,6 +628,27 @@ export function HistoryRecord() {
         </div>
 
       </div>
+
+      <Sheet open={isFilterSheetOpen} onOpenChange={setIsFilterSheetOpen}>
+        <SheetContent
+          side="bottom"
+          className="bg-[#1a2230] border-white/10 rounded-t-2xl p-0 h-auto max-h-[85vh]"
+        >
+          <div className="p-4 overflow-y-auto custom-scrollbar">
+            <div className="pb-3">
+              <span className="text-white font-bold text-base">Filter</span>
+            </div>
+            {filterInputs}
+            <button
+              type="button"
+              onClick={() => setIsFilterSheetOpen(false)}
+              className="w-full h-11 rounded-xl bg-[#00bc7d] hover:bg-[#00a870] text-black font-bold"
+            >
+              Apply
+            </button>
+          </div>
+        </SheetContent>
+      </Sheet>
     </InnerPageLayout>
   );
 }

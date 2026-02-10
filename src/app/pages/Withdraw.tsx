@@ -222,23 +222,36 @@ export function Withdraw() {
                 <div>
                     <h3 className="text-sm font-bold text-gray-300 mb-3">{t("popularRecentMethods")}</h3>
                     <div className="grid grid-cols-2 gap-3">
-                        {POPULAR_METHODS.map(method => (
-                            <button 
-                                key={method.id}
-                                onClick={() => handleMethodSelect(method.id)}
-                                className={`relative overflow-hidden rounded-xl p-3 text-left transition-all border ${selectedMethodId === method.id ? 'border-emerald-500/50 shadow-[0_0_12px_rgba(16,185,129,0.12)]' : 'border-transparent hover:border-emerald-500/50 hover:shadow-[0_0_12px_rgba(16,185,129,0.12)]'} ${method.bg}`}
-                            >
-                                <div className="relative z-10 flex flex-col h-full justify-between min-h-[80px]">
-                                    <div className={`flex items-start justify-between ${method.text}`}>
-                                        <method.icon className="w-6 h-6 opacity-80" />
-                                        <span className="font-bold text-sm">{method.name}</span>
+                        {POPULAR_METHODS.map((method) => {
+                            const isSelected = selectedMethodId === method.id;
+                            return (
+                                <button
+                                    key={method.id}
+                                    onClick={() => handleMethodSelect(method.id)}
+                                    aria-pressed={isSelected}
+                                    className={`relative overflow-hidden rounded-xl p-3 text-left border transform transition-all duration-200 ${
+                                      isSelected
+                                        ? 'border-white/90 ring-2 ring-emerald-400/90 shadow-[0_0_0_2px_rgba(16,185,129,0.35),0_18px_35px_-12px_rgba(16,185,129,0.75)] scale-[1.02]'
+                                        : 'border-transparent hover:border-emerald-500/50 hover:shadow-[0_0_12px_rgba(16,185,129,0.12)]'
+                                    } ${method.bg}`}
+                                >
+                                    {isSelected && (
+                                      <div className="absolute top-2 right-2 w-6 h-6 rounded-full bg-black/70 border border-white/40 flex items-center justify-center z-20">
+                                        <CheckCircle2 className="w-4 h-4 text-emerald-300" />
+                                      </div>
+                                    )}
+                                    <div className="relative z-10 flex flex-col h-full justify-between min-h-[80px]">
+                                        <div className={`flex items-start justify-between ${method.text}`}>
+                                            <method.icon className="w-6 h-6 opacity-80" />
+                                            <span className="font-bold text-sm">{method.name}</span>
+                                        </div>
+                                        <div className={`text-xs font-medium opacity-80 ${method.text} mt-2`}>
+                                            {method.limit}
+                                        </div>
                                     </div>
-                                    <div className={`text-xs font-medium opacity-80 ${method.text} mt-2`}>
-                                        {method.limit}
-                                    </div>
-                                </div>
-                            </button>
-                        ))}
+                                </button>
+                            );
+                        })}
                     </div>
                 </div>
 

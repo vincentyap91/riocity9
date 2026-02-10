@@ -136,7 +136,7 @@ export function Fishing() {
             <div className="container mx-auto max-w-[1200px] px-4 relative z-10 pb-20 flex flex-col items-center">
 
                 {/* Provider Navigation */}
-                <div className="w-full max-w-5xl mb-12">
+                <div className="w-full max-w-5xl mb-6">
                     <div className="bg-[#0f1923]/80 backdrop-blur-md border border-white/5 rounded-xl p-2.5 mb-2">
                         <div
                             ref={scrollContainerRef}

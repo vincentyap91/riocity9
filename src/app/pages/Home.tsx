@@ -110,6 +110,7 @@ export function Home() {
               }
               slidesToShow={4}
               mobileSlidesToShow={2}
+              viewAllPath="/live-casino"
               items={liveCasinoGames}
             />
           </section>
@@ -144,6 +145,7 @@ export function Home() {
                   <Trophy className={sportsAccent.sectionHeaderIconClass} />
                 </div>
               }
+              viewAllPath="/sports"
               items={sportsEvents}
             />
           </section>
@@ -179,6 +181,7 @@ export function Home() {
                 </div>
               }
               mobileSlidesToShow={2}
+              viewAllPath="/slots"
               items={slotGames}
             />
           </section>
@@ -194,6 +197,7 @@ export function Home() {
           </section>
         </div>
       </div>
+
     </div>
   );
 }

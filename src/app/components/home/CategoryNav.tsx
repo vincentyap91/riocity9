@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { 
-    Home, Gamepad2, Dices, Trophy, Fish, Ticket, Star, Smartphone, 
+    Home, Gamepad2, Dices, Fish, Ticket, Star, Smartphone, 
     Gift, Sparkles, Club, ChevronDown, Box
 } from 'lucide-react';
+import { FootballIcon } from '../icons/FootballIcon';
 import { Link, useLocation } from 'react-router-dom';
 import {
   DropdownMenu,
@@ -21,7 +22,7 @@ export function CategoryNav() {
     { id: 'lobby', labelKey: 'home', icon: Home, path: '/' },
     { id: 'slots', labelKey: 'slots', icon: Gamepad2, path: '/slots' },
     { id: 'live', labelKey: 'liveCasino', icon: Dices, path: '/live-casino' },
-    { id: 'sports', labelKey: 'sports', icon: Trophy, path: '/sports' },
+    { id: 'sports', labelKey: 'sports', icon: FootballIcon, path: '/sports' },
     { id: 'fish', labelKey: 'fishing', icon: Fish, path: '/fishing' },
     { id: 'lottery', labelKey: 'lottery', icon: Ticket, path: '/lottery' },
     { id: 'poker', labelKey: 'poker', icon: Club, path: '/poker' },

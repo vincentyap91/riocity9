@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { createPortal } from 'react-dom';
 import { X, RefreshCcw, Lock } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { PRIMARY_CTA_CLASS } from '../../config/themeTokens';
+import { useAuth } from '../../contexts/AuthContext';
+import { LoginRequiredModal } from './LoginRequiredModal';
 
 interface GameModalProps {
     isOpen: boolean;
@@ -14,11 +16,15 @@ interface GameModalProps {
 
 export function GameModal({ isOpen, onClose, title, bannerImage, startGamePath }: GameModalProps) {
     const navigate = useNavigate();
+    const location = useLocation();
+    const { isAuthenticated } = useAuth();
+    const [showLoginModal, setShowLoginModal] = useState(false);
     if (!isOpen) return null;
 
     if (typeof document === 'undefined') return null;
 
     return createPortal((
+        <>
         <div
             className="fixed inset-0 z-[9999] flex items-center justify-center p-4 sm:p-6 backdrop-blur-md bg-black/60 animate-in fade-in duration-300"
             role="dialog"
@@ -85,6 +91,11 @@ export function GameModal({ isOpen, onClose, title, bannerImage, startGamePath }
                         <button
                             onClick={() => {
                                 if (!startGamePath) return;
+                                if (!isAuthenticated) {
+                                    sessionStorage.setItem('redirectAfterLogin', `${location.pathname}${location.search}`);
+                                    setShowLoginModal(true);
+                                    return;
+                                }
                                 onClose();
                                 navigate(startGamePath);
                             }}
@@ -96,5 +107,12 @@ export function GameModal({ isOpen, onClose, title, bannerImage, startGamePath }
                 </div>
             </div>
         </div>
+        {showLoginModal && (
+            <LoginRequiredModal
+                isOpen={showLoginModal}
+                onOpenChange={setShowLoginModal}
+            />
+        )}
+        </>
     ), document.body);
 }

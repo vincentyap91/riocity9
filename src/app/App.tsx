@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route, Link, useLocation, useNavigate } from 're
 import { AnimatePresence, motion } from 'motion/react';
 import { Button } from './components/ui/button';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from './components/ui/sheet';
-import { Search, Menu, MessageCircle, X, Languages, CircleHelp, ChevronDown, Home as HomeIcon, Gamepad2, Dices, Trophy, Fish, Ticket, Star, Smartphone, Gift, User, Eye, EyeOff, Target, Trash2, Info, RefreshCw, Wallet } from 'lucide-react';
+import { Search, Menu, MessageCircle, X, Languages, CircleHelp, ChevronDown, ChevronUp, Home as HomeIcon, Gamepad2, Dices, Fish, Ticket, Star, Smartphone, Gift, User, Eye, EyeOff, Target, Trash2, Info, RefreshCw, Wallet } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -49,6 +49,7 @@ import { Downlines } from './pages/Downlines';
 import { InformationCenter } from './pages/InformationCenter';
 import { FloatingRewardWidget } from './components/shared/FloatingRewardWidget';
 import { FilterTabs } from './components/shared/FilterTabs';
+import { FootballIcon } from './components/icons/FootballIcon';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { SessionProvider } from './contexts/SessionContext';
 import { LanguageProvider, useLanguage } from './contexts/LanguageContext';
@@ -60,7 +61,7 @@ const categories = [
   { id: 'lobby', labelKey: 'home', icon: HomeIcon, path: '/' },
   { id: 'slots', labelKey: 'slots', icon: Gamepad2, path: '/slots' },
   { id: 'live', labelKey: 'liveCasino', icon: Dices, path: '/live-casino' },
-  { id: 'sports', labelKey: 'sports', icon: Trophy, path: '/sports' },
+  { id: 'sports', labelKey: 'sports', icon: FootballIcon, path: '/sports' },
   { id: 'fish', labelKey: 'fishing', icon: Fish, path: '/fishing' },
   { id: 'lottery', labelKey: 'lottery', icon: Ticket, path: '/lottery' },
   { id: 'vip', labelKey: 'vipClub', icon: Star, path: '/membership', color: 'text-yellow-400' },
@@ -91,6 +92,7 @@ function AppContent() {
   const [isNavMenuOpen, setIsNavMenuOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [showBackToTop, setShowBackToTop] = useState(false);
   const [showBalance, setShowBalance] = useState(true);
   const [isWalletDropdownOpen, setIsWalletDropdownOpen] = useState(false);
   const [isInitialLoading, setIsInitialLoading] = useState(true);
@@ -110,6 +112,7 @@ function AppContent() {
   const wasAuthenticatedRef = useRef<boolean | null>(null);
 
   const inputRef = useRef<HTMLInputElement | null>(null);
+  const backToTopAnimRef = useRef<number | null>(null);
   const languageDropdownTriggerRef = useRef<HTMLDivElement | null>(null);
   const languageDropdownContentRef = useRef<HTMLElement | null>(null);
   const updateLanguageDropdownOpen = useCallback((open: boolean) => {
@@ -289,10 +292,65 @@ function AppContent() {
       } else {
         setIsScrolled(false);
       }
+      setShowBackToTop(window.scrollY > 300);
     };
 
+    handleScroll();
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const handleBackToTop = useCallback(() => {
+    // Fallback custom smooth scroll since native smooth scroll can be disabled/ignored.
+    const prefersReducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches ?? false;
+    if (prefersReducedMotion) {
+      window.scrollTo(0, 0);
+      return;
+    }
+
+    const startY =
+      window.scrollY ||
+      document.scrollingElement?.scrollTop ||
+      document.documentElement.scrollTop ||
+      document.body.scrollTop ||
+      0;
+    if (startY <= 0) return;
+
+    if (backToTopAnimRef.current != null) {
+      window.cancelAnimationFrame(backToTopAnimRef.current);
+      backToTopAnimRef.current = null;
+    }
+
+    const durationMs = Math.min(900, Math.max(350, Math.round(startY * 0.6)));
+    const startTime = performance.now();
+    const easeOutCubic = (t: number) => 1 - Math.pow(1 - t, 3);
+
+    const step = (now: number) => {
+      const t = Math.min(1, (now - startTime) / durationMs);
+      const nextY = Math.round(startY * (1 - easeOutCubic(t)));
+
+      // Scroll both window + scrolling element so this works even if the app uses a custom scroll container.
+      window.scrollTo(0, nextY);
+      if (document.scrollingElement) document.scrollingElement.scrollTop = nextY;
+      document.documentElement.scrollTop = nextY;
+      document.body.scrollTop = nextY;
+
+      if (t < 1 && nextY > 0) {
+        backToTopAnimRef.current = window.requestAnimationFrame(step);
+      } else {
+        backToTopAnimRef.current = null;
+      }
+    };
+
+    backToTopAnimRef.current = window.requestAnimationFrame(step);
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      if (backToTopAnimRef.current != null) {
+        window.cancelAnimationFrame(backToTopAnimRef.current);
+      }
+    };
   }, []);
 
   // When any header dropdown opens, close the others (only one active at a time)
@@ -793,6 +851,7 @@ function AppContent() {
                 <Route path="/live-casino" element={<LiveCasino />} />
                 <Route path="/live-casino/:slug" element={<GameDetailPage />} />
                 <Route path="/sports" element={<Sports />} />
+                <Route path="/sports/:slug" element={<GameDetailPage />} />
                 <Route path="/fishing" element={<Fishing />} />
                 <Route path="/lottery" element={<Lottery />} />
                 <Route path="/poker" element={<Poker />} />
@@ -1070,6 +1129,29 @@ function AppContent() {
 
         {/* Floating Reward Widget */}
         <FloatingRewardWidget />
+
+        <AnimatePresence>
+          {showBackToTop && (
+            <motion.div
+              key="back-to-top"
+              initial={{ opacity: 0, y: 12, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 12, scale: 0.95 }}
+              transition={{ duration: 0.2 }}
+              className="hidden md:block fixed bottom-64 md:bottom-45 right-8 z-40"
+            >
+              <Button
+                type="button"
+                size="icon"
+                aria-label="Back to top"
+                onClick={handleBackToTop}
+                className="h-12 w-12 rounded-full border border-white/10 bg-[#1a2230] text-white shadow-lg transition-all duration-300 hover:bg-[#252f40] hover:border-[#00bc7d]/50 hover:text-[#00bc7d]"
+              >
+                <ChevronUp className="h-5 w-5" />
+              </Button>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         {/* Floating Live Chat Button - on mobile above bottom nav, stays right so gift widget can sit left */}
         <div className="fixed bottom-24 md:bottom-6 right-6 z-50 flex flex-col items-end gap-4">

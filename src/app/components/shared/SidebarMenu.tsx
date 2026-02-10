@@ -1,11 +1,12 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { 
-    Gift, Ticket, Box, Home, Flame, Gamepad2, Trophy, Dices, 
+    Gift, Ticket, Box, Home, Flame, Gamepad2, Dices, 
     Fish, ArrowLeftRight, Club, Plane, Megaphone, Users, 
     HandCoins, Crown, MessageCircle, Facebook, Send, Phone,
     Sparkles, ChevronUp, History
 } from 'lucide-react';
+import { FootballIcon } from '../icons/FootballIcon';
 import { useAuth } from '../../contexts/AuthContext';
 import {
   Accordion,
@@ -27,7 +28,7 @@ const menuItems = [
     { labelKey: "home", icon: Home, path: "/" },
     { labelKey: "hotGames", icon: Flame, path: "/hot" },
     { labelKey: "allGames", icon: Gamepad2, path: "/all" },
-    { labelKey: "sports", icon: Trophy, path: "/sports" },
+    { labelKey: "sports", icon: FootballIcon, path: "/sports" },
     { labelKey: "liveCasino", icon: Dices, path: "/live-casino" },
     { labelKey: "slots", icon: Gamepad2, path: "/slots" },
     { labelKey: "fishHunt", icon: Fish, path: "/fishing" },

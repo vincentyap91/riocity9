@@ -1,71 +1,109 @@
 import { InnerPageLayout } from "../components/shared/InnerPageLayout";
 import { HelpCenterSidebar } from '../components/shared/HelpCenterSidebar';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../components/ui/accordion';
+import { FilterTabs } from '../components/shared/FilterTabs';
+import { useLocation, useNavigate } from 'react-router-dom';
 
-const PRIVACY_CONTENT = [
+const INFORMATION_SECTIONS = [
     {
-        title: 'Privacy',
-        content: 'RioCity9 is committed to protecting your personal data using high security standards.'
+        id: 'rules',
+        tabs: [
+            {
+                id: 'slot',
+                label: 'Slot',
+                content: [
+                    { title: 'Slot Fair Play', content: 'Slot games are governed by provider RNG systems and audited payout standards.' },
+                    { title: 'Bet Limits', content: 'Each slot game has different minimum and maximum bet limits shown in-game.' },
+                    { title: 'Session Rules', content: 'Disconnections may result in resumed rounds according to provider game recovery policy.' },
+                ]
+            },
+            {
+                id: 'poker',
+                label: 'Poker',
+                content: [
+                    { title: 'Poker Table Rules', content: 'Poker gameplay follows table-specific rules published by each game provider.' },
+                    { title: 'Chip & Stake Policy', content: 'Stake ranges and buy-in limits are defined by room and can change by table type.' },
+                    { title: 'Game Integrity', content: 'Collusion, automation tools, and abusive behavior are prohibited and may trigger account action.' },
+                ]
+            },
+            {
+                id: 'live-casino',
+                label: 'Live Casino',
+                content: [
+                    { title: 'Live Dealer Compliance', content: 'Live Casino sessions are operated under provider terms and real-time surveillance controls.' },
+                    { title: 'Bet Settlement', content: 'Bet outcomes are settled based on the official game result from the live stream provider.' },
+                    { title: 'Connection Handling', content: 'In unstable network conditions, unresolved rounds are handled by provider interruption rules.' },
+                ]
+            },
+        ],
     },
     {
-        title: 'Information Collected',
-        content: 'We collect information you provide directly to us, such as when you create an account, make a deposit, or contact support.'
+        id: 'faq',
+        tabs: [
+            {
+                id: 'general',
+                label: 'General',
+                content: [
+                    { title: 'How do I register an account?', content: 'Click Register, fill in your details, and complete account verification to activate your profile.' },
+                    { title: 'How do I contact customer service?', content: 'Use Live Chat from the floating support button for immediate assistance from support.' },
+                    { title: 'Why is a game unavailable?', content: 'Some games may be under maintenance or temporarily unavailable by provider/server status.' },
+                ]
+            },
+            {
+                id: 'payment',
+                label: 'Payment',
+                content: [
+                    { title: 'How long does deposit approval take?', content: 'Most deposits are approved within minutes; some channels may require verification time.' },
+                    { title: 'Why is my withdrawal pending?', content: 'Withdrawals may be pending due to account checks, promotion turnover, or payment channel delays.' },
+                    { title: 'Are there transaction limits?', content: 'Yes, each payment method has minimum/maximum amounts that are shown before submission.' },
+                ]
+            },
+        ],
     },
     {
-        title: 'Means Of Collecting And Processing Data',
-        content: 'Data is collected via cookies, log files, and direct input forms on our website.'
+        id: 'video',
+        tabs: [
+            {
+                id: 'deposit',
+                label: 'Deposit',
+                content: [
+                    { title: 'How To Deposit', content: 'Select your payment method, submit your amount, and follow the payment instructions shown.' },
+                    { title: 'Deposit Guide Video', content: 'Step-by-step deposit guide video will be available in this section.' },
+                ]
+            },
+            {
+                id: 'withdrawal',
+                label: 'Withdrawal',
+                content: [
+                    { title: 'How To Withdraw', content: 'Go to Withdrawal, select account details, enter amount, and confirm your request.' },
+                    { title: 'Withdrawal Guide Video', content: 'Step-by-step withdrawal guide video will be available in this section.' },
+                ]
+            },
+        ],
     },
-    {
-        title: 'Information Use',
-        content: 'We use the information to provide, maintain, and improve our services, and to protect our users.'
-    },
-    {
-        title: 'Certain Excluded Disclosures',
-        content: 'We may disclose information if required by law or to protect our rights.'
-    },
-    {
-        title: 'Access',
-        content: 'You have the right to access, correct, or delete your personal information.'
-    },
-    {
-        title: 'Cookies',
-        content: 'We use cookies to improve your experience and analyze site traffic.'
-    },
-    {
-        title: 'Consent To Security Review',
-        content: 'By using our services, you consent to security reviews to validate your identity and age.'
-    },
-    {
-        title: 'Security',
-        content: 'We implement SSL encryption and other security measures to safeguard your data.'
-    },
-    {
-        title: 'Protection Of Minors',
-        content: 'Our services are strictly for users aged 18 and over.'
-    },
-    {
-        title: 'International transfers',
-        content: 'Your information may be transferred to and processed in countries other than your own.'
-    },
-    {
-        title: 'Third-Party Practices',
-        content: 'We are not responsible for the privacy practices of third-party websites linked to our site.'
-    },
-    {
-        title: 'Legal Disclaimer',
-        content: 'We are not liable for any errors or omissions in the content of this site.'
-    },
-    {
-        title: 'Consent To Privacy Policy',
-        content: 'By using our site, you agree to the terms of this Privacy Policy.'
-    },
-    {
-        title: 'Other Websites',
-        content: 'This policy applies only to RioCity9 and not to other websites you may access from here.'
-    },
-];
+] as const;
+
+const DEFAULT_SECTION = 'rules';
 
 export function InformationCenter() {
+    const location = useLocation();
+    const navigate = useNavigate();
+    const params = new URLSearchParams(location.search);
+    const sectionParam = params.get('tab') || DEFAULT_SECTION;
+    const activeSection =
+        INFORMATION_SECTIONS.find((section) => section.id === sectionParam) || INFORMATION_SECTIONS[0];
+    const defaultSubtab = activeSection.tabs[0].id;
+    const subtabParam = params.get('subtab') || defaultSubtab;
+    const activeInnerTab =
+        activeSection.tabs.find((tab) => tab.id === subtabParam) || activeSection.tabs[0];
+
+    const handleSubtabChange = (tabId: string) => {
+        const nextParams = new URLSearchParams(location.search);
+        nextParams.set('tab', activeSection.id);
+        nextParams.set('subtab', tabId);
+        navigate({ pathname: location.pathname, search: `?${nextParams.toString()}` });
+    };
+
     return (
         <InnerPageLayout contentClassName="container mx-auto px-4 py-8 max-w-[1480px]">
             <div className="flex flex-col lg:flex-row gap-6">
@@ -98,8 +136,15 @@ export function InformationCenter() {
 
                     {/* Accordion Content */}
                     <div className="p-4 md:p-6 bg-[#0f1923]">
-                        <Accordion type="single" collapsible className="w-full space-y-2">
-                            {PRIVACY_CONTENT.map((item, index) => (
+                        <FilterTabs
+                            items={activeSection.tabs.map((tab) => ({ id: tab.id, label: tab.label }))}
+                            activeId={activeInnerTab.id}
+                            onSelect={handleSubtabChange}
+                            scrollable
+                        />
+
+                        <Accordion type="single" collapsible defaultValue="item-0" className="w-full space-y-2 mt-4">
+                            {activeInnerTab.content.map((item, index) => (
                                 <AccordionItem
                                     key={index}
                                     value={`item-${index}`}
