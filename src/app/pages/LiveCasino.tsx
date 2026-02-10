@@ -5,6 +5,8 @@ import { useLanguage } from '../contexts/LanguageContext';
 import { PAGE_ACCENT } from '../config/themeTokens';
 import { GameModal } from '../components/shared/GameModal';
 import { GameSearchBar } from '../components/shared/GameSearchBar';
+import { useAuth } from '../contexts/AuthContext';
+import { LoginRequiredModal } from '../components/shared/LoginRequiredModal';
 
 // Asset Imports
 import imgKh168Marbula2Providericon200X200Px2025101310310355541 from "@/assets/f6a50bd7817f3011aaeb196648cadbe4a3ae53b3.png";
@@ -71,8 +73,10 @@ const providers = [
 
 export function LiveCasino() {
     const { t } = useLanguage();
+    const { isAuthenticated } = useAuth();
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedProvider, setSelectedProvider] = useState<typeof providers[0] | null>(null);
+    const [showLoginModal, setShowLoginModal] = useState(false);
     const normalizedSearch = searchQuery.trim().toLowerCase();
 
     const filteredProviders = providers.filter(p =>
@@ -106,6 +110,10 @@ export function LiveCasino() {
                                 key={provider.id}
                                 onClick={() => {
                                     if (provider.maintenance) return;
+                                    if (!isAuthenticated) {
+                                        setShowLoginModal(true);
+                                        return;
+                                    }
                                     setSelectedProvider(provider);
                                 }}
                                 className={`flex flex-col items-start gap-2 md:gap-3 group w-full max-w-[214px] ${provider.maintenance ? 'cursor-not-allowed' : 'cursor-pointer'}`}
@@ -165,6 +173,7 @@ export function LiveCasino() {
                 bannerImage={selectedProvider?.banner || ''}
                 startGamePath={selectedProvider?.startGamePath}
             />
+            <LoginRequiredModal isOpen={showLoginModal} onOpenChange={setShowLoginModal} />
 
         </div>
     );

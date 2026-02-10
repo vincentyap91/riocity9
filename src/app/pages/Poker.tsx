@@ -4,6 +4,8 @@ import { useLanguage } from "../contexts/LanguageContext";
 import { ArrowRight } from "lucide-react";
 import { PAGE_ACCENT } from "../config/themeTokens";
 import { GameSearchBar } from "../components/shared/GameSearchBar";
+import { useAuth } from "../contexts/AuthContext";
+import { LoginRequiredModal } from "../components/shared/LoginRequiredModal";
 
 const pokerBanner = "https://pksoftcdn.azureedge.net/media/poker%27-202502241408444412.jpg";
 
@@ -32,7 +34,9 @@ const pokerProviders = [
 
 export function Poker() {
   const { t } = useLanguage();
+  const { isAuthenticated } = useAuth();
   const [searchQuery, setSearchQuery] = useState('');
+  const [showLoginModal, setShowLoginModal] = useState(false);
   const normalizedSearch = searchQuery.trim().toLowerCase();
   const filteredProviders = pokerProviders.filter((provider) =>
     provider.name.toLowerCase().includes(normalizedSearch)
@@ -59,7 +63,13 @@ export function Poker() {
         <div className="w-full">
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-4 lg:gap-6 justify-items-center">
           {filteredProviders.map((provider) => (
-            <div key={provider.id} className="flex flex-col items-start gap-2 md:gap-3 group cursor-pointer w-full max-w-[214px]">
+            <div
+              key={provider.id}
+              onClick={() => {
+                if (!isAuthenticated) setShowLoginModal(true);
+              }}
+              className="flex flex-col items-start gap-2 md:gap-3 group cursor-pointer w-full max-w-[214px]"
+            >
               <div className="relative w-full aspect-square rounded-2xl overflow-hidden ring-1 ring-white/10 transition-all duration-300 bg-[#1a2536] group-hover:ring-emerald-500/30 group-hover:shadow-[0_0_30px_-5px_rgba(16,185,129,0.2)]">
                 <img
                   src={provider.img}
@@ -84,6 +94,7 @@ export function Poker() {
         </div>
         </div>
       </div>
+      <LoginRequiredModal isOpen={showLoginModal} onOpenChange={setShowLoginModal} />
     </div>
   );
 }

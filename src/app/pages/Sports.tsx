@@ -5,6 +5,8 @@ import { useLanguage } from '../contexts/LanguageContext';
 import { PAGE_ACCENT } from '../config/themeTokens';
 import { GameSearchBar } from '../components/shared/GameSearchBar';
 import { GameModal } from '../components/shared/GameModal';
+import { useAuth } from '../contexts/AuthContext';
+import { LoginRequiredModal } from '../components/shared/LoginRequiredModal';
 
 // New Banner
 import imgSportsBanner from "@/assets/e807beb4ab61c26c4afaecc32f24c795ff679981.png";
@@ -43,8 +45,10 @@ const sportsProviders: SportsProvider[] = [
 
 export function Sports() {
   const { t } = useLanguage();
+  const { isAuthenticated } = useAuth();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedProvider, setSelectedProvider] = useState<SportsProvider | null>(null);
+  const [showLoginModal, setShowLoginModal] = useState(false);
   const normalizedSearch = searchQuery.trim().toLowerCase();
   const filteredProviders = sportsProviders.filter((provider) =>
     provider.name.toLowerCase().includes(normalizedSearch)
@@ -75,10 +79,13 @@ export function Sports() {
                         <div
                             key={provider.id}
                             onClick={() => {
-                                if (!provider.startGamePath) return;
+                                if (!isAuthenticated) {
+                                    setShowLoginModal(true);
+                                    return;
+                                }
                                 setSelectedProvider(provider);
                             }}
-                            className={`flex flex-col items-start gap-2 md:gap-3 group w-full max-w-[214px] ${provider.startGamePath ? 'cursor-pointer' : 'cursor-default'}`}
+                            className="flex flex-col items-start gap-2 md:gap-3 group w-full max-w-[214px] cursor-pointer"
                         >
                             <div 
                                 className="relative w-full aspect-square rounded-2xl overflow-hidden ring-1 ring-white/10 transition-all duration-300 bg-[#1a2536] group-hover:ring-emerald-500/30 group-hover:shadow-[0_0_30px_-5px_rgba(16,185,129,0.2)]"
@@ -116,6 +123,7 @@ export function Sports() {
             bannerImage={selectedProvider?.banner || ''}
             startGamePath={selectedProvider?.startGamePath}
         />
+        <LoginRequiredModal isOpen={showLoginModal} onOpenChange={setShowLoginModal} />
     </div>
   );
 }

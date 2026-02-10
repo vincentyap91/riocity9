@@ -6,6 +6,8 @@ import { PAGE_ACCENT, SECTION_HEADER_TITLE_CLASS } from '../config/themeTokens';
 import { useHorizontalDragScroll } from '../hooks/useHorizontalDragScroll';
 import { DraggableScrollbar } from '../components/shared/DraggableScrollbar';
 import { GameSearchBar } from '../components/shared/GameSearchBar';
+import { useAuth } from '../contexts/AuthContext';
+import { LoginRequiredModal } from '../components/shared/LoginRequiredModal';
 
 // New Banner
 import imgFishingBanner from "@/assets/71667b097dc0233c71967c40c7e2dc37f4fa9f8c.png";
@@ -104,7 +106,9 @@ const fishingGames = [
 
 export function Fishing() {
     const { t } = useLanguage();
+    const { isAuthenticated } = useAuth();
     const [searchQuery, setSearchQuery] = useState('');
+    const [showLoginModal, setShowLoginModal] = useState(false);
     const [selectedProvider, setSelectedProvider] = useState(
         fishingProviders.find((provider) => provider.active)?.name ?? fishingProviders[0]?.name ?? ''
     );
@@ -193,7 +197,13 @@ export function Fishing() {
                     {/* Game Grid */}
                     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-4 lg:gap-6 justify-items-center">
                         {filteredFishingGames.map((game) => (
-                            <div key={game.id} className="flex flex-col items-start gap-2 md:gap-3 group cursor-pointer w-full max-w-[214px]">
+                            <div
+                                key={game.id}
+                                onClick={() => {
+                                    if (!isAuthenticated) setShowLoginModal(true);
+                                }}
+                                className="flex flex-col items-start gap-2 md:gap-3 group cursor-pointer w-full max-w-[214px]"
+                            >
                                 <div
                                     className="relative w-full aspect-square rounded-2xl overflow-hidden ring-1 ring-white/10 transition-all duration-500 bg-[#1a2536] group-hover:ring-emerald-500/30 group-hover:shadow-[0_0_30px_-5px_rgba(16,185,129,0.2)]"
                                 >
@@ -225,6 +235,7 @@ export function Fishing() {
                 </div>
 
             </div>
+            <LoginRequiredModal isOpen={showLoginModal} onOpenChange={setShowLoginModal} />
         </div>
     );
 }
