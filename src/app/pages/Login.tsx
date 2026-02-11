@@ -15,6 +15,15 @@ import { sanitizeTextInput, sanitizeUsername } from '../utils/security';
 // Assets
 import imgLoginPromo from '@/assets/7b5397e1e0b3ef00aac3ed749d986cb7304ad993.png';
 
+function getPostAuthRedirect(): string {
+  const storedPath = sessionStorage.getItem('redirectAfterLogin');
+  sessionStorage.removeItem('redirectAfterLogin');
+  if (storedPath && storedPath.startsWith('/') && !storedPath.startsWith('//')) {
+    return storedPath;
+  }
+  return '/';
+}
+
 export function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [username, setUsername] = useState('');
@@ -30,13 +39,13 @@ export function Login() {
     general?: string;
   }>({});
   
-  const { login, error: authError, isAuthenticated } = useAuth();
+  const { login, isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
   // Redirect to home if already logged in
   useEffect(() => {
     if (isAuthenticated) {
-      navigate('/', { replace: true });
+      navigate(getPostAuthRedirect(), { replace: true });
     }
   }, [isAuthenticated, navigate]);
 
@@ -166,10 +175,10 @@ export function Login() {
               setErrors({});
               try {
                 await login(username, password);
-                navigate('/');
               } catch (error) {
                 console.error('Login error:', error);
-                setErrors({ general: authError || 'Login failed. Please try again later.' });
+                const errorMessage = error instanceof Error ? error.message : 'Login failed. Please try again later.';
+                setErrors({ general: errorMessage });
               } finally {
                 setIsLoading(false);
               }

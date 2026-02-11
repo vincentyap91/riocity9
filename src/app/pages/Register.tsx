@@ -13,6 +13,15 @@ import { CountryCodeSelector } from '../components/shared/CountryCodeSelector';
 import imgPromo from '@/assets/e9d8d4a61ac559bba1f577d68aca956ecbcccdee.png';
 // I'll keep the existing assets imports just in case, but they seem to be replaced.
 
+function getPostAuthRedirect(): string {
+  const storedPath = sessionStorage.getItem('redirectAfterLogin');
+  sessionStorage.removeItem('redirectAfterLogin');
+  if (storedPath && storedPath.startsWith('/') && !storedPath.startsWith('//')) {
+    return storedPath;
+  }
+  return '/';
+}
+
 export function Register() {
   const [showPassword, setShowPassword] = useState(false);
   const [username, setUsername] = useState('');
@@ -53,13 +62,13 @@ export function Register() {
     general?: string;
   }>({});
   
-  const { register, error: authError, isAuthenticated } = useAuth();
+  const { register, isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
   // Redirect to home if already logged in
   useEffect(() => {
     if (isAuthenticated) {
-      navigate('/', { replace: true });
+      navigate(getPostAuthRedirect(), { replace: true });
     }
   }, [isAuthenticated, navigate]);
 
@@ -222,7 +231,6 @@ export function Register() {
               setErrors({});
               try {
                 await register(username, password, mobile, countryCode);
-                navigate('/');
               } catch (error) {
                 console.error('Register error:', error);
                 const errorMsg = error instanceof Error ? error.message : 'Registration failed';

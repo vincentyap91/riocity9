@@ -150,6 +150,8 @@ export function Deposit() {
   const [showDepositVerificationModal, setShowDepositVerificationModal] = useState(false);
   const [approvalSecondsLeft, setApprovalSecondsLeft] = useState<number | null>(null);
   const isDepositLocked = approvalSecondsLeft !== null && approvalSecondsLeft > 0;
+  const normalizedAmount = Number(amount);
+  const isValidAmount = Number.isFinite(normalizedAmount) && normalizedAmount > 0;
 
   const handleTabChange = (tab: 'deposit' | 'withdrawal') => {
     setActiveTab(tab);
@@ -184,7 +186,7 @@ export function Deposit() {
     if (isDepositLocked) {
       return;
     }
-    if (!amount) return;
+    if (!isValidAmount) return;
     setStep(3);
   };
 
@@ -537,9 +539,9 @@ export function Deposit() {
                   </div>
                </div>
 
-               <Button 
+              <Button 
                  onClick={handleAmountSubmit}
-                 disabled={!amount}
+                 disabled={!isValidAmount}
                  className={`w-full h-12 rounded-xl text-base disabled:opacity-50 ${PRIMARY_CTA_CLASS}`}
                >
                  {t("confirmAndDeposit")}
@@ -565,9 +567,9 @@ export function Deposit() {
                     </div>
                     <div className="flex items-center justify-between">
                         <span className="text-gray-400 font-bold">{t("depositAmount")}</span>
-                        <div className="flex items-center gap-1">
+                    <div className="flex items-center gap-1">
                             <span className="text-emerald-500 font-bold text-sm">MYR</span>
-                            <span className="text-2xl font-black text-white">{parseFloat(amount).toFixed(2)}</span>
+                            <span className="text-2xl font-black text-white">{(isValidAmount ? normalizedAmount : 0).toFixed(2)}</span>
                         </div>
                     </div>
                 </div>

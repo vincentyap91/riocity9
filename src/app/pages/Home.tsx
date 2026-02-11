@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { AnnouncementBar } from '../components/home/AnnouncementBar';
 import { HeroSection } from '../components/home/HeroSection';
 import { JackpotBoard } from '../components/home/JackpotBoard';
@@ -11,6 +11,7 @@ import { RecentBigWins } from '../components/home/RecentBigWins';
 import { RecentPayout } from '../components/home/RecentPayout';
 import { LiveTransactions } from '../components/home/LiveTransactions';
 import { ReferralBanner } from '../components/home/ReferralBanner';
+import { HomeWelcomeModal } from '../components/home/HomeWelcomeModal';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useAuth } from '../contexts/AuthContext';
 import { HOME_PAGE, MOBILE, PAGE_ACCENT } from '../config/themeTokens';
@@ -66,15 +67,42 @@ const slotGames = [
   { id: 5, title: "Le Bandit", provider: "Hacksaw", image: imgLeBandit },
 ];
 
+const HOME_WELCOME_MODAL_HIDE_UNTIL_KEY = 'home_welcome_modal_hide_until';
+const ONE_HOUR_MS = 60 * 60 * 1000;
+
 export function Home() {
   const { t } = useLanguage();
   const { isAuthenticated } = useAuth();
   const liveCasinoAccent = PAGE_ACCENT.liveCasino;
   const sportsAccent = PAGE_ACCENT.sports;
   const slotsAccent = PAGE_ACCENT.slots;
+  const [showWelcomeModal, setShowWelcomeModal] = useState(false);
+
+  useEffect(() => {
+    const storedHideUntil = localStorage.getItem(HOME_WELCOME_MODAL_HIDE_UNTIL_KEY);
+    const hideUntil = Number(storedHideUntil ?? 0);
+
+    if (!Number.isFinite(hideUntil) || Date.now() >= hideUntil) {
+      setShowWelcomeModal(true);
+    }
+  }, []);
+
+  const handleWelcomeModalClose = (suppressForOneHour: boolean) => {
+    if (suppressForOneHour) {
+      localStorage.setItem(HOME_WELCOME_MODAL_HIDE_UNTIL_KEY, String(Date.now() + ONE_HOUR_MS));
+    } else {
+      localStorage.removeItem(HOME_WELCOME_MODAL_HIDE_UNTIL_KEY);
+    }
+    setShowWelcomeModal(false);
+  };
 
   return (
     <div className="flex flex-col flex-1 overflow-x-hidden">
+      <HomeWelcomeModal
+        open={showWelcomeModal}
+        onOpenChange={setShowWelcomeModal}
+        onClose={handleWelcomeModalClose}
+      />
       {/* Top Section: Hero, Announcement, Jackpot – design system padding & gap */}
       <div className={`container mx-auto ${HOME_PAGE.maxWidth} ${HOME_PAGE.topBlockPadding} flex flex-col ${HOME_PAGE.sectionGap}`}>
         <HeroSection />
@@ -201,3 +229,4 @@ export function Home() {
     </div>
   );
 }
+

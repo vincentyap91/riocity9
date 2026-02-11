@@ -108,6 +108,10 @@ export const SECTION_HEADER_ACCENT_CLASS = "text-[#00bc7d]";
 export const PRIMARY_CTA_CLASS =
   "bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 hover:brightness-110 text-black font-black transition-all border-none";
 
+/** Secondary CTA (yellow): used for highlighted actions like referral promo buttons */
+export const YELLOW_CTA_CLASS =
+  "bg-gradient-to-b from-yellow-400 via-amber-400 to-amber-500 hover:brightness-110 text-black font-black transition-all border-none";
+
 /** Nav pill / tab active state – matches primary CTA gradient, enhanced hover */
 export const NAV_ACTIVE_CLASS =
   "bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 hover:brightness-110 text-black";
@@ -165,3 +169,4 @@ export const HOME_PAGE = {
   /** Bottom padding for mobile nav clearance */
   bottomPadding: "pb-20 md:pb-8",
 } as const;
+
