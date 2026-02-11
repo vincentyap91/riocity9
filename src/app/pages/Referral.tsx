@@ -276,7 +276,7 @@ export function Referral() {
                   <div className="relative z-10 bg-[#1a2230] border border-white/5 rounded-xl p-4 md:p-5 shadow-xl">
                     {isAuthenticated ? (
                       <>
-                        <h2 className="text-2xl font-black mb-4">Referral <span className="text-[#6fa85d]">Bonus</span></h2>
+                        <h2 className="text-2xl font-black mb-4">Referral <span className="text-emerald-400 ">Bonus</span></h2>
 
                         {/* Stats */}
                         <div className="space-y-0 rounded-xl overflow-hidden border border-white/10">
