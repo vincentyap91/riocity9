@@ -56,6 +56,7 @@ import { LanguageProvider, useLanguage } from './contexts/LanguageContext';
 import { ActivePromoProvider, useActivePromo } from './contexts/ActivePromoContext';
 import { sanitizeTextInput } from './utils/security';
 import { HOME_PAGE, MOBILE, PRIMARY_CTA_CLASS } from './config/themeTokens';
+import { Analytics } from '@vercel/analytics/react';
 
 const categories = [
   { id: 'lobby', labelKey: 'home', icon: HomeIcon, path: '/' },
@@ -1310,6 +1311,7 @@ export default function App() {
           <BrowserRouter>
             <SessionProvider>
               <AppContent />
+              <Analytics />
             </SessionProvider>
           </BrowserRouter>
         </ActivePromoProvider>
