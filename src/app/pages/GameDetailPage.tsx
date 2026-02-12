@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { InsidePageHero } from '../components/shared/InsidePageHero';
 import { Trophy } from 'lucide-react';
 import { GameCarousel } from '../components/home/GameCarousel';
@@ -21,6 +21,7 @@ import { PAGE_ACCENT } from '../config/themeTokens';
 import { FilterTabs } from '../components/shared/FilterTabs';
 import { EmptyState } from '../components/shared/EmptyState';
 import { RegistrationFailedModal } from '../components/shared/RegistrationFailedModal';
+import { INITIAL_SLOTS } from '../config/gameData';
 
 const DEFAULT_REGISTRATION_FAILED_MESSAGE = 'Registration Failed';
 const SERVICE_UNAVAILABLE_MESSAGE = 'Please contact Customer Service, Thank you.';
@@ -40,6 +41,21 @@ function normalizeUrlForComparison(url: string) {
   } catch {
     return url.split('?')[0];
   }
+}
+function formatLabelFromSlug(value: string | undefined, fallback: string) {
+  if (!value) return fallback;
+  return value
+    .split('-')
+    .filter(Boolean)
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(' ');
+}
+function toSlug(value: string | undefined) {
+  return String(value || '')
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
 }
 
 const gameDetailConfig = [
@@ -101,10 +117,26 @@ export function GameDetailPage() {
   const { t } = useLanguage();
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
-  const [searchParams, setSearchParams] = useSearchParams();
-  const { slug } = useParams();
-  const game = gameDetailConfig.find((item) => item.slug === slug);
-  const [activeTab, setActiveTab] = useState<'ranking' | 'description'>(() => normalizeGameDetailTab(searchParams.get('tab')));
+  const { provider, slug } = useParams();
+  const configuredGame = gameDetailConfig.find((item) => item.slug === slug);
+  const matchedHotGame = INITIAL_SLOTS.find((item) =>
+    toSlug(item.provider) === toSlug(provider) &&
+    toSlug(item.name || item.title) === toSlug(slug)
+  );
+  const game = configuredGame ?? (slug ? {
+    slug,
+    title: matchedHotGame?.name || matchedHotGame?.title || formatLabelFromSlug(slug, 'Game'),
+    provider: matchedHotGame?.provider || formatLabelFromSlug(provider, 'Slots'),
+    rtp: matchedHotGame?.rtp || '95.00%',
+    image: matchedHotGame?.image || imgImagePromo,
+    iframeSrc: '',
+    description: `${matchedHotGame?.name || matchedHotGame?.title || formatLabelFromSlug(slug, 'This game')} is currently unavailable.`,
+    categoryLabel: 'Slots',
+    categoryPath: '/slots',
+    providerPath: provider ? `/slots/${provider}` : '/slots',
+    status: 'unavailable' as const,
+  } : null);
+  const [activeTab, setActiveTab] = useState<GameDetailTab>('ranking');
   const iframeContainerRef = useRef<HTMLDivElement | null>(null);
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
   const requestedPlayRef = useRef(false);
@@ -115,17 +147,6 @@ export function GameDetailPage() {
   if (!game) {
     return <NotFound />;
   }
-
-  useEffect(() => {
-    const tab = searchParams.get('tab');
-    const normalizedTab = normalizeGameDetailTab(tab);
-    setActiveTab(normalizedTab);
-    if (tab !== normalizedTab) {
-      const next = new URLSearchParams(searchParams);
-      next.set('tab', normalizedTab);
-      setSearchParams(next, { replace: true });
-    }
-  }, [searchParams, setSearchParams]);
 
   useEffect(() => {
     const pending = sessionStorage.getItem('pendingGamePlay');
@@ -350,9 +371,6 @@ export function GameDetailPage() {
                   onSelect={(id) => {
                     const tabId = normalizeGameDetailTab(id);
                     setActiveTab(tabId);
-                    const next = new URLSearchParams(searchParams);
-                    next.set('tab', tabId);
-                    setSearchParams(next);
                   }}
                   scrollable
                 />

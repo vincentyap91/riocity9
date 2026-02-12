@@ -847,6 +847,7 @@ function AppContent() {
                 <Route path="/" element={<Home />} />
                 <Route path="/slots" element={<Slots />} />
                 <Route path="/providers/:providerId" element={<ProviderPage />} />
+                <Route path="/slots/:provider/:slug" element={<GameDetailPage />} />
                 <Route path="/slots/:slug" element={<GameDetailPage />} />
                 <Route path="/live-casino" element={<LiveCasino />} />
                 <Route path="/live-casino/:slug" element={<GameDetailPage />} />

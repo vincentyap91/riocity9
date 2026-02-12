@@ -27,7 +27,16 @@ import img200X200ProviderbannerSaGaming2024072516231037371 from "@/assets/f63292
 import img200X200ProviderbannerSexybaccarat2024040909120601271 from "@/assets/0c18a14e6167ec42bcf217a4281816aa37029ff4.png";
 import img32023122015043915551 from "@/assets/d962173d340d1f347cd214f08272d88852cf6e32.png";
 
-const providers = [
+export type LiveCasinoProvider = {
+    id: string | number;
+    name: string;
+    img: string;
+    banner?: string;
+    maintenance?: boolean;
+    startGamePath?: string;
+};
+
+export const LIVE_CASINO_PROVIDERS: LiveCasinoProvider[] = [
     {
         id: 'ezugi',
         name: 'Ezugi',
@@ -75,11 +84,11 @@ export function LiveCasino() {
     const { t } = useLanguage();
     const { isAuthenticated } = useAuth();
     const [searchQuery, setSearchQuery] = useState('');
-    const [selectedProvider, setSelectedProvider] = useState<typeof providers[0] | null>(null);
+    const [selectedProvider, setSelectedProvider] = useState<LiveCasinoProvider | null>(null);
     const [showLoginModal, setShowLoginModal] = useState(false);
     const normalizedSearch = searchQuery.trim().toLowerCase();
 
-    const filteredProviders = providers.filter(p =>
+    const filteredProviders = LIVE_CASINO_PROVIDERS.filter(p =>
         p.name.toLowerCase().includes(normalizedSearch)
     );
 

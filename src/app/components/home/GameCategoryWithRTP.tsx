@@ -1,31 +1,41 @@
 import React, { useState, useEffect } from 'react';
 import { Flame, Loader2, Star } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '../ui/button';
 import { SectionHeader } from './SectionHeader';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { useHorizontalDragScroll } from '../../hooks/useHorizontalDragScroll';
 import { INITIAL_SLOTS, MOCK_CATEGORIES, GAME_CATEGORIES } from '../../config/gameData';
 import { DraggableScrollbar } from '../shared/DraggableScrollbar';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { useAuth } from '../../contexts/AuthContext';
-import { LoginRequiredModal } from '../shared/LoginRequiredModal';
+import { GameModal } from '../shared/GameModal';
+import { SPORTS_PROVIDERS } from '../../pages/Sports';
+import { LIVE_CASINO_PROVIDERS } from '../../pages/LiveCasino';
 
 export function GameCategoryWithRTP() {
   const { t } = useLanguage();
   const navigate = useNavigate();
-  const location = useLocation();
-  const { isAuthenticated } = useAuth();
   const { scrollRef: scrollContainerRef, handlers: dragScrollHandlers } = useHorizontalDragScroll();
 
   const [activeCategory, setActiveCategory] = useState('hotGames');
   const [gamesData, setGamesData] = useState<any[]>(INITIAL_SLOTS);
   const [isLoading, setIsLoading] = useState(false);
-  const [showLoginModal, setShowLoginModal] = useState(false);
-  const isSlotsCardLayout = activeCategory === 'slots' || activeCategory === 'allGames' || activeCategory === 'hotGames';
+  const [selectedGame, setSelectedGame] = useState<{ title: string; bannerImage: string; startGamePath?: string } | null>(null);
+  const [showAllDesktopItems, setShowAllDesktopItems] = useState(false);
+  const [isDesktop, setIsDesktop] = useState(
+    typeof window !== 'undefined' ? window.innerWidth >= 1024 : true
+  );
+  const isSlotsCardLayout = activeCategory === 'slots' || activeCategory === 'allGames';
   const activeCategoryLabel = t((GAME_CATEGORIES.find((cat) => cat.id === activeCategory)?.nameKey || 'allGames') as any);
   const MIXABLE_CATEGORY_IDS = ['liveCasino', 'sports', 'fishHunt', 'lottery'];
+  const DESKTOP_VISIBLE_ITEMS = 7;
 
   const normalizeProviderName = (value: unknown) => String(value || '').trim().toLowerCase();
+  const toSlug = (value: unknown) =>
+    String(value || '')
+      .trim()
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '');
   const PROVIDER_ROUTE_MAP: Record<string, string> = {
     naga: '/providers/naga-game-slots',
     'naga game slots': '/providers/naga-game-slots',
@@ -39,7 +49,10 @@ export function GameCategoryWithRTP() {
     const providerName = normalizeProviderName(game?.provider);
     return PROVIDER_ROUTE_MAP[providerName] ?? null;
   };
-  const isUnderMaintenance = (game: any) => normalizeProviderName(game?.provider) === 'pragmatic play';
+  const isUnderMaintenance = (game: any) => {
+    if (typeof game?.maintenance === 'boolean') return game.maintenance;
+    return normalizeProviderName(game?.provider) === 'pragmatic play';
+  };
   const renderMaintenanceOverlay = (clipId: string, cardIndex: number) => {
     const resolvedClipId = `${clipId}_${cardIndex}`;
     return (
@@ -74,6 +87,39 @@ export function GameCategoryWithRTP() {
     });
   };
 
+  const buildSportsGames = () =>
+    SPORTS_PROVIDERS.map((provider) => ({
+      title: provider.name,
+      provider: 'Sports',
+      providerLogo: provider.img,
+      image: provider.img,
+      banner: provider.banner || provider.img,
+      startGamePath: provider.startGamePath,
+      color: 'bg-slate-700',
+    }));
+
+  const buildLiveCasinoGames = () =>
+    LIVE_CASINO_PROVIDERS.map((provider) => ({
+      title: provider.name,
+      provider: 'Live Casino',
+      providerLogo: provider.img,
+      image: provider.img,
+      banner: provider.banner || provider.img,
+      startGamePath: provider.startGamePath,
+      maintenance: provider.maintenance,
+      color: 'bg-slate-700',
+    }));
+
+  useEffect(() => {
+    setShowAllDesktopItems(false);
+  }, [activeCategory]);
+
+  useEffect(() => {
+    const onResize = () => setIsDesktop(window.innerWidth >= 1024);
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+  }, []);
+
   useEffect(() => {
     const fetchCategoryData = async () => {
       if (activeCategory === 'slots') {
@@ -94,8 +140,20 @@ export function GameCategoryWithRTP() {
         return;
       }
 
+      if (activeCategory === 'sports') {
+        setGamesData(buildSportsGames());
+        setIsLoading(false);
+        return;
+      }
+
+      if (activeCategory === 'liveCasino') {
+        setGamesData(buildLiveCasinoGames());
+        setIsLoading(false);
+        return;
+      }
+
       setIsLoading(true);
-      const endpoint = activeCategory === 'liveCasino' ? '/live-casino' : `/${activeCategory.replace(/([A-Z])/g, '-$1').toLowerCase()}`;
+      const endpoint = `/${activeCategory.replace(/([A-Z])/g, '-$1').toLowerCase()}`;
 
       try {
         const response = await fetch(endpoint);
@@ -117,6 +175,30 @@ export function GameCategoryWithRTP() {
 
     fetchCategoryData();
   }, [activeCategory]);
+
+  const visibleGames = isDesktop && !showAllDesktopItems
+    ? gamesData.slice(0, DESKTOP_VISIBLE_ITEMS)
+    : gamesData;
+  const shouldShowViewMore = isDesktop && gamesData.length > DESKTOP_VISIBLE_ITEMS;
+  const openSharedModal = (game: any) => {
+    const title = game.title || game.name || 'Game';
+    const bannerImage = game.banner || game.image || game.providerLogo || '';
+    const startGamePath = game.startGamePath || getGameRoute(game);
+    setSelectedGame({ title, bannerImage, startGamePath });
+  };
+  const getHotGameDetailPath = (game: any) => {
+    const providerSlug = toSlug(game?.provider || 'slots');
+    const gameSlug = toSlug(game?.title || game?.name || 'game');
+    return `/slots/${providerSlug}/${gameSlug}`;
+  };
+  const handleGameClick = (game: any) => {
+    if (isUnderMaintenance(game)) return;
+    if (activeCategory === 'hotGames') {
+      navigate(getHotGameDetailPath(game));
+      return;
+    }
+    openSharedModal(game);
+  };
 
   const scroll = (direction: 'left' | 'right') => {
     if (scrollContainerRef.current) {
@@ -200,21 +282,12 @@ export function GameCategoryWithRTP() {
           )}
 
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-7 gap-3">
-            {gamesData.map((game, i) => (
+            {visibleGames.map((game, i) => (
               isSlotsCardLayout ? (
                 <div
                   key={i}
                   className={`group relative bg-[#0f1923] rounded-xl overflow-hidden border border-white/5 transition-all duration-500 flex flex-col ${isUnderMaintenance(game) ? 'cursor-not-allowed' : 'cursor-pointer hover:border-[#39ff88]/30'}`}
-                  onClick={() => {
-                    if (isUnderMaintenance(game)) return;
-                    const route = getGameRoute(game);
-                    if (!isAuthenticated && route) {
-                      sessionStorage.setItem('redirectAfterLogin', `${location.pathname}${location.search}`);
-                      setShowLoginModal(true);
-                      return;
-                    }
-                    if (route) navigate(route);
-                  }}
+                  onClick={() => handleGameClick(game)}
                 >
                   {/* Top Section: Provider Header */}
                   <div className={`relative overflow-hidden flex items-center justify-center ${game.color || 'bg-blue-600'}`}>
@@ -264,16 +337,7 @@ export function GameCategoryWithRTP() {
                 <div
                   key={i}
                   className={`group relative bg-[#0f1923] rounded-xl overflow-hidden border border-white/5 transition-all duration-500 flex flex-col ${isUnderMaintenance(game) ? 'cursor-not-allowed' : 'cursor-pointer hover:border-[#39ff88]/30'}`}
-                  onClick={() => {
-                    if (isUnderMaintenance(game)) return;
-                    const route = getGameRoute(game);
-                    if (!isAuthenticated && route) {
-                      sessionStorage.setItem('redirectAfterLogin', `${location.pathname}${location.search}`);
-                      setShowLoginModal(true);
-                      return;
-                    }
-                    if (route) navigate(route);
-                  }}
+                  onClick={() => handleGameClick(game)}
                 >
                   <div className="relative aspect-square overflow-hidden">
                     <img
@@ -299,9 +363,28 @@ export function GameCategoryWithRTP() {
               )
             ))}
           </div>
+
+          {shouldShowViewMore && (
+            <div className="mt-5 flex justify-center">
+              <Button
+                type="button"
+                variant="ghost"
+                onClick={() => setShowAllDesktopItems((prev) => !prev)}
+                className="h-10 px-6 rounded-full border border-white/10 bg-[#0f1923] text-white hover:bg-white/10"
+              >
+                {showAllDesktopItems ? 'View Less' : 'View More'}
+              </Button>
+            </div>
+          )}
         </div>
       </div>
-      <LoginRequiredModal isOpen={showLoginModal} onOpenChange={setShowLoginModal} />
+      <GameModal
+        isOpen={!!selectedGame}
+        onClose={() => setSelectedGame(null)}
+        title={selectedGame?.title || ''}
+        bannerImage={selectedGame?.bannerImage || ''}
+        startGamePath={selectedGame?.startGamePath}
+      />
     </section>
   );
 }

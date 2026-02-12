@@ -11,7 +11,7 @@ import { LoginRequiredModal } from '../components/shared/LoginRequiredModal';
 // New Banner
 import imgSportsBanner from "@/assets/e807beb4ab61c26c4afaecc32f24c795ff679981.png";
 
-type SportsProvider = {
+export type SportsProvider = {
   id: string | number;
   name: string;
   img: string;
@@ -19,7 +19,7 @@ type SportsProvider = {
   startGamePath?: string;
 };
 
-const sportsProviders: SportsProvider[] = [
+export const SPORTS_PROVIDERS: SportsProvider[] = [
   {
     id: 'fb-sport',
     name: "FB Sport",
@@ -50,7 +50,7 @@ export function Sports() {
   const [selectedProvider, setSelectedProvider] = useState<SportsProvider | null>(null);
   const [showLoginModal, setShowLoginModal] = useState(false);
   const normalizedSearch = searchQuery.trim().toLowerCase();
-  const filteredProviders = sportsProviders.filter((provider) =>
+  const filteredProviders = SPORTS_PROVIDERS.filter((provider) =>
     provider.name.toLowerCase().includes(normalizedSearch)
   );
 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Eye, EyeOff, Check, AlertCircle, X, Gift, Loader2, RefreshCw } from 'lucide-react';
+import { Eye, EyeOff, Check, AlertCircle, X, Gift, Loader2, RefreshCw, ChevronDown } from 'lucide-react';
 import { motion } from 'motion/react';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
@@ -30,6 +30,8 @@ export function Register() {
   const [password, setPassword] = useState('');
   const [captcha, setCaptcha] = useState('');
   const [captchaValue, setCaptchaValue] = useState('');
+  const [referralCode, setReferralCode] = useState('');
+  const [showReferralCode, setShowReferralCode] = useState(false);
   const [agreeTerms, setAgreeTerms] = useState(true);
   const [agreeBonus, setAgreeBonus] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
@@ -430,6 +432,29 @@ export function Register() {
                   </p>
                 )}
               </div>
+            </div>
+
+            {/* Referral Code Toggle */}
+            <div className="space-y-2">
+              <button
+                type="button"
+                onClick={() => setShowReferralCode((prev) => !prev)}
+                className="w-full h-8 px-1 flex items-center justify-center gap-2 text-gray-200 hover:text-white transition-colors"
+              >
+                <span className="text-sm font-semibold">Got a Referral Code?</span>
+                <ChevronDown className={`w-4 h-4 transition-transform ${showReferralCode ? 'rotate-180' : ''}`} />
+              </button>
+              {showReferralCode && (
+                <Input
+                  id="referralCode"
+                  placeholder="Enter referral code"
+                  value={referralCode}
+                  onChange={(e) => setReferralCode(sanitizeTextInput(e.target.value).slice(0, 32))}
+                  disabled={isLoading}
+                  maxLength={32}
+                  className="h-12 bg-[#0f151f] border border-white/10 rounded-xl text-white placeholder:text-gray-500 focus-visible:ring-1 focus-visible:ring-[#00bc7d]"
+                />
+              )}
             </div>
 
             {/* Terms & Conditions Checkboxes */}

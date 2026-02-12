@@ -12,6 +12,7 @@ import { MOBILE } from "../config/themeTokens";
 import { sanitizeTextInput, sanitizeMobileNumber, sanitizeEmail, sanitizeUsername } from '../utils/security';
 import { CountryCodeSelector } from '../components/shared/CountryCodeSelector';
 import { DatePicker } from '../components/ui/DatePicker';
+import { VerifyPhoneModal } from '../components/shared/VerifyPhoneModal';
 import {
   Dialog,
   DialogContent,
@@ -57,6 +58,8 @@ export function Profile() {
   const [ewalletCountryCode, setEwalletCountryCode] = useState('+60'); // Default to Malaysia for e-wallet
   const [isSaving, setIsSaving] = useState(false);
   const [isAddingAccount, setIsAddingAccount] = useState(false);
+  const [verifyPhoneModalOpen, setVerifyPhoneModalOpen] = useState(false);
+  const [verifyPhoneNumber, setVerifyPhoneNumber] = useState('');
   
   // Form state for Personal tab
   const [formData, setFormData] = useState({
@@ -184,6 +187,11 @@ export function Profile() {
 
   const handleDeleteBank = (id: string) => {
     setBankAccounts(prev => prev.filter(account => account.id !== id));
+  };
+
+  const openVerifyPhoneModal = (phoneNumber: string) => {
+    setVerifyPhoneNumber(phoneNumber);
+    setVerifyPhoneModalOpen(true);
   };
 
   return (
@@ -399,6 +407,7 @@ export function Profile() {
                           {!account.verified && (
                             <button
                               type="button"
+                              onClick={() => openVerifyPhoneModal(account.number)}
                               className="h-11 min-h-[44px] px-4 sm:px-5 rounded-xl bg-amber-500 hover:bg-amber-400 text-black text-[11px] font-black uppercase tracking-wider transition-all hover:scale-105 active:scale-95 touch-manipulation"
                             >
                               Verify OTP
@@ -604,6 +613,12 @@ export function Profile() {
           </div>
         </DialogContent>
       </Dialog>
+
+      <VerifyPhoneModal
+        open={verifyPhoneModalOpen}
+        onOpenChange={setVerifyPhoneModalOpen}
+        phoneNumber={verifyPhoneNumber}
+      />
     </InnerPageLayout>
   );
 }

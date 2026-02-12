@@ -84,7 +84,11 @@ export function ClaimRecordModal({
     }
   }, [open, initialType]);
 
-  const filteredRecords = ALL_CLAIM_RECORDS.filter((record) => record.type === recordType);
+  const filteredRecords = ALL_CLAIM_RECORDS.filter((record) => {
+    if (record.type !== recordType) return false;
+    if (recordStatus !== CLAIM_DEFAULTS.status && record.status.toLowerCase() !== recordStatus) return false;
+    return true;
+  });
 
   const typeLabelMap: Record<ClaimRecordType, string> = {
     spinwheel: 'Spin Wheel',
