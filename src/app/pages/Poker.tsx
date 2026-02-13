@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { InsidePageHero } from "../components/shared/InsidePageHero";
 import { useLanguage } from "../contexts/LanguageContext";
-import { ArrowRight } from "lucide-react";
 import { PAGE_ACCENT } from "../config/themeTokens";
 import { GameSearchBar } from "../components/shared/GameSearchBar";
 import { useAuth } from "../contexts/AuthContext";
 import { LoginRequiredModal } from "../components/shared/LoginRequiredModal";
+import { SlotsGameHoverOverlay } from "../components/shared/SlotsGameHoverOverlay";
 
 const pokerBanner = "https://pksoftcdn.azureedge.net/media/poker%27-202502241408444412.jpg";
 
@@ -77,11 +77,7 @@ export function Poker() {
                   className="w-full h-full object-cover transform transition-transform duration-500 group-hover:scale-110"
                 />
                 {/* Hover Overlay from Screenshot */}
-                <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                  <div className="w-12 h-12 rounded-full bg-[#00bc7d] flex items-center justify-center shadow-[0_0_20px_rgba(0,188,125,0.4)] transform scale-50 group-hover:scale-100 transition-transform duration-300">
-                    <ArrowRight className="w-6 h-6 text-black stroke-[3]" />
-                  </div>
-                </div>
+                <SlotsGameHoverOverlay />
               </div>
               <div className="flex flex-col gap-1">
                 <span className="text-xs md:text-sm font-bold text-white group-hover:text-emerald-500 transition-colors">

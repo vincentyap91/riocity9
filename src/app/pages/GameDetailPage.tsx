@@ -22,6 +22,7 @@ import { FilterTabs } from '../components/shared/FilterTabs';
 import { EmptyState } from '../components/shared/EmptyState';
 import { RegistrationFailedModal } from '../components/shared/RegistrationFailedModal';
 import { INITIAL_SLOTS } from '../config/gameData';
+import { ResponsiveTableCard } from '../components/shared/ResponsiveTableCard';
 
 const DEFAULT_REGISTRATION_FAILED_MESSAGE = 'Registration Failed';
 const SERVICE_UNAVAILABLE_MESSAGE = 'Please contact Customer Service, Thank you.';
@@ -379,7 +380,27 @@ export function GameDetailPage() {
             <div className="p-4">
               {activeTab === 'ranking' ? (
                 <div className="flex-1 flex flex-col bg-[#0f151f] rounded-2xl border border-white/5 overflow-hidden shadow-inner">
-                  <div className="overflow-x-auto custom-scrollbar">
+                  <div className="md:hidden p-4 space-y-3">
+                    {rankingRowsData.length === 0 ? (
+                      <EmptyState message="No Data Found" compact />
+                    ) : (
+                      rankingRowsData.map((row) => (
+                        <ResponsiveTableCard
+                          key={row.rank}
+                          title={`${row.username}`}
+                          amount={<span className="text-emerald-400">{row.win}</span>}
+                          status={<span className="text-xs font-bold text-gray-300">#{row.rank}</span>}
+                          description={`Payout ${row.payout}`}
+                          metadata={[
+                            { label: 'Date', value: row.date },
+                            { label: 'Bet', value: row.bet },
+                          ]}
+                        />
+                      ))
+                    )}
+                  </div>
+
+                  <div className="hidden md:block overflow-x-auto custom-scrollbar">
                     <table className="w-full text-left border-collapse min-w-[600px]">
                       <thead>
                         <tr className="bg-[#1a2230]/80 border-b border-white/5">
@@ -457,7 +478,25 @@ export function GameDetailPage() {
           <div className="w-full rounded-2xl bg-[#1a2230] border border-white/5 overflow-hidden">
             <div className="px-4 py-3 border-b border-white/10 text-white text-sm font-semibold">Latest Bets</div>
             <div className="flex-1 flex flex-col bg-[#0f151f] border border-white/5 overflow-hidden shadow-inner">
-              <div className="overflow-x-auto custom-scrollbar max-h-[320px]">
+              <div className="md:hidden p-4 space-y-3 max-h-[320px] overflow-y-auto custom-scrollbar">
+                {latestBetsData.length === 0 ? (
+                  <EmptyState message="No Data Found" compact />
+                ) : (
+                  latestBetsData.map((bet) => (
+                    <ResponsiveTableCard
+                      key={bet.id}
+                      title={bet.username}
+                      amount={<span className="text-emerald-400">{bet.amount}</span>}
+                      metadata={[
+                        { label: 'Bet ID', value: `#${bet.id}` },
+                        { label: 'Date', value: bet.date },
+                      ]}
+                    />
+                  ))
+                )}
+              </div>
+
+              <div className="hidden md:block overflow-x-auto custom-scrollbar max-h-[320px]">
                 <table className="w-full text-left border-collapse min-w-[600px]">
                   <thead>
                     <tr className="bg-[#1a2230]/80 border-b border-white/5">

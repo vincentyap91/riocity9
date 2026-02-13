@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { InsidePageHero } from '../components/shared/InsidePageHero';
-import { Grid, ArrowRight, RefreshCw, DollarSign } from 'lucide-react';
+import { Grid, RefreshCw, DollarSign } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useAuth } from '../contexts/AuthContext';
@@ -9,6 +9,7 @@ import { useHorizontalDragScroll } from '../hooks/useHorizontalDragScroll';
 import { DraggableScrollbar } from '../components/shared/DraggableScrollbar';
 import { GameSearchBar } from '../components/shared/GameSearchBar';
 import { LoginRequiredModal } from '../components/shared/LoginRequiredModal';
+import { SlotsGameHoverOverlay } from '../components/shared/SlotsGameHoverOverlay';
 
 // --- Assets ---
 import imgImagePromo from "@/assets/dba5dfffa741345e0ad70e36cafba5ab8b533760.png";
@@ -324,8 +325,7 @@ export function Slots({
                                             className="w-full h-full object-cover transform transition-transform duration-500 group-hover:scale-110"
                                         />
 
-                                        {/* Hover Overlay */}
-                                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                                        <SlotsGameHoverOverlay />
                                     </div>
 
                                     {/* Content */}

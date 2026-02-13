@@ -8,6 +8,7 @@ import { useHorizontalDragScroll } from '../../hooks/useHorizontalDragScroll';
 import { INITIAL_SLOTS, MOCK_CATEGORIES, GAME_CATEGORIES } from '../../config/gameData';
 import { DraggableScrollbar } from '../shared/DraggableScrollbar';
 import { GameModal } from '../shared/GameModal';
+import { SlotsGameHoverOverlay } from '../shared/SlotsGameHoverOverlay';
 import { SPORTS_PROVIDERS } from '../../pages/Sports';
 import { LIVE_CASINO_PROVIDERS } from '../../pages/LiveCasino';
 
@@ -307,6 +308,7 @@ export function GameCategoryWithRTP() {
                       </span>
                     )}
 
+                    {!isUnderMaintenance(game) && <SlotsGameHoverOverlay />}
                     {isUnderMaintenance(game) && renderMaintenanceOverlay('clip0_maintenance', i)}
                   </div>
 
@@ -347,7 +349,7 @@ export function GameCategoryWithRTP() {
                         isUnderMaintenance(game) ? 'opacity-50 grayscale' : 'group-hover:scale-110'
                       }`}
                     />
-                    <div className="absolute inset-0 bg-black/10" />
+                    {!isUnderMaintenance(game) && <SlotsGameHoverOverlay />}
                     {isUnderMaintenance(game) && renderMaintenanceOverlay('clip0_maintenance_b', i)}
                   </div>
 

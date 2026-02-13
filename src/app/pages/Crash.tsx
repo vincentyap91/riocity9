@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { InsidePageHero } from '../components/shared/InsidePageHero';
-import { RefreshCw, DollarSign, Zap, Play } from 'lucide-react';
+import { RefreshCw, DollarSign, Zap } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { PAGE_ACCENT, SECTION_HEADER_TITLE_CLASS } from '../config/themeTokens';
 import { GameSearchBar } from '../components/shared/GameSearchBar';
+import { SlotsGameHoverOverlay } from '../components/shared/SlotsGameHoverOverlay';
 
 const CRASH_BANNER = 'https://pksoftcdn.azureedge.net/media/crash-202502241407547974.jpg';
 
@@ -142,11 +143,7 @@ export function Crash() {
                       alt={game.title}
                       className="w-full h-full object-cover transform transition-transform duration-500 group-hover:scale-110"
                     />
-                    <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                      <div className="w-12 h-12 rounded-full bg-[#00bc7d] flex items-center justify-center shadow-[0_0_20px_rgba(0,188,125,0.4)] transform scale-50 group-hover:scale-100 transition-transform duration-300">
-                        <Play className="w-6 h-6 text-black fill-black stroke-black stroke-[3]" />
-                      </div>
-                    </div>
+                    <SlotsGameHoverOverlay />
                   </div>
                   <h3 className="text-white group-hover:text-emerald-500 font-bold text-xs md:text-sm lg:text-base transition-colors w-full px-0.5">
                     {game.title}

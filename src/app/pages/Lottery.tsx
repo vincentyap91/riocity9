@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { InsidePageHero } from '../components/shared/InsidePageHero';
-import { ArrowRight } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { PAGE_ACCENT } from '../config/themeTokens';
 import { EmptyState } from '../components/shared/EmptyState';
 import { GameSearchBar } from '../components/shared/GameSearchBar';
 import { useAuth } from '../contexts/AuthContext';
 import { LoginRequiredModal } from '../components/shared/LoginRequiredModal';
+import { SlotsGameHoverOverlay } from '../components/shared/SlotsGameHoverOverlay';
 
 // Banner
 import imgLotteryBanner from "@/assets/b18479f8e5e33aa224b895a9f36e7daacafa6f8b.png";
@@ -146,11 +146,7 @@ export function Lottery() {
                     />
 
                     {/* Hover Overlay – same as Fishing */}
-                    <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                      <div className="w-12 h-12 rounded-full bg-[#00bc7d] flex items-center justify-center shadow-[0_0_20px_rgba(0,188,125,0.4)] transform scale-50 group-hover:scale-100 transition-transform duration-300">
-                        <ArrowRight className="w-6 h-6 text-black stroke-[3]" />
-                      </div>
-                    </div>
+                    <SlotsGameHoverOverlay />
                   </div>
 
                   {/* Content – same as Fishing: title + provider line */}

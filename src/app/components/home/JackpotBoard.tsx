@@ -1,28 +1,88 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Trophy, Zap, Star, Gem, Crown } from 'lucide-react';
 import { SectionHeader } from './SectionHeader';
 import { useLanguage } from '../../contexts/LanguageContext';
 
+type JackpotValues = {
+  grand: number;
+  major: number;
+  minor: number;
+  mini: number;
+};
+
+const INITIAL_JACKPOTS: JackpotValues = {
+  grand: 482931200.50,
+  major: 482931200.00,
+  minor: 482931200.00,
+  mini: 482931200.00,
+};
+
+const TIER_CONFIG = {
+  grand: { cadenceMs: 900, minInc: 420, maxInc: 1280, ease: 2.1 },
+  major: { cadenceMs: 650, minInc: 170, maxInc: 560, ease: 3.0 },
+  minor: { cadenceMs: 420, minInc: 65, maxInc: 230, ease: 4.4 },
+  mini: { cadenceMs: 250, minInc: 10, maxInc: 58, ease: 6.0 },
+} as const;
+
+const TIERS: Array<keyof JackpotValues> = ['grand', 'major', 'minor', 'mini'];
+
 export function JackpotBoard() {
   const { t } = useLanguage();
-  // Simulating live ticking numbers
-  const [jackpots, setJackpots] = useState({
-    grand: 482931200.50,
-    major: 482931200.00,
-    minor: 482931200.00,
-    mini: 482931200.00
+  const [jackpots, setJackpots] = useState<JackpotValues>(INITIAL_JACKPOTS);
+  const displayRef = useRef<JackpotValues>({ ...INITIAL_JACKPOTS });
+  const targetRef = useRef<JackpotValues>({ ...INITIAL_JACKPOTS });
+  const lastBumpRef = useRef<Record<keyof JackpotValues, number>>({
+    grand: 0,
+    major: 0,
+    minor: 0,
+    mini: 0,
   });
+  const rafRef = useRef<number | null>(null);
+  const lastFrameRef = useRef<number>(0);
+  const lastCommitRef = useRef<number>(0);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setJackpots(prev => ({
-        grand: prev.grand + Math.random() * 50,
-        major: prev.major + Math.random() * 15,
-        minor: prev.minor + Math.random() * 5,
-        mini: prev.mini + Math.random()
-      }));
-    }, 100);
-    return () => clearInterval(interval);
+    const randomInRange = (min: number, max: number) => min + Math.random() * (max - min);
+
+    const tick = (now: number) => {
+      if (!lastFrameRef.current) {
+        lastFrameRef.current = now;
+        TIERS.forEach((tier) => {
+          lastBumpRef.current[tier] = now;
+        });
+      }
+
+      const dt = (now - lastFrameRef.current) / 1000;
+      lastFrameRef.current = now;
+
+      TIERS.forEach((tier) => {
+        const cfg = TIER_CONFIG[tier];
+        const elapsed = now - lastBumpRef.current[tier];
+        if (elapsed >= cfg.cadenceMs) {
+          const bumps = Math.floor(elapsed / cfg.cadenceMs);
+          lastBumpRef.current[tier] += bumps * cfg.cadenceMs;
+          for (let i = 0; i < bumps; i += 1) {
+            targetRef.current[tier] += randomInRange(cfg.minInc, cfg.maxInc);
+          }
+        }
+
+        const smoothing = 1 - Math.exp(-cfg.ease * dt);
+        displayRef.current[tier] += (targetRef.current[tier] - displayRef.current[tier]) * smoothing;
+      });
+
+      // Commit at ~30fps for smooth UI while avoiding unnecessary re-renders.
+      if (now - lastCommitRef.current >= 33) {
+        lastCommitRef.current = now;
+        setJackpots({ ...displayRef.current });
+      }
+
+      rafRef.current = requestAnimationFrame(tick);
+    };
+
+    rafRef.current = requestAnimationFrame(tick);
+    return () => {
+      if (rafRef.current !== null) cancelAnimationFrame(rafRef.current);
+    };
   }, []);
 
   return (

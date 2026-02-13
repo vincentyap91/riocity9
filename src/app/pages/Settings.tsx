@@ -136,12 +136,12 @@ export function Settings() {
         </div>
 
         {/* Balance Card */}
-        <div className="bg-[#1a2230] border border-white/5 rounded-2xl p-6 mb-4 flex items-center justify-between gap-4 shadow-lg h-[110px]">
+        <div className="bg-[#1a2230] border border-white/5 rounded-2xl p-4 lg:p-6 mb-4 flex items-center justify-between gap-4 shadow-lg h-full lg:h-[110px]">
           <div className="flex flex-col justify-center h-full">
-            <div className="text-sm font-bold text-[#00bc7d] mb-1 uppercase tracking-wider">{t("totalBalance")}</div>
+            <div className="text-sm font-bold text-emerald-400 mb-1 uppercase tracking-wider">{t("totalBalance")}</div>
             <div className="flex items-start text-white">
-              <span className="text-2xl font-black mr-1">$</span>
-              <span className="text-2xl font-black tracking-tight">980.69</span>
+              <span className="text-xl lg:text-2xl font-black mr-1">$</span>
+              <span className="text-xl lg:text-2xl font-black tracking-tight">980.69</span>
             </div>
           </div>
           <Button
@@ -158,7 +158,7 @@ export function Settings() {
             {menuItems.map((item, index) => (
               <button
                 key={index}
-                className="flex items-center justify-between px-6 py-5 hover:bg-white/5 transition-colors border-b border-white/5 last:border-0 group w-full text-left"
+                className="flex items-center justify-between px-4 py-3 lg:px-6 lg:py-5 hover:bg-white/5 transition-colors border-b border-white/5 last:border-0 group w-full text-left"
                 onClick={() => {
                   if (item.path === '/language') {
                     window.dispatchEvent(new CustomEvent('openLanguageModal'));
@@ -171,7 +171,7 @@ export function Settings() {
                   <div className="w-10 h-10 rounded-xl bg-black/40 flex items-center justify-center text-[#99A1AF] group-hover:text-[#00bc7d] group-hover:bg-[#00bc7d]/10 transition-all">
                     <item.icon className="w-5 h-5" />
                   </div>
-                  <span className="font-bold text-[#e5e7eb] group-hover:text-white transition-colors text-base">{t(item.labelKey as any)}</span>
+                  <span className="font-bold text-white group-hover:text-white transition-colors text-sm lg:text-base">{t(item.labelKey as any)}</span>
                 </div>
                 <ChevronRight className="w-5 h-5 text-[#4A5565] group-hover:text-emerald-500 transition-colors" />
               </button>

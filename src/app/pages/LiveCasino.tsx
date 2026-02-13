@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { InsidePageHero } from '../components/shared/InsidePageHero';
-import { ArrowRight } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { PAGE_ACCENT } from '../config/themeTokens';
 import { GameModal } from '../components/shared/GameModal';
 import { GameSearchBar } from '../components/shared/GameSearchBar';
 import { useAuth } from '../contexts/AuthContext';
 import { LoginRequiredModal } from '../components/shared/LoginRequiredModal';
+import { SlotsGameHoverOverlay } from '../components/shared/SlotsGameHoverOverlay';
 
 // Asset Imports
 import imgKh168Marbula2Providericon200X200Px2025101310310355541 from "@/assets/f6a50bd7817f3011aaeb196648cadbe4a3ae53b3.png";
@@ -151,11 +151,7 @@ export function LiveCasino() {
                                             </svg>
                                         </div>
                                     ) : (
-                                        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                                            <div className="w-12 h-12 rounded-full bg-[#39ff88] flex items-center justify-center shadow-[0_0_20px_rgba(57,255,136,0.4)] transform scale-50 group-hover:scale-100 transition-transform duration-300">
-                                                <ArrowRight className="w-6 h-6 text-black stroke-[3]" />
-                                            </div>
-                                        </div>
+                                        <SlotsGameHoverOverlay />
                                     )}
                                 </div>
 

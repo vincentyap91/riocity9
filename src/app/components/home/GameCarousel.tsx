@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Slider, { Settings } from 'react-slick';
 import { Button } from '../ui/button';
-import { ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -9,6 +9,7 @@ import "slick-carousel/slick/slick-theme.css";
 import { SectionHeader } from './SectionHeader';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { SmallOverlayTag } from '../shared/SmallOverlayTag';
+import { SlotsGameHoverOverlay } from '../shared/SlotsGameHoverOverlay';
 
 interface GameItem {
   id: string | number;
@@ -124,8 +125,7 @@ export function GameCarousel({ title, icon, items, className, slidesToShow = 4, 
                     className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
                   />
 
-                  {/* Overlay on Hover */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  <SlotsGameHoverOverlay />
 
                   {/* Provider Logo / Tag Overlay (Optional) */}
                   {item.tag && (

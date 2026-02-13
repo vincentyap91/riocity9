@@ -6,6 +6,7 @@ import { InsidePageHero } from "../components/shared/InsidePageHero";
 import { PAGE_ACCENT } from "../config/themeTokens";
 import { GameSearchBar } from "../components/shared/GameSearchBar";
 import { LoginRequiredModal } from "../components/shared/LoginRequiredModal";
+import { SlotsGameHoverOverlay } from "../components/shared/SlotsGameHoverOverlay";
 
 const HOT_GAMES_BANNER =
   "https://pksoftcdn.azureedge.net/media/cat_hotgames-202504100909086875.jpg";
@@ -79,7 +80,7 @@ export function HotGame() {
                     alt={game.name}
                     className="w-full h-full object-cover transform transition-transform duration-500 group-hover:scale-110"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  <SlotsGameHoverOverlay />
                 </div>
                 <div className="flex flex-col gap-1">
                   <span className="text-xs md:text-sm font-bold text-white transition-colors">

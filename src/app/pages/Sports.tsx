@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { InsidePageHero } from '../components/shared/InsidePageHero';
-import { ArrowRight } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { PAGE_ACCENT } from '../config/themeTokens';
 import { GameSearchBar } from '../components/shared/GameSearchBar';
 import { GameModal } from '../components/shared/GameModal';
 import { useAuth } from '../contexts/AuthContext';
 import { LoginRequiredModal } from '../components/shared/LoginRequiredModal';
+import { SlotsGameHoverOverlay } from '../components/shared/SlotsGameHoverOverlay';
 
 // New Banner
 import imgSportsBanner from "@/assets/e807beb4ab61c26c4afaecc32f24c795ff679981.png";
@@ -95,12 +95,7 @@ export function Sports() {
                                     alt={provider.name} 
                                     className="w-full h-full object-cover transform transition-transform duration-500 group-hover:scale-110"
                                 />
-                                {/* Hover Overlay */}
-                                <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                                    <div className="w-12 h-12 rounded-full bg-[#00bc7d] flex items-center justify-center shadow-[0_0_20px_rgba(0,188,125,0.4)] transform scale-50 group-hover:scale-100 transition-transform duration-300">
-                                        <ArrowRight className="w-6 h-6 text-black stroke-[3]" />
-                                    </div>
-                                </div>
+                                <SlotsGameHoverOverlay />
                             </div>
                             
                             {/* Provider Name */}

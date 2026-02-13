@@ -5,6 +5,7 @@ interface MobileFilterBarProps {
   onOpenFilters: () => void;
   hasActiveFilters: boolean;
   activeFilterCount?: number;
+  primaryChip?: string;
   chips?: string[];
   onClearAll?: () => void;
   clearAllLabel?: string;
@@ -15,6 +16,7 @@ export function MobileFilterBar({
   onOpenFilters,
   hasActiveFilters,
   activeFilterCount = 0,
+  primaryChip,
   chips = [],
   onClearAll,
   clearAllLabel = 'Clear all',
@@ -55,8 +57,19 @@ export function MobileFilterBar({
         )}
       </div>
 
-      {chips.length > 0 && (
+      {(primaryChip || chips.length > 0) && (
         <div className="flex flex-wrap gap-2 mb-4">
+          {primaryChip && (
+            <button
+              type="button"
+              onClick={onOpenFilters}
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-semibold bg-[#0f1f1a] border border-[#00bc7d]/50 text-[#ddfff1] hover:border-[#00bc7d]/70 hover:bg-[#122721] transition-colors"
+              aria-label={`Edit ${primaryChip} filter`}
+            >
+              <span>{primaryChip}</span>
+              <ChevronDown className="w-3.5 h-3.5 text-[#00d492]" />
+            </button>
+          )}
           {chips.map((chip) => (
             <span
               key={chip}

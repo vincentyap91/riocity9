@@ -10,6 +10,7 @@ import { SegmentTabs, type SegmentTabsItem } from '../components/shared/SegmentT
 import { EmptyState } from '../components/shared/EmptyState';
 import { UsersThree } from '../components/icons/UsersThree';
 import { FilterTabs } from '../components/shared/FilterTabs';
+import { ResponsiveTableCard } from '../components/shared/ResponsiveTableCard';
 
 // Assets - using proper imports for local assets
 import shareYourLinkIcon from '@/assets/share-your-link.svg';
@@ -180,7 +181,7 @@ export function Referral() {
                 <div className="space-y-8">
                   {/* Title */}
                   <div className="space-y-4">
-                    <h1 className="text-4xl font-bold tracking-tight leading-tight">
+                    <h1 className="text-2xl lg:text-4xl font-bold tracking-tight leading-tight">
                       <span className="block text-white">Invite Friends,</span>
                       <span className="block text-[#FFD700] font-black">
                         Earn Passive Income!
@@ -276,7 +277,7 @@ export function Referral() {
                   <div className="relative z-10 bg-[#1a2230] border border-white/5 rounded-xl p-4 md:p-5 shadow-xl">
                     {isAuthenticated ? (
                       <>
-                        <h2 className="text-2xl font-black mb-4">Referral <span className="text-emerald-400 ">Bonus</span></h2>
+                        <h2 className="text-xl lg:text-2xl font-black mb-4">Referral <span className="text-emerald-400 ">Bonus</span></h2>
 
                         {/* Stats */}
                         <div className="space-y-0 rounded-xl overflow-hidden border border-white/10">
@@ -466,7 +467,40 @@ export function Referral() {
                 </div>
 
                 {/* Table */}
-                <div className="overflow-x-auto">
+                <div className="md:hidden space-y-3">
+                  {(activeHistoryTab === 'commission' ? commissionBonusHistory : depositBonusHistory).length > 0 ? (
+                    (activeHistoryTab === 'commission' ? commissionBonusHistory : depositBonusHistory).map((item) => (
+                      <ResponsiveTableCard
+                        key={item.id}
+                        title={activeHistoryTab === 'commission' ? 'Commission Bonus' : 'Deposit Bonus'}
+                        amount={item.amount}
+                        status={
+                          <span className={`px-2.5 py-1 rounded-full text-[11px] font-black uppercase tracking-widest border ${
+                            item.status === 'Unclaimed'
+                              ? 'bg-red-500/10 border-red-500/20 text-red-500'
+                              : 'bg-emerald-500/10 border-emerald-500/20 text-[#00bc7d]'
+                          }`}>
+                            {item.status}
+                          </span>
+                        }
+                        metadata={[
+                          { label: 'Date', value: item.date },
+                          {
+                            label: 'Claimed',
+                            value: item.claimedTime || 'Not claimed',
+                            valueClassName: item.claimedTime ? 'text-white' : 'text-gray-400',
+                          },
+                        ]}
+                      />
+                    ))
+                  ) : (
+                    <div className="py-8 px-4 text-center">
+                      <EmptyState message="No history available" compact />
+                    </div>
+                  )}
+                </div>
+
+                <div className="hidden md:block overflow-x-auto">
                   <table className="w-full">
                     <thead>
                       <tr className="border-b border-white/10">
@@ -530,7 +564,7 @@ export function Referral() {
               {/* Content */}
               <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
                 <div className="flex-shrink-0">
-                  <h2 className="text-2xl font-black text-white mb-2">Deposit Commission Rate</h2>
+                  <h2 className="text-xl lg:text-2xl font-black text-white mb-2">Deposit Commission Rate</h2>
                   <p className="text-[#FFD700] text-lg md:text-2xl font-black mb-4 md:mb-10">Minimum Deposit PRK 30.00</p>
                 </div>
 
@@ -549,15 +583,15 @@ export function Referral() {
           {/* Gaming Commission Rate */}
           <div className="container mx-auto max-w-[1200px] 2xl:max-w-[1480px] px-4 mb-12">
             <div className="bg-[#1a2230] border border-white/5 rounded-xl p-4 md:p-8 shadow-xl">
-              <h2 className="text-2xl font-black mb-4 text-white">Gaming Commission Rate</h2>
-              <p className="text-gray-400 mb-8 text-lg">Listing of commission rates you earn from your downlines' bets by game type and provider.</p>
+              <h2 className="text-xl lg:text-2xl font-black mb-4 text-white">Gaming Commission Rate</h2>
+              <p className="text-gray-400 mb-8 text-base lg:text-lg">Listing of commission rates you earn from your downlines' bets by game type and provider.</p>
 
               <div className="flex flex-col gap-4">
                 <Accordion type="single" collapsible defaultValue="Slots" className="w-full">
                   {commissionRates.map((cat, idx) => (
                     <AccordionItem key={idx} value={cat.category} className="!border-b-0 border border-white/5 rounded-xl overflow-hidden bg-[#0f151f] mb-4 last:mb-0">
                       <AccordionTrigger className="px-6 py-4 hover:no-underline hover:bg-white/5 transition-colors text-white bg-[#1d2d49] [&>svg]:text-white">
-                        <span className="text-lg font-black">{cat.category}</span>
+                        <span className="text-base lg:text-lg font-black">{cat.category}</span>
                       </AccordionTrigger>
                       <AccordionContent className="bg-[#0f151f] px-0 py-0">
                         {cat.items.length > 0 ? (
@@ -594,7 +628,7 @@ export function Referral() {
           <div className="container mx-auto max-w-[1200px] 2xl:max-w-[1480px] px-4 mb-12">
             <div className="bg-[#1a2230] border border-white/5 rounded-xl p-4 md:p-8 shadow-xl">
               {/* FAQ Header */}
-              <h2 className="text-2xl font-black text-white mb-4">Frequently Asked Questions</h2>
+              <h2 className="text-xl lg:text-2xl font-black text-white mb-4">Frequently Asked Questions</h2>
               <div className="mb-6">
                 <FilterTabs
                   items={[
@@ -621,7 +655,7 @@ export function Referral() {
                         <span className="text-base font-bold text-left">{faq.question}</span>
                       </AccordionTrigger>
                       <AccordionContent className="bg-[#0f151f] px-6 py-4">
-                        <p className="text-white text-base">{faq.answer}</p>
+                        <p className="text-white text-sm lg:text-base">{faq.answer}</p>
                       </AccordionContent>
                     </AccordionItem>
                   ))}
