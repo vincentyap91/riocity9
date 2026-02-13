@@ -6,7 +6,6 @@ import {
   Wallet,
   CreditCard,
   Ticket,
-  Search,
   CheckCircle2,
   Lock,
   Zap,
@@ -121,7 +120,6 @@ export function Withdraw() {
   const { t } = useLanguage();
   const [step, setStep] = useState<1 | 2>(1);
   const [selectedMethodId, setSelectedMethodId] = useState<string | null>(null);
-  const [searchQuery, setSearchQuery] = useState('');
   const [activeTab, setActiveTab] = useState<'deposit' | 'withdrawal'>('withdrawal');
   
   // Step 2 Form State
@@ -231,20 +229,6 @@ export function Withdraw() {
           {/* STEP 1: SELECTION */}
           {step === 1 && (
             <div className="space-y-6">
-                <div className="text-gray-400 text-sm">{t("selectWithdrawOption")}</div>
-
-                {/* Search */}
-                <div className="relative">
-                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
-                    <input 
-                        type="text" 
-                        placeholder={t("search")} 
-                        className="w-full h-12 bg-[#0f151f] border border-white/10 rounded-xl pl-12 pr-4 text-white focus:outline-none focus:border-[#00bc7d] transition-colors placeholder:text-gray-500"
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(sanitizeTextInput(e.target.value))}
-                    />
-                </div>
-
                 {/* Popular Methods Grid */}
                 <div>
                     <h3 className="text-sm font-bold text-gray-300 mb-3">{t("popularRecentMethods")}</h3>

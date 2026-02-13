@@ -11,7 +11,6 @@ import {
   Upload, 
   ShieldCheck, 
   Ticket,
-  Search,
   Wallet,
   Clock,
   Headphones,
@@ -26,6 +25,13 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useLanguage } from '../contexts/LanguageContext';
 import { MOBILE, PRIMARY_CTA_CLASS } from '../config/themeTokens';
 import { SegmentTabs, type SegmentTabsItem } from '../components/shared/SegmentTabs';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '../components/ui/select';
 import { sanitizeTextInput, validateReceiptFile } from '../utils/security';
 
 // Mock Data for Payment Methods - Enhanced for Visual Variety
@@ -128,6 +134,39 @@ const FILTERS = [
 const DEPOSIT_APPROVAL_COUNTDOWN_SECONDS = 8 * 60 + 6;
 const DEPOSIT_TAB_VALUES = ['deposit', 'withdrawal'] as const;
 type DepositTabValue = (typeof DEPOSIT_TAB_VALUES)[number];
+type BonusOption = {
+  id: string;
+  label: string;
+  rollover: string;
+  claim: string;
+  minimumDeposit: string;
+  percentageBonusReward: string;
+  maximumBonus: string;
+  gameProvider: string;
+};
+
+const BONUS_OPTIONS: BonusOption[] = [
+  {
+    id: 'welcome-slots-388',
+    label: 'Welcome Bonus 388% (Slots)',
+    rollover: '38x',
+    claim: '1 Only',
+    minimumDeposit: '50',
+    percentageBonusReward: '388%',
+    maximumBonus: '3880',
+    gameProvider: 'Pragmatic Play, AdvantPlay, PlayTech Slots',
+  },
+  {
+    id: 'reload-slots-120',
+    label: 'Reload Bonus 120% (Slots)',
+    rollover: '25x',
+    claim: '1 / Day',
+    minimumDeposit: '30',
+    percentageBonusReward: '120%',
+    maximumBonus: '1200',
+    gameProvider: 'Pragmatic Play, AdvantPlay, PlayTech Slots',
+  },
+];
 
 function normalizeDepositTab(value: string | null | undefined): DepositTabValue {
   const normalized = (value || '').trim().toLowerCase();
@@ -142,7 +181,8 @@ export function Deposit() {
   const [selectedMethodId, setSelectedMethodId] = useState<string | null>(null);
   const [amount, setAmount] = useState<string>('');
   const [referenceId, setReferenceId] = useState('');
-  const [searchQuery, setSearchQuery] = useState('');
+  const [wantsBonus, setWantsBonus] = useState(false);
+  const [selectedBonus, setSelectedBonus] = useState('none');
   const [activeTab, setActiveTab] = useState<'deposit' | 'withdrawal'>('deposit');
   const receiptInputRef = useRef<HTMLInputElement | null>(null);
   const [receiptFileName, setReceiptFileName] = useState<string>('');
@@ -200,6 +240,7 @@ export function Deposit() {
   };
 
   const selectedMethod = getSelectedMethod();
+  const selectedBonusInfo = BONUS_OPTIONS.find((bonus) => bonus.id === selectedBonus);
 
   const handleReceiptPick = () => {
     setReceiptError('');
@@ -338,21 +379,62 @@ export function Deposit() {
                 )}
 
                 <div className={isDepositLocked ? 'hidden' : 'space-y-6'}>
-                <div className="text-gray-400 text-sm">{t("selectReloadOption")}</div>
-
-                {/* Search & Filters */}
                 <div className="space-y-3">
-                    <div className="relative">
-                        <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
-                        <input 
-                            type="text" 
-                            placeholder={t("search")} 
-                            className="w-full h-12 bg-[#0f151f] border border-white/10 rounded-xl pl-12 pr-4 text-white focus:outline-none focus:border-[#00bc7d] transition-colors placeholder:text-gray-500"
-                            value={searchQuery}
-                            onChange={(e) => setSearchQuery(sanitizeTextInput(e.target.value))}
+                    <label className="flex items-center gap-3 text-sm text-gray-300 cursor-pointer select-none">
+                        <input
+                            type="checkbox"
+                            className="peer sr-only"
+                            checked={wantsBonus}
+                            onChange={(e) => {
+                              const nextChecked = e.target.checked;
+                              setWantsBonus(nextChecked);
+                              if (!nextChecked) {
+                                setSelectedBonus('none');
+                              }
+                            }}
                         />
-                    </div>
-                    
+                        <span className="h-5 w-5 rounded-md border border-white/20 bg-[#0f151f] flex items-center justify-center text-transparent transition-all peer-checked:border-[#00bc7d] peer-checked:bg-[#00bc7d]/15 peer-checked:text-[#00bc7d] peer-focus-visible:ring-2 peer-focus-visible:ring-[#00bc7d]/30">
+                          <Check className="h-3.5 w-3.5 text-current transition-colors" />
+                        </span>
+                        <span>Do you want to claim bonus?</span>
+                    </label>
+
+                    {wantsBonus && (
+                      <div className="space-y-2">
+                          <label className="text-gray-300 text-sm font-bold">Bonus</label>
+                          <Select value={selectedBonus} onValueChange={setSelectedBonus}>
+                            <SelectTrigger className="!h-12 bg-[#0f151f] border-white/10 text-white rounded-xl px-4 py-0 data-[size=default]:!h-12 focus:border-[#00bc7d] focus-visible:ring-[#00bc7d]/20">
+                              <SelectValue placeholder="Select Bonus" />
+                            </SelectTrigger>
+                            <SelectContent className="bg-[#131b29] border-white/10 text-white">
+                              <SelectItem value="none">Select Bonus</SelectItem>
+                              {BONUS_OPTIONS.map((bonus) => (
+                                <SelectItem key={bonus.id} value={bonus.id}>
+                                  {bonus.label}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                          {selectedBonusInfo && (
+                            <div className="rounded-xl border border-dashed border-[#00bc7d]/40 bg-[#0f151f]/60 p-4">
+                              <div className="mb-3 flex items-center gap-2 text-[#00bc7d]">
+                                <Info className="h-4 w-4" />
+                                <span className="text-sm font-bold">Bonus Info</span>
+                              </div>
+                              <div className="space-y-1.5 text-sm text-gray-200">
+                                <p>Rollover : {selectedBonusInfo.rollover}</p>
+                                <p>Claim : {selectedBonusInfo.claim}</p>
+                                <p>Minimum Deposit : {selectedBonusInfo.minimumDeposit}</p>
+                                <p>Percentage Bonus Reward : {selectedBonusInfo.percentageBonusReward}</p>
+                                <p>Maximum Bonus : {selectedBonusInfo.maximumBonus}</p>
+                                <p>
+                                  Game (Provider) : <span className="font-semibold text-white">{selectedBonusInfo.gameProvider}</span>
+                                </p>
+                              </div>
+                            </div>
+                          )}
+                      </div>
+                    )}
                 </div>
 
                 {/* Popular Methods Grid */}
@@ -551,10 +633,17 @@ export function Deposit() {
 
           {/* STEP 3: Transfer Details (Existing Logic) */}
           {step === 3 && selectedMethod && (
-             <div className="space-y-6 animate-in slide-in-from-right-5 fade-in duration-300">
+             <div className="space-y-4 animate-in slide-in-from-right-5 fade-in duration-300">
                 {/* Summary Card */}
                 <div className="bg-[#131b29] p-4 rounded-xl border border-white/5 space-y-4">
-                    <div className="flex items-center justify-between border-b border-white/5 pb-4">
+                  <div className="flex items-center justify-between">
+                    <span className="text-gray-400 font-bold">Bonus</span>
+                    <span className="text-sm font-bold text-white">{selectedBonusInfo?.label ?? '-'}</span>
+                  </div>
+                </div>
+                <div className="bg-[#131b29] p-4 rounded-xl border border-white/5 space-y-4">
+                    
+                  <div className="flex items-center justify-between border-b border-white/5 pb-4">
                         <div className="flex items-center gap-3">
                             <div className={`w-10 h-10 rounded-lg ${'bg' in selectedMethod ? selectedMethod.bg : 'bg-[#1a2230]'} flex items-center justify-center text-white border border-white/10`}>
                                 <selectedMethod.icon className={`w-5 h-5 ${'text' in selectedMethod ? selectedMethod.text : 'text-white'}`} />
@@ -567,7 +656,7 @@ export function Deposit() {
                     </div>
                     <div className="flex items-center justify-between">
                         <span className="text-gray-400 font-bold">{t("depositAmount")}</span>
-                    <div className="flex items-center gap-1">
+                        <div className="flex items-center gap-1">
                             <span className="text-emerald-500 font-bold text-sm">MYR</span>
                             <span className="text-2xl font-black text-white">{(isValidAmount ? normalizedAmount : 0).toFixed(2)}</span>
                         </div>
