@@ -12,11 +12,10 @@ import {
   Dialog,
   DialogContent,
 } from '../ui/dialog';
-import { Sheet, SheetContent } from '../ui/sheet';
 import { FilterTabs } from './FilterTabs';
 import { HistoryTableSection, type HistoryColumn } from './HistoryTableSection';
-import { MobileFilterBar } from './MobileFilterBar';
-import { MobileRecordCardList } from './MobileRecordCardList';
+import { MobileRecordFilterPanel } from './MobileRecordFilterPanel';
+import { ResponsiveTableCard } from './ResponsiveTableCard';
 
 export type ClaimRecordType = 'spinwheel' | 'scratch' | 'prize';
 
@@ -54,8 +53,8 @@ const QUICK_DATE_OPTIONS = [
 
 const CLAIM_DEFAULTS = {
   status: 'all',
-  startDate: '01-12-2025',
-  endDate: '31-12-2025',
+  startDate: '',
+  endDate: '',
   preset: 'lastMonth',
 } as const;
 
@@ -76,7 +75,6 @@ export function ClaimRecordModal({
   const [startDate, setStartDate] = useState(CLAIM_DEFAULTS.startDate);
   const [endDate, setEndDate] = useState(CLAIM_DEFAULTS.endDate);
   const [activeDatePreset, setActiveDatePreset] = useState(CLAIM_DEFAULTS.preset);
-  const [isFilterSheetOpen, setIsFilterSheetOpen] = useState(false);
 
   useEffect(() => {
     if (open) {
@@ -89,42 +87,6 @@ export function ClaimRecordModal({
     if (recordStatus !== CLAIM_DEFAULTS.status && record.status.toLowerCase() !== recordStatus) return false;
     return true;
   });
-
-  const typeLabelMap: Record<ClaimRecordType, string> = {
-    spinwheel: 'Spin Wheel',
-    scratch: 'Voucher Scratch',
-    prize: 'Prize Box',
-  };
-  const statusLabelMap: Record<string, string> = {
-    all: 'All',
-    completed: 'Completed',
-    expired: 'Expired',
-    available: 'Available',
-  };
-  const activeDatePresetLabel =
-    QUICK_DATE_OPTIONS.find((option) => option.id === activeDatePreset)?.label ?? '';
-  const activeFilterChips = [
-    `Type: ${typeLabelMap[recordType]}`,
-    `Status: ${statusLabelMap[recordStatus] ?? 'All'}`,
-    startDate ? `Start: ${startDate}` : '',
-    endDate ? `End: ${endDate}` : '',
-    activeDatePresetLabel ? `Range: ${activeDatePresetLabel}` : '',
-  ].filter(Boolean);
-  const activeFilterCount = [
-    recordType !== initialType,
-    recordStatus !== CLAIM_DEFAULTS.status,
-    startDate !== CLAIM_DEFAULTS.startDate,
-    endDate !== CLAIM_DEFAULTS.endDate,
-    activeDatePreset !== CLAIM_DEFAULTS.preset,
-  ].filter(Boolean).length;
-  const hasActiveFilters = activeFilterCount > 0;
-  const clearAllFilters = () => {
-    setRecordType(initialType);
-    setRecordStatus(CLAIM_DEFAULTS.status);
-    setStartDate(CLAIM_DEFAULTS.startDate);
-    setEndDate(CLAIM_DEFAULTS.endDate);
-    setActiveDatePreset(CLAIM_DEFAULTS.preset);
-  };
 
   const getStatusClass = (status: RecordStatus) => {
     if (status === 'Completed' || status === 'Available') return 'text-emerald-500 font-bold';
@@ -169,12 +131,13 @@ export function ClaimRecordModal({
         </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4 md:mb-6">
+      <div className="grid grid-cols-2 gap-3 md:gap-4 mb-4 md:mb-6">
         <div className="space-y-2">
           <label className="text-white font-bold text-sm">Start Date</label>
           <div className="relative group">
             <DatePicker
               value={startDate}
+              placeholder="DD-MM-YYYY"
               onChange={(nextValue) => setStartDate(String(nextValue))}
             />
           </div>
@@ -184,6 +147,7 @@ export function ClaimRecordModal({
           <div className="relative group">
             <DatePicker
               value={endDate}
+              placeholder="DD-MM-YYYY"
               onChange={(nextValue) => setEndDate(String(nextValue))}
             />
           </div>
@@ -266,19 +230,34 @@ export function ClaimRecordModal({
           <div className="flex items-center justify-start gap-3 pb-4">
             <span className="text-white font-bold text-base">Reward Record</span>
           </div>
-          <MobileFilterBar
-            onOpenFilters={() => setIsFilterSheetOpen(true)}
-            hasActiveFilters={hasActiveFilters}
-            activeFilterCount={activeFilterCount}
-            chips={activeFilterChips}
-            onClearAll={clearAllFilters}
-          />
-
           <div className="hidden md:block">
             {filterInputs}
           </div>
 
-          <div className="mb-6">
+          <MobileRecordFilterPanel
+            primaryLabel="Record Type"
+            primaryControl={
+              <Select value={recordType} onValueChange={(value) => setRecordType(value as ClaimRecordType)}>
+                <SelectTrigger className="w-full bg-[#0f151f] border-white/10 text-white !h-12 rounded-xl px-4 py-0 data-[size=default]:!h-12 focus:border-[#00bc7d] focus-visible:ring-[#00bc7d]/20">
+                  <SelectValue placeholder="Record Type" />
+                </SelectTrigger>
+                <SelectContent className="bg-[#1a2230] border-white/10">
+                  <SelectItem value="spinwheel" className="text-white focus:bg-emerald-500/20">Spin Wheel</SelectItem>
+                  <SelectItem value="scratch" className="text-white focus:bg-emerald-500/20">Voucher Scratch</SelectItem>
+                  <SelectItem value="prize" className="text-white focus:bg-emerald-500/20">Prize Box</SelectItem>
+                </SelectContent>
+              </Select>
+            }
+            startDate={startDate}
+            endDate={endDate}
+            onStartDateChange={(nextValue) => setStartDate(String(nextValue))}
+            onEndDateChange={(nextValue) => setEndDate(String(nextValue))}
+            tabs={QUICK_DATE_OPTIONS}
+            activeTabId={activeDatePreset}
+            onSelectTab={setActiveDatePreset}
+          />
+
+          <div className="hidden md:block mb-6">
             <FilterTabs
               items={QUICK_DATE_OPTIONS}
               activeId={activeDatePreset}
@@ -286,29 +265,43 @@ export function ClaimRecordModal({
               scrollable
               baseButtonClassName="shrink-0 px-4 h-10 rounded-xl text-sm font-bold transition-all border"
               activeClassName="border-[#00bc7d] bg-[#00bc7d]/10 text-[#00bc7d] shadow-[0_0_15px_rgba(0,188,125,0.2)]"
+              scrollbarClassName="hidden"
             />
           </div>
 
           <div className="md:hidden">
-            <MobileRecordCardList
-              data={filteredRecords}
-              rowKey={(row) => `${row.type}-${row.id}`}
-              cardClassName="bg-[#0f151f] rounded-2xl border border-white/5 p-4 shadow-inner"
-              renderHeader={(row) => (
-                <div className="flex items-center justify-between">
-                  <span className="text-white font-bold text-sm">#{row.id}</span>
-                  <span className={`px-2.5 py-1 rounded-full border text-[11px] font-bold ${getStatusBadgeClass(row.status)}`}>
-                    {row.status}
-                  </span>
-                </div>
-              )}
-              fields={(row) => [
-                { label: 'Campaign', value: row.campaign, valueClassName: 'text-gray-200 font-medium' },
-                { label: 'Created Date', value: row.createdDate, valueClassName: 'text-orange-400 font-medium' },
-                { label: 'Claimed Date', value: row.claimedDate, valueClassName: 'text-white font-medium' },
-                { label: 'Reward', value: row.reward, valueClassName: 'text-[#00bc7d] font-bold' },
-              ]}
-            />
+            <div className="space-y-3">
+              {filteredRecords.map((row) => {
+                const rewardDisplay = row.reward === '-' ? '—' : row.reward;
+                const claimedDisplay = row.claimedDate === '-' ? 'Not claimed' : row.claimedDate;
+
+                return (
+                  <ResponsiveTableCard
+                    key={`${row.type}-${row.id}`}
+                    title={row.campaign}
+                    amount={<span className="text-[#00bc7d]">{rewardDisplay}</span>}
+                    status={
+                      <span className={`px-2.5 py-1 rounded-full border text-[11px] font-bold ${getStatusBadgeClass(row.status)}`}>
+                        {row.status}
+                      </span>
+                    }
+                    metadata={[
+                      { label: 'ID', value: `#${row.id}`, valueClassName: 'font-mono text-gray-400' },
+                      {
+                        label: 'Created',
+                        value: row.createdDate,
+                        valueClassName: 'text-orange-400',
+                      },
+                      {
+                        label: 'Claimed',
+                        value: claimedDisplay,
+                      },
+                    ]}
+                    className="bg-[#0f151f] rounded-2xl border border-white/5 p-4 shadow-inner"
+                  />
+                );
+              })}
+            </div>
           </div>
 
           <div className="hidden md:block">
@@ -321,27 +314,6 @@ export function ClaimRecordModal({
           </div>
         </div>
       </DialogContent>
-
-      <Sheet open={isFilterSheetOpen} onOpenChange={setIsFilterSheetOpen}>
-        <SheetContent
-          side="bottom"
-          className="bg-[#1a2230] border-white/10 rounded-t-2xl p-0 h-auto max-h-[85vh]"
-        >
-          <div className="p-4 overflow-y-auto custom-scrollbar">
-            <div className="pb-3">
-              <span className="text-white font-bold text-base">Filter</span>
-            </div>
-            {filterInputs}
-            <button
-              type="button"
-              onClick={() => setIsFilterSheetOpen(false)}
-              className="w-full h-11 rounded-xl bg-[#00bc7d] hover:bg-[#00a870] text-black font-bold"
-            >
-              Apply
-            </button>
-          </div>
-        </SheetContent>
-      </Sheet>
     </Dialog>
   );
 }

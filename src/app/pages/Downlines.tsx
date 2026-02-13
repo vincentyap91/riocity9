@@ -14,6 +14,8 @@ import { sanitizeTextInput } from '../utils/security';
 import { UsersThree } from '../components/icons/UsersThree';
 import { FilterTabs } from '../components/shared/FilterTabs';
 import { DatePicker } from '../components/ui/DatePicker';
+import { ResponsiveTableCard } from '../components/shared/ResponsiveTableCard';
+import { MobileRecordFilterPanel } from '../components/shared/MobileRecordFilterPanel';
 
 const DOWNLINE_SIDEBAR_ITEMS: PageSidebarItem[] = [
   { id: 'summary', label: 'Downline Summary', icon: UsersThree },
@@ -183,8 +185,21 @@ export function Downlines() {
             {/* Content based on active tab */}
             {activeTab === 'summary' ? (
               <>
+                <MobileRecordFilterPanel
+                  startDate={downlineStartDate}
+                  endDate={downlineEndDate}
+                  onStartDateChange={(nextValue) => setDownlineStartDate(String(nextValue))}
+                  onEndDateChange={(nextValue) => setDownlineEndDate(String(nextValue))}
+                  tabs={QUICK_DATE_FILTERS}
+                  activeTabId={activeDateFilter}
+                  onSelectTab={(id) => {
+                    setActiveDateFilter(id);
+                    updateQuery({ dateTab: id });
+                  }}
+                />
+
                 {/* Date Selection */}
-                <div className={`grid grid-cols-1 sm:grid-cols-2 ${MOBILE.gap} ${MOBILE.sectionMb}`}>
+                <div className={`hidden md:grid grid-cols-1 sm:grid-cols-2 ${MOBILE.gap} ${MOBILE.sectionMb}`}>
                   <div className={MOBILE.spaceY}>
                     <label className={`text-white ${MOBILE.label}`}>Start Date</label>
                     <div className="relative group">
@@ -206,7 +221,7 @@ export function Downlines() {
                 </div>
 
                 {/* Quick Date Filters (Today / Last 7/30/60 Days) */}
-                <div className="mb-6">
+                <div className="hidden md:block mb-6">
                   <FilterTabs
                     items={QUICK_DATE_FILTERS}
                     activeId={activeDateFilter}
@@ -320,7 +335,33 @@ export function Downlines() {
 
                   {/* Downlines Table */}
                   <div className="bg-[#0f151f] rounded-2xl border border-white/5 overflow-hidden">
-                    <div className="overflow-x-auto">
+                    <div className="md:hidden p-4 space-y-3">
+                      {filteredDownlines
+                        .filter(d => activeStatusTab === 'active' ? d.status === 'active' : d.status === 'inactive')
+                        .map((downline) => (
+                          <ResponsiveTableCard
+                            key={downline.id}
+                            title={downline.username}
+                            amount={downline.deposit}
+                            status={
+                              <span className={`px-2.5 py-1 rounded-full text-[11px] font-black uppercase tracking-widest border ${
+                                downline.status === 'active'
+                                  ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-500'
+                                  : 'bg-red-500/10 border-red-500/20 text-red-500'
+                              }`}>
+                                {downline.status}
+                              </span>
+                            }
+                            metadata={[
+                              { label: 'Contact', value: downline.contact },
+                              { label: 'Registered', value: downline.registerDate },
+                            ]}
+                            className="bg-[#1a2230] rounded-2xl border border-white/5 p-4"
+                          />
+                        ))}
+                    </div>
+
+                    <div className="hidden md:block overflow-x-auto">
                       <table className="w-full text-left border-collapse min-w-[600px]">
                         <thead>
                           <tr className="bg-[#1a2230]/80 border-b border-white/5">

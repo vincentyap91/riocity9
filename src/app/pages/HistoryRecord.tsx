@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { 
   ArrowLeft, History, Wallet, Dices, 
   Users, HandCoins, Megaphone,
@@ -16,7 +16,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '../components/ui/select';
-import { Sheet, SheetContent } from '../components/ui/sheet';
 import {
   RECORD_PAGE_ICON_BOX_CLASS,
   RECORD_PAGE_ICON_CLASS,
@@ -25,8 +24,8 @@ import {
 } from '../config/themeTokens';
 import { EmptyState } from '../components/shared/EmptyState';
 import { FilterTabs } from '../components/shared/FilterTabs';
-import { MobileFilterBar } from '../components/shared/MobileFilterBar';
 import { MobileRecordCardList } from '../components/shared/MobileRecordCardList';
+import { MobileRecordFilterPanel } from '../components/shared/MobileRecordFilterPanel';
 
 const SIDEBAR_ITEMS: PageSidebarItem[] = [
   { id: 'transaction', label: 'Transaction History', icon: Wallet },
@@ -42,6 +41,81 @@ const QUICK_FILTERS = [
   { id: '30days', label: 'Last 30 Days' },
   { id: '60days', label: 'Last 60 Days' },
 ];
+
+const TRANSACTION_QUICK_FILTERS = [
+  { id: 'today', label: 'Today' },
+  { id: 'yesterday', label: 'Yesterday' },
+  { id: 'thisWeek', label: 'This Week' },
+  { id: 'lastWeek', label: 'Last Week' },
+];
+
+interface TransactionRow {
+  id: string;
+  date: string;
+  amount: string;
+  status: string;
+  description: string;
+}
+
+function parseLocalDateInput(value: string): Date | null {
+  const match = value.trim().match(/^(\d{2})-(\d{2})-(\d{4})$/);
+  if (!match) return null;
+
+  const day = Number(match[1]);
+  const month = Number(match[2]);
+  const year = Number(match[3]);
+  const date = new Date(year, month - 1, day);
+
+  if (
+    date.getFullYear() !== year ||
+    date.getMonth() !== month - 1 ||
+    date.getDate() !== day
+  ) {
+    return null;
+  }
+
+  return date;
+}
+
+function parseTransactionDateTime(value: string): Date | null {
+  const match = value.trim().match(
+    /^(\d{2})-(\d{2})-(\d{4})(?:\s+(\d{2}):(\d{2})(?::(\d{2}))?)?$/,
+  );
+  if (!match) return null;
+
+  const day = Number(match[1]);
+  const month = Number(match[2]);
+  const year = Number(match[3]);
+  const hour = Number(match[4] ?? '0');
+  const minute = Number(match[5] ?? '0');
+  const second = Number(match[6] ?? '0');
+
+  const date = new Date(year, month - 1, day, hour, minute, second, 0);
+  if (
+    date.getFullYear() !== year ||
+    date.getMonth() !== month - 1 ||
+    date.getDate() !== day
+  ) {
+    return null;
+  }
+
+  return date;
+}
+
+function startOfDay(date: Date): Date {
+  return new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0, 0);
+}
+
+function endOfDay(date: Date): Date {
+  return new Date(date.getFullYear(), date.getMonth(), date.getDate(), 23, 59, 59, 999);
+}
+
+function formatLocalDate(date: Date): string {
+  const day = `${date.getDate()}`.padStart(2, '0');
+  const month = `${date.getMonth() + 1}`.padStart(2, '0');
+  const year = date.getFullYear();
+  return `${day}-${month}-${year}`;
+}
 
 // Mock data
 const depositData = [
@@ -71,7 +145,9 @@ export function HistoryRecord() {
   const [activeSidebarTab, setActiveSidebarTab] = useState<'transaction' | 'bet' | 'commission' | 'rebate' | 'promotion'>('transaction');
   const [activeTypeTab, setActiveTypeTab] = useState<'deposits' | 'withdrawals'>('deposits');
   const [activeFilter, setActiveFilter] = useState('today');
-  const [isFilterSheetOpen, setIsFilterSheetOpen] = useState(false);
+  const [transactionQuickRange, setTransactionQuickRange] = useState('');
+  const [transactionStartDate, setTransactionStartDate] = useState('');
+  const [transactionEndDate, setTransactionEndDate] = useState('');
   
   // Bet Record state
   const [statistics, setStatistics] = useState('all');
@@ -83,49 +159,125 @@ export function HistoryRecord() {
   const [commissionEndDate, setCommissionEndDate] = useState('31-01-2026');
   const [rebateStartDate, setRebateStartDate] = useState('25-01-2026');
   const [rebateEndDate, setRebateEndDate] = useState('31-01-2026');
+  const [promotionStartDate, setPromotionStartDate] = useState('');
+  const [promotionEndDate, setPromotionEndDate] = useState('');
 
   const currentData = activeTypeTab === 'deposits' ? depositData : withdrawalData;
+
+  const applyTransactionQuickRange = (rangeId: string) => {
+    const now = new Date();
+    let rangeStart = now;
+    let rangeEnd = now;
+
+    if (rangeId === 'today') {
+      rangeStart = startOfDay(now);
+      rangeEnd = endOfDay(now);
+    } else if (rangeId === 'yesterday') {
+      const yesterday = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1);
+      rangeStart = startOfDay(yesterday);
+      rangeEnd = endOfDay(yesterday);
+    } else if (rangeId === 'thisWeek') {
+      const weekStart = new Date(now.getFullYear(), now.getMonth(), now.getDate() - now.getDay());
+      rangeStart = startOfDay(weekStart);
+      rangeEnd = now;
+    } else if (rangeId === 'lastWeek') {
+      const currentWeekStart = new Date(now.getFullYear(), now.getMonth(), now.getDate() - now.getDay());
+      const lastWeekStart = new Date(currentWeekStart.getFullYear(), currentWeekStart.getMonth(), currentWeekStart.getDate() - 7);
+      const lastWeekEnd = new Date(currentWeekStart.getFullYear(), currentWeekStart.getMonth(), currentWeekStart.getDate() - 1);
+      rangeStart = startOfDay(lastWeekStart);
+      rangeEnd = endOfDay(lastWeekEnd);
+    } else {
+      return;
+    }
+
+    setTransactionQuickRange(rangeId);
+    setTransactionStartDate(formatLocalDate(rangeStart));
+    setTransactionEndDate(formatLocalDate(rangeEnd));
+  };
+
   const currentStartDate =
+    activeSidebarTab === 'transaction' ? transactionStartDate :
     activeSidebarTab === 'bet' ? betStartDate :
     activeSidebarTab === 'commission' ? commissionStartDate :
     activeSidebarTab === 'rebate' ? rebateStartDate :
     '01/14/2026';
   const currentEndDate =
+    activeSidebarTab === 'transaction' ? transactionEndDate :
     activeSidebarTab === 'bet' ? betEndDate :
     activeSidebarTab === 'commission' ? commissionEndDate :
     activeSidebarTab === 'rebate' ? rebateEndDate :
     '01/14/2026';
-  const activeFilterLabel = QUICK_FILTERS.find((item) => item.id === activeFilter)?.label ?? '';
-  const activeFilterChips = [
-    activeSidebarTab === 'transaction' ? `Type: ${activeTypeTab === 'deposits' ? t("deposit") : t("withdrawals")}` : '',
-    activeSidebarTab === 'bet' ? `Statistics: ${statistics === 'all' ? 'All' : statistics}` : '',
-    currentStartDate ? `Start: ${currentStartDate}` : '',
-    currentEndDate ? `End: ${currentEndDate}` : '',
-    activeFilterLabel ? `Range: ${activeFilterLabel}` : '',
-  ].filter(Boolean);
-  const activeFilterCount = [
-    activeFilter !== 'today',
-    activeSidebarTab === 'transaction' && activeTypeTab !== 'deposits',
-    activeSidebarTab === 'bet' && statistics !== 'all',
-    activeSidebarTab === 'bet' && betStartDate !== '26-01-2026',
-    activeSidebarTab === 'bet' && betEndDate !== '27-01-2026',
-    activeSidebarTab === 'commission' && commissionStartDate !== '25-01-2026',
-    activeSidebarTab === 'commission' && commissionEndDate !== '31-01-2026',
-    activeSidebarTab === 'rebate' && rebateStartDate !== '25-01-2026',
-    activeSidebarTab === 'rebate' && rebateEndDate !== '31-01-2026',
-  ].filter(Boolean).length;
-  const hasActiveFilters = activeFilterCount > 0;
-  const clearAllFilters = () => {
-    setActiveFilter('today');
-    setActiveTypeTab('deposits');
-    setStatistics('all');
-    setBetStartDate('26-01-2026');
-    setBetEndDate('27-01-2026');
-    setCommissionStartDate('25-01-2026');
-    setCommissionEndDate('31-01-2026');
-    setRebateStartDate('25-01-2026');
-    setRebateEndDate('31-01-2026');
+  const currentMobileStartDate =
+    activeSidebarTab === 'transaction' ? transactionStartDate :
+    activeSidebarTab === 'bet' ? betStartDate :
+    activeSidebarTab === 'commission' ? commissionStartDate :
+    activeSidebarTab === 'rebate' ? rebateStartDate :
+    promotionStartDate;
+  const currentMobileEndDate =
+    activeSidebarTab === 'transaction' ? transactionEndDate :
+    activeSidebarTab === 'bet' ? betEndDate :
+    activeSidebarTab === 'commission' ? commissionEndDate :
+    activeSidebarTab === 'rebate' ? rebateEndDate :
+    promotionEndDate;
+
+  const updateStartDateByTab = (nextValue: Date | string) => {
+    const value = String(nextValue);
+    if (activeSidebarTab === 'transaction') {
+      setTransactionStartDate(value);
+      setTransactionQuickRange('');
+    }
+    else if (activeSidebarTab === 'bet') setBetStartDate(value);
+    else if (activeSidebarTab === 'commission') setCommissionStartDate(value);
+    else if (activeSidebarTab === 'rebate') setRebateStartDate(value);
+    else setPromotionStartDate(value);
   };
+
+  const updateEndDateByTab = (nextValue: Date | string) => {
+    const value = String(nextValue);
+    if (activeSidebarTab === 'transaction') {
+      setTransactionEndDate(value);
+      setTransactionQuickRange('');
+    }
+    else if (activeSidebarTab === 'bet') setBetEndDate(value);
+    else if (activeSidebarTab === 'commission') setCommissionEndDate(value);
+    else if (activeSidebarTab === 'rebate') setRebateEndDate(value);
+    else setPromotionEndDate(value);
+  };
+
+  const transactionDateRangeError = useMemo(() => {
+    const parsedStart = parseLocalDateInput(transactionStartDate);
+    const parsedEnd = parseLocalDateInput(transactionEndDate);
+    if (!parsedStart || !parsedEnd) return '';
+    if (parsedStart.getTime() > parsedEnd.getTime()) {
+      return 'Start Date cannot be later than End Date';
+    }
+    return '';
+  }, [transactionStartDate, transactionEndDate]);
+
+  const filteredTransactionData = useMemo(() => {
+    const sourceData = currentData as TransactionRow[];
+    const parsedStart = parseLocalDateInput(transactionStartDate);
+    const parsedEnd = parseLocalDateInput(transactionEndDate);
+
+    if (!parsedStart && !parsedEnd) return sourceData;
+    if (parsedStart && parsedEnd && parsedStart.getTime() > parsedEnd.getTime()) return [];
+
+    const startBoundary = parsedStart ? startOfDay(parsedStart).getTime() : Number.NEGATIVE_INFINITY;
+    const endBoundary = parsedEnd
+      ? (
+        transactionQuickRange === 'thisWeek'
+          ? new Date().getTime()
+          : endOfDay(parsedEnd).getTime()
+      )
+      : Number.POSITIVE_INFINITY;
+
+    return sourceData.filter((row) => {
+      const rowDate = parseTransactionDateTime(row.date);
+      if (!rowDate) return false;
+      const timestamp = rowDate.getTime();
+      return timestamp >= startBoundary && timestamp <= endBoundary;
+    });
+  }, [currentData, transactionEndDate, transactionQuickRange, transactionStartDate]);
 
   const renderStatusBadge = (status: string) => (
     <span className={`px-2.5 py-1 rounded-full text-[11px] font-black uppercase tracking-widest border ${
@@ -182,7 +334,10 @@ export function HistoryRecord() {
               value={currentStartDate}
               onChange={(nextValue) => {
                 const v = String(nextValue);
-                if (activeSidebarTab === 'bet') setBetStartDate(v);
+                if (activeSidebarTab === 'transaction') {
+                  setTransactionStartDate(v);
+                  setTransactionQuickRange('');
+                } else if (activeSidebarTab === 'bet') setBetStartDate(v);
                 else if (activeSidebarTab === 'commission') setCommissionStartDate(v);
                 else if (activeSidebarTab === 'rebate') setRebateStartDate(v);
               }}
@@ -196,7 +351,10 @@ export function HistoryRecord() {
               value={currentEndDate}
               onChange={(nextValue) => {
                 const v = String(nextValue);
-                if (activeSidebarTab === 'bet') setBetEndDate(v);
+                if (activeSidebarTab === 'transaction') {
+                  setTransactionEndDate(v);
+                  setTransactionQuickRange('');
+                } else if (activeSidebarTab === 'bet') setBetEndDate(v);
                 else if (activeSidebarTab === 'commission') setCommissionEndDate(v);
                 else if (activeSidebarTab === 'rebate') setRebateEndDate(v);
               }}
@@ -204,9 +362,12 @@ export function HistoryRecord() {
           </div>
         </div>
       </div>
+      {activeSidebarTab === 'transaction' && transactionDateRangeError ? (
+        <p className="text-xs text-red-400 -mt-4 mb-5">{transactionDateRangeError}</p>
+      ) : null}
     </>
   );
-  
+
   // Get title and icon based on active tab
   const getTitleConfig = () => {
     switch (activeSidebarTab) {
@@ -264,35 +425,82 @@ export function HistoryRecord() {
               <span className={RECORD_PAGE_TITLE_CLASS}>{title}</span>
             </div>
 
-            <MobileFilterBar
-              onOpenFilters={() => setIsFilterSheetOpen(true)}
-              hasActiveFilters={hasActiveFilters}
-              activeFilterCount={activeFilterCount}
-              chips={activeFilterChips}
-              onClearAll={clearAllFilters}
-            />
-            
             {/* Transaction History: Type dropdown – same style as Bet Record Statistics */}
             <div className="hidden md:block">
               {filterInputs}
             </div>
 
-            {/* Quick Filters */}
-            <div className="mb-6">
+            <div className="hidden md:block mb-6">
               <FilterTabs
-                items={QUICK_FILTERS}
-                activeId={activeFilter}
-                onSelect={setActiveFilter}
+                items={activeSidebarTab === 'transaction' ? TRANSACTION_QUICK_FILTERS : QUICK_FILTERS}
+                activeId={activeSidebarTab === 'transaction' ? transactionQuickRange : activeFilter}
+                onSelect={(id) => {
+                  if (activeSidebarTab === 'transaction') {
+                    applyTransactionQuickRange(id);
+                  } else {
+                    setActiveFilter(id);
+                  }
+                }}
                 scrollable
               />
             </div>
+
+            <MobileRecordFilterPanel
+              primaryLabel={
+                activeSidebarTab === 'transaction'
+                  ? 'Record Type'
+                  : activeSidebarTab === 'bet'
+                    ? 'Statistics'
+                    : undefined
+              }
+              primaryControl={
+                activeSidebarTab === 'transaction' ? (
+                  <Select value={activeTypeTab} onValueChange={(v) => setActiveTypeTab(v as 'deposits' | 'withdrawals')}>
+                    <SelectTrigger className="w-full bg-[#0f151f] border-white/10 text-white !h-12 rounded-xl px-4 py-0 data-[size=default]:!h-12 focus:border-[#00bc7d] focus-visible:ring-[#00bc7d]/20">
+                      <SelectValue placeholder="Transaction Record" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-[#1a2230] border-white/10">
+                      <SelectItem value="deposits" className="text-white focus:bg-[#00bc7d]/20">
+                        {t("deposit")}
+                      </SelectItem>
+                      <SelectItem value="withdrawals" className="text-white focus:bg-[#00bc7d]/20">
+                        {t("withdrawals")}
+                      </SelectItem>
+                    </SelectContent>
+                  </Select>
+                ) : activeSidebarTab === 'bet' ? (
+                  <Select value={statistics} onValueChange={setStatistics}>
+                    <SelectTrigger className="w-full bg-[#0f151f] border-white/10 text-white !h-12 rounded-xl px-4 py-0 data-[size=default]:!h-12 focus:border-[#00bc7d] focus-visible:ring-[#00bc7d]/20">
+                      <SelectValue placeholder="Select statistics" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-[#1a2230] border-white/10">
+                      <SelectItem value="all" className="text-white focus:bg-[#00bc7d]/20">All</SelectItem>
+                    </SelectContent>
+                  </Select>
+                ) : undefined
+              }
+              startDate={currentMobileStartDate}
+              endDate={currentMobileEndDate}
+              onStartDateChange={updateStartDateByTab}
+              onEndDateChange={updateEndDateByTab}
+              tabs={activeSidebarTab === 'transaction' ? TRANSACTION_QUICK_FILTERS : QUICK_FILTERS}
+              activeTabId={activeSidebarTab === 'transaction' ? transactionQuickRange : activeFilter}
+              onSelectTab={(id) => {
+                if (activeSidebarTab === 'transaction') {
+                  applyTransactionQuickRange(id);
+                } else {
+                  setActiveFilter(id);
+                }
+              }}
+              errorMessage={activeSidebarTab === 'transaction' ? transactionDateRangeError : undefined}
+            />
 
             {/* Table Container */}
             <div className="flex-1 flex flex-col bg-[#0f151f] rounded-2xl border border-white/5 overflow-hidden shadow-inner">
               <div className="md:hidden p-4">
                 {activeSidebarTab === 'transaction' && (
                   <MobileRecordCardList
-                    data={currentData}
+                    data={filteredTransactionData}
                     rowKey={(row) => row.id}
                     renderHeader={(row) => (
                       <div className="flex items-center justify-between">
@@ -310,6 +518,11 @@ export function HistoryRecord() {
                         valueClassName: `font-bold ${activeTypeTab === 'deposits' ? 'text-emerald-400' : 'text-orange-400'}`,
                       },
                     ]}
+                    emptyState={
+                      <div className="py-8">
+                        <EmptyState message="No Data Found" compact />
+                      </div>
+                    }
                   />
                 )}
 
@@ -405,37 +618,45 @@ export function HistoryRecord() {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-white/5">
-                      {currentData.map((row, index) => (
-                        <tr key={index} className="hover:bg-white/5 transition-all group">
-                          <td className="px-6 py-5">
-                            <div className="flex flex-col gap-1">
-                              <span className="text-sm font-bold text-white group-hover:text-emerald-400 transition-colors">{row.date}</span>
-                              <span className="text-xs font-mono text-gray-500">{row.id}</span>
-                            </div>
-                          </td>
-                          <td className="px-6 py-5">
-                            <span className="text-sm text-gray-300 font-medium">{row.description}</span>
-                          </td>
-                          <td className="px-6 py-5 text-right">
-                            <span className={`text-sm font-black ${
-                              activeTypeTab === 'deposits' ? 'text-emerald-400' : 'text-orange-400'
-                            }`}>
-                              {activeTypeTab === 'deposits' ? '+' : '-'}{row.amount}
-                            </span>
-                          </td>
-                          <td className="px-6 py-5">
-                            <div className="flex justify-center">
-                              <span className={`px-3 py-1 rounded-full text-xs font-black uppercase tracking-widest border ${
-                                row.status === 'Approved' ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-500' :
-                                row.status === 'Pending' ? 'bg-yellow-500/10 border-yellow-500/20 text-yellow-500' :
-                                'bg-red-500/10 border-red-500/20 text-red-500'
-                              }`}>
-                                {row.status}
-                              </span>
-                            </div>
+                      {filteredTransactionData.length === 0 ? (
+                        <tr>
+                          <td colSpan={4} className="px-6 py-12 text-center">
+                            <EmptyState message="No Data Found" compact />
                           </td>
                         </tr>
-                      ))}
+                      ) : (
+                        filteredTransactionData.map((row, index) => (
+                          <tr key={index} className="hover:bg-white/5 transition-all group">
+                            <td className="px-6 py-5">
+                              <div className="flex flex-col gap-1">
+                                <span className="text-sm font-bold text-white group-hover:text-emerald-400 transition-colors">{row.date}</span>
+                                <span className="text-xs font-mono text-gray-500">{row.id}</span>
+                              </div>
+                            </td>
+                            <td className="px-6 py-5">
+                              <span className="text-sm text-gray-300 font-medium">{row.description}</span>
+                            </td>
+                            <td className="px-6 py-5 text-right">
+                              <span className={`text-sm font-black ${
+                                activeTypeTab === 'deposits' ? 'text-emerald-400' : 'text-orange-400'
+                              }`}>
+                                {activeTypeTab === 'deposits' ? '+' : '-'}{row.amount}
+                              </span>
+                            </td>
+                            <td className="px-6 py-5">
+                              <div className="flex justify-center">
+                                <span className={`px-3 py-1 rounded-full text-xs font-black uppercase tracking-widest border ${
+                                  row.status === 'Approved' ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-500' :
+                                  row.status === 'Pending' ? 'bg-yellow-500/10 border-yellow-500/20 text-yellow-500' :
+                                  'bg-red-500/10 border-red-500/20 text-red-500'
+                                }`}>
+                                  {row.status}
+                                </span>
+                              </div>
+                            </td>
+                          </tr>
+                        ))
+                      )}
                     </tbody>
                   </table>
                 )}
@@ -604,7 +825,7 @@ export function HistoryRecord() {
                 <div className="hidden md:flex p-4 mt-auto border-t border-white/5 items-center justify-between">
                   <span className="text-xs text-gray-500">
                     {activeSidebarTab === 'transaction' 
-                      ? 'Showing 1-2 of 2 records'
+                      ? `Showing ${filteredTransactionData.length === 0 ? 0 : 1}-${filteredTransactionData.length} of ${filteredTransactionData.length} records`
                       : `Showing 1-${betHistoryData.length} of ${betHistoryData.length} records`
                     }
                   </span>
@@ -621,27 +842,7 @@ export function HistoryRecord() {
         </div>
 
       </div>
-
-      <Sheet open={isFilterSheetOpen} onOpenChange={setIsFilterSheetOpen}>
-        <SheetContent
-          side="bottom"
-          className="bg-[#1a2230] border-white/10 rounded-t-2xl p-0 h-auto max-h-[85vh]"
-        >
-          <div className="p-4 overflow-y-auto custom-scrollbar">
-            <div className="pb-3">
-              <span className="text-white font-bold text-base">Filter</span>
-            </div>
-            {filterInputs}
-            <button
-              type="button"
-              onClick={() => setIsFilterSheetOpen(false)}
-              className="w-full h-11 rounded-xl bg-[#00bc7d] hover:bg-[#00a870] text-black font-bold"
-            >
-              Apply
-            </button>
-          </div>
-        </SheetContent>
-      </Sheet>
     </InnerPageLayout>
   );
 }
+
