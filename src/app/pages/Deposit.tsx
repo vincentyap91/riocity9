@@ -192,6 +192,7 @@ export function Deposit() {
   const isDepositLocked = approvalSecondsLeft !== null && approvalSecondsLeft > 0;
   const normalizedAmount = Number(amount);
   const isValidAmount = Number.isFinite(normalizedAmount) && normalizedAmount > 0;
+  const hasValidBonusSelection = !wantsBonus || selectedBonus !== 'none';
 
   const handleTabChange = (tab: 'deposit' | 'withdrawal') => {
     setActiveTab(tab);
@@ -217,7 +218,7 @@ export function Deposit() {
     if (isDepositLocked) {
       return;
     }
-    if (selectedMethodId) {
+    if (selectedMethodId && hasValidBonusSelection) {
       setStep(2);
     }
   };
@@ -542,7 +543,7 @@ export function Deposit() {
 
                     <Button 
                         onClick={handleContinue}
-                        disabled={!selectedMethodId}
+                        disabled={!selectedMethodId || !hasValidBonusSelection}
                         className={`w-full h-12 rounded-xl text-base disabled:opacity-50 disabled:cursor-not-allowed ${PRIMARY_CTA_CLASS}`}
                     >
                         {t("continueToDeposit")} 
