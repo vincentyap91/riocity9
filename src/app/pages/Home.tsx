@@ -42,21 +42,21 @@ import imgDarts from "@/assets/9188c97e03575d5bbdace5f4c4a1435d7d7c559a.png";
 
 // Data placeholders
 const liveCasinoGames = [
-  { id: 1, title: "Super Speed Baccarat", provider: "Evolution Asia", image: imgSuperSpeed, tag: "Live" },
-  { id: 2, title: "Dragon Tiger", provider: "Winfinity", image: imgDragonTiger },
-  { id: 3, title: "BlackJack Atrium C", provider: "CreedRoomz", image: imgBlackjack, tag: "Private" },
-  { id: 4, title: "Shangrila Baccarat 6", provider: "Winfinity", image: imgBaccarat },
-  { id: 5, title: "Roulette", provider: "Evolution", image: imgRoulette, tag: "Hot" },
+  { id: 1, title: "Super Speed Baccarat", provider: "Evolution Asia", image: imgSuperSpeed, tag: "Live", link: "/live-casino/super-speed-baccarat" },
+  { id: 2, title: "Dragon Tiger", provider: "Winfinity", image: imgDragonTiger, link: "/live-casino/dragon-tiger" },
+  { id: 3, title: "BlackJack Atrium C", provider: "CreedRoomz", image: imgBlackjack, tag: "Private", link: "/live-casino/blackjack-atrium-c" },
+  { id: 4, title: "Shangrila Baccarat 6", provider: "Winfinity", image: imgBaccarat, link: "/live-casino/shangrila-baccarat-6" },
+  { id: 5, title: "Roulette", provider: "Evolution", image: imgRoulette, tag: "Hot", link: "/live-casino/roulette" },
 ];
 
 const sportsEvents = [
-  { id: 1, title: "Steeplechase", provider: "Virtual Sports", image: imgSteeplechase, tag: "Live" },
-  { id: 2, title: "Penalty Shootout", provider: "Instant Games", image: imgPenalty, tag: "Hot" },
-  { id: 3, title: "Greyhound Racing", provider: "Virtual Sports", image: imgGreyhound },
-  { id: 4, title: "Force 1 Racing", provider: "Virtual Sports", image: imgForce1, tag: "New" },
-  { id: 5, title: "Horse Racing", provider: "Virtual Sports", image: imgHorseRacing },
-  { id: 6, title: "Fantastic League", provider: "Virtual Soccer", image: imgFantasticLeague, tag: "Popular" },
-  { id: 7, title: "Darts", provider: "Instant Games", image: imgDarts },
+  { id: 1, title: "Steeplechase", provider: "Virtual Sports", image: imgSteeplechase, tag: "Live", link: "/sports/steeplechase" },
+  { id: 2, title: "Penalty Shootout", provider: "Instant Games", image: imgPenalty, tag: "Hot", link: "/sports/penalty-shootout" },
+  { id: 3, title: "Greyhound Racing", provider: "Virtual Sports", image: imgGreyhound, link: "/sports/greyhound-racing" },
+  { id: 4, title: "Force 1 Racing", provider: "Virtual Sports", image: imgForce1, tag: "New", link: "/sports/force-1-racing" },
+  { id: 5, title: "Horse Racing", provider: "Virtual Sports", image: imgHorseRacing, link: "/sports/horse-racing" },
+  { id: 6, title: "Fantastic League", provider: "Virtual Soccer", image: imgFantasticLeague, tag: "Popular", link: "/sports/fantastic-league" },
+  { id: 7, title: "Darts", provider: "Instant Games", image: imgDarts, link: "/sports/darts" },
 ];
 
 const slotGames = [

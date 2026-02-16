@@ -24,7 +24,7 @@ export function AdventuresOfCaramelo() {
               <BreadcrumbSeparator />
               <BreadcrumbItem>
                 <BreadcrumbLink asChild>
-                  <Link to="/slots">NAGA Game Slots</Link>
+                  <Link to="/providers/naga-game-slots">NAGA Game Slots</Link>
                 </BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator />

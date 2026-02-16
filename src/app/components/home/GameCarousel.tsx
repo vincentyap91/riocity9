@@ -17,6 +17,7 @@ interface GameItem {
   provider: string;
   image: string;
   tag?: string;
+  link?: string;
 }
 
 interface GameCarouselProps {
@@ -116,7 +117,10 @@ export function GameCarousel({ title, icon, items, className, slidesToShow = 4, 
         <Slider ref={sliderRef} {...settings}>
           {items.map((item) => (
             <div key={item.id} className="px-2 pb-4">
-              <div className="group relative flex flex-col gap-3 cursor-pointer">
+              <div
+                className={`group relative flex flex-col gap-3 ${item.link ? 'cursor-pointer' : ''}`}
+                onClick={() => item.link && navigate(item.link)}
+              >
                 {/* Image Container */}
                 <div className={`relative ${aspectRatio} overflow-hidden rounded-xl border border-white/5 bg-[#0f1923] transition-all duration-300 hover:border-[#39ff88]/30`}>
                   <img

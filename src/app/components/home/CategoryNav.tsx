@@ -80,7 +80,7 @@ export function CategoryNav() {
                                             (cat.id === 'promotions' || cat.id === 'app') ? 'hidden 2xl:flex' : ''
                                         } ${
                                             isActive 
-                                            ? 'bg-white/10 text-white border border-white/10 shadow-[0_0_15px_-3px_rgba(255,255,255,0.1)]' 
+                                            ? 'bg-white/10 text-emerald-400 border border-white/10 shadow-[0_0_15px_-3px_rgba(255,255,255,0.1)]' 
                                             : 'text-white hover:text-white hover:bg-white/5 border border-transparent'
                                         }`}
                                     >
@@ -111,7 +111,7 @@ export function CategoryNav() {
                                 (cat.id === 'promotions' || cat.id === 'app') ? 'hidden 2xl:flex' : ''
                             } ${
                                 isActive 
-                                ? 'bg-white/10 text-white border border-white/10 shadow-[0_0_15px_-3px_rgba(255,255,255,0.1)]' 
+                                ? 'bg-white/10 text-emerald-400 border border-white/10 shadow-[0_0_15px_-3px_rgba(255,255,255,0.1)]' 
                                 : 'text-white hover:text-white hover:bg-white/5 border border-transparent'
                             }`}
                         >

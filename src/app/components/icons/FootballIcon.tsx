@@ -6,5 +6,20 @@ type FootballIconProps = {
 };
 
 export function FootballIcon({ className = '' }: FootballIconProps) {
-  return <img src={footballIcon} alt="Football" className={className} />;
+  return (
+    <span
+      aria-hidden="true"
+      className={`inline-block shrink-0 bg-current ${className}`}
+      style={{
+        WebkitMaskImage: `url(${footballIcon})`,
+        maskImage: `url(${footballIcon})`,
+        WebkitMaskRepeat: 'no-repeat',
+        maskRepeat: 'no-repeat',
+        WebkitMaskPosition: 'center',
+        maskPosition: 'center',
+        WebkitMaskSize: 'contain',
+        maskSize: 'contain',
+      }}
+    />
+  );
 }

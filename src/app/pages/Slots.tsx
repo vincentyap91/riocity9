@@ -14,7 +14,7 @@ import { SlotsGameHoverOverlay } from '../components/shared/SlotsGameHoverOverla
 // --- Assets ---
 import imgImagePromo from "@/assets/dba5dfffa741345e0ad70e36cafba5ab8b533760.png";
 import imgNaga from "@/assets/6b1dbe5f8682d87860590e12ac192c13ee0316b6.png";
-import imgPgsoft from "@/assets/c4ed9e638af884183ad6172c08a9077e70aee17e.png";
+import imgPlayTechSlots from "@/assets/playtech-20240604.png";
 import img918Kaya from "@/assets/e8e00410b6f7e4aa1e71ae21ba2aacd7bd1996ab.png";
 import img918Kiss from "@/assets/4526e6a0725d5d1c294963aae88c5b9ef75c43a8.png";
 import imgPussy888 from "@/assets/0d7ab7156e0f52e104b06b57351033f6537c5b3d.png";
@@ -48,7 +48,7 @@ import imgImageGates1000 from "@/assets/e7fb1cf0de54bfef4c5b040e789790c437112a46
 const providers = [
     { id: 1, name: "NAGA", image: imgNaga },
     { id: 9, name: "Royal Slot Gaming", image: imgRoyalSlot },
-    { id: 2, name: "PG Soft", image: imgPgsoft },
+    { id: 2, name: "PlayTech Slots", image: imgPlayTechSlots },
     { id: 3, name: "918Kaya", image: img918Kaya },
     { id: 4, name: "918Kiss", image: img918Kiss, maintenance: true },
     { id: 5, name: "Pussy888", image: imgPussy888 },
@@ -90,8 +90,16 @@ const games = [
     { id: 30, provider: "Royal Slot Game", title: "Rich Mahjong", rtp: "92.19%", image: "https://pksoftcdn.azureedge.net/games/RSG/RichMahjong.png", trend: 'down' },
     { id: 31, provider: "Royal Slot Game", title: "RichMahjong2", rtp: "93.74%", image: "https://pksoftcdn.azureedge.net/games/RSG/RichMahjong2.png", trend: 'up' },
     { id: 32, provider: "Royal Slot Game", title: "Dragon Legend", rtp: "90.58%", image: "https://pksoftcdn.azureedge.net/games/RSG/DragonLegend.png", trend: 'up' },
-    { id: 33, provider: "PlayTech Slots", title: "Lockdown Loot TM", rtp: "90.40%", image: "https://pksoftcdn.azureedge.net/media/placeholder_riocity-202408050928489215.jpg", trend: 'down' },
-    { id: 34, provider: "PlayTech Slots", title: "3 Card Brag", rtp: "79.93%", image: "https://riocity-cdn.azureedge.net/riocity/playtech/3cb.jpg", trend: 'down' },
+    { id: 33, provider: "PlayTech Slots", title: "1000 Diamond Bet Roulette", rtp: "92.94%", image: "https://riocity-cdn.azureedge.net/riocity/playtech/db1000ro.jpg", trend: 'down' },
+    { id: 34, provider: "PlayTech Slots", title: "101 Roulette", rtp: "93.49%", image: "https://riocity-cdn.azureedge.net/riocity/playtech/ro101.jpg", trend: 'down' },
+    { id: 35, provider: "PlayTech Slots", title: "28 Mansions", rtp: "93.49%", image: "https://riocity-cdn.azureedge.net/riocity/playtech/gpas_28dman_pop.jpg", trend: 'down' },
+    { id: 36, provider: "PlayTech Slots", title: "3 Card Brag", rtp: "91.73%", image: "https://riocity-cdn.azureedge.net/riocity/playtech/3cb.jpg", trend: 'up' },
+    { id: 37, provider: "PlayTech Slots", title: "7 e mezzo", rtp: "78.50%", image: "https://riocity-cdn.azureedge.net/riocity/playtech/sem.jpg", trend: 'down' },
+    { id: 38, provider: "PlayTech Slots", title: "A Night Out", rtp: "89.14%", image: "https://riocity-cdn.azureedge.net/riocity/playtech/hb.jpg", trend: 'down' },
+    { id: 39, provider: "PlayTech Slots", title: "Absolutely Mammoth!™", rtp: "91.37%", image: "https://riocity-cdn.azureedge.net/riocity/playtech/gpas_amammoth_pop.jpg", trend: 'up' },
+    { id: 40, provider: "PlayTech Slots", title: "Aces and Faces™ Multi-Hand", rtp: "93.35%", image: "https://riocity-cdn.azureedge.net/riocity/playtech/af_mh.jpg", trend: 'up' },
+    { id: 41, provider: "PlayTech Slots", title: "Age of Egypt", rtp: "78.76%", image: "https://riocity-cdn.azureedge.net/riocity/playtech/agoeg.jpg", trend: 'down' },
+    { id: 42, provider: "PlayTech Slots", title: "Alohawaii: Cash Collect™", rtp: "91.63%", image: "https://riocity-cdn.azureedge.net/riocity/playtech/gpas_alohacc_pop.jpg", trend: 'down' },
 ];
 
 type SlotsProps = {

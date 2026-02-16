@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Copy, ChevronRight, Info, Users, Gift, HandCoins, Wallet } from 'lucide-react';
+import { Copy, Check, ChevronRight, Info, Users, Gift, HandCoins, Wallet } from 'lucide-react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../components/ui/accordion';
 import { useAuth } from '../contexts/AuthContext';
 import { useNavigate, useSearchParams } from 'react-router-dom';
@@ -78,6 +78,43 @@ export function Referral() {
   const [activeTab, setActiveTab] = useState<'referral' | 'myRewards'>(() => normalizeReferralTab(searchParams.get('tab')));
   const [faqTab, setFaqTab] = useState<'faq' | 'terms'>(() => normalizeFaqTab(searchParams.get('faqTab')));
   const [activeHistoryTab, setActiveHistoryTab] = useState<'commission' | 'deposit'>(() => normalizeHistoryTab(searchParams.get('historyTab')));
+  const [copiedLink, setCopiedLink] = useState(false);
+  const referralLink = 'https://staging.riocity9.com/en/register?code=589092';
+
+  const copyTextWithFallback = async (text: string) => {
+    if (navigator.clipboard && window.isSecureContext) {
+      try {
+        await navigator.clipboard.writeText(text);
+        return;
+      } catch {
+        // Fallback below for blocked clipboard permissions.
+      }
+    }
+
+    const textArea = document.createElement('textarea');
+    textArea.value = text;
+    textArea.setAttribute('readonly', '');
+    textArea.style.position = 'fixed';
+    textArea.style.left = '-9999px';
+    document.body.appendChild(textArea);
+    textArea.select();
+    const copied = document.execCommand('copy');
+    document.body.removeChild(textArea);
+
+    if (!copied) {
+      throw new Error('Fallback copy failed');
+    }
+  };
+
+  const handleCopyReferralLink = async () => {
+    try {
+      await copyTextWithFallback(referralLink);
+      setCopiedLink(true);
+      setTimeout(() => setCopiedLink(false), 2000);
+    } catch (error) {
+      console.error('Failed to copy referral link:', error);
+    }
+  };
 
   React.useEffect(() => {
     const tab = searchParams.get('tab');
@@ -92,11 +129,21 @@ export function Referral() {
     setFaqTab(normalizedFaq);
     setActiveHistoryTab(normalizedHistory);
 
-    if (tab !== normalizedTab || faq !== normalizedFaq || history !== normalizedHistory) {
+    const shouldStripNestedParams = normalizedTab === 'referral';
+    const hasUnexpectedReferralParams = shouldStripNestedParams && (faq !== null || history !== null);
+    const hasMismatchedRewardsParams =
+      !shouldStripNestedParams && (faq !== normalizedFaq || history !== normalizedHistory);
+
+    if (tab !== normalizedTab || hasUnexpectedReferralParams || hasMismatchedRewardsParams) {
       const next = new URLSearchParams(searchParams);
       next.set('tab', normalizedTab);
-      next.set('faqTab', normalizedFaq);
-      next.set('historyTab', normalizedHistory);
+      if (shouldStripNestedParams) {
+        next.delete('faqTab');
+        next.delete('historyTab');
+      } else {
+        next.set('faqTab', normalizedFaq);
+        next.set('historyTab', normalizedHistory);
+      }
       setSearchParams(next, { replace: true });
     }
   }, [searchParams, setSearchParams]);
@@ -106,6 +153,10 @@ export function Referral() {
     setActiveTab(normalizedTab);
     const next = new URLSearchParams(searchParams);
     next.set('tab', normalizedTab);
+    if (normalizedTab === 'referral') {
+      next.delete('faqTab');
+      next.delete('historyTab');
+    }
     setSearchParams(next);
   };
 
@@ -199,12 +250,14 @@ export function Referral() {
                       <div className="space-y-2">
                         <label className="block text-sm font-bold text-[#FFD700] uppercase tracking-wider">My Referral Link</label>
                         <div className="bg-[#0f151f] border border-white/10 rounded-xl p-4 flex items-center gap-3 group hover:border-emerald-500/50 transition-colors">
-                          <span className="flex-1 text-white text-sm md:text-base font-mono truncate pr-2">https://staging.riocity9.com/en/register?code=589092</span>
+                          <span className="flex-1 text-white text-sm md:text-base font-mono truncate pr-2">{referralLink}</span>
                           <button
+                            type="button"
+                            onClick={handleCopyReferralLink}
                             className="w-8 h-8 rounded-lg bg-white/5 text-white/70 flex items-center justify-center hover:bg-[#00bc7d]/20 hover:text-[#00bc7d] transition-all active:scale-95 shrink-0"
                             title="Copy referral link"
                           >
-                            <Copy className="w-4 h-4" />
+                            {copiedLink ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
                           </button>
                         </div>
                       </div>

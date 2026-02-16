@@ -17,7 +17,6 @@ import imgLive from "@/assets/f470efce5aa86066c1a4369e61fdae1d4ff30b86.png"; // 
 export function HeroSection() {
   const { t } = useLanguage();
   const navigate = useNavigate();
-  const goToPromotion = (id: string) => navigate(`/promotions/${id}`);
   const settings = {
     dots: true,
     infinite: true,
@@ -47,7 +46,7 @@ export function HeroSection() {
         alt: "RioCity9 Is Now Live",
         action: t("playNow"),
         showButton: false, // The image has "RioCity9" text, button might obscure it.
-        promotionId: "weekly-fix"
+        link: "/promotions/weekly-fix"
     },
     { 
         id: 2, 
@@ -55,7 +54,7 @@ export function HeroSection() {
         alt: "50% Welcome Bonus",
         action: t("claim50Bonus"),
         showButton: true,
-        promotionId: "deposit-bonus"
+        link: "/promotions/deposit-bonus"
     },
     { 
         id: 3, 
@@ -63,8 +62,12 @@ export function HeroSection() {
         alt: "30% Welcome Bonus",
         action: t("claim30Bonus"),
         showButton: true,
-        promotionId: "welcome-bonus"
+        link: "/promotions/welcome-bonus"
     }
+  ];
+  const sideBanners = [
+    { id: 'deposit', image: imgDeposit, alt: 'Deposit BRL8 Get BRL1', link: '/promotions/deposit-bonus' },
+    { id: 'bonus', image: imgUnlimitedBonus, alt: '5% Unlimited Bonus', link: '/promotions/welcome-bonus' },
   ];
 
   return (
@@ -78,8 +81,8 @@ export function HeroSection() {
                 {slides.map((slide) => (
                     <div
                         key={slide.id}
-                        className="relative w-full h-[200px] md:h-[380px] lg:h-full outline-none cursor-pointer"
-                        onClick={() => goToPromotion(slide.promotionId)}
+                        className={`relative w-full h-[200px] md:h-[380px] lg:h-full outline-none ${slide.link ? 'cursor-pointer' : ''}`}
+                        onClick={() => slide.link && navigate(slide.link)}
                     >
                         <img 
                             src={slide.image} 
@@ -105,50 +108,39 @@ export function HeroSection() {
         <div className="lg:col-span-4 h-full">
             {/* Desktop: Stacked Layout */}
             <div className="hidden lg:flex flex-col gap-4 h-full">
-                {/* Top Side Banner: Deposit Now */}
-                <div className="relative flex-1 rounded-3xl overflow-hidden group cursor-pointer border border-white/10 shadow-xl bg-[#02040a]" onClick={() => goToPromotion('deposit-bonus')}>
-                    <img 
-                        src={imgDeposit} 
-                        alt="Deposit BRL8 Get BRL1" 
-                        className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                {sideBanners.map((banner) => (
+                  <div
+                    key={banner.id}
+                    className={`relative flex-1 rounded-3xl overflow-hidden group border border-white/10 shadow-xl bg-[#02040a] ${banner.link ? 'cursor-pointer' : ''}`}
+                    onClick={() => banner.link && navigate(banner.link)}
+                  >
+                    <img
+                      src={banner.image}
+                      alt={banner.alt}
+                      className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                     />
                     <div className="absolute inset-0 bg-white/0 group-hover:bg-white/5 transition-colors duration-300"></div>
-                </div>
-
-                {/* Bottom Side Banner: 5% Unlimited Bonus */}
-                <div className="relative flex-1 rounded-3xl overflow-hidden group cursor-pointer border border-white/10 shadow-xl bg-[#02040a]" onClick={() => goToPromotion('welcome-bonus')}>
-                     <img 
-                        src={imgUnlimitedBonus} 
-                        alt="5% Unlimited Bonus" 
-                        className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                    />
-                    <div className="absolute inset-0 bg-white/0 group-hover:bg-white/5 transition-colors duration-300"></div>
-                </div>
+                  </div>
+                ))}
             </div>
 
             {/* Mobile/Tablet: Slider Layout */}
             <div className="block hidden h-[220px]">
                 <Slider {...settings} slidesToShow={1} slidesToScroll={1} arrows={false} autoplay={true} autoplaySpeed={3000} dots={true} className="h-full w-full side-banner-slider">
-                    {/* Slide 1: Deposit */}
-                    <div className="h-[220px] px-1">
-                        <div className="relative w-full h-full rounded-3xl overflow-hidden group cursor-pointer border border-white/10 shadow-xl bg-[#02040a]" onClick={() => goToPromotion('deposit-bonus')}>
-                            <img 
-                                src={imgDeposit} 
-                                alt="Deposit" 
-                                className="absolute inset-0 w-full h-full object-cover"
-                            />
+                    {sideBanners.map((banner) => (
+                      <div key={banner.id} className="h-[220px] px-1">
+                        <div
+                          className={`relative w-full h-full rounded-3xl overflow-hidden group border border-white/10 shadow-xl bg-[#02040a] ${banner.link ? 'cursor-pointer' : ''}`}
+                          onClick={() => banner.link && navigate(banner.link)}
+                        >
+                          <img
+                            src={banner.image}
+                            alt={banner.alt}
+                            className="absolute inset-0 w-full h-full object-cover"
+                          />
                         </div>
-                    </div>
-                    {/* Slide 2: Bonus */}
-                    <div className="h-[220px] px-1">
-                        <div className="relative w-full h-full rounded-3xl overflow-hidden group cursor-pointer border border-white/10 shadow-xl bg-[#02040a]" onClick={() => goToPromotion('welcome-bonus')}>
-                            <img 
-                                src={imgUnlimitedBonus} 
-                                alt="Bonus" 
-                                className="absolute inset-0 w-full h-full object-cover"
-                            />
-                        </div>
-                    </div>
+                      </div>
+                    ))}
                 </Slider>
             </div>
         </div>

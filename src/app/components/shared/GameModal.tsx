@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { X, RefreshCcw, Lock } from 'lucide-react';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -14,11 +14,19 @@ interface GameModalProps {
     startGamePath?: string;
 }
 
+const PLACEHOLDER_BANNER_URL = 'https://pksoftcdn.azureedge.net/media/placeholder_riocity_banner-202408051021306684.jpg';
+
 export function GameModal({ isOpen, onClose, title, bannerImage, startGamePath }: GameModalProps) {
     const navigate = useNavigate();
     const location = useLocation();
     const { isAuthenticated } = useAuth();
     const [showLoginModal, setShowLoginModal] = useState(false);
+    const [currentBannerImage, setCurrentBannerImage] = useState(bannerImage || PLACEHOLDER_BANNER_URL);
+
+    useEffect(() => {
+        setCurrentBannerImage(bannerImage || PLACEHOLDER_BANNER_URL);
+    }, [bannerImage, isOpen]);
+
     if (!isOpen) return null;
 
     if (typeof document === 'undefined') return null;
@@ -54,9 +62,14 @@ export function GameModal({ isOpen, onClose, title, bannerImage, startGamePath }
                     <div className="relative w-full aspect-[2.4/1] rounded-2xl overflow-hidden border border-white/10 group shadow-lg">
                         <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent z-10" />
                         <img
-                            src={bannerImage}
+                            src={currentBannerImage}
                             alt={title}
                             className="w-full h-full object-cover"
+                            onError={() => {
+                                if (currentBannerImage !== PLACEHOLDER_BANNER_URL) {
+                                    setCurrentBannerImage(PLACEHOLDER_BANNER_URL);
+                                }
+                            }}
                         />
                     </div>
 

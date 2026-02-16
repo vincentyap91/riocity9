@@ -3,136 +3,12 @@ import { useNavigate } from "react-router-dom";
 import { ThumbsUp, DollarSign, Fish, Dices, Gift, Spade, Gamepad2, Trophy } from "lucide-react";
 import { MOBILE } from "../config/themeTokens";
 import { FilterTabs } from "../components/shared/FilterTabs";
+import { PROMOTIONS } from "../config/promotionsData";
 
 // import girl1 from "@/assets/girl-1.png";
 // import girl2 from "@/assets/girl-2.png";
 // import girl3 from "@/assets/girl-3.png";
 // import girl4 from "@/assets/girl-4.png";
-
-// Placeholder banner image - using first promotion image as banner
-// const bannerImage = girl1;
-
-interface Promotion {
-  id: string;
-  title: string;
-  description: string;
-  category: string;
-  badge: string;
-  image: string;
-  imageAlt: string;
-}
-
-const promotions: Promotion[] = [
-  {
-    id: "weekly-fix",
-    title: "Free RM200 EVERYDAY",
-    description: "Claim your daily bonus and boost your gaming experience",
-    category: "All",
-    badge: "DAILY",
-    image: "https://pksoftcdn.azureedge.net/media/580x320_riocityisnowlive-202311171111434006-202311301531190440-202312141426186709-202512181502055463.png",
-    imageAlt: "Weekly Fix promotion",
-  },
-  {
-    id: "welcome-bonus",
-    title: "We1Win - Unlimited Referral Bonus",
-    description: "Invite friends and earn unlimited rewards from their activity",
-    category: "All",
-    badge: "DAILY",
-    image: "https://pksoftcdn.azureedge.net/media/580x320_riocityisnowlive-202311171111434006-202311301531190440-202312141426186709-202512181502055463.png",
-    imageAlt: "Welcome Bonus promotion",
-  },
-  {
-    id: "birthday-bonus",
-    title: "Get up to PKR 7.5K Every Birthday",
-    description: "Celebrate your special day with exclusive birthday rewards",
-    category: "All",
-    badge: "DAILY",
-    image: "https://pksoftcdn.azureedge.net/media/580x320_riocityisnowlive-202311171111434006-202311301531190440-202312141426186709-202512181502055463.png",
-    imageAlt: "Birthday promotion",
-  },
-  {
-    id: "annual-bonus",
-    title: "Get up to PKR 5k Every Single Year",
-    description: "Loyalty rewards for our dedicated members annually",
-    category: "All",
-    badge: "DAILY",
-    image: "https://pksoftcdn.azureedge.net/media/580x320_riocityisnowlive-202311171111434006-202311301531190440-202312141426186709-202512181502055463.png",
-    imageAlt: "Annual promotion",
-  },
-  {
-    id: "deposit-bonus",
-    title: "250% Welcome Deposit Bonus",
-    description: "New member exclusive",
-    category: "Deposit",
-    badge: "HOT",
-    image: "https://pksoftcdn.azureedge.net/media/580x320_riocityisnowlive-202311171111434006-202311301531190440-202312141426186709-202512181502055463.png",
-    imageAlt: "Deposit bonus promotion",
-  },
-  {
-    id: "fishing-bonus",
-    title: "Fishing Game Mega Bonus",
-    description: "Up to PKR 10,000",
-    category: "Fishing",
-    badge: "NEW",
-    image: "https://pksoftcdn.azureedge.net/media/580x320_riocityisnowlive-202311171111434006-202311301531190440-202312141426186709-202512181502055463.png",
-    imageAlt: "Fishing bonus promotion",
-  },
-  {
-    id: "live-casino-bonus",
-    title: "Live Casino Weekly Reload",
-    description: "Get 50% bonus every week",
-    category: "Live Casino",
-    badge: "WEEKLY",
-    image: "https://pksoftcdn.azureedge.net/media/580x320_riocityisnowlive-202311171111434006-202311301531190440-202312141426186709-202512181502055463.png",
-    imageAlt: "Live casino bonus promotion",
-  },
-  {
-    id: "slots-bonus",
-    title: "Slots Free Spins Package",
-    description: "100 free spins daily",
-    category: "Slots",
-    badge: "DAILY",
-    image: "https://pksoftcdn.azureedge.net/media/580x320_riocityisnowlive-202311171111434006-202311301531190440-202312141426186709-202512181502055463.png",
-    imageAlt: "Slots bonus promotion",
-  },
-  {
-    id: "poker-bonus",
-    title: "Poker Tournament Bonus",
-    description: "Join and win big prizes",
-    category: "Poker",
-    badge: "TOURNAMENT",
-    image: "https://pksoftcdn.azureedge.net/media/580x320_riocityisnowlive-202311171111434006-202311301531190440-202312141426186709-202512181502055463.png",
-    imageAlt: "Poker bonus promotion",
-  },
-  {
-    id: "sports-bonus",
-    title: "Sports Betting Cashback",
-    description: "10% cashback on losses",
-    category: "Sports",
-    badge: "CASHBACK",
-    image: "https://pksoftcdn.azureedge.net/media/580x320_riocityisnowlive-202311171111434006-202311301531190440-202312141426186709-202512181502055463.png",
-    imageAlt: "Sports bonus promotion",
-  },
-  {
-    id: "newbie-bonus",
-    title: "New Player Special Package",
-    description: "Exclusive for new members",
-    category: "Newbie",
-    badge: "EXCLUSIVE",
-    image: "https://pksoftcdn.azureedge.net/media/580x320_riocityisnowlive-202311171111434006-202311301531190440-202312141426186709-202512181502055463.png",
-    imageAlt: "Newbie bonus promotion",
-  },
-  {
-    id: "vip-bonus",
-    title: "VIP Member Exclusive Rewards",
-    description: "Premium benefits for VIP",
-    category: "Other",
-    badge: "VIP",
-    image: "https://pksoftcdn.azureedge.net/media/580x320_riocityisnowlive-202311171111434006-202311301531190440-202312141426186709-202512181502055463.png",
-    imageAlt: "VIP bonus promotion",
-  },
-];
-
 const categories = [
   { id: "all", label: "All", icon: null },
   { id: "deposit", label: "Deposit", icon: DollarSign },
@@ -205,8 +81,8 @@ export function Promotions() {
   };
 
   const filteredPromotions = activeCategory === "all"
-    ? promotions
-    : promotions.filter(p => p.category.toLowerCase() === activeCategory);
+    ? PROMOTIONS
+    : PROMOTIONS.filter(p => p.category.toLowerCase() === activeCategory);
 
   const displayedPromotions = filteredPromotions.slice(0, itemsToShow);
   const hasMoreItems = filteredPromotions.length > itemsToShow;

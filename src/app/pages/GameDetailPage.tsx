@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { InsidePageHero } from '../components/shared/InsidePageHero';
 import { Trophy } from 'lucide-react';
 import { GameCarousel } from '../components/home/GameCarousel';
@@ -11,12 +11,24 @@ import imgImagePromo from "@/assets/dba5dfffa741345e0ad70e36cafba5ab8b533760.png
 import imgImageEzugiCasino from "@/assets/ezugi_live casino-202601301129516752.png";
 import imgImageGameplayCasino from "@/assets/1b526547f23589a0effd96c6158392e2d6fb3935.png";
 import imgImageAdventuresOfCaramelo from "@/assets/Adventures-Of-Caramelo.jpg";
+import imgSuperSpeed from "@/assets/2947d765690866fed806f4ef749e66c8f9d99118.png";
+import imgDragonTiger from "@/assets/a96a529a33b6ec94623485790da7169f56c3044d.png";
+import imgBlackjack from "@/assets/1bceafa1502f0c6f06db1585621af18d071c3b23.png";
+import imgBaccarat from "@/assets/731c6f7d6f3611c15e0b8149d28318531aa77714.png";
 import imgImageGatesOfOlympus from "@/assets/8fb99beace6c78475545798f7458eacaad6bea25.png";
 import imgImageFortuneOx from "@/assets/8e1075cfac0bd1d05382c5095edcd2f1a5bd507a.png";
 import imgImageMoneyBooster from "@/assets/ce19eb21819d0b440f45198fa31d716e1e6360c4.png";
 import imgImageLeBandit from "@/assets/4edf617eacdcd51770b6d345d3b9d62c067fb39e.png";
 import imgImageSweetBonanza from "@/assets/b6552c9dab008f009bad47f48fa007ccef169c4a.png";
 import imgImageGates1000 from "@/assets/e7fb1cf0de54bfef4c5b040e789790c437112a46.png";
+import imgRoulette from "@/assets/a377db17ea4b9e413c7fb6188421f55d33805d63.png";
+import imgSteeplechase from "@/assets/3b695b068a5947c9b9e9e464172e6875dc7c75b4.png";
+import imgPenalty from "@/assets/c96fbcac154c4fae4616df00e996cfac084bab4f.png";
+import imgGreyhound from "@/assets/19ff699655c54c49d3898d7c6a00300378108dd0.png";
+import imgForce1 from "@/assets/3f96597a5ba9cc630f68d2a30fd05e607197447c.png";
+import imgHorseRacing from "@/assets/97f18b2da3f6144002fc0ab1bbccd80d7e30817f.png";
+import imgFantasticLeague from "@/assets/08df4e8b4526646e986f9e4d2bac3c7252c04c81.png";
+import imgDarts from "@/assets/9188c97e03575d5bbdace5f4c4a1435d7d7c559a.png";
 import { PAGE_ACCENT } from '../config/themeTokens';
 import { FilterTabs } from '../components/shared/FilterTabs';
 import { EmptyState } from '../components/shared/EmptyState';
@@ -112,13 +124,173 @@ const gameDetailConfig = [
     providerPath: '/sports',
     status: 'unavailable',
   },
+  {
+    slug: 'super-speed-baccarat',
+    title: 'Super Speed Baccarat',
+    provider: 'Evolution Asia',
+    rtp: '95.00%',
+    image: imgSuperSpeed,
+    iframeSrc: '',
+    description: 'Super Speed Baccarat is currently unavailable.',
+    categoryLabel: 'Live Casino',
+    categoryPath: '/live-casino',
+    providerPath: '/live-casino',
+    status: 'unavailable',
+  },
+  {
+    slug: 'dragon-tiger',
+    title: 'Dragon Tiger',
+    provider: 'Winfinity',
+    rtp: '95.00%',
+    image: imgDragonTiger,
+    iframeSrc: '',
+    description: 'Dragon Tiger is currently unavailable.',
+    categoryLabel: 'Live Casino',
+    categoryPath: '/live-casino',
+    providerPath: '/live-casino',
+    status: 'unavailable',
+  },
+  {
+    slug: 'blackjack-atrium-c',
+    title: 'BlackJack Atrium C',
+    provider: 'CreedRoomz',
+    rtp: '95.00%',
+    image: imgBlackjack,
+    iframeSrc: '',
+    description: 'BlackJack Atrium C is currently unavailable.',
+    categoryLabel: 'Live Casino',
+    categoryPath: '/live-casino',
+    providerPath: '/live-casino',
+    status: 'unavailable',
+  },
+  {
+    slug: 'shangrila-baccarat-6',
+    title: 'Shangrila Baccarat 6',
+    provider: 'Winfinity',
+    rtp: '95.00%',
+    image: imgBaccarat,
+    iframeSrc: '',
+    description: 'Shangrila Baccarat 6 is currently unavailable.',
+    categoryLabel: 'Live Casino',
+    categoryPath: '/live-casino',
+    providerPath: '/live-casino',
+    status: 'unavailable',
+  },
+  {
+    slug: 'roulette',
+    title: 'Roulette',
+    provider: 'Evolution',
+    rtp: '95.00%',
+    image: imgRoulette,
+    iframeSrc: '',
+    description: 'Roulette is currently unavailable.',
+    categoryLabel: 'Live Casino',
+    categoryPath: '/live-casino',
+    providerPath: '/live-casino',
+    status: 'unavailable',
+  },
+  {
+    slug: 'steeplechase',
+    title: 'Steeplechase',
+    provider: 'Virtual Sports',
+    rtp: '95.00%',
+    image: imgSteeplechase,
+    iframeSrc: '',
+    description: 'Steeplechase is currently unavailable.',
+    categoryLabel: 'Sports',
+    categoryPath: '/sports',
+    providerPath: '/sports',
+    status: 'unavailable',
+  },
+  {
+    slug: 'penalty-shootout',
+    title: 'Penalty Shootout',
+    provider: 'Instant Games',
+    rtp: '95.00%',
+    image: imgPenalty,
+    iframeSrc: '',
+    description: 'Penalty Shootout is currently unavailable.',
+    categoryLabel: 'Sports',
+    categoryPath: '/sports',
+    providerPath: '/sports',
+    status: 'unavailable',
+  },
+  {
+    slug: 'greyhound-racing',
+    title: 'Greyhound Racing',
+    provider: 'Virtual Sports',
+    rtp: '95.00%',
+    image: imgGreyhound,
+    iframeSrc: '',
+    description: 'Greyhound Racing is currently unavailable.',
+    categoryLabel: 'Sports',
+    categoryPath: '/sports',
+    providerPath: '/sports',
+    status: 'unavailable',
+  },
+  {
+    slug: 'force-1-racing',
+    title: 'Force 1 Racing',
+    provider: 'Virtual Sports',
+    rtp: '95.00%',
+    image: imgForce1,
+    iframeSrc: '',
+    description: 'Force 1 Racing is currently unavailable.',
+    categoryLabel: 'Sports',
+    categoryPath: '/sports',
+    providerPath: '/sports',
+    status: 'unavailable',
+  },
+  {
+    slug: 'horse-racing',
+    title: 'Horse Racing',
+    provider: 'Virtual Sports',
+    rtp: '95.00%',
+    image: imgHorseRacing,
+    iframeSrc: '',
+    description: 'Horse Racing is currently unavailable.',
+    categoryLabel: 'Sports',
+    categoryPath: '/sports',
+    providerPath: '/sports',
+    status: 'unavailable',
+  },
+  {
+    slug: 'fantastic-league',
+    title: 'Fantastic League',
+    provider: 'Virtual Soccer',
+    rtp: '95.00%',
+    image: imgFantasticLeague,
+    iframeSrc: '',
+    description: 'Fantastic League is currently unavailable.',
+    categoryLabel: 'Sports',
+    categoryPath: '/sports',
+    providerPath: '/sports',
+    status: 'unavailable',
+  },
+  {
+    slug: 'darts',
+    title: 'Darts',
+    provider: 'Instant Games',
+    rtp: '95.00%',
+    image: imgDarts,
+    iframeSrc: '',
+    description: 'Darts is currently unavailable.',
+    categoryLabel: 'Sports',
+    categoryPath: '/sports',
+    providerPath: '/sports',
+    status: 'unavailable',
+  },
 ];
 
 export function GameDetailPage() {
   const { t } = useLanguage();
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const { provider, slug } = useParams();
+  const routeCategoryKey = location.pathname.replace(/^\//, '').split('/')[0].toLowerCase();
+  const routeCategoryPath = routeCategoryKey ? `/${routeCategoryKey}` : '/slots';
+  const routeCategoryLabel = formatLabelFromSlug(routeCategoryKey, 'Slots');
   const configuredGame = gameDetailConfig.find((item) => item.slug === slug);
   const matchedHotGame = INITIAL_SLOTS.find((item) =>
     toSlug(item.provider) === toSlug(provider) &&
@@ -127,14 +299,14 @@ export function GameDetailPage() {
   const game = configuredGame ?? (slug ? {
     slug,
     title: matchedHotGame?.name || matchedHotGame?.title || formatLabelFromSlug(slug, 'Game'),
-    provider: matchedHotGame?.provider || formatLabelFromSlug(provider, 'Slots'),
+    provider: matchedHotGame?.provider || formatLabelFromSlug(provider, routeCategoryLabel),
     rtp: matchedHotGame?.rtp || '95.00%',
     image: matchedHotGame?.image || imgImagePromo,
     iframeSrc: '',
     description: `${matchedHotGame?.name || matchedHotGame?.title || formatLabelFromSlug(slug, 'This game')} is currently unavailable.`,
-    categoryLabel: 'Slots',
-    categoryPath: '/slots',
-    providerPath: provider ? `/slots/${provider}` : '/slots',
+    categoryLabel: routeCategoryLabel,
+    categoryPath: routeCategoryPath,
+    providerPath: provider ? `${routeCategoryPath}/${provider}` : routeCategoryPath,
     status: 'unavailable' as const,
   } : null);
   const [activeTab, setActiveTab] = useState<GameDetailTab>('ranking');
@@ -144,6 +316,13 @@ export function GameDetailPage() {
   const [showRegistrationFailedModal, setShowRegistrationFailedModal] = useState(game.status === 'unavailable');
   const [registrationFailedMessage, setRegistrationFailedMessage] = useState(DEFAULT_REGISTRATION_FAILED_MESSAGE);
   const gameIframeUrlRef = useRef(game.iframeSrc);
+  const categoryKeyFromPath = (game.categoryPath || '').replace(/^\//, '').split('/')[0].toLowerCase();
+  const categoryKeyFromLabel = (game.categoryLabel || '').trim().toLowerCase().replace(/\s+/g, '-');
+  const categoryKey = categoryKeyFromPath || categoryKeyFromLabel;
+  const showProviderCrumb = ['slots', 'fishing', 'lottery', 'crash'].includes(categoryKey);
+  const providerCrumbPath = provider
+    ? `/${categoryKey}/${provider}`
+    : (game.providerPath || game.categoryPath || '/slots');
 
   if (!game) {
     return <NotFound />;
@@ -220,12 +399,14 @@ export function GameDetailPage() {
                 </BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator />
-              <BreadcrumbItem>
-                <BreadcrumbLink asChild>
-                  <Link to={game.providerPath || '/slots'}>{game.provider}</Link>
-                </BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator />
+              {showProviderCrumb && (
+                <BreadcrumbItem>
+                  <BreadcrumbLink asChild>
+                    <Link to={providerCrumbPath}>{game.provider}</Link>
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
+              )}
+              {showProviderCrumb && <BreadcrumbSeparator />}
               <BreadcrumbItem>
                 <BreadcrumbPage className="text-emerald-400">{game.title}</BreadcrumbPage>
               </BreadcrumbItem>
