@@ -20,7 +20,7 @@ export const INITIAL_SLOTS = [
     { name: 'Forbidden Island', provider: 'NAGA', rtp: '94.89%', trend: 'up', providerLogo: 'https://pksoftcdn.azureedge.net/media/nagagames-202509081536239359.png', color: 'bg-blue-800', image: 'https://imagedelivery.net/kDjBdJu_wA1m_UDGfqI3og/595483dc-de24-43f2-984f-db04ceff3c3e.png/public' },
     { name: 'Pussy888', provider: 'PGSoft', rtp: '92.18%', trend: 'down', providerLogo: 'https://riocity-cdn.azureedge.net/riocity/pg-202401151452543063.png', color: 'bg-blue-600', image: 'https://imagedelivery.net/kDjBdJu_wA1m_UDGfqI3og/595483dc-de24-43f2-984f-db04ceff3c3e.png/public' },
     { name: 'Pussy888', provider: 'Pussy888', rtp: '94.25%', trend: 'up', providerLogo: 'https://pksoftcdn.azureedge.net/media/pussy888_slot-202512051029432232.png', color: 'bg-blue-700', image: 'https://pksoftcdn.azureedge.net/media/516bf741-86db-668a-1b27-7fd2c150e41f-202408291606256321-202410040758117373-202510311406514416.jpg' },
-    { name: 'Striper Night', provider: '918 Kaya', rtp: '94.98%', trend: 'up', providerLogo: 'https://pksoftcdn.azureedge.net/media/200x200px_provider_icon_918kaya-202510310816424815.png', color: 'bg-purple-900', image: 'https://pksoftcdn.azureedge.net/media/placeholder_riocity-202408050928489215.jpg' },
+    { name: 'Striper Night', provider: '918 Kaya', rtp: '94.98%', trend: 'up', providerLogo: 'https://pksoftcdn.azureedge.net/media/200x200px_provider_icon_918kaya-202510310816424815.png', color: 'bg-purple-900', image: 'https://pksoftcdn.azureedge.net/media/200x200px_provider_icon_918kaya-202510310816424815.png' },
 ];
 
 export const MOCK_CATEGORIES: Record<string, any[]> = {

@@ -80,7 +80,7 @@ export function CategoryNav() {
                                             (cat.id === 'promotions' || cat.id === 'app') ? 'hidden 2xl:flex' : ''
                                         } ${
                                             isActive 
-                                            ? 'bg-white/10 text-emerald-400 border border-white/10 shadow-[0_0_15px_-3px_rgba(255,255,255,0.1)]' 
+                                            ? 'bg-white/5 text-emerald-400 border border-white/10 shadow-[0_0_15px_-3px_rgba(255,255,255,0.1)]' 
                                             : 'text-white hover:text-white hover:bg-white/5 border border-transparent'
                                         }`}
                                     >
@@ -91,7 +91,7 @@ export function CategoryNav() {
                                 </DropdownMenuTrigger>
                                 <DropdownMenuContent className="bg-[#1a2536] border-white/10 text-white min-w-[200px]">
                                     {cat.subItems.map((sub, idx) => (
-                                        <DropdownMenuItem key={idx} asChild className="focus:bg-white/10 focus:text-white cursor-pointer">
+                                        <DropdownMenuItem key={idx} asChild className="focus:bg-white/5 focus:text-white cursor-pointer">
                                             <Link to={sub.path} className="flex items-center gap-2 py-2.5">
                                                 {sub.icon && <sub.icon className="w-4 h-4 text-emerald-400" />}
                                                 <span className="font-medium">{t(sub.labelKey as any)}</span>
@@ -111,7 +111,7 @@ export function CategoryNav() {
                                 (cat.id === 'promotions' || cat.id === 'app') ? 'hidden 2xl:flex' : ''
                             } ${
                                 isActive 
-                                ? 'bg-white/10 text-emerald-400 border border-white/10 shadow-[0_0_15px_-3px_rgba(255,255,255,0.1)]' 
+                                ? 'bg-white/5 text-emerald-400 border border-white/10 shadow-[0_0_15px_-3px_rgba(255,255,255,0.1)]' 
                                 : 'text-white hover:text-white hover:bg-white/5 border border-transparent'
                             }`}
                         >

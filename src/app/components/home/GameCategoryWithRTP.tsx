@@ -291,7 +291,7 @@ export function GameCategoryWithRTP() {
                   onClick={() => handleGameClick(game)}
                 >
                   {/* Top Section: Provider Header */}
-                  <div className={`relative overflow-hidden flex items-center justify-center ${game.color || 'bg-blue-600'}`}>
+                  <div className={`relative aspect-square overflow-hidden flex items-center justify-center ${game.color || 'bg-blue-600'}`}>
                     <div className="absolute inset-0 bg-black/10" />
 
                     {game.providerLogo ? (
