@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { 
   ArrowLeft, 
   ChevronRight, 
+  ChevronDown,
   Info, 
   AlertCircle,
   Smartphone, 
@@ -9,6 +10,7 @@ import {
   QrCode, 
   Copy, 
   Upload, 
+  CreditCard,
   ShieldCheck, 
   Ticket,
   Wallet,
@@ -33,6 +35,10 @@ import {
   SelectValue,
 } from '../components/ui/select';
 import { sanitizeTextInput, validateReceiptFile } from '../utils/security';
+import maybankLogo from '@/assets/maybank.png';
+import rhbLogo from '@/assets/rhb.png';
+import jazzcashLogo from '@/assets/jzcash.png';
+import usdtLogo from '@/assets/usdt.png';
 
 // Mock Data for Payment Methods - Enhanced for Visual Variety
 const POPULAR_METHODS = [
@@ -40,33 +46,41 @@ const POPULAR_METHODS = [
     id: 'maybank',
     name: 'Maybank',
     limit: '1-10K',
-    bg: 'bg-[#ffc800]', // Yellowish
+    bg: 'bg-[#ffc800]', // Yellow
     text: 'text-black',
-    icon: Banknote
+    icon: Banknote,
+    logo: maybankLogo,
+    type: 'Bank Transfer'
   },
   {
-    id: 'rhb-red',
-    name: 'RHB',
+    id: 'jazzcash',
+    name: 'JazzCash',
     limit: '2-60K',
-    bg: 'bg-[#d63447]', // Red
+    bg: 'bg-[#ed2327]', // Red
     text: 'text-white',
-    icon: Banknote
+    icon: Wallet,
+    logo: jazzcashLogo,
+    type: 'E-Wallet'
   },
   {
-    id: 'rhb-blue',
-    name: 'RHB',
+    id: 'rhb',
+    name: 'RHB Bank',
     limit: '2-60K',
     bg: 'bg-[#2b6cb0]', // Blue
     text: 'text-white',
-    icon: Banknote
+    icon: Banknote,
+    logo: rhbLogo,
+    type: 'Bank Transfer'
   },
   {
-    id: 'grabpay',
-    name: 'GrabPay',
+    id: 'usdt',
+    name: 'USDT',
     limit: '3-40K',
     bg: 'bg-[#00b14f]', // Green
     text: 'text-white',
-    icon: Smartphone
+    icon: CreditCard, // Using generic card icon for USDT
+    logo: usdtLogo,
+    type: 'Crypto'
   },
 ];
 
@@ -82,8 +96,8 @@ const OTHER_METHODS = [
     icon: Wallet
   },
   {
-    id: 'rhb-instant',
-    name: 'RHB',
+    id: 'Bank Transfer',
+    name: 'Bank Transfer',
     category: 'Instant',
     processTime: '15 min',
     limit: '0 - 10.73 ml',
@@ -168,9 +182,44 @@ const BONUS_OPTIONS: BonusOption[] = [
   },
 ];
 
+const BANK_TRANSFER_PROVIDERS = [
+  'Alliance Bank',
+  'AmBank',
+  'Bank Islam',
+  'CIMB Bank',
+  'Maybank',
+  'Public Bank',
+  'RHB Bank',
+];
+
+const EWALLET_PROVIDERS = [
+  'Boost',
+  'GrabPay',
+  "Touch n' Go",
+  'ShopeePay',
+  'JazzCash',
+];
+
+const CRYPTO_PROVIDERS = [
+  'USDT',
+  'BNB',
+  'ETH',
+];
+
 function normalizeDepositTab(value: string | null | undefined): DepositTabValue {
   const normalized = (value || '').trim().toLowerCase();
   return DEPOSIT_TAB_VALUES.includes(normalized as DepositTabValue) ? (normalized as DepositTabValue) : 'deposit';
+}
+
+function resolveMethodType(method: { id?: string; name?: string; type?: string } | undefined): 'Bank Transfer' | 'E-Wallet' | 'Crypto' {
+  if (!method) return 'Bank Transfer';
+  if (method.type === 'Bank Transfer' || method.type === 'E-Wallet' || method.type === 'Crypto') {
+    return method.type;
+  }
+  const token = `${method.id ?? ''} ${method.name ?? ''}`.toLowerCase();
+  if (token.includes('crypto') || token.includes('usdt')) return 'Crypto';
+  if (token.includes('wallet') || token.includes('grabpay') || token.includes('jazzcash')) return 'E-Wallet';
+  return 'Bank Transfer';
 }
 
 export function Deposit() {
@@ -179,10 +228,12 @@ export function Deposit() {
   const { t } = useLanguage();
   const [step, setStep] = useState<1 | 2 | 3>(1); // 1=Select, 2=Amount, 3=Transfer
   const [selectedMethodId, setSelectedMethodId] = useState<string | null>(null);
+  const [selectedProvider, setSelectedProvider] = useState('');
   const [amount, setAmount] = useState<string>('');
   const [referenceId, setReferenceId] = useState('');
   const [wantsBonus, setWantsBonus] = useState(false);
   const [selectedBonus, setSelectedBonus] = useState('none');
+  const [pauseAutoAdvance, setPauseAutoAdvance] = useState(false);
   const [activeTab, setActiveTab] = useState<'deposit' | 'withdrawal'>('deposit');
   const receiptInputRef = useRef<HTMLInputElement | null>(null);
   const [receiptFileName, setReceiptFileName] = useState<string>('');
@@ -209,22 +260,41 @@ export function Deposit() {
     if (isDepositLocked) {
       return;
     }
+    setPauseAutoAdvance(false);
     setSelectedMethodId(id);
+    const method = [...POPULAR_METHODS, ...OTHER_METHODS].find((item) => item.id === id);
+    const methodType = resolveMethodType(method);
+    if (methodType === 'Bank Transfer') {
+      if (selectedMethodId === id && selectedProvider && BANK_TRANSFER_PROVIDERS.includes(selectedProvider)) {
+        return;
+      }
+      setSelectedProvider(BANK_TRANSFER_PROVIDERS.includes(method?.name ?? '') ? (method?.name ?? '') : '');
+      return;
+    }
+    if (methodType === 'E-Wallet') {
+      if (selectedMethodId === id && selectedProvider && EWALLET_PROVIDERS.includes(selectedProvider)) {
+        return;
+      }
+      setSelectedProvider(EWALLET_PROVIDERS.includes(method?.name ?? '') ? (method?.name ?? '') : '');
+      return;
+    }
+    if (methodType === 'Crypto') {
+      if (selectedMethodId === id && selectedProvider && CRYPTO_PROVIDERS.includes(selectedProvider)) {
+        return;
+      }
+      setSelectedProvider(CRYPTO_PROVIDERS.includes(method?.name ?? '') ? (method?.name ?? '') : '');
+      return;
+    }
+    setSelectedProvider('');
     // In the new design, selecting usually just highlights, then click 'Continue'
     // But for better UX flow we can auto-highlight
   };
 
-  const handleContinue = () => {
+  const handleAmountSubmit = () => {
     if (isDepositLocked) {
       return;
     }
-    if (selectedMethodId && hasValidBonusSelection) {
-      setStep(2);
-    }
-  };
-
-  const handleAmountSubmit = () => {
-    if (isDepositLocked) {
+    if (requiresProviderSelection && !selectedProvider) {
       return;
     }
     if (!isValidAmount) return;
@@ -233,7 +303,12 @@ export function Deposit() {
 
   const handleBack = () => {
     if (step === 1) navigate(-1);
-    else setStep((prev) => (prev - 1) as 1 | 2);
+    else {
+      if (step === 2) {
+        setPauseAutoAdvance(true);
+      }
+      setStep((prev) => (prev - 1) as 1 | 2);
+    }
   };
 
   const getSelectedMethod = () => {
@@ -241,6 +316,20 @@ export function Deposit() {
   };
 
   const selectedMethod = getSelectedMethod();
+  const selectedMethodType = resolveMethodType(selectedMethod);
+  const providerOptions = selectedMethodType === 'Bank Transfer'
+    ? BANK_TRANSFER_PROVIDERS
+    : selectedMethodType === 'E-Wallet'
+      ? EWALLET_PROVIDERS
+      : selectedMethodType === 'Crypto'
+        ? CRYPTO_PROVIDERS
+        : [];
+  const requiresProviderSelection = providerOptions.length > 0;
+  const selectedProviderName = selectedProvider || selectedMethod?.name || '';
+  const selectedMethodSummary =
+    selectedProviderName && selectedProviderName.toLowerCase() !== selectedMethodType.toLowerCase()
+      ? `${selectedMethodType} (${selectedProviderName})`
+      : selectedMethodType;
   const selectedBonusInfo = BONUS_OPTIONS.find((bonus) => bonus.id === selectedBonus);
 
   const handleReceiptPick = () => {
@@ -264,15 +353,25 @@ export function Deposit() {
     if (isDepositLocked) {
       return;
     }
+    if (showDepositVerificationModal) {
+      return;
+    }
     setShowDepositVerificationModal(true);
   };
 
   const handleDepositVerificationConfirm = () => {
+    if (!showDepositVerificationModal) {
+      return;
+    }
     setShowDepositVerificationModal(false);
     setStep(1);
     setSelectedMethodId(null);
+    setSelectedProvider('');
     setAmount('');
     setReferenceId('');
+    setWantsBonus(false);
+    setSelectedBonus('none');
+    setPauseAutoAdvance(false);
     setReceiptFileName('');
     setReceiptError('');
     setApprovalSecondsLeft(DEPOSIT_APPROVAL_COUNTDOWN_SECONDS);
@@ -308,6 +407,15 @@ export function Deposit() {
 
     return () => window.clearInterval(timer);
   }, [approvalSecondsLeft]);
+
+  useEffect(() => {
+    if (step !== 1 || isDepositLocked || pauseAutoAdvance) {
+      return;
+    }
+    if (selectedMethodId && hasValidBonusSelection) {
+      setStep(2);
+    }
+  }, [step, isDepositLocked, pauseAutoAdvance, selectedMethodId, hasValidBonusSelection]);
 
   const formatApprovalCountdown = (seconds: number) => {
     const minutes = Math.floor(seconds / 60).toString().padStart(2, '0');
@@ -388,6 +496,7 @@ export function Deposit() {
                             checked={wantsBonus}
                             onChange={(e) => {
                               const nextChecked = e.target.checked;
+                              setPauseAutoAdvance(false);
                               setWantsBonus(nextChecked);
                               if (!nextChecked) {
                                 setSelectedBonus('none');
@@ -403,7 +512,13 @@ export function Deposit() {
                     {wantsBonus && (
                       <div className="space-y-2">
                           <label className="text-gray-300 text-sm font-bold">Bonus</label>
-                          <Select value={selectedBonus} onValueChange={setSelectedBonus}>
+                          <Select
+                            value={selectedBonus}
+                            onValueChange={(value) => {
+                              setPauseAutoAdvance(false);
+                              setSelectedBonus(value);
+                            }}
+                          >
                             <SelectTrigger className="!h-12 bg-[#0f151f] border-white/10 text-white rounded-xl px-4 py-0 data-[size=default]:!h-12 focus:border-[#00bc7d] focus-visible:ring-[#00bc7d]/20">
                               <SelectValue placeholder="Select Bonus" />
                             </SelectTrigger>
@@ -416,6 +531,9 @@ export function Deposit() {
                               ))}
                             </SelectContent>
                           </Select>
+                          {selectedBonus === 'none' && (
+                            <p className="text-xs font-bold text-red-400">Please select a bonus.</p>
+                          )}
                           {selectedBonusInfo && (
                             <div className="rounded-xl border border-dashed border-[#00bc7d]/40 bg-[#0f151f]/60 p-4">
                               <div className="mb-3 flex items-center gap-2 text-[#00bc7d]">
@@ -462,7 +580,11 @@ export function Deposit() {
                                     )}
                                     <div className="relative z-10 flex flex-col h-full justify-between min-h-[80px]">
                                         <div className={`flex items-start justify-between ${method.text}`}>
-                                            <method.icon className="w-6 h-6 opacity-80" />
+                                            {method.logo ? (
+                                              <img src={method.logo} alt={method.name} className="w-6 h-6 object-contain" />
+                                            ) : (
+                                              <method.icon className="w-6 h-6 opacity-80" />
+                                            )}
                                             <span className="font-bold text-sm">{method.name}</span>
                                         </div>
                                         <div className={`text-xs font-medium opacity-80 ${method.text} mt-2`}>
@@ -541,14 +663,6 @@ export function Deposit() {
                         </div>
                     </div> */}
 
-                    <Button 
-                        onClick={handleContinue}
-                        disabled={!selectedMethodId || !hasValidBonusSelection}
-                        className={`w-full h-12 rounded-xl text-base disabled:opacity-50 disabled:cursor-not-allowed ${PRIMARY_CTA_CLASS}`}
-                    >
-                        {t("continueToDeposit")} 
-                        <ChevronRight className="w-4 h-4 ml-1" />
-                    </Button>
                 </div>
                 </div>
             </div>
@@ -557,21 +671,58 @@ export function Deposit() {
           {/* STEP 2: Amount Input (Existing Logic) */}
           {step === 2 && selectedMethod && (
             <div className="space-y-6 animate-in slide-in-from-right-5 fade-in duration-300">
+                
+                {selectedBonusInfo && (
+                  <div className="bg-[#0f151f] border border-white/10 rounded-2xl p-4 flex items-center justify-between">
+                    <span className="text-gray-400 font-bold">Bonus</span>
+                    <span className="text-sm font-bold text-white">{selectedBonusInfo.label}</span>
+                  </div>
+                )}
+
                 {/* Method Display Card */}
                 <div className="bg-[#0f151f] border border-white/10 rounded-2xl p-4 flex items-center justify-between">
                     <div className="flex items-center gap-4">
                         <div className={`w-12 h-12 rounded-xl ${'bg' in selectedMethod ? selectedMethod.bg : 'bg-[#1a2230]'} flex items-center justify-center text-white border border-white/10 shadow-lg`}>
-                            <selectedMethod.icon className={`w-6 h-6 ${'text' in selectedMethod ? selectedMethod.text : 'text-white'}`} />
+                            {'logo' in selectedMethod && selectedMethod.logo ? (
+                              <img src={selectedMethod.logo} alt={selectedMethod.name} className="w-8 h-8 object-contain" />
+                            ) : (
+                              <selectedMethod.icon className={`w-6 h-6 ${'text' in selectedMethod ? selectedMethod.text : 'text-white'}`} />
+                            )}
                         </div>
                         <div>
                             <div className="text-sm font-bold text-gray-400">{t("selectedMethod")}</div>
-                            <div className="text-lg font-black text-white">{selectedMethod.name}</div>
+                            <div className="text-lg font-black text-white">{selectedMethodType}</div>
                         </div>
                     </div>
-                    <Button variant="ghost" onClick={() => setStep(1)} className="text-[#00bc7d] hover:text-[#00a870] hover:bg-[#00bc7d]/10 h-auto py-1 px-3 text-base font-bold uppercase tracking-wider">
+                    <Button variant="ghost" onClick={() => { setPauseAutoAdvance(true); setStep(1); }} className="text-[#00bc7d] hover:text-[#00a870] hover:bg-[#00bc7d]/10 h-auto py-1 px-3 text-base font-bold uppercase tracking-wider">
                         {t("change")}
                     </Button>
                 </div>
+
+                {requiresProviderSelection && (
+                  <div className="bg-[#0f151f] border border-white/10 rounded-2xl p-6 space-y-1.5">
+                    <label className="text-sm font-bold text-gray-300">
+                      {selectedMethodType === 'E-Wallet' ? 'E-Wallet' : selectedMethodType === 'Crypto' ? 'Cryptocurrency' : 'Bank Transfer'}
+                    </label>
+                    <div className="relative">
+                      <select
+                        value={selectedProvider}
+                        onChange={(e) => setSelectedProvider(e.target.value)}
+                        className="w-full bg-[#0f151f] border border-white/10 rounded-xl px-4 pr-10 py-3.5 text-white focus:outline-none focus:border-[#00bc7d] transition-colors appearance-none cursor-pointer"
+                      >
+                        <option value="" disabled>
+                          {selectedMethodType === 'E-Wallet' ? 'Select E-Wallet' : selectedMethodType === 'Crypto' ? 'Select Cryptocurrency' : 'Select Bank'}
+                        </option>
+                        {providerOptions.map((provider) => (
+                          <option key={provider} value={provider}>
+                            {provider}
+                          </option>
+                        ))}
+                      </select>
+                      <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+                    </div>
+                  </div>
+                )}
 
                 {/* Existing Step 2 Logic */}
                <div className="bg-[#0f151f] border border-white/10 rounded-2xl p-6">
@@ -624,7 +775,7 @@ export function Deposit() {
 
               <Button 
                  onClick={handleAmountSubmit}
-                 disabled={!isValidAmount}
+                 disabled={!isValidAmount || (requiresProviderSelection && !selectedProvider)}
                  className={`w-full h-12 rounded-xl text-base disabled:opacity-50 ${PRIMARY_CTA_CLASS}`}
                >
                  {t("confirmAndDeposit")}
@@ -647,11 +798,15 @@ export function Deposit() {
                   <div className="flex items-center justify-between border-b border-white/5 pb-4">
                         <div className="flex items-center gap-3">
                             <div className={`w-10 h-10 rounded-lg ${'bg' in selectedMethod ? selectedMethod.bg : 'bg-[#1a2230]'} flex items-center justify-center text-white border border-white/10`}>
-                                <selectedMethod.icon className={`w-5 h-5 ${'text' in selectedMethod ? selectedMethod.text : 'text-white'}`} />
+                                {'logo' in selectedMethod && selectedMethod.logo ? (
+                                  <img src={selectedMethod.logo} alt={selectedMethod.name} className="w-6 h-6 object-contain" />
+                                ) : (
+                                  <selectedMethod.icon className={`w-5 h-5 ${'text' in selectedMethod ? selectedMethod.text : 'text-white'}`} />
+                                )}
                             </div>
                             <div>
                                 <div className="text-xs text-gray-500 font-bold uppercase">{t("paymentMethod")}</div>
-                                <div className="text-sm font-bold text-white">{selectedMethod.name}</div>
+                                <div className="text-sm font-bold text-white">{selectedProviderName || selectedMethod.name}</div>
                             </div>
                         </div>
                     </div>

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { 
   ArrowLeft, 
   ChevronRight, 
+  ChevronDown,
   Banknote, 
   Wallet,
   CreditCard,
@@ -17,6 +18,10 @@ import { useLanguage } from '../contexts/LanguageContext';
 import { MOBILE, PRIMARY_CTA_CLASS } from '../config/themeTokens';
 import { SegmentTabs, type SegmentTabsItem } from '../components/shared/SegmentTabs';
 import { sanitizeTextInput } from '../utils/security';
+import maybankLogo from '@/assets/maybank.png';
+import rhbLogo from '@/assets/rhb.png';
+import jazzcashLogo from '@/assets/jzcash.png';
+import usdtLogo from '@/assets/usdt.png';
 
 // Mock Data for Withdraw Methods
 const POPULAR_METHODS = [
@@ -27,6 +32,7 @@ const POPULAR_METHODS = [
     bg: 'bg-[#ffc800]', // Yellow
     text: 'text-black',
     icon: Banknote,
+    logo: maybankLogo,
     type: 'Bank Transfer'
   },
   {
@@ -36,6 +42,7 @@ const POPULAR_METHODS = [
     bg: 'bg-[#ed2327]', // Red
     text: 'text-white',
     icon: Wallet,
+    logo: jazzcashLogo,
     type: 'E-Wallet'
   },
   {
@@ -45,15 +52,17 @@ const POPULAR_METHODS = [
     bg: 'bg-[#2b6cb0]', // Blue
     text: 'text-white',
     icon: Banknote,
+    logo: rhbLogo,
     type: 'Bank Transfer'
   },
   {
     id: 'usdt',
     name: 'USDT',
     limit: '3-40K',
-    bg: 'bg-[#26a17b]', // Green
+    bg: 'bg-[#00b14f]', // Green
     text: 'text-white',
     icon: CreditCard, // Using generic card icon for USDT
+    logo: usdtLogo,
     type: 'Crypto'
   },
 ];
@@ -120,6 +129,7 @@ export function Withdraw() {
   const { t } = useLanguage();
   const [step, setStep] = useState<1 | 2>(1);
   const [selectedMethodId, setSelectedMethodId] = useState<string | null>(null);
+  const [pauseAutoAdvance, setPauseAutoAdvance] = useState(false);
   const [activeTab, setActiveTab] = useState<'deposit' | 'withdrawal'>('withdrawal');
   
   // Step 2 Form State
@@ -141,18 +151,16 @@ export function Withdraw() {
   };
 
   const handleMethodSelect = (id: string) => {
+    setPauseAutoAdvance(false);
     setSelectedMethodId(id);
-  };
-
-  const handleContinue = () => {
-    if (selectedMethodId) {
-      setStep(2);
-    }
   };
 
   const handleBack = () => {
     if (step === 1) navigate(-1);
-    else setStep(1);
+    else {
+      setPauseAutoAdvance(true);
+      setStep(1);
+    }
   };
 
   const getSelectedMethod = () => {
@@ -160,6 +168,7 @@ export function Withdraw() {
   };
 
   const selectedMethod = getSelectedMethod();
+  const selectedMethodType = selectedMethod && 'type' in selectedMethod ? selectedMethod.type : 'Bank Transfer';
 
   React.useEffect(() => {
     const tab = normalizeWithdrawTab(searchParams.get('tab'));
@@ -175,6 +184,15 @@ export function Withdraw() {
     }
     setActiveTab(normalizedTab);
   }, [navigate, searchParams, setSearchParams]);
+
+  React.useEffect(() => {
+    if (step !== 1 || pauseAutoAdvance) {
+      return;
+    }
+    if (selectedMethodId) {
+      setStep(2);
+    }
+  }, [step, pauseAutoAdvance, selectedMethodId]);
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4 font-sans text-white relative bg-[#0a0f19] overflow-x-hidden">
@@ -253,7 +271,11 @@ export function Withdraw() {
                                     )}
                                     <div className="relative z-10 flex flex-col h-full justify-between min-h-[80px]">
                                         <div className={`flex items-start justify-between ${method.text}`}>
-                                            <method.icon className="w-6 h-6 opacity-80" />
+                                            {method.logo ? (
+                                              <img src={method.logo} alt={method.name} className="w-6 h-6 object-contain" />
+                                            ) : (
+                                              <method.icon className="w-6 h-6 opacity-80" />
+                                            )}
                                             <span className="font-bold text-sm">{method.name}</span>
                                         </div>
                                         <div className={`text-xs font-medium opacity-80 ${method.text} mt-2`}>
@@ -311,16 +333,6 @@ export function Withdraw() {
                     </div>
                 </div>
 
-                <div className="pt-2">
-                    <Button 
-                        onClick={handleContinue}
-                        disabled={!selectedMethodId}
-                        className={`w-full h-12 rounded-xl text-base disabled:opacity-50 disabled:cursor-not-allowed ${PRIMARY_CTA_CLASS}`}
-                    >
-                        {t("continueToWithdraw")} 
-                        <ChevronRight className="w-4 h-4 ml-1" />
-                    </Button>
-                </div>
             </div>
           )}
 
@@ -331,11 +343,15 @@ export function Withdraw() {
                 {/* Selected Method Display */}
                 <div className="bg-[#131b29] border border-white/5 rounded-xl p-4 flex items-center gap-4">
                     <div className={`w-10 h-10 rounded-lg ${'bg' in selectedMethod ? selectedMethod.bg : 'bg-[#1a2230]'} flex items-center justify-center text-white border border-white/10 shrink-0`}>
-                        <selectedMethod.icon className={`w-5 h-5 ${'text' in selectedMethod ? selectedMethod.text : 'text-white'}`} />
+                        {'logo' in selectedMethod && selectedMethod.logo ? (
+                          <img src={selectedMethod.logo} alt={selectedMethod.name} className="w-6 h-6 object-contain" />
+                        ) : (
+                          <selectedMethod.icon className={`w-5 h-5 ${'text' in selectedMethod ? selectedMethod.text : 'text-white'}`} />
+                        )}
                     </div>
                     <div className="flex-1">
                         <div className="text-xs text-gray-500 font-bold uppercase tracking-wider">{t("paymentMethod")}</div>
-                        <div className="text-sm font-bold text-white">{selectedMethod.name}</div>
+                        <div className="text-sm font-bold text-white">{selectedMethodType}</div>
                     </div>
                 </div>
 
@@ -343,17 +359,20 @@ export function Withdraw() {
                 <div className="space-y-4">
                     <div className="space-y-1.5">
                         <label className="text-sm font-bold text-gray-400 pl-1">{t("bankName")}</label>
-                        <select 
-                            value={bankName}
-                            onChange={(e) => setBankName(sanitizeTextInput(e.target.value))}
-                            className="w-full bg-[#0f151f] border border-white/10 rounded-xl px-4 py-3.5 text-white focus:outline-none focus:border-[#00bc7d] transition-colors appearance-none cursor-pointer"
-                        >
-                            <option value="" disabled>{t("pleaseSelectBank")}</option>
-                            <option value="maybank">Maybank</option>
-                            <option value="cimb">CIMB Bank</option>
-                            <option value="public">Public Bank</option>
-                            <option value="rhb">RHB Bank</option>
-                        </select>
+                        <div className="relative">
+                            <select 
+                                value={bankName}
+                                onChange={(e) => setBankName(sanitizeTextInput(e.target.value))}
+                                className="w-full bg-[#0f151f] border border-white/10 rounded-xl px-4 pr-10 py-3.5 text-white focus:outline-none focus:border-[#00bc7d] transition-colors appearance-none cursor-pointer"
+                            >
+                                <option value="" disabled>{t("pleaseSelectBank")}</option>
+                                <option value="maybank">Maybank</option>
+                                <option value="cimb">CIMB Bank</option>
+                                <option value="public">Public Bank</option>
+                                <option value="rhb">RHB Bank</option>
+                            </select>
+                            <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+                        </div>
                     </div>
 
                     <div className="space-y-1.5">
