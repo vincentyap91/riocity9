@@ -6,11 +6,12 @@ import {
 } from 'lucide-react';
 import { PageSidebar, type PageSidebarItem } from './PageSidebar';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useLanguage } from '../../contexts/LanguageContext';
 
-const HELP_CENTER_ITEMS: PageSidebarItem[] = [
-    { id: 'rules', label: 'Rules and Regulation', icon: FileText, path: '/information-center?tab=rules' },
-    { id: 'faq', label: 'FAQ', icon: HelpCircle, path: '/information-center?tab=faq' },
-    { id: 'video', label: 'Video Guide', icon: Video, path: '/information-center?tab=video' },
+const HELP_CENTER_ITEMS: Omit<PageSidebarItem, 'label'>[] = [
+    { id: 'rules', icon: FileText, path: '/information-center?tab=rules' },
+    { id: 'faq', icon: HelpCircle, path: '/information-center?tab=faq' },
+    { id: 'video', icon: Video, path: '/information-center?tab=video' },
 ];
 
 interface HelpCenterSidebarProps {
@@ -24,15 +25,21 @@ function normalizeHelpCenterTab(value: string | null | undefined): string {
 }
 
 export function HelpCenterSidebar({ activeId, onSelect }: HelpCenterSidebarProps) {
+    const { t } = useLanguage();
     const navigate = useNavigate();
     const location = useLocation();
+    const items: PageSidebarItem[] = [
+        { ...HELP_CENTER_ITEMS[0], label: t('footerRulesAndRegulation') },
+        { ...HELP_CENTER_ITEMS[1], label: t('footerFaq') },
+        { ...HELP_CENTER_ITEMS[2], label: t('footerVideoGuide') },
+    ];
 
     // Determine active ID from URL if not provided
     const currentActiveId = normalizeHelpCenterTab(activeId || new URLSearchParams(location.search).get('tab'));
 
     const handleSelect = (id: string) => {
         const normalizedId = normalizeHelpCenterTab(id);
-        const item = HELP_CENTER_ITEMS.find(i => i.id === normalizedId);
+        const item = items.find(i => i.id === normalizedId);
         if (item?.path) {
             navigate(item.path);
         }
@@ -43,7 +50,7 @@ export function HelpCenterSidebar({ activeId, onSelect }: HelpCenterSidebarProps
 
     return (
         <PageSidebar
-            items={HELP_CENTER_ITEMS}
+            items={items}
             activeId={currentActiveId}
             onSelect={handleSelect}
         />

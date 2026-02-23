@@ -525,28 +525,28 @@ export function Profile() {
       </div>
 
       <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
-        <DialogContent className="bg-[#1a1a1a] border-white/10 text-white rounded-2xl">
+        <DialogContent className="w-[calc(100%-2rem)] max-w-2xl bg-[#1a2230] border border-white/5 text-white rounded-2xl shadow-2xl p-6">
           <DialogHeader className="space-y-1">
-            <DialogTitle className="text-[#00bc7d] text-lg font-bold">
+            <DialogTitle className="text-white text-lg font-bold">
               {addDialogType === 'ewallet' ? 'Add Phone Number' : 'Add Bank Account'}
             </DialogTitle>
           </DialogHeader>
 
           <div className="space-y-4">
             <div className="space-y-2">
-              <Label className="text-[#00bc7d] text-sm font-bold">
+              <Label className="text-gray-300 text-sm font-bold">
                 Account Name
               </Label>
               <Input
                 value={newAccountName}
                 onChange={(e) => setNewAccountName(sanitizeTextInput(e.target.value))}
                 placeholder="Enter account name"
-                className="bg-white text-black h-12 rounded-xl border-transparent focus-visible:ring-[#00bc7d]/30"
+                className="bg-[#0f151f] border border-white/10 text-white h-12 rounded-xl focus-visible:ring-[#00bc7d]/30 focus-visible:border-[#00bc7d] placeholder:text-gray-500"
               />
             </div>
 
             <div className="space-y-2">
-              <Label className="text-[#00bc7d] text-sm font-bold">
+              <Label className="text-gray-300 text-sm font-bold">
                 {addDialogType === 'ewallet' ? 'Mobile Number' : 'Account Number'}
               </Label>
               {addDialogType === 'ewallet' ? (
@@ -566,7 +566,7 @@ export function Profile() {
                     type="tel"
                     inputMode="numeric"
                     pattern="[0-9]*"
-                    className="bg-white text-black h-11 rounded-xl border-transparent focus-visible:ring-[#00bc7d]/30 flex-1"
+                    className="bg-[#0f151f] border border-white/10 text-white h-11 rounded-xl focus-visible:ring-[#00bc7d]/30 focus-visible:border-[#00bc7d] placeholder:text-gray-500 flex-1"
                   />
                 </div>
               ) : (
@@ -578,20 +578,20 @@ export function Profile() {
                   }}
                   placeholder="Enter account number"
                   type="text"
-                  className="bg-white text-black h-12 rounded-xl border-transparent focus-visible:ring-[#00bc7d]/30"
+                  className="bg-[#0f151f] border border-white/10 text-white h-12 rounded-xl focus-visible:ring-[#00bc7d]/30 focus-visible:border-[#00bc7d] placeholder:text-gray-500"
                 />
               )}
             </div>
 
             <div className="space-y-2">
-              <Label className="text-[#00bc7d] text-sm font-bold">
+              <Label className="text-gray-300 text-sm font-bold">
                 {addDialogType === 'ewallet' ? 'E-wallet Provider' : 'Bank Name'}
               </Label>
               <Input
                 value={newAccountProvider}
                 onChange={(e) => setNewAccountProvider(sanitizeTextInput(e.target.value))}
                 placeholder={addDialogType === 'ewallet' ? 'e.g. Touch n Go' : 'e.g. Maybank'}
-                className="bg-white text-black h-12 rounded-xl border-transparent focus-visible:ring-[#00bc7d]/30"
+                className="bg-[#0f151f] border border-white/10 text-white h-12 rounded-xl focus-visible:ring-[#00bc7d]/30 focus-visible:border-[#00bc7d] placeholder:text-gray-500"
               />
             </div>
 

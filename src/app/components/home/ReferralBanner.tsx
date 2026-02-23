@@ -21,7 +21,7 @@ export function ReferralBanner() {
             setTimeout(() => setCopiedLink(false), 2000);
         } catch (err) {
             console.error('Failed to copy:', err);
-            alert('复制失败，请手动复制');
+            alert(t("copyFailedManual"));
         }
     };
 
@@ -29,13 +29,13 @@ export function ReferralBanner() {
         try {
             if (navigator.share) {
                 await navigator.share({
-                    title: 'Share your RioCity9 referral link',
-                    text: 'Join me on RioCity9 and get rewards!',
+                    title: t("shareReferralTitle"),
+                    text: t("shareReferralText"),
                     url: referralLink,
                 });
             } else {
                 await handleCopyLink();
-                alert('Referral link copied. Share it with your friends!');
+                alert(t("referralLinkCopiedShare"));
             }
         } catch (err) {
             console.error('Share failed:', err);
@@ -66,7 +66,7 @@ export function ReferralBanner() {
                                 <button
                                     onClick={handleCopyLink}
                                     className="p-2 hover:bg-[#00bc7d]/20 rounded-lg transition-colors text-[#FFD700] shrink-0 active:scale-95"
-                                    title="Copy referral link"
+                                    title={t("copyReferralLink")}
                                 >
                                     {copiedLink ? (
                                         <Check className="w-5 h-5 text-emerald-400" />
@@ -117,8 +117,8 @@ export function ReferralBanner() {
                 <div className="relative h-full container mx-auto max-w-[1200px] 2xl:max-w-[1480px] px-4 flex items-center">
                     <div className="w-full max-w-md bg-[#02040a]/80 backdrop-blur-md border border-emerald-500/20 rounded-2xl p-6 md:p-8 flex flex-col gap-6 shadow-xl ml-0 md:ml-8 lg:ml-16">
                         <div className="space-y-2 text-center">
-                            <h2 className="text-2xl md:text-2xl font-black text-[#FFD700]">Your Unique Referral Hub</h2>
-                            <p className="font-bold text-white text-sm md:text-base">Share & Grow Your Network</p>
+                            <h2 className="text-2xl md:text-2xl font-black text-[#FFD700]">{t("referralHubTitle")}</h2>
+                            <p className="font-bold text-white text-sm md:text-base">{t("referralHubSubtitle")}</p>
                         </div>
                         <div className="space-y-2">
                             <label className="text-xs font-bold text-[#FFD700] tracking-wider">{t("myReferralLink")}</label>
@@ -127,7 +127,7 @@ export function ReferralBanner() {
                                 <button
                                     onClick={handleCopyLink}
                                     className="p-2 hover:bg-[#00bc7d]/20 rounded-lg transition-colors text-[#FFD700] shrink-0 active:scale-95"
-                                    title="Copy referral link"
+                                    title={t("copyReferralLink")}
                                 >
                                     {copiedLink ? (
                                         <Check className="w-5 h-5 text-emerald-400" />

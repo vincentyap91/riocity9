@@ -691,7 +691,7 @@ export function Deposit() {
                         </div>
                         <div>
                             <div className="text-sm font-bold text-gray-400">{t("selectedMethod")}</div>
-                            <div className="text-lg font-black text-white">{selectedMethodType}</div>
+                            <div className="text-lg font-black text-white">{selectedMethodSummary}</div>
                         </div>
                     </div>
                     <Button variant="ghost" onClick={() => { setPauseAutoAdvance(true); setStep(1); }} className="text-[#00bc7d] hover:text-[#00a870] hover:bg-[#00bc7d]/10 h-auto py-1 px-3 text-base font-bold uppercase tracking-wider">
@@ -749,7 +749,7 @@ export function Deposit() {
                            setAmount(finalValue);
                          }}
                          placeholder="0.00"
-                         className="w-full bg-[#0f151f] border border-white/10 rounded-xl py-4 pl-16 pr-4 text-2xl font-black text-white focus:outline-none focus:border-[#00bc7d] transition-colors placeholder:text-gray-700"
+                         className="w-full bg-[#0f151f] border border-white/10 rounded-xl py-4 pl-16 pr-4 text-2xl font-black text-white focus:outline-none focus:border-[#00bc7d] transition-colors placeholder:text-gray-700 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                      />
                   </div>
 
@@ -830,7 +830,7 @@ export function Deposit() {
                 <div className="space-y-3">
                     <div className="bg-[#131b29] p-4 rounded-xl border border-white/5">
                         <div className="text-xs text-gray-500 font-bold uppercase mb-1">{t("bankName")}</div>
-                        <div className="text-white font-bold">Public Bank Berhad</div>
+                        <div className="text-white font-bold">{selectedProviderName || selectedMethod.name}</div>
                     </div>
 
                     <div className="bg-[#131b29] p-4 rounded-xl border border-white/5 flex items-center justify-between group">

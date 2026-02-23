@@ -4,8 +4,9 @@ import { HelpCenterSidebar } from '../components/shared/HelpCenterSidebar';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../components/ui/accordion';
 import { FilterTabs } from '../components/shared/FilterTabs';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { useLanguage } from '../contexts/LanguageContext';
 
-const INFORMATION_SECTIONS = [
+const INFORMATION_SECTIONS_EN = [
     {
         id: 'rules',
         tabs: [
@@ -84,46 +85,226 @@ const INFORMATION_SECTIONS = [
     },
 ] as const;
 
+const INFORMATION_SECTIONS_ZH_CN = [
+    {
+        id: 'rules',
+        tabs: [
+            {
+                id: 'slot',
+                label: '老虎机',
+                content: [
+                    { title: '老虎机公平规则', content: '老虎机游戏由供应商 RNG 系统与已审计的返奖标准管理。' },
+                    { title: '投注限额', content: '每款老虎机游戏都有不同的最低与最高投注限制，详情请查看游戏内说明。' },
+                    { title: '回合规则', content: '若发生断线，未完成回合将依照供应商的游戏恢复政策处理。' },
+                ]
+            },
+            {
+                id: 'poker',
+                label: '扑克',
+                content: [
+                    { title: '扑克桌规则', content: '扑克玩法遵循各游戏供应商发布的牌桌规则。' },
+                    { title: '筹码与注额政策', content: '注额区间与买入限制由房间设定，并可能因牌桌类型而调整。' },
+                    { title: '游戏公平性', content: '禁止串通、外挂与恶意行为，违者可能触发账户处理。' },
+                ]
+            },
+            {
+                id: 'live-casino',
+                label: '真人娱乐场',
+                content: [
+                    { title: '真人荷官合规', content: '真人娱乐场由供应商条款与实时监控机制运营。' },
+                    { title: '注单结算', content: '注单结果以直播供应商提供的官方赛果为准。' },
+                    { title: '网络异常处理', content: '网络不稳定时，未结算回合将按供应商中断规则处理。' },
+                ]
+            },
+        ],
+    },
+    {
+        id: 'faq',
+        tabs: [
+            {
+                id: 'general',
+                label: '常见问题',
+                content: [
+                    { title: '如何注册账号？', content: '点击注册，填写资料并完成账号验证后即可启用。' },
+                    { title: '如何联系客服？', content: '可通过悬浮客服按钮进入在线客服获取即时协助。' },
+                    { title: '为什么某些游戏无法进入？', content: '部分游戏可能因维护或供应商/服务器状态暂时不可用。' },
+                ]
+            },
+            {
+                id: 'payment',
+                label: '支付',
+                content: [
+                    { title: '充值通常多久到账？', content: '大多数充值会在几分钟内到账，部分渠道可能需要额外审核。' },
+                    { title: '为什么提现仍在处理中？', content: '提现可能因账户审核、优惠流水或支付通道延迟而待处理。' },
+                    { title: '是否有交易限额？', content: '有的，不同支付方式会显示对应的最低与最高金额。' },
+                ]
+            },
+        ],
+    },
+    {
+        id: 'video',
+        tabs: [
+            {
+                id: 'deposit',
+                label: '充值',
+                content: [
+                    { title: '如何充值', content: '选择支付方式，输入金额，并按页面指示完成付款。' },
+                    { title: '充值教学视频', content: '本区将提供逐步充值教学视频。' },
+                ]
+            },
+            {
+                id: 'withdrawal',
+                label: '提现',
+                content: [
+                    { title: '如何提现', content: '进入提现页面，选择账户资料，输入金额并确认提交。' },
+                    { title: '提现教学视频', content: '本区将提供逐步提现教学视频。' },
+                ]
+            },
+        ],
+    },
+] as const;
+
+const INFORMATION_SECTIONS_ZH_HK = [
+    {
+        id: 'rules',
+        tabs: [
+            {
+                id: 'slot',
+                label: '老虎機',
+                content: [
+                    { title: '老虎機公平規則', content: '老虎機遊戲由供應商 RNG 系統與已審核的派彩標準管理。' },
+                    { title: '投注限額', content: '每款老虎機遊戲都有不同最低與最高投注限制，詳情請查看遊戲內說明。' },
+                    { title: '回合規則', content: '若發生斷線，未完成回合將依供應商的遊戲恢復政策處理。' },
+                ]
+            },
+            {
+                id: 'poker',
+                label: '撲克',
+                content: [
+                    { title: '撲克桌規則', content: '撲克玩法遵循各遊戲供應商發布的牌桌規則。' },
+                    { title: '籌碼與注額政策', content: '注額區間與買入限制由房間設定，並可能因牌桌類型而調整。' },
+                    { title: '遊戲公平性', content: '禁止串通、外掛與惡意行為，違者可能觸發帳戶處理。' },
+                ]
+            },
+            {
+                id: 'live-casino',
+                label: '真人娛樂場',
+                content: [
+                    { title: '真人荷官合規', content: '真人娛樂場由供應商條款與即時監控機制營運。' },
+                    { title: '注單結算', content: '注單結果以直播供應商提供的官方賽果為準。' },
+                    { title: '網路異常處理', content: '網路不穩定時，未結算回合將按供應商中斷規則處理。' },
+                ]
+            },
+        ],
+    },
+    {
+        id: 'faq',
+        tabs: [
+            {
+                id: 'general',
+                label: '常見問題',
+                content: [
+                    { title: '如何註冊帳號？', content: '點擊註冊，填寫資料並完成帳號驗證後即可啟用。' },
+                    { title: '如何聯絡客服？', content: '可透過浮動客服按鈕進入線上客服取得即時協助。' },
+                    { title: '為什麼某些遊戲無法進入？', content: '部分遊戲可能因維護或供應商/伺服器狀態暫時不可用。' },
+                ]
+            },
+            {
+                id: 'payment',
+                label: '支付',
+                content: [
+                    { title: '充值通常多久到帳？', content: '大多數充值會在幾分鐘內到帳，部分渠道可能需要額外審核。' },
+                    { title: '為什麼提現仍在處理中？', content: '提現可能因帳戶審核、優惠流水或支付通道延遲而待處理。' },
+                    { title: '是否有交易限額？', content: '有，不同支付方式會顯示對應的最低與最高金額。' },
+                ]
+            },
+        ],
+    },
+    {
+        id: 'video',
+        tabs: [
+            {
+                id: 'deposit',
+                label: '充值',
+                content: [
+                    { title: '如何充值', content: '選擇支付方式，輸入金額，並按頁面指示完成付款。' },
+                    { title: '充值教學影片', content: '本區將提供逐步充值教學影片。' },
+                ]
+            },
+            {
+                id: 'withdrawal',
+                label: '提現',
+                content: [
+                    { title: '如何提現', content: '進入提現頁面，選擇帳戶資料，輸入金額並確認提交。' },
+                    { title: '提現教學影片', content: '本區將提供逐步提現教學影片。' },
+                ]
+            },
+        ],
+    },
+] as const;
+
 const DEFAULT_SECTION = 'rules';
 
-function normalizeSectionTab(value: string | null | undefined): string {
+function normalizeSectionTab(
+    value: string | null | undefined,
+    sections: readonly { id: string }[],
+): string {
     const normalized = (value || '').trim().toLowerCase();
-    return INFORMATION_SECTIONS.some((section) => section.id === normalized) ? normalized : DEFAULT_SECTION;
+    return sections.some((section) => section.id === normalized) ? normalized : DEFAULT_SECTION;
 }
 
-function normalizeSubtab(value: string | null | undefined, sectionId: string): string {
+function normalizeSubtab(
+    value: string | null | undefined,
+    sectionId: string,
+    sections: readonly { id: string; tabs: readonly { id: string }[] }[],
+): string {
     const normalized = (value || '').trim().toLowerCase();
-    const section = INFORMATION_SECTIONS.find((item) => item.id === sectionId) || INFORMATION_SECTIONS[0];
+    const section = sections.find((item) => item.id === sectionId) || sections[0];
     return section.tabs.some((tab) => tab.id === normalized) ? normalized : section.tabs[0].id;
 }
 
 export function InformationCenter() {
+    const { currentLang, t } = useLanguage();
     const location = useLocation();
     const navigate = useNavigate();
+    const informationSections =
+        currentLang.id === 'zh-cn'
+            ? INFORMATION_SECTIONS_ZH_CN
+            : currentLang.id === 'zh-hk'
+                ? INFORMATION_SECTIONS_ZH_HK
+                : INFORMATION_SECTIONS_EN;
     const params = new URLSearchParams(location.search);
-    const sectionParam = normalizeSectionTab(params.get('tab'));
+    const sectionParam = normalizeSectionTab(params.get('tab'), informationSections);
     const activeSection =
-        INFORMATION_SECTIONS.find((section) => section.id === sectionParam) || INFORMATION_SECTIONS[0];
-    const subtabParam = normalizeSubtab(params.get('subtab'), activeSection.id);
+        informationSections.find((section) => section.id === sectionParam) || informationSections[0];
+    const subtabParam = normalizeSubtab(params.get('subtab'), activeSection.id, informationSections);
     const activeInnerTab =
         activeSection.tabs.find((tab) => tab.id === subtabParam) || activeSection.tabs[0];
+    const pageTitle = t('footerInformationCenter');
+    const footerText = currentLang.id === 'zh-cn'
+        ? '如需进一步协助，请联系'
+        : currentLang.id === 'zh-hk'
+            ? '如需進一步協助，請聯絡'
+            : 'Please contact';
+    const supportText = currentLang.id === 'zh-cn' ? '客服支持' : currentLang.id === 'zh-hk' ? '客服支援' : 'Support';
+    const footerSuffix = currentLang.id === 'en' ? 'for further assistance.' : '。';
 
     React.useEffect(() => {
         const nextParams = new URLSearchParams(location.search);
-        const normalizedTab = normalizeSectionTab(nextParams.get('tab'));
-        const normalizedSubtab = normalizeSubtab(nextParams.get('subtab'), normalizedTab);
+        const normalizedTab = normalizeSectionTab(nextParams.get('tab'), informationSections);
+        const normalizedSubtab = normalizeSubtab(nextParams.get('subtab'), normalizedTab, informationSections);
 
         if (nextParams.get('tab') !== normalizedTab || nextParams.get('subtab') !== normalizedSubtab) {
             nextParams.set('tab', normalizedTab);
             nextParams.set('subtab', normalizedSubtab);
             navigate({ pathname: location.pathname, search: `?${nextParams.toString()}` }, { replace: true });
         }
-    }, [location.pathname, location.search, navigate]);
+    }, [informationSections, location.pathname, location.search, navigate]);
 
     const handleSubtabChange = (tabId: string) => {
         const nextParams = new URLSearchParams(location.search);
         nextParams.set('tab', activeSection.id);
-        nextParams.set('subtab', normalizeSubtab(tabId, activeSection.id));
+        nextParams.set('subtab', normalizeSubtab(tabId, activeSection.id, informationSections));
         navigate({ pathname: location.pathname, search: `?${nextParams.toString()}` });
     };
 
@@ -154,7 +335,7 @@ export function InformationCenter() {
                             <div className="absolute top-0 left-0 w-full h-full bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10"></div>
                         </div>
 
-                        <h1 className="relative z-10 text-2xl md:text-3xl font-bold text-white tracking-wide">Information Center</h1>
+                        <h1 className="relative z-10 text-2xl md:text-3xl font-bold text-white tracking-wide">{pageTitle}</h1>
                     </div>
 
                     {/* Accordion Content */}
@@ -187,7 +368,7 @@ export function InformationCenter() {
                     {/* Footer Text */}
                     <div className="px-6 py-6 text-center">
                         <p className="text-xs text-gray-500">
-                            Please contact <span className="font-bold text-gray-300">Support</span> for further assistance.
+                            {footerText} <span className="font-bold text-gray-300">{supportText}</span>{footerSuffix}
                         </p>
                     </div>
                 </div>

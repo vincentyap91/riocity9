@@ -96,6 +96,7 @@ function AppContent() {
   const [showBackToTop, setShowBackToTop] = useState(false);
   const [showBalance, setShowBalance] = useState(true);
   const [isWalletDropdownOpen, setIsWalletDropdownOpen] = useState(false);
+  const [walletRefreshSpinKey, setWalletRefreshSpinKey] = useState(0);
   const [isInitialLoading, setIsInitialLoading] = useState(true);
   const [showSuggestedMessages, setShowSuggestedMessages] = useState(false);
   const [chatMessage, setChatMessage] = useState('');
@@ -555,8 +556,13 @@ function AppContent() {
                                       </div>
                                       <div className="flex items-center gap-2 shrink-0">
                                         <span className="text-amber-400 text-xs font-black tabular-nums">{showBalance ? "20.00" : "******"}</span>
-                                        <button type="button" className="text-white hover:text-[#00bc7d] transition-colors p-1 rounded" aria-label="Refresh balances">
-                                          <RefreshCw size={14} />
+                                        <button
+                                          type="button"
+                                          className="text-white hover:text-[#00bc7d] transition-colors p-1 rounded"
+                                          aria-label="Refresh balances"
+                                          onClick={() => setWalletRefreshSpinKey((prev) => prev + 1)}
+                                        >
+                                          <RefreshCw key={walletRefreshSpinKey} size={14} className="animate-[spin_0.6s_linear_1]" />
                                         </button>
                                       </div>
                                     </div>

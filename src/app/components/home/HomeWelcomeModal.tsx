@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { XIcon } from 'lucide-react';
 import { Dialog, DialogClose, DialogContent, DialogTitle } from '../ui/dialog';
 import { Checkbox } from '../ui/checkbox';
+import { useLanguage } from '../../contexts/LanguageContext';
 import bannerPhoto from '@/assets/photo-banner.jpg';
 
 interface HomeWelcomeModalProps {
@@ -11,6 +12,7 @@ interface HomeWelcomeModalProps {
 }
 
 export function HomeWelcomeModal({ open, onOpenChange, onClose }: HomeWelcomeModalProps) {
+  const { t } = useLanguage();
   const [doNotShowForHour, setDoNotShowForHour] = useState(false);
   const scrollYRef = useRef(0);
   const bodyStyleRef = useRef({
@@ -89,21 +91,21 @@ export function HomeWelcomeModal({ open, onOpenChange, onClose }: HomeWelcomeMod
           >
             <DialogClose
               className="ring-offset-background focus:ring-ring data-[state=open]:bg-accent data-[state=open]:text-muted-foreground absolute top-4 right-4 rounded-xs opacity-70 transition-opacity hover:opacity-100 focus:ring-2 focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4"
-              aria-label="Close"
+              aria-label={t("close")}
             >
               <XIcon />
-              <span className="sr-only">Close</span>
+              <span className="sr-only">{t("close")}</span>
             </DialogClose>
             <div className="p-4 sm:p-5">
               <div className="space-y-1.5">
                 <DialogTitle className="text-base sm:text-sm font-bold text-white">
-                  {"\u{1F381} Welcome to RIoCity9!"}
+                  {`\u{1F381} ${t("homeWelcomeTitle")}`}
                 </DialogTitle>
                 <p className="text-sm sm:text-sm leading-tight text-white">
-                  Claim your <span className="font-black">50% Welcome Bonus</span> on your first deposit.
+                  {t("homeWelcomeClaim")} <span className="font-black">{t("homeWelcomeBonusHighlight")}</span> {t("homeWelcomeClaimSuffix")}
                 </p>
                 <p className="text-sm sm:text-sm leading-tight text-white">
-                  Plus, enjoy daily rewards, free spins & exclusive events!
+                  {t("homeWelcomePerks")}
                 </p>
               </div>
 
@@ -118,7 +120,7 @@ export function HomeWelcomeModal({ open, onOpenChange, onClose }: HomeWelcomeMod
                     onCheckedChange={(checked) => setDoNotShowForHour(checked === true)}
                     className="h-4 w-4 rounded-[3px] border-white/35 bg-transparent data-[state=checked]:bg-[#00bc7d] data-[state=checked]:border-[#00bc7d] data-[state=checked]:text-black"
                   />
-                  <span>Do not show again for the next hour</span>
+                  <span>{t("homeWelcomeDoNotShowHour")}</span>
                 </label>
 
                 <button
@@ -126,7 +128,7 @@ export function HomeWelcomeModal({ open, onOpenChange, onClose }: HomeWelcomeMod
                   onClick={() => handleOpenChange(false)}
                   className="w-full h-12 rounded-lg bg-[#45e882] hover:bg-[#39dd76] text-black font-bold text-[16px] transition-colors"
                 >
-                  Close
+                  {t("close")}
                 </button>
               </div>
             </div>

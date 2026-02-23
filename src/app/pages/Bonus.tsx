@@ -136,7 +136,7 @@ export function Bonus() {
               </div>
               <Button
                 onClick={() => setRecordModalOpen(true)}
-                className={`px-4 md:px-6 py-2 rounded-xl flex items-center justify-center gap-2 w-full sm:w-auto shrink-0 font-black ${PRIMARY_CTA_CLASS}`}
+                className={`px-4 md:px-6 py-2 rounded-lg flex items-center justify-center gap-2 w-full sm:w-auto shrink-0 font-black ${PRIMARY_CTA_CLASS}`}
               >
                 <RefreshCw className="w-4 h-4" />
                 Record
@@ -158,7 +158,7 @@ export function Bonus() {
                     <span className="text-gray-400 text-xs">Expires in:</span>
                     <span className="text-orange-400 text-xs font-bold">{reward.expiresIn}</span>
                   </div>
-                  <Button className={`w-full py-3 rounded-xl font-black ${PRIMARY_CTA_CLASS}`}>
+                  <Button className={`w-full py-3 rounded-lg font-black ${PRIMARY_CTA_CLASS}`}>
                     Claim Now
                   </Button>
                 </div>

@@ -214,7 +214,18 @@ export function GameCategoryWithRTP() {
   return (
     <section className="w-full">
       <SectionHeader
-        title={<span><span className="text-white">All</span> <span className="text-[#fb2c36]">Games</span></span>}
+        title={
+          <span>
+            {(() => {
+              const text = t("allGamesLabel");
+              const parts = text.split(" ");
+              if (parts.length > 1) {
+                return <><span className="text-white">{parts[0]}</span> <span className="text-[#fb2c36]">{parts.slice(1).join(" ")}</span></>;
+              }
+              return <span className="text-[#fb2c36]">{text}</span>;
+            })()}
+          </span>
+        }
         icon={
           <div className="p-1.5 bg-red-500/10 rounded-lg border border-red-500/20">
             <Flame className="text-red-500 w-5 h-5" />
@@ -374,7 +385,7 @@ export function GameCategoryWithRTP() {
                 onClick={() => setShowAllDesktopItems((prev) => !prev)}
                 className="h-10 px-6 rounded-full border border-white/10 bg-[#0f1923] text-white hover:bg-white/10"
               >
-                {showAllDesktopItems ? 'View Less' : 'View More'}
+                {showAllDesktopItems ? t("viewLess") : t("viewMore")}
               </Button>
             </div>
           )}

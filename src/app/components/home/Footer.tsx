@@ -17,9 +17,9 @@ export function Footer() {
           <div className="flex flex-col gap-4 col-span-3">
             <h3 className="text-white font-bold text-lg mb-2">{t("footerInformationCenter")}</h3>
             <ul className="space-y-3 text-gray-400">
-              <li><a href="/information-center?tab=rules" className="hover:text-emerald-400 transition-colors">Rules and Regulation</a></li>
+              <li><a href="/information-center?tab=rules" className="hover:text-emerald-400 transition-colors">{t("footerRulesAndRegulation")}</a></li>
               <li><a href="/information-center?tab=faq" className="hover:text-emerald-400 transition-colors">{t("footerFaq")}</a></li>
-              <li><a href="/information-center?tab=video" className="hover:text-emerald-400 transition-colors">Video Guide</a></li>
+              <li><a href="/information-center?tab=video" className="hover:text-emerald-400 transition-colors">{t("footerVideoGuide")}</a></li>
             </ul>
           </div>
 

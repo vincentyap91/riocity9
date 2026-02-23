@@ -115,12 +115,47 @@ const OTHER_METHODS = [
     icon: CheckCircle2
   }
 ];
+
+const BANK_TRANSFER_PROVIDERS = [
+  'Alliance Bank',
+  'AmBank',
+  'Bank Islam',
+  'CIMB Bank',
+  'Maybank',
+  'Public Bank',
+  'RHB Bank',
+];
+
+const EWALLET_PROVIDERS = [
+  'Boost',
+  'GrabPay',
+  "Touch n' Go",
+  'ShopeePay',
+  'JazzCash',
+];
+
+const CRYPTO_PROVIDERS = [
+  'USDT',
+  'BNB',
+  'ETH',
+];
 const WITHDRAW_TAB_VALUES = ['deposit', 'withdrawal'] as const;
 type WithdrawTabValue = (typeof WITHDRAW_TAB_VALUES)[number];
 
 function normalizeWithdrawTab(value: string | null | undefined): WithdrawTabValue {
   const normalized = (value || '').trim().toLowerCase();
   return WITHDRAW_TAB_VALUES.includes(normalized as WithdrawTabValue) ? (normalized as WithdrawTabValue) : 'withdrawal';
+}
+
+function resolveMethodType(method: { id?: string; name?: string; type?: string } | undefined): 'Bank Transfer' | 'E-Wallet' | 'Crypto' {
+  if (!method) return 'Bank Transfer';
+  if (method.type === 'Bank Transfer' || method.type === 'E-Wallet' || method.type === 'Crypto') {
+    return method.type;
+  }
+  const token = `${method.id ?? ''} ${method.name ?? ''}`.toLowerCase();
+  if (token.includes('crypto') || token.includes('usdt')) return 'Crypto';
+  if (token.includes('wallet') || token.includes('grabpay') || token.includes('jazzcash')) return 'E-Wallet';
+  return 'Bank Transfer';
 }
 
 export function Withdraw() {
@@ -135,9 +170,18 @@ export function Withdraw() {
   // Step 2 Form State
   const [amount, setAmount] = useState<string>('100');
   const [bankName, setBankName] = useState('');
-  const [accountName, setAccountName] = useState('RIO PAYMENTS SDN BHD');
-  const [accountNumber, setAccountNumber] = useState('88779897778899');
+  const [accountName, setAccountName] = useState('');
+  const [accountNumber, setAccountNumber] = useState('');
   const [referenceId, setReferenceId] = useState('');
+
+  const resolveProviderOptionFromMethod = (id: string): string => {
+    const method = [...POPULAR_METHODS, ...OTHER_METHODS].find((item) => item.id === id);
+    const name = method?.name ?? '';
+    if (BANK_TRANSFER_PROVIDERS.includes(name)) return name;
+    if (EWALLET_PROVIDERS.includes(name)) return name;
+    if (CRYPTO_PROVIDERS.includes(name)) return name;
+    return '';
+  };
 
   const handleTabChange = (tab: 'deposit' | 'withdrawal') => {
     setActiveTab(tab);
@@ -152,7 +196,12 @@ export function Withdraw() {
 
   const handleMethodSelect = (id: string) => {
     setPauseAutoAdvance(false);
+    if (selectedMethodId !== id) {
+      setAccountName('');
+      setAccountNumber('');
+    }
     setSelectedMethodId(id);
+    setBankName(resolveProviderOptionFromMethod(id));
   };
 
   const handleBack = () => {
@@ -168,7 +217,33 @@ export function Withdraw() {
   };
 
   const selectedMethod = getSelectedMethod();
-  const selectedMethodType = selectedMethod && 'type' in selectedMethod ? selectedMethod.type : 'Bank Transfer';
+  const selectedMethodType = resolveMethodType(selectedMethod);
+  const providerOptions = selectedMethodType === 'Bank Transfer'
+    ? BANK_TRANSFER_PROVIDERS
+    : selectedMethodType === 'E-Wallet'
+      ? EWALLET_PROVIDERS
+      : CRYPTO_PROVIDERS;
+  const providerLabel = selectedMethodType === 'E-Wallet'
+    ? 'E-Wallet'
+    : selectedMethodType === 'Crypto'
+      ? 'Cryptocurrency'
+      : t("bankName");
+  const providerPlaceholder = selectedMethodType === 'E-Wallet'
+    ? 'Select E-Wallet'
+    : selectedMethodType === 'Crypto'
+      ? 'Select Cryptocurrency'
+      : t("pleaseSelectBank");
+  const selectedMethodSummary =
+    selectedMethod && selectedMethod.name.toLowerCase() !== selectedMethodType.toLowerCase()
+      ? `${selectedMethodType} (${selectedMethod.name})`
+      : selectedMethodType;
+  const normalizedAmount = Number(amount);
+  const isValidAmount = Number.isFinite(normalizedAmount) && normalizedAmount > 0;
+  const hasRequiredWithdrawDetails =
+    bankName.trim().length > 0 &&
+    accountName.trim().length > 0 &&
+    accountNumber.trim().length > 0 &&
+    isValidAmount;
 
   React.useEffect(() => {
     const tab = normalizeWithdrawTab(searchParams.get('tab'));
@@ -351,25 +426,24 @@ export function Withdraw() {
                     </div>
                     <div className="flex-1">
                         <div className="text-xs text-gray-500 font-bold uppercase tracking-wider">{t("paymentMethod")}</div>
-                        <div className="text-sm font-bold text-white">{selectedMethodType}</div>
+                        <div className="text-sm font-bold text-white">{selectedMethodSummary}</div>
                     </div>
                 </div>
 
                 {/* Form Fields */}
                 <div className="space-y-4">
                     <div className="space-y-1.5">
-                        <label className="text-sm font-bold text-gray-400 pl-1">{t("bankName")}</label>
+                        <label className="text-sm font-bold text-gray-400 pl-1">{providerLabel}</label>
                         <div className="relative">
                             <select 
                                 value={bankName}
-                                onChange={(e) => setBankName(sanitizeTextInput(e.target.value))}
+                                onChange={(e) => setBankName(e.target.value)}
                                 className="w-full bg-[#0f151f] border border-white/10 rounded-xl px-4 pr-10 py-3.5 text-white focus:outline-none focus:border-[#00bc7d] transition-colors appearance-none cursor-pointer"
                             >
-                                <option value="" disabled>{t("pleaseSelectBank")}</option>
-                                <option value="maybank">Maybank</option>
-                                <option value="cimb">CIMB Bank</option>
-                                <option value="public">Public Bank</option>
-                                <option value="rhb">RHB Bank</option>
+                                <option value="" disabled>{providerPlaceholder}</option>
+                                {providerOptions.map((provider) => (
+                                  <option key={provider} value={provider}>{provider}</option>
+                                ))}
                             </select>
                             <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
                         </div>
@@ -381,7 +455,8 @@ export function Withdraw() {
                             type="text"
                             value={accountName}
                             onChange={(e) => setAccountName(sanitizeTextInput(e.target.value))}
-                            className="w-full bg-[#0f151f] border border-white/10 rounded-xl px-4 py-3.5 text-white font-bold focus:outline-none focus:border-[#00bc7d] transition-colors"
+                            placeholder="Enter account name"
+                            className="w-full bg-[#0f151f] border border-white/10 rounded-xl px-4 py-3.5 text-white font-bold focus:outline-none focus:border-[#00bc7d] transition-colors placeholder:text-gray-600 placeholder:font-normal"
                         />
                     </div>
 
@@ -391,7 +466,8 @@ export function Withdraw() {
                             type="text"
                             value={accountNumber}
                             onChange={(e) => setAccountNumber(sanitizeTextInput(e.target.value))}
-                            className="w-full bg-[#0f151f] border border-white/10 rounded-xl px-4 py-3.5 text-white font-bold tracking-wide focus:outline-none focus:border-[#00bc7d] transition-colors"
+                            placeholder="Enter account number"
+                            className="w-full bg-[#0f151f] border border-white/10 rounded-xl px-4 py-3.5 text-white font-bold tracking-wide focus:outline-none focus:border-[#00bc7d] transition-colors placeholder:text-gray-600 placeholder:font-normal"
                         />
                     </div>
 
@@ -432,7 +508,7 @@ export function Withdraw() {
                               setAmount(finalValue);
                             }}
                             placeholder="0.00"
-                            className="w-full bg-[#0f151f] border border-white/10 rounded-xl py-4 pl-16 pr-4 text-2xl font-black text-white focus:outline-none focus:border-[#00bc7d] transition-colors placeholder:text-gray-700"
+                            className="w-full bg-[#0f151f] border border-white/10 rounded-xl py-4 pl-16 pr-4 text-2xl font-black text-white focus:outline-none focus:border-[#00bc7d] transition-colors placeholder:text-gray-700 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                         />
                     </div>
 
@@ -466,6 +542,7 @@ export function Withdraw() {
                         {t("back")}
                     </Button>
                     <Button 
+                        disabled={!hasRequiredWithdrawDetails}
                         className={`h-12 rounded-xl text-base transition-all ${PRIMARY_CTA_CLASS}`}
                     >
                         {t("submit")}
