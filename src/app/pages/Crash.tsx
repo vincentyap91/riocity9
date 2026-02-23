@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { InsidePageHero } from '../components/shared/InsidePageHero';
 import { RefreshCw, DollarSign, Zap } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
+import { useAuth } from '../contexts/AuthContext';
 import { PAGE_ACCENT, SECTION_HEADER_TITLE_CLASS } from '../config/themeTokens';
 import { GameSearchBar } from '../components/shared/GameSearchBar';
 import { SlotsGameHoverOverlay } from '../components/shared/SlotsGameHoverOverlay';
@@ -49,6 +50,7 @@ const crashGames = [
 
 export function Crash() {
   const { t } = useLanguage();
+  const { isAuthenticated } = useAuth();
   const [searchQuery, setSearchQuery] = useState('');
   const [walletBalance] = useState('966.24');
   const [guaranteedRebate] = useState('5.00%');
@@ -91,34 +93,36 @@ export function Crash() {
         </div>
 
         {/* 4. Wallet + Guaranteed Rebate */}
-        <div className="w-full max-w-5xl mb-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div className="rounded-xl bg-[#16202c] border border-white/5 px-4 py-3 min-w-0 flex items-center justify-between gap-3">
-            <div className="flex flex-col gap-0.5 min-w-0">
-              <span className="text-[#ffbb33] text-xs font-bold uppercase tracking-wide">Wallet</span>
-              <span className="text-white text-xl md:text-2xl font-black tabular-nums leading-tight">{walletBalance}</span>
+        {isAuthenticated && (
+          <div className="w-full max-w-5xl mb-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="rounded-xl bg-[#16202c] border border-white/5 px-4 py-3 min-w-0 flex items-center justify-between gap-3">
+              <div className="flex flex-col gap-0.5 min-w-0">
+                <span className="text-[#ffbb33] text-xs font-bold uppercase tracking-wide">Wallet</span>
+                <span className="text-white text-xl md:text-2xl font-black tabular-nums leading-tight">{walletBalance}</span>
+              </div>
+              <button
+                type="button"
+                className="w-10 h-10 shrink-0 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white/10 transition-colors"
+                aria-label="Refresh wallet"
+              >
+                <RefreshCw className="w-5 h-5 text-white" />
+              </button>
             </div>
-            <button
-              type="button"
-              className="w-10 h-10 shrink-0 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white/10 transition-colors"
-              aria-label="Refresh wallet"
-            >
-              <RefreshCw className="w-5 h-5 text-white" />
-            </button>
-          </div>
-          <div className="rounded-xl bg-[#16202c] border border-white/5 px-4 py-3 min-w-0 flex items-center justify-between gap-3">
-            <div className="flex flex-col gap-0.5 min-w-0">
-              <span className="text-[#ffbb33] text-xs font-bold uppercase tracking-wide">Guaranteed Rebate</span>
-              <span className="text-white text-xl md:text-2xl font-black tabular-nums leading-tight">{guaranteedRebate}</span>
+            <div className="rounded-xl bg-[#16202c] border border-white/5 px-4 py-3 min-w-0 flex items-center justify-between gap-3">
+              <div className="flex flex-col gap-0.5 min-w-0">
+                <span className="text-[#ffbb33] text-xs font-bold uppercase tracking-wide">Guaranteed Rebate</span>
+                <span className="text-white text-xl md:text-2xl font-black tabular-nums leading-tight">{guaranteedRebate}</span>
+              </div>
+              <button
+                type="button"
+                className="w-10 h-10 shrink-0 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white/10 transition-colors"
+                aria-label="Rebate details"
+              >
+                <DollarSign className="w-5 h-5 text-white" />
+              </button>
             </div>
-            <button
-              type="button"
-              className="w-10 h-10 shrink-0 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white/10 transition-colors"
-              aria-label="Rebate details"
-            >
-              <DollarSign className="w-5 h-5 text-white" />
-            </button>
           </div>
-        </div>
+        )}
 
         {/* Search Bar - below wallet + rebate */}
         <GameSearchBar value={searchQuery} onChange={setSearchQuery} accent="amber" className="mb-12" />

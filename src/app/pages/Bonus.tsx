@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { useParams, useNavigate, useSearchParams } from "react-router-dom";
+import { useParams, useNavigate, useSearchParams, useLocation } from "react-router-dom";
 import { ArrowLeft, Dices, Ticket, Box, X, Wallet, RefreshCw, Clock } from "lucide-react";
 import { LuckyWheelIcon } from "../components/icons/LuckyWheelIcon";
 import { Button } from "../components/ui/button";
 import { useLanguage } from "../contexts/LanguageContext";
+import { useAuth } from "../contexts/AuthContext";
 import { InnerPageLayout } from "../components/shared/InnerPageLayout";
 import { PageSidebar, type PageSidebarItem } from "../components/shared/PageSidebar";
 import { ClaimRecordModal } from "../components/shared/ClaimRecordModal";
+import { LoginRequiredModal } from "../components/shared/LoginRequiredModal";
 import {
   RECORD_PAGE_ICON_BOX_CLASS,
   RECORD_PAGE_ICON_CLASS,
@@ -49,11 +51,20 @@ const TAB_CONFIG: Record<
 export function Bonus() {
   const { bonusType } = useParams<{ bonusType?: string }>();
   const navigate = useNavigate();
+  const location = useLocation();
   const [searchParams, setSearchParams] = useSearchParams();
   const { t } = useLanguage();
+  const { isAuthenticated } = useAuth();
   const [activeTab, setActiveTab] = useState<BonusTabId>(() => normalizeBonusTab(searchParams.get('tab') || bonusType));
   const [walletBalance] = useState("990.69");
   const [recordModalOpen, setRecordModalOpen] = useState(false);
+  const [showLoginModal, setShowLoginModal] = useState(false);
+
+  useEffect(() => {
+    if (isAuthenticated) return;
+    sessionStorage.setItem('redirectAfterLogin', `${location.pathname}${location.search}`);
+    navigate('/login', { replace: true });
+  }, [isAuthenticated, location.pathname, location.search, navigate]);
 
   // Normalize legacy /bonus/:bonusType route to /bonus?tab=...
   useEffect(() => {
@@ -159,7 +170,14 @@ export function Bonus() {
                     <span className="text-gray-400 text-xs">Expires in:</span>
                     <span className="text-orange-400 text-xs font-bold">{reward.expiresIn}</span>
                   </div>
-                  <Button className={`w-full py-3 rounded-lg font-black ${PRIMARY_CTA_CLASS}`}>
+                  <Button
+                    onClick={() => {
+                      if (!isAuthenticated) {
+                        setShowLoginModal(true);
+                      }
+                    }}
+                    className={`w-full py-3 rounded-lg font-black ${PRIMARY_CTA_CLASS}`}
+                  >
                     Claim Now
                   </Button>
                 </div>
@@ -174,6 +192,7 @@ export function Bonus() {
         onOpenChange={setRecordModalOpen}
         initialType={config.modalType}
       />
+      <LoginRequiredModal isOpen={showLoginModal} onOpenChange={setShowLoginModal} />
     </InnerPageLayout>
   );
 }

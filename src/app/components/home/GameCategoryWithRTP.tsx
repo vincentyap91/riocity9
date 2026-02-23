@@ -8,12 +8,15 @@ import { useHorizontalDragScroll } from '../../hooks/useHorizontalDragScroll';
 import { INITIAL_SLOTS, MOCK_CATEGORIES, GAME_CATEGORIES } from '../../config/gameData';
 import { DraggableScrollbar } from '../shared/DraggableScrollbar';
 import { GameModal } from '../shared/GameModal';
+import { LoginRequiredModal } from '../shared/LoginRequiredModal';
 import { SlotsGameHoverOverlay } from '../shared/SlotsGameHoverOverlay';
+import { useAuth } from '../../contexts/AuthContext';
 import { SPORTS_PROVIDERS } from '../../pages/Sports';
 import { LIVE_CASINO_PROVIDERS } from '../../pages/LiveCasino';
 
 export function GameCategoryWithRTP() {
   const { t } = useLanguage();
+  const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
   const { scrollRef: scrollContainerRef, handlers: dragScrollHandlers } = useHorizontalDragScroll();
 
@@ -21,6 +24,7 @@ export function GameCategoryWithRTP() {
   const [gamesData, setGamesData] = useState<any[]>(INITIAL_SLOTS);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedGame, setSelectedGame] = useState<{ title: string; bannerImage: string; startGamePath?: string } | null>(null);
+  const [showLoginModal, setShowLoginModal] = useState(false);
   const [showAllDesktopItems, setShowAllDesktopItems] = useState(false);
   const [isDesktop, setIsDesktop] = useState(
     typeof window !== 'undefined' ? window.innerWidth >= 1024 : true
@@ -194,6 +198,10 @@ export function GameCategoryWithRTP() {
   };
   const handleGameClick = (game: any) => {
     if (isUnderMaintenance(game)) return;
+    if (!isAuthenticated) {
+      setShowLoginModal(true);
+      return;
+    }
     if (activeCategory === 'hotGames') {
       navigate(getHotGameDetailPath(game));
       return;
@@ -398,6 +406,7 @@ export function GameCategoryWithRTP() {
         bannerImage={selectedGame?.bannerImage || ''}
         startGamePath={selectedGame?.startGamePath}
       />
+      <LoginRequiredModal isOpen={showLoginModal} onOpenChange={setShowLoginModal} />
     </section>
   );
 }
