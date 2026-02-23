@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { ArrowLeft, Dices, X, Wallet, RefreshCw, Ticket, Box, Clock } from 'lucide-react';
+import { LuckyWheelIcon } from '../components/icons/LuckyWheelIcon';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Button } from '../components/ui/button';
 import { useLanguage } from '../contexts/LanguageContext';
@@ -15,7 +16,7 @@ import {
 } from '../config/themeTokens';
 
 const BONUS_SIDEBAR_ITEMS: PageSidebarItem[] = [
-  { id: 'wheel', label: 'Spin Wheel Bonus', icon: Dices },
+  { id: 'wheel', label: 'Spin Wheel Bonus', icon: LuckyWheelIcon },
   { id: 'scratch', label: 'Voucher Scratch Bonus', icon: Ticket },
   { id: 'prize', label: 'Prize Box Bonus', icon: Box },
 ];
@@ -71,7 +72,7 @@ export function SpinWheelBonus() {
             {/* Title – same tokens as History Record */}
             <div className="flex items-center justify-start gap-3 pb-3 md:pb-4">
               <div className={RECORD_PAGE_ICON_BOX_CLASS}>
-                <Dices className={RECORD_PAGE_ICON_CLASS} />
+                <LuckyWheelIcon className={RECORD_PAGE_ICON_CLASS} />
               </div>
               <span className={RECORD_PAGE_TITLE_CLASS}>{t("spinWheelBonus")}</span>
             </div>
@@ -133,4 +134,3 @@ export function SpinWheelBonus() {
     </InnerPageLayout>
   );
 }
-

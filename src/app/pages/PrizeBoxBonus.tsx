@@ -1,7 +1,9 @@
+```
 import React, { useState } from 'react';
-import { 
+import {
   ArrowLeft, Box, X, Wallet, Clock, RefreshCw, Dices, Ticket
 } from 'lucide-react';
+import { LuckyWheelIcon } from '../components/icons/LuckyWheelIcon';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Button } from '../components/ui/button';
 import { useLanguage } from '../contexts/LanguageContext';
@@ -17,7 +19,7 @@ import {
 } from '../config/themeTokens';
 
 const BONUS_SIDEBAR_ITEMS: PageSidebarItem[] = [
-  { id: 'wheel', label: 'Spin Wheel Bonus', icon: Dices },
+  { id: 'wheel', label: 'Spin Wheel Bonus', icon: LuckyWheelIcon },
   { id: 'scratch', label: 'Voucher Scratch Bonus', icon: Ticket },
   { id: 'prize', label: 'Prize Box Bonus', icon: Box },
 ];
@@ -41,9 +43,9 @@ export function PrizeBoxBonus() {
 
   return (
     <InnerPageLayout className="overflow-x-hidden">
-      <div className={`container mx-auto max-w-[1024px] ${MOBILE.container} pb-20 md:pb-8`}>
+      <div className={`container mx - auto max - w - [1024px] ${ MOBILE.container } pb - 20 md: pb - 8`}>
         {/* Top Header – same layout and gap as Profile */}
-        <div className={`flex items-center ${MOBILE.gapSm} ${MOBILE.headerMb} px-2`}>
+        <div className={`flex items - center ${ MOBILE.gapSm } ${ MOBILE.headerMb } px - 2`}>
           <button
             onClick={() => navigate('/')}
             className="h-10 w-10 rounded-full bg-black/20 border border-white/10 flex items-center justify-center hover:bg-white/10 transition-colors"
@@ -51,7 +53,7 @@ export function PrizeBoxBonus() {
           >
             <ArrowLeft className="w-5 h-5 text-white" />
           </button>
-          <span className={`text-white ${MOBILE.pageTitle}`}>{t("rewardCentre")}</span>
+          <span className={`text - white ${ MOBILE.pageTitle } `}>{t("rewardCentre")}</span>
           <button
             onClick={() => navigate('/')}
             className="ml-auto h-10 w-10 rounded-full bg-black/20 border border-white/10 flex items-center justify-center hover:bg-white/10 transition-colors"
@@ -65,7 +67,7 @@ export function PrizeBoxBonus() {
           <PageSidebar
             items={BONUS_SIDEBAR_ITEMS}
             activeId={activeId}
-            onSelect={(id) => navigate(`/bonus?tab=${id}`)}
+            onSelect={(id) => navigate(`/ bonus ? tab = ${ id } `)}
           />
 
           {/* Main Content Area - mobile friendly padding */}
@@ -91,7 +93,7 @@ export function PrizeBoxBonus() {
               </div>
               <Button
                 onClick={() => setRecordModalOpen(true)}
-                className={`px-4 md:px-6 py-2 rounded-xl flex items-center justify-center gap-2 w-full sm:w-auto shrink-0 font-black ${PRIMARY_CTA_CLASS}`}
+                className={`px - 4 md: px - 6 py - 2 rounded - xl flex items - center justify - center gap - 2 w - full sm: w - auto shrink - 0 font - black ${ PRIMARY_CTA_CLASS } `}
               >
                 <RefreshCw className="w-4 h-4" />
                 Record
@@ -115,7 +117,7 @@ export function PrizeBoxBonus() {
                     <span className="text-gray-400 text-xs">Expires in:</span>
                     <span className="text-orange-400 text-xs font-bold">{reward.expiresIn}</span>
                   </div>
-                  <Button className={`w-full py-3 rounded-xl font-black ${PRIMARY_CTA_CLASS}`}>
+                  <Button className={`w - full py - 3 rounded - xl font - black ${ PRIMARY_CTA_CLASS } `}>
                     Claim Now
                   </Button>
                 </div>
@@ -135,4 +137,3 @@ export function PrizeBoxBonus() {
     </InnerPageLayout>
   );
 }
-

@@ -1,25 +1,26 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { 
-    Gift, Ticket, Box, Home, Flame, Gamepad2, Dices, 
-    Fish, ArrowLeftRight, Club, Plane, Megaphone, Users, 
+import {
+    Gift, Ticket, Box, Home, Flame, Gamepad2, Dices,
+    Fish, ArrowLeftRight, Club, Plane, Megaphone, Users,
     HandCoins, Crown, MessageCircle, Facebook, Send, Phone,
     Sparkles, ChevronUp, History
 } from 'lucide-react';
 import { FootballIcon } from '../icons/FootballIcon';
+import { LuckyWheelIcon } from '../icons/LuckyWheelIcon';
 import { useAuth } from '../../contexts/AuthContext';
 import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
+    Accordion,
+    AccordionContent,
+    AccordionItem,
+    AccordionTrigger,
 } from "../ui/accordion";
 import { Button } from "../ui/button";
 import { useLanguage } from "../../contexts/LanguageContext";
 
 // --- Configuration ---
 const rewardItems = [
-    { labelKey: "spinWheelBonus", icon: Dices, path: "/bonus?tab=wheel", color: "text-yellow-400" },
+    { labelKey: "spinWheelBonus", icon: LuckyWheelIcon, path: "/bonus?tab=wheel", color: "text-yellow-400" },
     { labelKey: "voucherScratchBonus", icon: Ticket, path: "/bonus?tab=scratch", color: "text-pink-400" },
     { labelKey: "prizeBoxBonus", icon: Box, path: "/bonus?tab=prize", color: "text-orange-400" },
 ];
@@ -54,7 +55,7 @@ export function SidebarMenu({ onItemClick }: SidebarMenuProps) {
 
     return (
         <div className="flex flex-col h-full bg-[#02040a] text-white overflow-y-auto custom-scrollbar">
-            
+
             {/* Reward Centre Accordion - 完美还原截图卡片样式 */}
             <div className="px-4 pt-4 pb-4">
                 <Accordion type="single" collapsible defaultValue="rewards" className="w-full">
@@ -74,9 +75,9 @@ export function SidebarMenu({ onItemClick }: SidebarMenuProps) {
                         <AccordionContent className="p-0">
                             <div className="flex flex-col py-2">
                                 {rewardItems.map((item, idx) => (
-                                    <Link 
-                                        key={idx} 
-                                        to={item.path} 
+                                    <Link
+                                        key={idx}
+                                        to={item.path}
                                         onClick={onItemClick}
                                         className="flex items-center gap-4 px-5 py-3.5 hover:bg-white/5 transition-colors group"
                                     >
@@ -97,21 +98,20 @@ export function SidebarMenu({ onItemClick }: SidebarMenuProps) {
                 {menuItems.map((item, idx) => {
                     // Simple active check
                     const isActive = location.pathname === item.path || (item.path === '/' && location.pathname === '');
-                    
+
                     return (
-                        <Link 
-                            key={idx} 
+                        <Link
+                            key={idx}
                             to={item.path}
                             onClick={onItemClick}
-                            className={`relative flex items-center gap-4 px-4 py-3.5 rounded-xl transition-all group overflow-hidden ${
-                                isActive 
-                                ? 'bg-[#0f1115] text-[#00ff88]' 
+                            className={`relative flex items-center gap-4 px-4 py-3.5 rounded-xl transition-all group overflow-hidden ${isActive
+                                ? 'bg-[#0f1115] text-[#00ff88]'
                                 : 'text-white hover:bg-white/5'
-                            }`}
+                                }`}
                         >
                             <item.icon className={`w-5 h-5 ${isActive ? 'text-[#00ff88]' : 'text-white'} transition-colors`} />
                             <span className={`font-bold text-[15px] tracking-wide ${isActive ? 'text-[#00ff88]' : 'text-white'}`}>{t(item.labelKey as any)}</span>
-                            
+
                             {/* 右侧激活指示条 */}
                             {isActive && (
                                 <div className="absolute right-0 top-1/2 -translate-y-1/2 h-6 w-1 bg-[#00ff88] rounded-l-full shadow-[0_0_8px_rgba(0,255,136,0.6)]"></div>
@@ -123,7 +123,7 @@ export function SidebarMenu({ onItemClick }: SidebarMenuProps) {
 
             {/* Bottom Section */}
             <div className="p-3 mt-auto space-y-3">
-                
+
                 {/* Live Chat Card - click opens live chat popup and closes sidebar */}
                 <div
                     role="button"

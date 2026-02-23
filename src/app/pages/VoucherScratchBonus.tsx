@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { 
+import {
   ArrowLeft, Ticket, X, Wallet, RefreshCw, Dices, Box, Clock
 } from 'lucide-react';
+import { LuckyWheelIcon } from '../components/icons/LuckyWheelIcon';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Button } from '../components/ui/button';
 import { useLanguage } from '../contexts/LanguageContext';
@@ -17,7 +18,7 @@ import {
 } from '../config/themeTokens';
 
 const BONUS_SIDEBAR_ITEMS: PageSidebarItem[] = [
-  { id: 'wheel', label: 'Spin Wheel Bonus', icon: Dices },
+  { id: 'wheel', label: 'Spin Wheel Bonus', icon: LuckyWheelIcon },
   { id: 'scratch', label: 'Voucher Scratch Bonus', icon: Ticket },
   { id: 'prize', label: 'Prize Box Bonus', icon: Box },
 ];
@@ -135,4 +136,3 @@ export function VoucherScratchBonus() {
     </InnerPageLayout>
   );
 }
-

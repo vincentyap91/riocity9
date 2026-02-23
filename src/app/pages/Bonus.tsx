@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 import { ArrowLeft, Dices, Ticket, Box, X, Wallet, RefreshCw, Clock } from "lucide-react";
+import { LuckyWheelIcon } from "../components/icons/LuckyWheelIcon";
 import { Button } from "../components/ui/button";
 import { useLanguage } from "../contexts/LanguageContext";
 import { InnerPageLayout } from "../components/shared/InnerPageLayout";
@@ -15,7 +16,7 @@ import {
 } from "../config/themeTokens";
 
 const BONUS_SIDEBAR_ITEMS: PageSidebarItem[] = [
-  { id: "wheel", label: "Spin Wheel Bonus", icon: Dices },
+  { id: "wheel", label: "Spin Wheel Bonus", icon: LuckyWheelIcon },
   { id: "scratch", label: "Voucher Scratch Bonus", icon: Ticket },
   { id: "prize", label: "Prize Box Bonus", icon: Box },
 ];
@@ -40,7 +41,7 @@ const TAB_CONFIG: Record<
   BonusTabId,
   { titleKey: string; Icon: typeof Dices; modalType: "spinwheel" | "scratch" | "prize" }
 > = {
-  wheel: { titleKey: "spinWheelBonus", Icon: Dices, modalType: "spinwheel" },
+  wheel: { titleKey: "spinWheelBonus", Icon: LuckyWheelIcon as any, modalType: "spinwheel" },
   scratch: { titleKey: "voucherScratchBonus", Icon: Ticket, modalType: "scratch" },
   prize: { titleKey: "prizeBoxBonus", Icon: Box, modalType: "prize" },
 };
