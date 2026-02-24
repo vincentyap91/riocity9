@@ -3,7 +3,7 @@ import { useLanguage } from "../contexts/LanguageContext";
 import { useAuth } from "../contexts/AuthContext";
 import { useLocation } from "react-router-dom";
 import { InsidePageHero } from "../components/shared/InsidePageHero";
-import { PAGE_ACCENT } from "../config/themeTokens";
+import { GAME_PAGE_LAYOUT, PAGE_ACCENT } from "../config/themeTokens";
 import { GameSearchBar } from "../components/shared/GameSearchBar";
 import { LoginRequiredModal } from "../components/shared/LoginRequiredModal";
 import { SlotsGameHoverOverlay } from "../components/shared/SlotsGameHoverOverlay";
@@ -55,24 +55,24 @@ export function AllGame() {
       <InsidePageHero image={ALL_GAMES_BANNER} />
 
       {/* Title section – color from banner (gold) */}
-      <div className="mt-0 md:mt-[-20px] relative z-20 w-full flex flex-col items-center gap-6 py-6 pb-0">
+      <div className={GAME_PAGE_LAYOUT.titleSection}>
         <h2 className={PAGE_ACCENT.allGame.pageTitleClass}>
           {t("allGamesLabel")}
         </h2>
       </div>
 
       {/* Main content - same as Poker: search + grid */}
-      <div className="container mx-auto max-w-[1200px] px-4 relative z-10 pb-20 flex flex-col items-center">
-        <GameSearchBar value={searchQuery} onChange={setSearchQuery} className="mb-12" />
+      <div className={GAME_PAGE_LAYOUT.contentContainer}>
+        <GameSearchBar value={searchQuery} onChange={setSearchQuery} className={GAME_PAGE_LAYOUT.searchBarSpacing} />
 
         {/* Grid - same as Poker */}
         <div className="w-full">
           {filteredGames.length > 0 ? (
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-4 lg:gap-6 justify-items-center">
+            <div className={GAME_PAGE_LAYOUT.cardGrid}>
               {filteredGames.map((game) => (
                 <div
                   key={game.id}
-                  className="flex flex-col items-start gap-2 md:gap-3 group cursor-pointer w-full max-w-[214px]"
+                  className={`${GAME_PAGE_LAYOUT.cardWrap} group cursor-pointer`}
                   onClick={() => {
                     if (isAuthenticated) return;
                     sessionStorage.setItem('redirectAfterLogin', `${location.pathname}${location.search}`);
@@ -87,7 +87,7 @@ export function AllGame() {
                     />
                     <SlotsGameHoverOverlay />
                   </div>
-                  <div className="flex flex-col gap-1">
+                  <div className={GAME_PAGE_LAYOUT.cardTextBlock}>
                     <span className="text-xs md:text-sm font-bold text-white transition-colors">
                       {game.name}
                     </span>

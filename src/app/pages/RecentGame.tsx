@@ -3,7 +3,7 @@ import { useLanguage } from "../contexts/LanguageContext";
 import { useAuth } from "../contexts/AuthContext";
 import { useLocation } from "react-router-dom";
 import { InnerPageLayout } from "../components/shared/InnerPageLayout";
-import { PAGE_ACCENT } from "../config/themeTokens";
+import { GAME_PAGE_LAYOUT, PAGE_ACCENT } from "../config/themeTokens";
 import { GameSearchBar } from "../components/shared/GameSearchBar";
 import { LoginRequiredModal } from "../components/shared/LoginRequiredModal";
 import { SlotsGameHoverOverlay } from "../components/shared/SlotsGameHoverOverlay";
@@ -63,9 +63,9 @@ export function RecentGame() {
 
   return (
     <InnerPageLayout>
-      <div className="flex flex-col gap-8 pb-24 md:pb-0 flex-1 overflow-x-hidden animate-in fade-in duration-500">
+      <div className="flex flex-col gap-8 pt-10 pb-24 md:pb-0 flex-1 overflow-x-hidden animate-in fade-in duration-500">
         {/* Simple Title Section */}
-        <div className="mt-8 relative z-20 w-full flex flex-col items-center gap-6 py-6 pb-0">
+        <div className={GAME_PAGE_LAYOUT.titleSection}>
           <div className="absolute left-4 top-1/2 -translate-y-1/2 hidden xl:block">
             <div className="w-24 h-24 rounded-full bg-[#00bc7d] opacity-20 blur-[50px]"></div>
           </div>
@@ -79,17 +79,17 @@ export function RecentGame() {
         </div>
 
         {/* Main Content Area */}
-        <div className="container mx-auto max-w-[1200px] px-4 relative z-10 pb-20 flex flex-col items-center">
+        <div className={GAME_PAGE_LAYOUT.contentContainer}>
           {/* Search Bar */}
-          <GameSearchBar value={searchQuery} onChange={setSearchQuery} className="mb-12" />
+          <GameSearchBar value={searchQuery} onChange={setSearchQuery} className={GAME_PAGE_LAYOUT.searchBarSpacing} />
 
           {/* Games Grid - same grid and spacing as Slots / LiveCasino */}
           <div className="w-full">
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-4 lg:gap-6 justify-items-center">
+            <div className={GAME_PAGE_LAYOUT.cardGrid}>
               {filteredGames.map((game) => (
                 <div
                   key={game.id}
-                  className="flex flex-col items-start gap-2 md:gap-3 group cursor-pointer w-full max-w-[214px]"
+                  className={`${GAME_PAGE_LAYOUT.cardWrap} group cursor-pointer`}
                   onClick={() => {
                     if (isAuthenticated) return;
                     sessionStorage.setItem('redirectAfterLogin', `${location.pathname}${location.search}`);
@@ -105,7 +105,7 @@ export function RecentGame() {
                     {/* Hover Overlay */}
                     <SlotsGameHoverOverlay />
                   </div>
-                  <div className="flex flex-col gap-1 md:gap-1.5 mt-1 md:mt-2 w-full px-0.5">
+                  <div className={GAME_PAGE_LAYOUT.cardTextBlock}>
                     <span className="text-white group-hover:text-emerald-500 font-bold text-xs md:text-sm transition-colors">
                       {game.name}
                     </span>

@@ -727,7 +727,7 @@ function AppContent() {
                     </div>
                   </div>
                 ) : (
-                  <>
+                  <div className="hidden md:flex items-center gap-2 sm:gap-3">
                     <Button
                       asChild
                       variant="ghost"
@@ -737,11 +737,11 @@ function AppContent() {
                     </Button>
                     <Button
                       asChild
-                      className="bg-[#00ff88] hover:bg-[#00dd76] text-black font-extrabold rounded-full px-4 sm:px-6 py-2 h-8 sm:h-9 text-[10px] sm:text-sm tracking-wider transition-all hover:scale-105"
+                      className="bg-gradient-to-b from-yellow-400 via-amber-400 to-amber-500 hover:brightness-110 text-black font-extrabold rounded-full px-4 sm:px-6 py-2 h-8 sm:h-9 text-[10px] sm:text-sm tracking-wider transition-all shadow-[0_4px_16px_rgba(251,191,36,0.30)]"
                     >
                       <Link to="/register">{t("joinNow")}</Link>
                     </Button>
-                  </>
+                  </div>
                 )}
               </div>
 

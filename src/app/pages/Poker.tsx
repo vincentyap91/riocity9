@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { InsidePageHero } from "../components/shared/InsidePageHero";
 import { useLanguage } from "../contexts/LanguageContext";
-import { PAGE_ACCENT } from "../config/themeTokens";
+import { GAME_PAGE_LAYOUT, PAGE_ACCENT } from "../config/themeTokens";
 import { GameSearchBar } from "../components/shared/GameSearchBar";
 import { useAuth } from "../contexts/AuthContext";
 import { LoginRequiredModal } from "../components/shared/LoginRequiredModal";
@@ -47,28 +47,28 @@ export function Poker() {
         <InsidePageHero image={pokerBanner} />
 
       {/* Simple Title Section – color from provider / banner */}
-      <div className="mt-[-20px] relative z-20 w-full flex flex-col items-center gap-6 py-6 pb-0">
+      <div className={GAME_PAGE_LAYOUT.titleSection}>
         <h2 className={PAGE_ACCENT.poker.pageTitleClass}>
           {t("poker")}
         </h2>
       </div>
 
       {/* Main Content Area */}
-      <div className="container mx-auto max-w-[1200px] px-4 relative z-10 pb-20 flex flex-col items-center">
+      <div className={GAME_PAGE_LAYOUT.contentContainer}>
         
         {/* Search Bar */}
-        <GameSearchBar value={searchQuery} onChange={setSearchQuery} className="mb-12" />
+        <GameSearchBar value={searchQuery} onChange={setSearchQuery} className={GAME_PAGE_LAYOUT.searchBarSpacing} />
 
         {/* Providers Grid */}
         <div className="w-full">
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-4 lg:gap-6 justify-items-center">
+        <div className={GAME_PAGE_LAYOUT.cardGrid}>
           {filteredProviders.map((provider) => (
             <div
               key={provider.id}
               onClick={() => {
                 if (!isAuthenticated) setShowLoginModal(true);
               }}
-              className="flex flex-col items-start gap-2 md:gap-3 group cursor-pointer w-full max-w-[214px]"
+              className={`${GAME_PAGE_LAYOUT.cardWrap} group cursor-pointer`}
             >
               <div className="relative w-full aspect-square rounded-2xl overflow-hidden ring-1 ring-white/10 transition-all duration-300 bg-[#1a2536] group-hover:ring-emerald-500/30 group-hover:shadow-[0_0_30px_-5px_rgba(16,185,129,0.2)]">
                 <img
@@ -79,7 +79,7 @@ export function Poker() {
                 {/* Hover Overlay from Screenshot */}
                 <SlotsGameHoverOverlay />
               </div>
-              <div className="flex flex-col gap-1">
+              <div className={GAME_PAGE_LAYOUT.cardTextBlock}>
                 <span className="text-xs md:text-sm font-bold text-white group-hover:text-emerald-500 transition-colors">
                   {provider.name}
                 </span>

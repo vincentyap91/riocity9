@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { AnnouncementBar } from '../components/home/AnnouncementBar';
 import { HeroSection } from '../components/home/HeroSection';
 import { JackpotBoard } from '../components/home/JackpotBoard';
@@ -106,6 +107,28 @@ export function Home() {
       {/* Top Section: Hero, Announcement, Jackpot – design system padding & gap */}
       <div className={`container mx-auto ${HOME_PAGE.maxWidth} ${HOME_PAGE.topBlockPadding} flex flex-col ${HOME_PAGE.sectionGap}`}>
         <HeroSection />
+
+        {/* Mobile-only: Login / Join Now buttons below hero banner */}
+        {!isAuthenticated && (
+          <div className="flex md:hidden items-center gap-3">
+            {/* Log In – dark outline pill, consistent with navbar dark theme */}
+            <Link
+              to="/login"
+              className="flex-1 flex items-center justify-center h-12 rounded-full border-2 border-white/20 bg-[#0d1520] hover:border-[#00bc7d]/60 hover:bg-[#131b29] text-white font-bold text-sm tracking-wider transition-all active:scale-95"
+            >
+              {t("login")}
+            </Link>
+
+            {/* Join Now – gold gradient pill, matches YELLOW_CTA theme token */}
+            <Link
+              to="/register"
+              className="flex-1 flex items-center justify-center h-12 rounded-full bg-gradient-to-b from-yellow-400 via-amber-400 to-amber-500 hover:brightness-110 text-black font-extrabold text-sm tracking-wider transition-all active:scale-95 shadow-[0_4px_16px_rgba(251,191,36,0.30)]"
+            >
+              {t("joinNow")}
+            </Link>
+          </div>
+        )}
+
         <AnnouncementBar />
         <JackpotBoard />
       </div>
@@ -229,4 +252,3 @@ export function Home() {
     </div>
   );
 }
-

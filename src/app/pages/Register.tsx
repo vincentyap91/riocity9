@@ -501,7 +501,7 @@ export function Register() {
                     data-testid="register-submit"
                     type="submit"
                     disabled={isLoading}
-                    className="w-full h-12 bg-[#00bc7d] hover:bg-[#00a870] text-black font-black text-base rounded-xl shadow-[0_0_20px_-5px_rgba(16,185,129,0.6)] transition-all hover:scale-[1.02] hover:-translate-y-1 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full h-12 bg-[#00ff88] hover:bg-[#00a870] text-black font-black text-base rounded-xl shadow-[0_0_20px_-5px_rgba(16,185,129,0.6)] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                     {isLoading ? (
                         <div className="flex items-center gap-2">

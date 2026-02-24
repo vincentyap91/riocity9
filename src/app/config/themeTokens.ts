@@ -3,7 +3,7 @@
  * Per-page accent colors match provider navigation or banner for each category.
  */
 
-const baseTitle = "text-4xl font-bold tracking-tight";
+const baseTitle = "text-3xl md:text-4xl font-bold tracking-tight";
 const baseSectionIconBox =
   "w-10 h-10 rounded-lg flex items-center justify-center";
 const baseSectionIcon = "w-5 h-5";
@@ -168,5 +168,23 @@ export const HOME_PAGE = {
   card: "bg-[#1a2230] border border-white/5 rounded-2xl overflow-hidden",
   /** Bottom padding for mobile nav clearance */
   bottomPadding: "pb-20 md:pb-8",
+} as const;
+
+/** Shared Slots-style layout spacing for game listing pages */
+export const GAME_PAGE_LAYOUT = {
+  /** Title wrapper below hero */
+  titleSection: "mt-[-20px] relative z-20 w-full flex flex-col items-center gap-6 py-6 pb-0",
+  /** Main content wrapper */
+  contentContainer:
+    "container mx-auto max-w-[1200px] px-4 relative z-10 pb-20 flex flex-col items-center",
+  /** Search bar bottom spacing */
+  searchBarSpacing: "mb-12",
+  /** Game/provider grid spacing */
+  cardGrid:
+    "grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-4 lg:gap-6 justify-items-center",
+  /** Card wrapper spacing */
+  cardWrap: "flex flex-col items-start gap-2 md:gap-3 w-full max-w-[214px]",
+  /** Card text block spacing */
+  cardTextBlock: "flex flex-col gap-1.5 md:gap-2 mt-1 md:mt-2 w-full px-0.5",
 } as const;
 

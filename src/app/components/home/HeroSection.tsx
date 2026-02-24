@@ -105,7 +105,7 @@ export function HeroSection() {
         </div>
 
         {/* Side Banners (Stacked) */}
-        <div className="lg:col-span-4 h-full">
+        <div className="hidden md:block lg:col-span-4 h-full">
             {/* Desktop: Stacked Layout */}
             <div className="hidden lg:flex flex-col gap-4 h-full">
                 {sideBanners.map((banner) => (

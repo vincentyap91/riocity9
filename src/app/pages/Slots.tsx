@@ -4,7 +4,7 @@ import { Grid, RefreshCw, DollarSign } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useAuth } from '../contexts/AuthContext';
-import { PAGE_ACCENT, SECTION_HEADER_TITLE_CLASS } from '../config/themeTokens';
+import { GAME_PAGE_LAYOUT, PAGE_ACCENT, SECTION_HEADER_TITLE_CLASS } from '../config/themeTokens';
 import { useHorizontalDragScroll } from '../hooks/useHorizontalDragScroll';
 import { DraggableScrollbar } from '../components/shared/DraggableScrollbar';
 import { GameSearchBar } from '../components/shared/GameSearchBar';
@@ -182,7 +182,7 @@ export function Slots({
             </div>
 
             {/* Main Content Area */}
-            <div className="container mx-auto max-w-[1200px] px-4 relative z-10 pb-20 flex flex-col items-center">
+            <div className={GAME_PAGE_LAYOUT.contentContainer}>
 
                 {/* 3. Provider Navigation */}
                 {!hideProviderNav && (
@@ -295,7 +295,7 @@ export function Slots({
                 )}
 
                 {/* Search Bar - below wallet + rebate */}
-                <GameSearchBar value={searchQuery} onChange={setSearchQuery} accent="pink" className="mb-12" />
+                <GameSearchBar value={searchQuery} onChange={setSearchQuery} accent="pink" className={GAME_PAGE_LAYOUT.searchBarSpacing} />
 
                 {/* 5. Section Header + 6. Game Grid */}
                 <div className="w-full flex flex-col gap-6">
@@ -310,7 +310,7 @@ export function Slots({
                     </div>
 
                     {/* Game Grid */}
-                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-4 lg:gap-6 justify-items-center">
+                    <div className={GAME_PAGE_LAYOUT.cardGrid}>
                         {filteredGames.map((game) => {
                             const Wrapper: any = game.slug ? Link : 'div';
                             const wrapperProps = game.slug ? { to: `/slots/${game.slug}` } : {};
@@ -318,7 +318,7 @@ export function Slots({
                                 <Wrapper
                                     key={game.id}
                                     {...wrapperProps}
-                                    className="flex flex-col items-start gap-2 md:gap-3 group cursor-pointer w-full max-w-[214px]"
+                                    className={`${GAME_PAGE_LAYOUT.cardWrap} group cursor-pointer`}
                                     onClick={(event: React.MouseEvent) => {
                                         if (isAuthenticated) {
                                             return;
@@ -341,8 +341,8 @@ export function Slots({
                                     </div>
 
                                     {/* Content */}
-                                    <div className="flex flex-col gap-1.5 md:gap-2 mt-1 md:mt-2 w-full">
-                                        <h3 className="text-white font-bold text-xs md:text-sm lg:text-base transition-colors w-full px-0.5 truncate">
+                                    <div className={GAME_PAGE_LAYOUT.cardTextBlock}>
+                                        <h3 className="text-white font-bold text-xs md:text-sm lg:text-base transition-colors w-full truncate">
                                             {game.title}
                                         </h3>
 
