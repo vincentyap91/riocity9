@@ -114,7 +114,7 @@ export function Home() {
             {/* Log In – dark outline pill, consistent with navbar dark theme */}
             <Link
               to="/login"
-              className="flex-1 flex items-center justify-center h-12 rounded-full border-2 border-white/20 bg-[#0d1520] hover:border-[#00bc7d]/60 hover:bg-[#131b29] text-white font-bold text-sm tracking-wider transition-all active:scale-95"
+              className="flex-1 flex items-center justify-center h-12 rounded-xl border-2 border-white/20 bg-[#0d1520] hover:border-[#00bc7d]/60 hover:bg-[#131b29] text-white font-bold text-sm tracking-wider transition-all active:scale-95"
             >
               {t("login")}
             </Link>
@@ -122,7 +122,7 @@ export function Home() {
             {/* Join Now – gold gradient pill, matches YELLOW_CTA theme token */}
             <Link
               to="/register"
-              className="flex-1 flex items-center justify-center h-12 rounded-full bg-gradient-to-b from-yellow-400 via-amber-400 to-amber-500 hover:brightness-110 text-black font-extrabold text-sm tracking-wider transition-all active:scale-95 shadow-[0_4px_16px_rgba(251,191,36,0.30)]"
+              className="flex-1 flex items-center justify-center h-12 rounded-xl bg-gradient-to-b from-yellow-400 via-amber-400 to-amber-500 hover:brightness-110 text-black font-extrabold text-sm tracking-wider transition-all active:scale-95 shadow-[0_4px_16px_rgba(251,191,36,0.30)]"
             >
               {t("joinNow")}
             </Link>
