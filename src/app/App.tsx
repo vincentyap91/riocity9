@@ -1130,7 +1130,11 @@ function AppContent() {
           </div>
         )}
 
-        <MobileBottomNav onMenuClick={() => setIsMenuOpen(true)} />
+        <MobileBottomNav
+          onMenuClick={() => setIsMenuOpen(true)}
+          onSearchClick={handleOpenSearch}
+          isLoggedIn={isAuthenticated}
+        />
 
         {/* Footer */}
         <Footer />

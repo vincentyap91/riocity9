@@ -5,14 +5,14 @@ import { useLanguage } from '../../contexts/LanguageContext';
 import svgPaths from "@/imports/svg-fhcj8q950g";
 
 // --- After Login Component (Existing) ---
-function MobileBottomNavAfterLogin({ onMenuClick }: { onMenuClick?: () => void }) {
+function MobileBottomNavAfterLogin({ onMenuClick, onSearchClick }: { onMenuClick?: () => void, onSearchClick?: () => void }) {
   const { t } = useLanguage();
   return (
     <div className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#0a0f19]/95 backdrop-blur-xl border-t border-white/10 pb-safe">
       <div className="flex items-center justify-around h-16 px-2">
 
         <NavButton icon={Menu} label={t("menu")} onClick={onMenuClick} />
-        <NavButton icon={Search} label={t("search")} />
+        <NavButton icon={Search} label={t("search")} onClick={onSearchClick} />
 
         {/* Center CTA - Wallet/Deposit */}
         <div className="relative -top-5">
@@ -21,15 +21,23 @@ function MobileBottomNavAfterLogin({ onMenuClick }: { onMenuClick?: () => void }
           </Link>
         </div>
 
-        <NavButton icon={Gift} label={t("promo")} />
-        <NavButton icon={User} label={t("profile")} />
+        <NavButton icon={Gift} label={t("promo")} to="/promotions" />
+        <NavButton icon={User} label={t("profile")} to="/profile" />
 
       </div>
     </div>
   );
 }
 
-function NavButton({ icon: Icon, label, active, onClick }: any) {
+function NavButton({ icon: Icon, label, active, onClick, to }: any) {
+  if (to) {
+    return (
+      <Link to={to} className={`flex flex-col items-center justify-center gap-1 w-14 h-full ${active ? 'text-emerald-400' : 'text-gray-400 hover:text-white'}`}>
+        <Icon className={`w-5 h-5 ${active ? 'fill-current' : ''}`} />
+        <span className="text-[10px] font-medium">{label}</span>
+      </Link>
+    );
+  }
   return (
     <button onClick={onClick} className={`flex flex-col items-center justify-center gap-1 w-14 h-full ${active ? 'text-emerald-400' : 'text-gray-400 hover:text-white'}`}>
       <Icon className={`w-5 h-5 ${active ? 'fill-current' : ''}`} />
@@ -139,14 +147,14 @@ function NavButtonBefore({ icon: Icon, label, onClick, to }: { icon: any, label:
   );
 }
 
-function MobileBottomNavBeforeLogin({ onMenuClick }: { onMenuClick?: () => void }) {
+function MobileBottomNavBeforeLogin({ onMenuClick, onSearchClick }: { onMenuClick?: () => void, onSearchClick?: () => void }) {
   const { t } = useLanguage();
   return (
     <div className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#0a0f19]/95 backdrop-blur-xl border-t border-[rgba(255,255,255,0.1)] pb-safe h-[64px]">
       <div className="flex flex-row items-center size-full">
         <div className="flex items-center justify-between px-[21px] w-full h-full">
           <NavButtonBefore icon={IconMenu} label={t("menu")} onClick={onMenuClick} />
-          <NavButtonBefore icon={IconSearch} label={t("search")} />
+          <NavButtonBefore icon={IconSearch} label={t("search")} to="/login" />
           <NavButtonBefore icon={IconReferral} label={t("referral")} to="/referral" />
           <NavButtonBefore icon={IconPromo} label={t("promo")} to="/promotions" />
           <NavButtonBefore icon={IconProfile} label={t("profile")} to="/login" />
@@ -158,9 +166,9 @@ function MobileBottomNavBeforeLogin({ onMenuClick }: { onMenuClick?: () => void 
 
 // --- Main Component ---
 
-export function MobileBottomNav({ onMenuClick, isLoggedIn = false }: { onMenuClick?: () => void, isLoggedIn?: boolean }) {
+export function MobileBottomNav({ onMenuClick, onSearchClick, isLoggedIn = false }: { onMenuClick?: () => void, onSearchClick?: () => void, isLoggedIn?: boolean }) {
   if (isLoggedIn) {
-    return <MobileBottomNavAfterLogin onMenuClick={onMenuClick} />;
+    return <MobileBottomNavAfterLogin onMenuClick={onMenuClick} onSearchClick={onSearchClick} />;
   }
-  return <MobileBottomNavBeforeLogin onMenuClick={onMenuClick} />;
+  return <MobileBottomNavBeforeLogin onMenuClick={onMenuClick} onSearchClick={onSearchClick} />;
 }

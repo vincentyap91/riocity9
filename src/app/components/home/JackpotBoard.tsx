@@ -11,10 +11,10 @@ type JackpotValues = {
 };
 
 const INITIAL_JACKPOTS: JackpotValues = {
-  grand: 482931200.50,
-  major: 482931200.00,
-  minor: 482931200.00,
-  mini: 482931200.00,
+  grand: 483057792.00,
+  major: 128006401.00,
+  minor: 52979399.00,
+  mini: 8949706.00,
 };
 
 const TIER_CONFIG = {
