@@ -1,0 +1,20 @@
+{
+  "name": "RioCity9",
+  "short_name": "RioCity9",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0b1220",
+  "theme_color": "#0b1220",
+  "icons": [
+    {
+      "src": "https://pksoftcdn.azureedge.net/media/small-logo-202403261635077380-202405280823396360-202512291749216206.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "https://pksoftcdn.azureedge.net/media/small-logo-202403261635077380-202405280823396360-202512291749216206.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
