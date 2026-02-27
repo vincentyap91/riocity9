@@ -326,10 +326,7 @@ export function Deposit() {
         : [];
   const requiresProviderSelection = providerOptions.length > 0;
   const selectedProviderName = selectedProvider || selectedMethod?.name || '';
-  const selectedMethodSummary =
-    selectedProviderName && selectedProviderName.toLowerCase() !== selectedMethodType.toLowerCase()
-      ? `${selectedMethodType} (${selectedProviderName})`
-      : selectedMethodType;
+  const selectedMethodSummary = selectedMethodType;
   const selectedBonusInfo = BONUS_OPTIONS.find((bonus) => bonus.id === selectedBonus);
 
   const handleReceiptPick = () => {
