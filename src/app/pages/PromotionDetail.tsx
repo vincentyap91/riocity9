@@ -49,7 +49,7 @@ export function PromotionDetail() {
 
           {/* Hero Card - Banner image + title + CTA */}
           <div className="relative bg-[#0b1218] rounded-2xl overflow-hidden border border-white/5 shadow-xl mb-8">
-            <div className="relative w-full aspect-[580/278] bg-white/5">
+            <div className="relative w-full aspect-[580/300] bg-white/5">
               <img
                 src={promo.image}
                 alt={promo.imageAlt}
