@@ -13,6 +13,11 @@ import img50Bonus from "@/assets/c15e00d9b1be9da4f11d6d0feffdb780317f68d1.png";
 import imgDeposit from "@/assets/a89549a47117579171a3acb01660952b44ae0f67.png"; // Updated Deposit Image
 import imgUnlimitedBonus from "@/assets/d101476c8661ced83614d896975cc0524f0ec119.png"; // New 5% Bonus Image
 import imgLive from "@/assets/f470efce5aa86066c1a4369e61fdae1d4ff30b86.png"; // Updated Main Live Image
+import imgBanner01 from "@/assets/banner01.jpg"; // Updated Banner 01 Image
+import imgBanner02 from "@/assets/banner02.jpg"; // Updated Banner 02 Image
+import imgBanner03 from "@/assets/banner03.jpg"; // Updated Banner 03 Image
+import imgDepositBonus from "@/assets/deposit-banner.jpg"; // Updated Banner 04 Image
+import imgUnlimited from "@/assets/unlimited-bonus.jpg"; // Updated Banner 05 Image
 
 export function HeroSection() {
   const { t } = useLanguage();
@@ -24,7 +29,7 @@ export function HeroSection() {
     slidesToShow: 1,
     slidesToScroll: 1,
     autoplay: true,
-    autoplaySpeed: 4000,
+    autoplaySpeed: 5000,
     arrows: false,
     fade: true, 
     cssEase: 'linear',
@@ -42,7 +47,7 @@ export function HeroSection() {
   const slides = [
     { 
         id: 1, 
-        image: imgLive, 
+        image: imgBanner01, 
         alt: "RioCity9 Is Now Live",
         action: t("playNow"),
         showButton: false, // The image has "RioCity9" text, button might obscure it.
@@ -50,24 +55,24 @@ export function HeroSection() {
     },
     { 
         id: 2, 
-        image: img50Bonus, 
+        image: imgBanner02, 
         alt: "50% Welcome Bonus",
         action: t("claim50Bonus"),
         showButton: true,
-        link: "/promotions/deposit-bonus"
+        link: "/promotions/welcome-bonus"
     },
     { 
         id: 3, 
-        image: img30Bonus, 
+        image: imgBanner03, 
         alt: "30% Welcome Bonus",
         action: t("claim30Bonus"),
         showButton: true,
-        link: "/promotions/welcome-bonus"
+        link: "/promotions/30-welcome-bonus"
     }
   ];
   const sideBanners = [
-    { id: 'deposit', image: imgDeposit, alt: 'Deposit BRL8 Get BRL1', link: '/promotions/deposit-bonus' },
-    { id: 'bonus', image: imgUnlimitedBonus, alt: '5% Unlimited Bonus', link: '/promotions/welcome-bonus' },
+    { id: 'deposit', image: imgDepositBonus, alt: 'Deposit BRL8 Get BRL1', link: '/promotions/deposit-bonus' },
+    { id: 'bonus', image: imgUnlimited, alt: '5% Unlimited Bonus', link: '/promotions/unlimited-bonus' },
   ];
 
   return (

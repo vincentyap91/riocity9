@@ -1,7 +1,10 @@
 import React from 'react';
 import { Trophy, Gamepad2 } from 'lucide-react';
-import imgDeposit from "@/assets/a89549a47117579171a3acb01660952b44ae0f67.png";
-import imgUnlimitedBonus from "@/assets/d101476c8661ced83614d896975cc0524f0ec119.png"; 
+import imgBanner01 from "@/assets/banner01.jpg"; // Updated Banner 01 Image
+import imgBanner02 from "@/assets/banner02.jpg"; // Updated Banner 02 Image
+import imgBanner03 from "@/assets/banner03.jpg"; // Updated Banner 03 Image
+import imgDepositBanner from "@/assets/deposit-banner.jpg";
+import imgUnlimitedBanner from "@/assets/unlimited-bonus.jpg";
 
 export type PromotionSection = {
   title: string;
@@ -24,9 +27,6 @@ export type PromotionItem = {
   important?: string[];
 };
 
-const PROMO_BANNER_URL =
-  "https://pksoftcdn.azureedge.net/media/580x320_riocityisnowlive-202311171111434006-202311301531190440-202312141426186709-202512181502055463.png";
-
 export const PROMOTIONS: PromotionItem[] = [
   {
     id: "weekly-fix",
@@ -34,7 +34,7 @@ export const PROMOTIONS: PromotionItem[] = [
     description: "Claim your daily bonus and boost your gaming experience",
     category: "All",
     badge: "DAILY",
-    image: PROMO_BANNER_URL,
+    image: imgBanner01,
     imageAlt: "Weekly Fix promotion",
     subtitle: "Weekly Reload Bonus",
     actionText: "Play Eligible Games",
@@ -87,29 +87,56 @@ export const PROMOTIONS: PromotionItem[] = [
   },
   {
     id: "welcome-bonus",
-    title: "We1Win - Unlimited Referral Bonus",
-    description: "Invite friends and earn unlimited rewards from their activity",
+    title: "50% Welcome Bonus",
+    description: "Claim 50% bonus on your welcome deposit.",
     category: "All",
-    badge: "DAILY",
-    image: imgUnlimitedBonus,
+    badge: "HOT",
+    image: imgBanner02,
     imageAlt: "Welcome Bonus promotion",
     subtitle: "New Member Exclusive",
-    actionText: "Claim Now",
+    actionText: "Claim 50% Bonus",
     sections: [
       {
-        title: "How to get started:",
+        title: "How to claim:",
         items: [
-          "Complete your registration and verify your account",
-          "Make your first deposit (Min PKR 1,000)",
-          "Bonus is automatically credited after successful deposit"
+          "Register and complete account verification",
+          "Make your first qualifying deposit",
+          "Bonus is credited after successful deposit"
         ]
       }
     ],
     terms: [
-      "Only for newly registered users",
-      "Wagering requirement: 25x (Deposit + Bonus)",
-      "Maximum bonus amount: PKR 50,000",
-      "Bonus expires in 30 days if not cleared"
+      "One claim per eligible new account",
+      "Minimum deposit requirement applies",
+      "Wagering requirement applies before withdrawal",
+      "Campaign limits and duration may change without notice"
+    ]
+  },
+  {
+    id: "30-welcome-bonus",
+    title: "30% Welcome Bonus",
+    description: "Claim 30% bonus on your welcome deposit.",
+    category: "All",
+    badge: "HOT",
+    image: imgBanner03,
+    imageAlt: "30% Welcome Bonus promotion",
+    subtitle: "New Member Exclusive",
+    actionText: "Claim 30% Bonus",
+    sections: [
+      {
+        title: "How to claim:",
+        items: [
+          "Register and complete account verification",
+          "Make your first qualifying deposit",
+          "Bonus is credited after successful deposit"
+        ]
+      }
+    ],
+    terms: [
+      "One claim per eligible new account",
+      "Minimum deposit requirement applies",
+      "Wagering requirement applies before withdrawal",
+      "Campaign limits and duration may change without notice"
     ]
   },
   {
@@ -118,7 +145,7 @@ export const PROMOTIONS: PromotionItem[] = [
     description: "Celebrate your special day with exclusive birthday rewards",
     category: "All",
     badge: "DAILY",
-    image: PROMO_BANNER_URL,
+    image: imgBanner01,
     imageAlt: "Birthday promotion",
     subtitle: "Happy Birthday from RioCity9",
     actionText: "Check My Gift",
@@ -145,7 +172,7 @@ export const PROMOTIONS: PromotionItem[] = [
     description: "Loyalty rewards for our dedicated members annually",
     category: "All",
     badge: "DAILY",
-    image: PROMO_BANNER_URL,
+    image: imgBanner01,
     imageAlt: "Annual promotion",
     subtitle: "Annual Anniversary Bonus",
     actionText: "Claim Anniversary Gift",
@@ -168,13 +195,41 @@ export const PROMOTIONS: PromotionItem[] = [
   },
   {
     id: "deposit-bonus",
-    title: "250% Welcome Deposit Bonus",
-    description: "New member exclusive",
+    title: "Deposit BRL8 Get BRL1",
+    description: "Top up and receive an instant extra BRL1 reward.",
     category: "Deposit",
-    badge: "HOT",
-    image: imgDeposit,
+    badge: "DAILY",
+    image: imgDepositBanner,
     imageAlt: "Deposit bonus promotion",
-    actionText: "Claim"
+    subtitle: "Quick Deposit Reward",
+    actionText: "Deposit Now",
+  },
+  {
+    id: "unlimited-bonus",
+    title: "5% Unlimited Bonus",
+    description: "Get an extra 5% bonus on qualifying deposits.",
+    category: "All",
+    badge: "DAILY",
+    image: imgUnlimitedBanner,
+    imageAlt: "Unlimited bonus promotion",
+    subtitle: "Unlimited Daily Reward",
+    actionText: "Claim 5% Bonus",
+    sections: [
+      {
+        title: "How to get started:",
+        items: [
+          "Make a qualifying deposit",
+          "Bonus is credited as 5% of the deposit amount",
+          "Use bonus on eligible games"
+        ]
+      }
+    ],
+    terms: [
+      "Available to eligible members only",
+      "Wagering requirement applies before withdrawal",
+      "Bonus amount and limits follow campaign rules",
+      "General RioCity9 bonus terms apply"
+    ]
   },
   {
     id: "fishing-bonus",
@@ -182,7 +237,7 @@ export const PROMOTIONS: PromotionItem[] = [
     description: "Up to PKR 10,000",
     category: "Fishing",
     badge: "NEW",
-    image: PROMO_BANNER_URL,
+    image: imgBanner01,
     imageAlt: "Fishing bonus promotion",
     actionText: "Claim"
   },
@@ -192,7 +247,7 @@ export const PROMOTIONS: PromotionItem[] = [
     description: "Get 50% bonus every week",
     category: "Live Casino",
     badge: "WEEKLY",
-    image: PROMO_BANNER_URL,
+    image: imgBanner01,
     imageAlt: "Live casino bonus promotion",
     actionText: "Claim"
   },
@@ -202,7 +257,7 @@ export const PROMOTIONS: PromotionItem[] = [
     description: "100 free spins daily",
     category: "Slots",
     badge: "DAILY",
-    image: PROMO_BANNER_URL,
+    image: imgBanner01,
     imageAlt: "Slots bonus promotion",
     actionText: "Claim"
   },
@@ -212,7 +267,7 @@ export const PROMOTIONS: PromotionItem[] = [
     description: "Join and win big prizes",
     category: "Poker",
     badge: "TOURNAMENT",
-    image: PROMO_BANNER_URL,
+    image: imgBanner01,
     imageAlt: "Poker bonus promotion",
     actionText: "Claim"
   },
@@ -222,7 +277,7 @@ export const PROMOTIONS: PromotionItem[] = [
     description: "10% cashback on losses",
     category: "Sports",
     badge: "CASHBACK",
-    image: PROMO_BANNER_URL,
+    image: imgBanner01,
     imageAlt: "Sports bonus promotion",
     actionText: "Claim"
   },
@@ -232,7 +287,7 @@ export const PROMOTIONS: PromotionItem[] = [
     description: "Exclusive for new members",
     category: "Newbie",
     badge: "EXCLUSIVE",
-    image: PROMO_BANNER_URL,
+    image: imgBanner01,
     imageAlt: "Newbie bonus promotion",
     actionText: "Claim"
   },
@@ -242,7 +297,7 @@ export const PROMOTIONS: PromotionItem[] = [
     description: "Premium benefits for VIP",
     category: "Other",
     badge: "VIP",
-    image: PROMO_BANNER_URL,
+    image: imgBanner01,
     imageAlt: "VIP bonus promotion",
     actionText: "Claim"
   },

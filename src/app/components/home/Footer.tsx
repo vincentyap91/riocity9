@@ -43,19 +43,19 @@ export function Footer() {
           <div className="col-span-4">
             <h3 className="text-white font-bold text-lg mb-4">{t("footerFollowUs")}</h3>
             <div className="flex gap-4">
-              <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full bg-white/5 hover:bg-[#1DA1F2] hover:text-white transition-all">
+              <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full bg-white/5 text-gray-400 hover:text-[#00bc7d] hover:bg-[#00bc7d]/10 border border-white/10 transition-all">
                 <Globe className="w-4 h-4" />
               </Button>
-              <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full bg-white/5 hover:bg-black hover:text-white transition-all">
+              <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full bg-white/5 text-gray-400 hover:text-[#00bc7d] hover:bg-[#00bc7d]/10 border border-white/10 transition-all">
                 <Twitter className="w-4 h-4" />
               </Button>
-              <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full bg-white/5 hover:bg-[#1877F2] hover:text-white transition-all">
+              <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full bg-white/5 text-gray-400 hover:text-[#00bc7d] hover:bg-[#00bc7d]/10 border border-white/10 transition-all">
                 <Facebook className="w-4 h-4" />
               </Button>
-              <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full bg-white/5 hover:bg-[#E4405F] hover:text-white transition-all">
+              <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full bg-white/5 text-gray-400 hover:text-[#00bc7d] hover:bg-[#00bc7d]/10 border border-white/10 transition-all">
                 <Instagram className="w-4 h-4" />
               </Button>
-              <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full bg-white/5 hover:bg-[#FF0000] hover:text-white transition-all">
+              <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full bg-white/5 text-gray-400 hover:text-[#00bc7d] hover:bg-[#00bc7d]/10 border border-white/10 transition-all">
                 <Youtube className="w-4 h-4" />
               </Button>
             </div>
