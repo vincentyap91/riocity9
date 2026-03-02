@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route, Link, useLocation, useNavigate } from 're
 import { AnimatePresence, motion } from 'motion/react';
 import { Button } from './components/ui/button';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from './components/ui/sheet';
-import { Search, Menu, MessageCircle, X, Languages, CircleHelp, ChevronDown, ChevronUp, Home as HomeIcon, Gamepad2, Dices, Fish, Ticket, Star, Smartphone, Gift, User, Eye, EyeOff, Target, Trash2, Info, RefreshCw, Wallet } from 'lucide-react';
+import { Search, Menu, MessageCircle, X, Languages, CircleHelp, ChevronDown, ChevronUp, Home as HomeIcon, Gamepad2, Dices, Fish, Ticket, Star, Smartphone, Megaphone, User, Eye, EyeOff, Target, Trash2, Info, RefreshCw, Wallet } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -66,7 +66,7 @@ const categories = [
   { id: 'fish', labelKey: 'fishing', icon: Fish, path: '/fishing' },
   { id: 'lottery', labelKey: 'lottery', icon: Ticket, path: '/lottery' },
   { id: 'vip', labelKey: 'vipClub', icon: Star, path: '/membership', color: 'text-yellow-400' },
-  { id: 'promotions', labelKey: 'promotions', icon: Gift, path: '/promotions', color: 'text-pink-400' },
+  { id: 'promotions', labelKey: 'promotions', icon: Megaphone, path: '/promotions', color: 'text-pink-400' },
   { id: 'app', labelKey: 'app', icon: Smartphone, path: '/app', color: 'text-[#00bc7d]' },
 ];
 

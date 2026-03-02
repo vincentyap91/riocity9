@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate, useSearchParams, useLocation } from "react-router-dom";
-import { ArrowLeft, Dices, Ticket, Box, X, Wallet, RefreshCw, Clock } from "lucide-react";
+import { ArrowLeft, Dices, Ticket, X, Wallet, RefreshCw, Clock } from "lucide-react";
 import { LuckyWheelIcon } from "../components/icons/LuckyWheelIcon";
+import { PrizeBoxIcon } from "../components/icons/PrizeBoxIcon";
 import { Button } from "../components/ui/button";
 import { useLanguage } from "../contexts/LanguageContext";
 import { useAuth } from "../contexts/AuthContext";
@@ -20,7 +21,7 @@ import {
 const BONUS_SIDEBAR_ITEMS: PageSidebarItem[] = [
   { id: "wheel", label: "Spin Wheel Bonus", icon: LuckyWheelIcon },
   { id: "scratch", label: "Voucher Scratch Bonus", icon: Ticket },
-  { id: "prize", label: "Prize Box Bonus", icon: Box },
+  { id: "prize", label: "Prize Box Bonus", icon: PrizeBoxIcon },
 ];
 
 const REWARDS = [
@@ -45,7 +46,7 @@ const TAB_CONFIG: Record<
 > = {
   wheel: { titleKey: "spinWheelBonus", Icon: LuckyWheelIcon as any, modalType: "spinwheel" },
   scratch: { titleKey: "voucherScratchBonus", Icon: Ticket, modalType: "scratch" },
-  prize: { titleKey: "prizeBoxBonus", Icon: Box, modalType: "prize" },
+  prize: { titleKey: "prizeBoxBonus", Icon: PrizeBoxIcon as any, modalType: "prize" },
 };
 
 export function Bonus() {

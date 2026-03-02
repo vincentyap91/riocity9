@@ -1,13 +1,14 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import {
-    Gift, Ticket, Box, Home, Flame, Gamepad2, Dices,
+    Gift, Ticket, Home, Flame, Gamepad2, Dices,
     Fish, ArrowLeftRight, Club, Plane, Megaphone, Users,
     HandCoins, Crown, MessageCircle, Facebook, Send, Phone,
     Sparkles, ChevronUp, History
 } from 'lucide-react';
 import { FootballIcon } from '../icons/FootballIcon';
 import { LuckyWheelIcon } from '../icons/LuckyWheelIcon';
+import { PrizeBoxIcon } from '../icons/PrizeBoxIcon';
 import { useAuth } from '../../contexts/AuthContext';
 import {
     Accordion,
@@ -22,7 +23,7 @@ import { useLanguage } from "../../contexts/LanguageContext";
 const rewardItems = [
     { labelKey: "spinWheelBonus", icon: LuckyWheelIcon, path: "/bonus?tab=wheel", color: "text-yellow-400" },
     { labelKey: "voucherScratchBonus", icon: Ticket, path: "/bonus?tab=scratch", color: "text-pink-400" },
-    { labelKey: "prizeBoxBonus", icon: Box, path: "/bonus?tab=prize", color: "text-orange-400" },
+    { labelKey: "prizeBoxBonus", icon: PrizeBoxIcon, path: "/bonus?tab=prize", color: "text-orange-400" },
 ];
 
 const menuItems = [

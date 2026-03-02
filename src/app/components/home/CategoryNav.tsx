@@ -2,10 +2,11 @@ import React, { useEffect, useState } from 'react';
 import {
     Home, Gamepad2, Dices, Fish, Ticket, Star, Smartphone,
     Aperture,
-    Gift, Sparkles, Club, ChevronDown, Box
+    Megaphone, Sparkles, Club, ChevronDown
 } from 'lucide-react';
 import { FootballIcon } from '../icons/FootballIcon';
 import { LuckyWheelIcon } from '../icons/LuckyWheelIcon';
+import { PrizeBoxIcon } from '../icons/PrizeBoxIcon';
 import { Link, useLocation } from 'react-router-dom';
 import {
     DropdownMenu,
@@ -37,10 +38,10 @@ export function CategoryNav() {
             subItems: [
                 { labelKey: "spinWheelBonus", path: "/bonus?tab=wheel", icon: LuckyWheelIcon },
                 { labelKey: "voucherScratchBonus", path: "/bonus?tab=scratch", icon: Ticket },
-                { labelKey: "prizeBoxBonus", path: "/bonus?tab=prize", icon: Box },
+                { labelKey: "prizeBoxBonus", path: "/bonus?tab=prize", icon: PrizeBoxIcon },
             ]
         },
-        { id: 'promotions', labelKey: 'promotions', icon: Gift, path: '/promotions', color: 'text-pink-400' },
+        { id: 'promotions', labelKey: 'promotions', icon: Megaphone, path: '/promotions', color: 'text-pink-400' },
         { id: 'app', labelKey: 'app', icon: Smartphone, path: '/app', color: 'text-emerald-400' },
     ];
 
