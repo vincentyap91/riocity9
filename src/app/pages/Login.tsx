@@ -13,7 +13,7 @@ import {
 import { sanitizeTextInput, sanitizeUsername } from '../utils/security';
 
 // Assets
-import imgLoginPromo from '@/assets/7b5397e1e0b3ef00aac3ed749d986cb7304ad993.png';
+import imgLoginPromo from '@/assets/login.jpg';
 
 function getPostAuthRedirect(): string {
   const storedPath = sessionStorage.getItem('redirectAfterLogin');
